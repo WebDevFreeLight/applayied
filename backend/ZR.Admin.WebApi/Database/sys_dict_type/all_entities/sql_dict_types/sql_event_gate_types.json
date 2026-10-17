@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_event_gate_types",
+  "dictName": "Event Gate Type - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from event_gate_types table (ZR.Model.EventManagement)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM event_gate_types"
+}

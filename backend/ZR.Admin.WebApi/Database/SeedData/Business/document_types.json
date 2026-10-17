@@ -1,0 +1,58 @@
+[
+  {
+    "documenttypeid": 1,
+    "documenttypename": "شهادة تخرج - Graduation Certificate",
+    "remark": "شهادة تخرج من الجامعة",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "documenttypeid": 2,
+    "documenttypename": "شهادة خبرة - Experience Certificate",
+    "remark": "شهادة الخبرة العملية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "documenttypeid": 3,
+    "documenttypename": "رخصة ومؤهلات - License & Qualifications",
+    "remark": "الرخص والمؤهلات المهنية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "documenttypeid": 4,
+    "documenttypename": "وثيقة التأمين - Insurance Document",
+    "remark": "وثائق التأمين الصحي",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "documenttypeid": 5,
+    "documenttypename": "عقد العمل - Employment Contract",
+    "remark": "عقد التوظيف والعمل",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "documenttypeid": 6,
+    "documenttypename": "تقرير طبي - Medical Report",
+    "remark": "التقارير الطبية والصحية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "documenttypeid": 7,
+    "documenttypename": "وثيقة هوية - Identity Document",
+    "remark": "وثائق الهوية والإقامة",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "documenttypeid": 8,
+    "documenttypename": "شهادة راتب - Salary Certificate",
+    "remark": "شهادة الراتب والدخل",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  }
+]

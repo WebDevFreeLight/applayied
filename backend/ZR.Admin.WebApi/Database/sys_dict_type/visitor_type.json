@@ -1,0 +1,7 @@
+{
+  "dictType": "visitor_type",
+  "dictName": "أنواع الزوار - Visitor Types",
+  "status": "0",
+  "remark": "Generated from VisitorType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM visitor_types",
+  "createBy": "system"
+}

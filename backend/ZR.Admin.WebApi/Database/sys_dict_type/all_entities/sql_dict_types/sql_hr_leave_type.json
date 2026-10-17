@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_leave_type",
+  "dictName": "Hr Leave Type - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_leave_type table (ZR.Model.Hrtypes)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_leave_type"
+}

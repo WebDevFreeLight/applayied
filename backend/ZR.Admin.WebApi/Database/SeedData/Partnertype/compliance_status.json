@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "موافق عليه - Approved",
+    "remark": "Partner fully compliant with all requirements",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 2,
+    "name": "قيد المراجعة - Pending",
+    "remark": "Compliance review in progress",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 3,
+    "name": "مرفوض - Rejected",
+    "remark": "Partner does not meet compliance requirements",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 4,
+    "name": "معلق - Suspended",
+    "remark": "Compliance status temporarily suspended",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

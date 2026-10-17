@@ -1,0 +1,78 @@
+services:
+  # Option 1: Use external Supabase (with IPv4 fix)
+  zradminwebapi:
+    image: webdevfreelight/zradminwebapi:latest
+    container_name: zradminwebapi
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      # HTTPS Configuration
+      - ASPNETCORE_URLS=https://+:8887
+      - UseHttps=true
+      # SSL/TLS Certificate Paths (mounted from host)
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/onemay.local.crt
+      - ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/certs/onemay.local.key
+      # Force IPv4 for Supabase connection
+      - DOTNET_SYSTEM_NET_DISABLEIPV6=${DOTNET_SYSTEM_NET_DISABLEIPV6}
+    ports:
+      # HTTPS Port
+      - "8887:8887"
+    depends_on:
+      - postgres
+    networks:
+      - maham_network
+    extra_hosts:
+      # Add explicit IPv4 mapping for Supabase host
+      - "${SUPABASE_HOST}:${SUPABASE_IP}"
+    volumes:
+      - zradminwebapi_data:/app/wwwroot
+      - zradminwebapi_uploads:/app/secure-uploads
+      # Mount SSL certificates from devcerts directory (read-only)
+      - ../devcerts/onemay.local.crt:/app/certs/onemay.local.crt:ro
+      - ../devcerts/onemay.local.key:/app/certs/onemay.local.key:ro
+      # Uncomment below to mount custom appsettings if needed
+      # - ./appsettings.Docker.json:/app/appsettings.json:ro
+
+  # Option 2: Local PostgreSQL for development (configured for remote access)
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    shm_size: 128mb
+    restart: always  
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      # Allow connections from any host
+      POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_HOST_AUTH_METHOD}
+    ports:
+      - "0.0.0.0:${POSTGRES_PORT}:5432"  # Bind to all interfaces, using custom port to avoid conflicts
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    command: 
+      - "postgres"
+      - "-c"
+      - "listen_addresses=*"  # Listen on all interfaces
+      - "-c"
+      - "max_connections=${POSTGRES_MAX_CONNECTIONS}"
+      - "-c"
+      - "shared_buffers=${POSTGRES_SHARED_BUFFERS}"
+      - "-c"
+      - "log_connections=on"
+    networks:
+      - maham_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: ${HEALTHCHECK_INTERVAL}
+      timeout: ${HEALTHCHECK_TIMEOUT}
+      retries: ${HEALTHCHECK_RETRIES}
+
+volumes:
+  postgres_data:
+  zradminwebapi_data:
+  zradminwebapi_uploads:
+
+networks:
+  maham_network:
+    driver: bridge
+    

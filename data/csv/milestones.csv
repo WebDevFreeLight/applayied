@@ -1,0 +1,28 @@
+﻿MilestoneId,ProjectId,Name,DueDate,Status
+5001,2001,Kickoff,2025-11-30,Missed
+5002,2001,Design Complete,2026-01-29,Achieved
+5003,2001,Build Complete,2026-03-30,Missed
+5004,2002,Kickoff,2026-01-14,Missed
+5005,2002,Design Complete,2026-03-15,Achieved
+5006,2002,Build Complete,2026-05-14,Achieved
+5007,2003,Kickoff,2026-03-11,Missed
+5008,2003,Design Complete,2026-05-10,Achieved
+5009,2003,Build Complete,2026-07-09,Missed
+5010,2003,UAT Sign-off,2026-09-07,Missed
+5011,2004,Kickoff,2026-04-02,Missed
+5012,2004,Design Complete,2026-06-01,Missed
+5013,2004,Build Complete,2026-07-31,Achieved
+5014,2005,Kickoff,2025-10-31,Achieved
+5015,2005,Design Complete,2025-12-30,Achieved
+5016,2005,Build Complete,2026-02-28,Missed
+5017,2006,Kickoff,2026-01-30,Missed
+5018,2006,Design Complete,2026-03-31,Achieved
+5019,2006,Build Complete,2026-05-30,Missed
+5020,2007,Kickoff,2026-10-31,Pending
+5021,2007,Design Complete,2026-12-30,Pending
+5022,2007,Build Complete,2027-02-28,Pending
+5023,2007,UAT Sign-off,2027-04-29,Pending
+5024,2008,Kickoff,2025-07-31,Achieved
+5025,2008,Design Complete,2025-09-29,Achieved
+5026,2008,Build Complete,2025-11-28,Achieved
+5027,2002,Cutover readiness,2026-10-07,Pending

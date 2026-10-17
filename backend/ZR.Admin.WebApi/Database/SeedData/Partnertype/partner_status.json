@@ -1,0 +1,47 @@
+[
+  {
+    "statusid": 1,
+    "name": "نشط - Active",
+    "remark": "Partner is actively working with us",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "statusid": 2,
+    "name": "معلق - Suspended",
+    "remark": "Partner relationship temporarily halted",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "statusid": 3,
+    "name": "قيد المراجعة - Under Review",
+    "remark": "Partner status being evaluated",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "statusid": 4,
+    "name": "غير نشط - Inactive",
+    "remark": "Partner relationship ended",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "statusid": 5,
+    "name": "قيد التفاوض - Negotiating",
+    "remark": "Initial partnership negotiations",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_sys_common_lang",
+  "dictName": "Common Lang - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from sys_common_lang table (ZR.Model.Models)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM sys_common_lang"
+}

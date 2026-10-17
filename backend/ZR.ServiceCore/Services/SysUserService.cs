@@ -1,0 +1,513 @@
+using Infrastructure;
+using Infrastructure.Attribute;
+using Mapster;
+using Microsoft.AspNetCore.Http;
+using System.Collections;
+using System.Threading.Tasks;
+using ZR.Common;
+using ZR.Infrastructure.Constant;
+using ZR.Infrastructure.Helper;
+using ZR.Infrastructure.IPTools;
+using ZR.Model;
+using ZR.Model.System;
+using ZR.Model.System.Dto;
+using ZR.Model.System.Enums;
+using ZR.Repository;
+
+namespace ZR.ServiceCore.Services
+{
+    /// <summary>
+    /// System user
+    /// </summary>
+    [AppService(ServiceType = typeof(ISysUserService), ServiceLifetime = LifeTime.Transient)]
+    public class SysUserService : BaseService<SysUser>, ISysUserService
+    {
+        private readonly ISysRoleService RoleService;
+        private readonly ISysUserRoleService UserRoleService;
+        private readonly ISysUserPostService UserPostService;
+        private readonly ISysUserMsgService UserMsgService;
+
+        public SysUserService(
+            ISysRoleService sysRoleService,
+            ISysUserRoleService userRoleService,
+            ISysUserPostService userPostService,
+            ISysUserMsgService userMsgService)
+        {
+            RoleService = sysRoleService;
+            UserRoleService = userRoleService;
+            UserPostService = userPostService;
+            UserMsgService = userMsgService;
+        }
+
+        /// <summary>
+        /// Query user list with pagination based on conditions
+        /// </summary>
+        /// <returns></returns>
+        public PagedInfo<SysUserDto> SelectUserList(SysUserQueryDto user, PagerInfo pager)
+        {
+            var exp = Expressionable.Create<SysUser>();
+            exp.AndIF(!string.IsNullOrEmpty(user.UserName), u => u.UserName.Contains(user.UserName));
+            exp.AndIF(user.UserId > 0, u => u.UserId == user.UserId);
+            exp.AndIF(user.Status != -1, u => u.Status == user.Status);
+            exp.AndIF(user.BeginTime != DateTime.MinValue && user.BeginTime != null, u => u.Create_time >= user.BeginTime);
+            exp.AndIF(user.EndTime != DateTime.MinValue && user.EndTime != null, u => u.Create_time <= user.EndTime);
+            exp.AndIF(!user.Phonenumber.IsEmpty(), u => u.Phonenumber == user.Phonenumber);
+            exp.And(u => u.DelFlag == 0);
+
+            if (user.DeptId != 0)
+            {
+                var allChildDepts = Context.Queryable<SysDept>().ToChildList(it => it.ParentId, user.DeptId);
+
+                exp.And(u => allChildDepts.Select(f => f.DeptId).ToList().Contains(u.DeptId));
+            }
+            var query = Queryable()
+                .LeftJoin<SysDept>((u, dept) => u.DeptId == dept.DeptId)
+                .Where(exp.ToExpression())
+                .Select((u, dept) => new SysUserDto
+                {
+                    UserId = u.UserId.SelectAll(),
+                    DeptName = dept.DeptName,
+                });
+            var list = query.ToPage(pager);
+            foreach (var item in list.Result)
+            {
+                if (!HttpContextExtension.HasSensitivePerm(App.HttpContext, SensitivePerms.ViewRealPhone))
+                {
+                    item.Phonenumber = MaskUtil.MaskPhone(item.Phonenumber);
+                }
+                if (!HttpContextExtension.HasSensitivePerm(App.HttpContext, SensitivePerms.ViewEmail))
+                {
+                    item.Email = MaskUtil.MaskPhone(item.Email);
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Query user by user ID
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public SysUserDto SelectUserById(long userId)
+        {
+            var userModel = Queryable()
+                .Filter(null, true).WithCache(60 * 5)
+                .Where(f => f.UserId == userId && f.DelFlag == 0)
+                .First();
+            var user = userModel.Adapt<SysUserDto>();
+            if (user != null && user.UserId > 0)
+            {
+                user.Roles = RoleService.SelectUserRoleListByUserId(userId);
+                user.RoleIds = user.Roles.Select(x => x.RoleId).ToArray();
+
+                if (!HttpContextExtension.HasSensitivePerm(App.HttpContext, SensitivePerms.ViewRealPhone))
+                {
+                    user.Phonenumber = MaskUtil.MaskPhone(userModel.Phonenumber);
+                }
+                if (!HttpContextExtension.HasSensitivePerm(App.HttpContext, SensitivePerms.ViewEmail))
+                {
+                    user.Email = MaskUtil.MaskPhone(user.Email);
+                }
+            }
+            return user;
+        }
+
+        /// <summary>
+        /// Validate if username is unique
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public string CheckUserNameUnique(string userName)
+        {
+            int count = Count(it => it.UserName == userName && it.DelFlag == 0);
+            if (count > 0)
+            {
+                return UserConstants.NOT_UNIQUE;
+            }
+            return UserConstants.UNIQUE;
+        }
+
+        /// <summary>
+        /// Validate if phone number is bound
+        /// </summary>
+        /// <param name="phoneNum"></param>
+        /// <returns></returns>
+        public List<long> CheckPhoneBind(string phoneNum)
+        {
+            var list = GetList(it => it.Phonenumber == phoneNum);
+            var temp = list.Select(x => x.UserId).ToList();
+            return list.Count > 0 ? temp : [];
+        }
+
+        /// <summary>
+        /// Bind phone number
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="phoneNum"></param>
+        /// <returns></returns>
+        public int ChangePhoneNum(long userid, string phoneNum)
+        {
+            return Update(new SysUser() { Phonenumber = phoneNum }, it => new { it.Phonenumber }, f => f.UserId == userid);
+        }
+
+        /// <summary>
+        /// Add and save user information
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <returns></returns>
+        public async Task<SysUser> InsertUser(SysUser sysUser)
+        {
+
+
+              DbResult<bool> result = new DbResult<bool>();
+            result.IsSuccess = true;
+
+            if (sysUser.IsUseTran)
+            {
+
+
+
+                result =  UseTran (  () =>
+                {
+
+                     MakeUserUseInsert(sysUser);
+
+                });
+
+            }
+            else
+            {
+                 MakeUserUseInsert(sysUser);
+
+            }
+
+
+            if (!result.IsSuccess)
+            {
+                throw new Exception("Data submission exception," + result.ErrorMessage, result.ErrorException);
+            }
+            return sysUser;
+        }
+
+        public    void MakeUserUseInsert(SysUser sysUser)
+        {
+            //var v = InsertIntoEntity(sysUser);
+            //var v = InsertIntoEntity(sysUser);
+
+
+            var v =  Insertable(sysUser).ExecuteReturnSnowflakeId ();
+            // Insertable(sysUser).ExecuteReturnEntity();
+
+
+
+            // var v = Insertable(sysUser).ExecuteReturnEntity();
+
+            // Console.WriteLine($"user cretesd id : ${sysUser.UserId} ", v);
+            sysUser.UserId = v;
+            //Add user role information
+            UserRoleService.InsertUserRole(sysUser.RoleIds, sysUser.UserId);
+            //Add user post information
+            UserPostService.InsertUserPost(sysUser);
+        }
+
+        /// <summary>
+        /// Add user with complete validation and business logic
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
+        public async Task<SysUser> AddUser(SysUserDto userDto)
+        {
+            // Validate input parameters
+            if (userDto == null)
+            {
+                throw new ArgumentNullException(nameof(userDto), "Request parameters are invalid");
+            }
+
+            // Convert DTO to entity and set creation context
+            var user = userDto.Adapt<SysUser>().ToCreate(App.HttpContext);
+            user.DeptId = userDto.DeptId;
+
+            // Validate username uniqueness
+            if (UserConstants.NOT_UNIQUE.Equals(CheckUserNameUnique(user.UserName)))
+            {
+                throw new CustomException($"Add user '{user.UserName}' failed, login account already exists");
+            }
+
+            // Hash password
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                user.Password = NETCore.Encrypt.EncryptProvider.Md5(user.Password);
+            }
+
+            // Insert user with transaction
+            return await InsertUser(user);
+        }
+
+        /// <summary>
+        /// Modify user information
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public int UpdateUser(SysUserDto dto)
+        {
+            SysUser user = dto.Adapt<SysUser>();
+            var roleIds = RoleService.SelectUserRoles(user.UserId);
+            var diffArr = roleIds.Where(c => !((IList)dto.RoleIds).Contains(c)).ToArray();
+            var diffArr2 = dto.RoleIds.Where(c => !((IList)roleIds).Contains(c)).ToArray();
+            var result = UseTran(() =>
+            {
+                if (diffArr.Length > 0 || diffArr2.Length > 0)
+                {
+                    //Delete user and role association
+                    UserRoleService.DeleteUserRoleByUserId(user.UserId);
+                    //Add user and role association
+                    UserRoleService.InsertUserRole(dto.RoleIds, dto.UserId);
+                }
+                // Delete user and post association
+                UserPostService.Delete(user.UserId);
+                // Add user and post management
+                UserPostService.InsertUserPost(user);
+                ChangeUser(user);
+                UserMsgService.AddSysUserMsg(user.UserId, "Your profile has been modified", UserMsgType.SYSTEM);
+            });
+            return result.IsSuccess ? 1 : 0;
+        }
+
+        public int ChangeUser(SysUser user)
+        {
+            user.Update_time = DateTime.Now;
+            return Update(user, t => new
+            {
+                t.NickName,
+                t.Email,
+                t.Phonenumber,
+                t.DeptId,
+                t.Status,
+                t.Sex,
+                t.PostIds,
+                t.Remark,
+                t.Update_by,
+                t.Update_time
+            }, true);
+        }
+
+        /// <summary>
+        /// Reset password
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public int ResetPwd(long userid, string password)
+        {
+            return Update(new SysUser() { UserId = userid, Password = password }, it => new { it.Password }, f => f.UserId == userid);
+        }
+
+        /// <summary>
+        /// Modify user status
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public int ChangeUserStatus(SysUser user)
+        {
+            CheckUserAllowed(user);
+            return Update(user, it => new { it.Status }, f => f.UserId == user.UserId);
+        }
+
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public int DeleteUser(long userid)
+        {
+            CheckUserAllowed(new SysUser() { UserId = userid });
+            var result = UseTran(() =>
+            {
+                //删除用户与角色关联
+                UserRoleService.DeleteUserRoleByUserId((int)userid);
+                // 删除用户与岗位关联
+                UserPostService.Delete(userid);
+                Update(new SysUser() { UserId = userid, DelFlag = 2 }, it => new { it.DelFlag }, f => f.UserId == userid);
+            });
+            return result.IsSuccess ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Modify user avatar
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public int UpdatePhoto(SysUser user)
+        {
+            return Update(user, it => new { it.Avatar }, f => f.UserId == user.UserId); ;
+        }
+
+        /// <summary>
+        /// Register user
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public SysUser Register(RegisterDto dto)
+        {
+            
+            if (!Tools.PasswordStrength(dto.Password))
+            {
+                throw new CustomException("The password strength does not meet the requirements");
+            }
+
+
+            if (!Tools.CheckUserName(dto.Username,true))
+            {
+                throw new CustomException("Username does not meet requirements");
+            }
+            // Hash password
+            string password = NETCore.Encrypt.EncryptProvider.Md5(dto.Password);
+            var ip_info = IpTool.Search(dto.UserIP);
+            
+            // Generate email verification token
+            string verificationToken = Guid.NewGuid().ToString("N");
+            
+            SysUser user = new()
+            {
+                Create_time = DateTime.Now,
+                UserName = dto.Username,
+                NickName = dto.Username,
+                Password = password,
+                Status = 0, // Account status (0 normal, 1 disabled)
+                DeptId = 0,
+                Remark = "用户注册",
+                Province = ip_info.Province,
+                City = ip_info.City,
+                Email = dto.Username,
+                EmailVerified = 0, // Not verified
+                EmailVerificationToken = verificationToken,
+                EmailVerificationExpiry = DateTime.Now.AddDays(1) // Token valid for 1 day
+            };
+            if (UserConstants.NOT_UNIQUE.Equals(CheckUserNameUnique(dto.Username)))
+            {
+                throw new CustomException($"保存用户{dto.Username}失败，注册账号已存在");
+            }
+            user.UserId = Insertable(user).ExecuteReturnIdentity();
+            return user;
+        }
+
+        /// <summary>
+        /// Validate if role is allowed to operate
+        /// </summary>
+        /// <param name="user"></param>
+        public void CheckUserAllowed(SysUser user)
+        {
+            if (user.IsAdmin)
+            {
+                throw new CustomException("不允许操作超级管理员角色");
+            }
+        }
+
+        /// <summary>
+        /// Validate if user has data permissions
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="loginUserId"></param>
+        public void CheckUserDataScope(long userid, long loginUserId)
+        {
+        }
+
+        /// <summary>
+        /// Import data
+        /// </summary>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        public (string, object, object) ImportUsers(List<SysUser> users)
+        {
+            users.ForEach(x =>
+            {
+                x.Create_time = DateTime.Now;
+                x.Status = 0;
+                x.DelFlag = 0;
+                x.Password = "E10ADC3949BA59ABBE56E057F20F883E";
+                x.Remark = x.Remark.IsEmpty() ? "数据导入" : x.Remark;
+            });
+            var x = Context.Storageable(users)
+                .SplitInsert(it => !it.Any())
+                .SplitIgnore(it => it.Item.UserName == GlobalConstant.AdminRole)
+                .SplitError(x => x.Item.UserName.IsEmpty(), "用户名不能为空")
+                .SplitError(x => !Tools.CheckUserName(x.Item.UserName), "用户名不符合规范")
+                .WhereColumns(it => it.UserName)//如果不是主键可以这样实现（多字段it=>new{it.x1,it.x2}）
+                .ToStorage();
+            var result = x.AsInsertable.ExecuteCommand();//插入可插入部分;
+
+            string msg = string.Format(" 插入{0} 更新{1} 错误数据{2} 不计算数据{3} 删除数据{4} 总共{5}",
+                               x.InsertList.Count,
+                               x.UpdateList.Count,
+                               x.ErrorList.Count,
+                               x.IgnoreList.Count,
+                               x.DeleteList.Count,
+                               x.TotalList.Count);
+            //输出统计                      
+            Console.WriteLine(msg);
+
+            //输出错误信息               
+            foreach (var item in x.ErrorList)
+            {
+                Console.WriteLine("userName为" + item.Item.UserName + " : " + item.StorageMessage);
+            }
+            foreach (var item in x.IgnoreList)
+            {
+                Console.WriteLine("userName为" + item.Item.UserName + " : " + item.StorageMessage);
+            }
+
+            return (msg, x.ErrorList, x.IgnoreList);
+        }
+
+        /// <summary>
+        /// Login - Supports both username and email authentication
+        /// </summary>
+        /// <param name="user">Login entity</param>
+        /// <returns></returns>
+        public SysUser Login(LoginBodyDto user)
+        {
+            // Support login with either username OR email
+            var userInfo = GetFirst(it =>
+                (it.UserName == user.Username || it.Email == user.Username)
+                && it.Password.ToLower() == user.Password.ToLower()
+                && it.DelFlag == 0);
+
+            if (userInfo == null)
+            {
+                return null;
+            }
+
+            if (userInfo.UserName == "admin")
+            {
+               return userInfo;
+            }
+
+            // Check if account is activated (for invited users)
+            if (userInfo.IsActivated == 0)
+            {
+                throw new CustomException("Account not activated. Please check your email and activate your account.");
+            }
+
+            // Check if email is verified (for registered users)
+            if (userInfo.EmailVerified == 0 && userInfo.IsActivated == 1)
+            {
+                throw new CustomException("Email not verified. Please check your email and verify your account.");
+            }
+
+            return userInfo;
+        }
+
+        /// <summary>
+        /// Modify login information
+        /// </summary>
+        /// <param name="userIP"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public void UpdateLoginInfo(string userIP, long userId)
+        {
+            Update(new SysUser() { LoginIP = userIP, LoginDate = DateTime.Now, UserId = userId }, it => new { it.LoginIP, it.LoginDate });
+        }
+    }
+}
+

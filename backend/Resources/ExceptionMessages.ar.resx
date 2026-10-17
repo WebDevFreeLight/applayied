@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Common Exceptions -->
+  <data name="COMMON_VALIDATION_FAILED" xml:space="preserve">
+    <value>فشل التحقق من الصحة. يرجى التحقق من المدخلات.</value>
+  </data>
+  <data name="COMMON_INVALID_PARAMETER" xml:space="preserve">
+    <value>معامل غير صالح: {ParameterName}</value>
+  </data>
+  <data name="COMMON_UNAUTHORIZED" xml:space="preserve">
+    <value>غير مصرح بالوصول. يرجى تسجيل الدخول.</value>
+  </data>
+  <data name="COMMON_NOT_FOUND" xml:space="preserve">
+    <value>المورد غير موجود.</value>
+  </data>
+  <data name="COMMON_INTERNAL_ERROR" xml:space="preserve">
+    <value>حدث خطأ داخلي. يرجى الاتصال بالدعم.</value>
+  </data>
+  <data name="COMMON_DATABASE_ERROR" xml:space="preserve">
+    <value>فشلت عملية قاعدة البيانات. يرجى المحاولة مرة أخرى.</value>
+  </data>
+
+  <!-- Finance - AR Invoices -->
+  <data name="FINANCE_INVOICE_NOT_FOUND" xml:space="preserve">
+    <value>الفاتورة غير موجودة.</value>
+  </data>
+  <data name="FINANCE_INVOICE_DUPLICATE" xml:space="preserve">
+    <value>رقم الفاتورة {InvoiceNumber} موجود مسبقاً.</value>
+  </data>
+  <data name="FINANCE_INVOICE_ALREADY_POSTED" xml:space="preserve">
+    <value>الفاتورة مرحّلة بالفعل ولا يمكن تعديلها.</value>
+  </data>
+  <data name="FINANCE_INVOICE_CANNOT_DELETE" xml:space="preserve">
+    <value>لا يمكن حذف فاتورة لها مدفوعات.</value>
+  </data>
+  <data name="FINANCE_INVOICE_INVALID_STATUS" xml:space="preserve">
+    <value>يمكن تعديل الفواتير المسودة فقط.</value>
+  </data>
+  <data name="FINANCE_INVOICE_INVALID_AMOUNT" xml:space="preserve">
+    <value>مبلغ الفاتورة يجب أن يكون أكبر من صفر.</value>
+  </data>
+  <data name="FINANCE_INVOICE_INVALID_DATE" xml:space="preserve">
+    <value>تاريخ الفاتورة غير صالح.</value>
+  </data>
+
+  <!-- Finance - Payments -->
+  <data name="FINANCE_PAYMENT_NOT_FOUND" xml:space="preserve">
+    <value>الدفعة غير موجودة.</value>
+  </data>
+  <data name="FINANCE_PAYMENT_INSUFFICIENT_BALANCE" xml:space="preserve">
+    <value>رصيد غير كافٍ. مطلوب: {RequiredAmount}، متاح: {AvailableAmount}</value>
+  </data>
+  <data name="FINANCE_PAYMENT_ALREADY_POSTED" xml:space="preserve">
+    <value>الدفعة مرحّلة بالفعل.</value>
+  </data>
+  <data name="FINANCE_PAYMENT_INVALID_STATUS" xml:space="preserve">
+    <value>يجب اعتماد الدفعة قبل الترحيل.</value>
+  </data>
+  <data name="FINANCE_PAYMENT_ALLOCATION_FAILED" xml:space="preserve">
+    <value>فشل تخصيص الدفعة.</value>
+  </data>
+
+  <!-- Finance - Budget -->
+  <data name="FINANCE_BUDGET_NOT_FOUND" xml:space="preserve">
+    <value>الميزانية غير موجودة.</value>
+  </data>
+  <data name="FINANCE_BUDGET_DUPLICATE_CODE" xml:space="preserve">
+    <value>كود الميزانية {BudgetCode} موجود مسبقاً.</value>
+  </data>
+  <data name="FINANCE_BUDGET_CANNOT_MODIFY" xml:space="preserve">
+    <value>يمكن تعديل الميزانيات المسودة فقط.</value>
+  </data>
+  <data name="FINANCE_BUDGET_INSUFFICIENT_FUNDS" xml:space="preserve">
+    <value>أموال الميزانية غير كافية. متاح: {AvailableAmount}، مطلوب: {RequiredAmount}</value>
+  </data>
+
+  <!-- Finance - GL -->
+  <data name="FINANCE_GL_JOURNAL_NOT_FOUND" xml:space="preserve">
+    <value>قيد اليومية غير موجود.</value>
+  </data>
+  <data name="FINANCE_GL_PERIOD_CLOSED" xml:space="preserve">
+    <value>الفترة المالية {PeriodName} مغلقة للتاريخ {Date}.</value>
+  </data>
+  <data name="FINANCE_GL_PERIOD_LOCKED" xml:space="preserve">
+    <value>الفترة المالية {PeriodName} مقفلة.</value>
+  </data>
+  <data name="FINANCE_GL_UNBALANCED_ENTRY" xml:space="preserve">
+    <value>قيد اليومية غير متوازن. الفرق: {Difference}</value>
+  </data>
+  <data name="FINANCE_GL_POSTING_FAILED" xml:space="preserve">
+    <value>فشل ترحيل قيد اليومية.</value>
+  </data>
+
+  <!-- Finance - Treasury -->
+  <data name="FINANCE_TREASURY_ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>حساب الخزينة غير موجود.</value>
+  </data>
+  <data name="FINANCE_TREASURY_ACCOUNT_INACTIVE" xml:space="preserve">
+    <value>حساب الخزينة غير نشط.</value>
+  </data>
+  <data name="FINANCE_TREASURY_INSUFFICIENT_BALANCE" xml:space="preserve">
+    <value>رصيد الخزينة غير كافٍ.</value>
+  </data>
+  <data name="FINANCE_TREASURY_GL_ACCOUNT_REQUIRED" xml:space="preserve">
+    <value>حساب دفتر الأستاذ مطلوب.</value>
+  </data>
+  <data name="FINANCE_TREASURY_BANK_ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>الحساب البنكي غير موجود.</value>
+  </data>
+  <data name="FINANCE_TREASURY_BANK_ACCOUNT_NUMBER_DUPLICATE" xml:space="preserve">
+    <value>رقم الحساب {AccountNumber} موجود بالفعل.</value>
+  </data>
+  <data name="FINANCE_TREASURY_CASH_ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>الحساب النقدي غير موجود.</value>
+  </data>
+  <data name="FINANCE_TREASURY_CASH_ACCOUNT_CODE_DUPLICATE" xml:space="preserve">
+    <value>الرمز {Code} موجود بالفعل.</value>
+  </data>
+  <data name="FINANCE_TREASURY_HAS_RELATED_TRANSACTIONS" xml:space="preserve">
+    <value>الحساب {Identifier} له معاملات مرتبطة ولا يمكن حذفه.</value>
+  </data>
+  <data name="FINANCE_TREASURY_RECONCILIATION_NOT_FOUND" xml:space="preserve">
+    <value>التسوية غير موجودة.</value>
+  </data>
+  <data name="FINANCE_TREASURY_RECONCILIATION_STATUS_INVALID" xml:space="preserve">
+    <value>حالة التسوية غير صالحة لهذه العملية. الحالة: {Status}</value>
+  </data>
+  <data name="FINANCE_TREASURY_BANK_STATEMENT_PARSE_FAILED" xml:space="preserve">
+    <value>فشل في تحليل كشف الحساب البنكي. {Error}</value>
+  </data>
+  <data name="FINANCE_TREASURY_BANK_STATEMENT_VALIDATION_FAILED" xml:space="preserve">
+    <value>فشل التحقق من صحة كشف الحساب البنكي. {Errors}</value>
+  </data>
+  <data name="FINANCE_TREASURY_BANK_STATEMENT_LINE_NOT_FOUND" xml:space="preserve">
+    <value>بند الكشف غير موجود.</value>
+  </data>
+  <data name="FINANCE_TREASURY_OBSOLETE_OPERATION" xml:space="preserve">
+    <value>هذه العملية قديمة وغير مدعومة. {Hint}</value>
+  </data>
+  <data name="FINANCE_TREASURY_CHEQUE_NOT_FOUND" xml:space="preserve">
+    <value>الشيك غير موجود.</value>
+  </data>
+  <data name="FINANCE_TREASURY_CHEQUE_CREATE_FAILED" xml:space="preserve">
+    <value>فشل في إنشاء الشيك. {Error}</value>
+  </data>
+  <data name="FINANCE_TREASURY_CHEQUE_ISSUE_FAILED" xml:space="preserve">
+    <value>فشل في إصدار الشيك. {Error}</value>
+  </data>
+  <data name="FINANCE_TREASURY_PAYMENT_GL_JOURNAL_MISSING" xml:space="preserve">
+    <value>الدفعة ليس لها قيد محاسبي مرتبط للعكس.</value>
+  </data>
+  <data name="FINANCE_TREASURY_PAYMENT_TYPE_UNSUPPORTED" xml:space="preserve">
+    <value>نوع الدفعة غير مدعوم: {PaymentType}</value>
+  </data>
+  <data name="FINANCE_TREASURY_GL_JOURNAL_NOT_REQUIRED_FOR_CHEQUE_STATUS" xml:space="preserve">
+    <value>قيد محاسبي غير مطلوب لحالة الشيك: {Status}</value>
+  </data>
+  <data name="FINANCE_TREASURY_TREASURY_ACCOUNT_GL_LINK_MISSING" xml:space="preserve">
+    <value>حساب الخزينة {Identifier} غير مرتبط بحساب دفتر الأستاذ. يرجى تحديث الحساب بحساب دفتر أستاذ صالح.</value>
+  </data>
+  <data name="FINANCE_TREASURY_TREASURY_ACCOUNT_NOT_FOUND_FOR_ID" xml:space="preserve">
+    <value>حساب الخزينة غير موجود للمعرف: {TreasuryAccountId}</value>
+  </data>
+  <data name="FINANCE_TREASURY_VALIDATION_FAILED" xml:space="preserve">
+    <value>فشل التحقق من صحة الخزينة. {Errors}</value>
+  </data>
+  <data name="FINANCE_TREASURY_IBAN_REQUIRED" xml:space="preserve">
+    <value>رقم الآيبان مطلوب.</value>
+  </data>
+  <data name="FINANCE_TREASURY_IBAN_INVALID_LENGTH" xml:space="preserve">
+    <value>طول رقم الآيبان غير صالح.</value>
+  </data>
+  <data name="FINANCE_TREASURY_IBAN_INVALID_FORMAT" xml:space="preserve">
+    <value>تنسيق رقم الآيبان غير صالح للدولة {CountryCode}.</value>
+  </data>
+  <data name="FINANCE_TREASURY_IBAN_INVALID_CHECKSUM" xml:space="preserve">
+    <value>مجموع اختبار الآيبان غير صالح.</value>
+  </data>
+  <data name="FINANCE_TREASURY_SWIFT_REQUIRED" xml:space="preserve">
+    <value>رمز السويفت مطلوب.</value>
+  </data>
+  <data name="FINANCE_TREASURY_SWIFT_INVALID_FORMAT" xml:space="preserve">
+    <value>تنسيق رمز السويفت/BIC غير صالح. يجب أن يكون 8 أو 11 حرفًا.</value>
+  </data>
+  <data name="FINANCE_TREASURY_NEGATIVE_BALANCE_NOT_ALLOWED" xml:space="preserve">
+    <value>الرصيد السالب غير مسموح لهذا الحساب.</value>
+  </data>
+  <data name="FINANCE_TREASURY_INTERCOMPANY_JOURNAL_REQUIRED" xml:space="preserve">
+    <value>التحويلات بين الشركات تتطلب إنشاء قيد شركات متقابلة. استخدم نوع الدفعة IntercompanyTransfer.</value>
+  </data>
+  <data name="FINANCE_TREASURY_ACCOUNT_COMPANY_MISMATCH" xml:space="preserve">
+    <value>معرف شركة الحساب ({ActualCompanyId}) لا يتطابق مع معرف الشركة المتوقع ({ExpectedCompanyId}).</value>
+  </data>
+  <data name="FINANCE_TREASURY_PAYMENT_ALREADY_REVERSED" xml:space="preserve">
+    <value>الدفعة معكوسة بالفعل.</value>
+  </data>
+  <data name="FINANCE_TREASURY_FUTURE_DATE_NOT_ALLOWED" xml:space="preserve">
+    <value>التواريخ المستقبلية غير مسموح بها لهذا النوع من المعاملات. التاريخ: {Date}</value>
+  </data>
+  <data name="FINANCE_TREASURY_CHEQUE_STATUS_TRANSITION_INVALID" xml:space="preserve">
+    <value>انتقال حالة شيك غير صالح من {FromStatus} إلى {ToStatus}.</value>
+  </data>
+  <data name="FINANCE_TREASURY_CASH_ACCOUNT_DOES_NOT_ACCEPT_CHEQUES" xml:space="preserve">
+    <value>هذا الحساب النقدي لا يقبل الشيكات.</value>
+  </data>
+  <data name="FINANCE_TREASURY_RECONCILIATION_TOLERANCE_EXCEEDED" xml:space="preserve">
+    <value>لا يمكن إتمام التسوية. الفرق ({Difference}) يتجاوز حد التسامح ({Tolerance}).</value>
+  </data>
+  <data name="FINANCE_TREASURY_APPROVAL_LIMIT_EXCEEDED" xml:space="preserve">
+    <value>يتجاوز حد الاعتماد. الحد: {Limit}، المبلغ: {Amount}</value>
+  </data>
+  <data name="FINANCE_TREASURY_REQUIRED_FIELD_MISSING" xml:space="preserve">
+    <value>حقل مطلوب مفقود: {Field}</value>
+  </data>
+
+  <!-- Finance - Configuration -->
+  <data name="FINANCE_CONFIG_TAX_NOT_FOUND" xml:space="preserve">
+    <value>إعدادات الضريبة غير موجودة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAX_ALREADY_EXISTS" xml:space="preserve">
+    <value>إعدادات الضريبة موجودة بالفعل لهذه الشركة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAX_NOT_CONFIGURED" xml:space="preserve">
+    <value>لم يتم العثور على إعدادات الضريبة. يرجى تكوين حسابات ضريبة القيمة المضافة قبل ترحيل الفواتير.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAX_INCOMPLETE" xml:space="preserve">
+    <value>إعدادات الضريبة غير مكتملة. حسابات مطلوبة مفقودة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAX_SAVE_FAILED" xml:space="preserve">
+    <value>فشل في حفظ إعدادات الضريبة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAX_UPDATE_FAILED" xml:space="preserve">
+    <value>فشل في تحديث إعدادات الضريبة.</value>
+  </data>
+
+  <data name="FINANCE_CONFIG_TREASURY_NOT_FOUND" xml:space="preserve">
+    <value>إعدادات الخزينة غير موجودة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TREASURY_ALREADY_EXISTS" xml:space="preserve">
+    <value>إعدادات الخزينة موجودة بالفعل لهذه الشركة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TREASURY_SAVE_FAILED" xml:space="preserve">
+    <value>فشل في حفظ إعدادات الخزينة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TREASURY_UPDATE_FAILED" xml:space="preserve">
+    <value>فشل في تحديث إعدادات الخزينة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TREASURY_INVALID_APPROVAL_THRESHOLD" xml:space="preserve">
+    <value>حد الموافقة يجب أن يكون أكبر من أو يساوي صفر. القيمة: {Value}</value>
+  </data>
+  <data name="FINANCE_CONFIG_TREASURY_INVALID_PETTY_CASH_LIMIT" xml:space="preserve">
+    <value>حد الصندوق الصغير يجب أن يكون أكبر من أو يساوي صفر. القيمة: {Value}</value>
+  </data>
+
+  <!-- Finance - Configuration (Fiscal Year) -->
+  <data name="FINANCE_CONFIG_FISCAL_YEAR_NOT_FOUND" xml:space="preserve">
+    <value>السنة المالية غير موجودة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_FISCAL_YEAR_INVALID_DATE_RANGE" xml:space="preserve">
+    <value>تاريخ نهاية السنة المالية يجب أن يكون بعد تاريخ البداية. البداية: {StartDate}، النهاية: {EndDate}</value>
+  </data>
+  <data name="FINANCE_CONFIG_FISCAL_YEAR_OVERLAP" xml:space="preserve">
+    <value>السنة المالية تتداخل مع فترة موجودة. البداية: {StartDate}، النهاية: {EndDate}</value>
+  </data>
+  <data name="FINANCE_CONFIG_FISCAL_YEAR_CANNOT_DELETE_OPEN" xml:space="preserve">
+    <value>لا يمكن حذف سنة مالية مفتوحة.</value>
+  </data>
+
+  <!-- Finance - Configuration (Currency) -->
+  <data name="FINANCE_CONFIG_CURRENCY_NOT_FOUND" xml:space="preserve">
+    <value>العملة غير موجودة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_CURRENCY_CODE_ALREADY_EXISTS" xml:space="preserve">
+    <value>رمز العملة {CurrencyCode} موجود مسبقاً.</value>
+  </data>
+  <data name="FINANCE_CONFIG_CURRENCY_CANNOT_DELETE_BASE" xml:space="preserve">
+    <value>لا يمكن حذف العملة الأساسية.</value>
+  </data>
+  <data name="FINANCE_CONFIG_CURRENCY_BASE_MUST_BE_ACTIVE" xml:space="preserve">
+    <value>العملة الأساسية يجب أن تكون نشطة.</value>
+  </data>
+
+  <!-- Finance - Configuration (Exchange Rates) -->
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_NOT_FOUND" xml:space="preserve">
+    <value>سعر الصرف غير موجود.</value>
+  </data>
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_NOT_FOUND_FOR_DATE" xml:space="preserve">
+    <value>لم يتم العثور على سعر صرف للعملة في أو قبل {JournalDate}.</value>
+  </data>
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_INVALID_RATE" xml:space="preserve">
+    <value>سعر الصرف يجب أن يكون أكبر من صفر. القيمة: {Rate}</value>
+  </data>
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_CURRENCY_NOT_FOUND" xml:space="preserve">
+    <value>العملة غير موجودة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_CURRENCY_CODE_NOT_FOUND" xml:space="preserve">
+    <value>رمز العملة غير موجود: {CurrencyCode}</value>
+  </data>
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_CURRENCY_INACTIVE" xml:space="preserve">
+    <value>لا يمكن إنشاء سعر صرف لعملة غير نشطة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_TOO_OLD" xml:space="preserve">
+    <value>سعر الصرف قديم جداً ({DaysDiff} يوم). الحد الأقصى {MaxDays} يوم.</value>
+  </data>
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_NOT_APPROVED" xml:space="preserve">
+    <value>سعر الصرف غير معتمد.</value>
+  </data>
+  <data name="FINANCE_CONFIG_EXCHANGE_RATE_DIVIDE_BY_ZERO" xml:space="preserve">
+    <value>لا يمكن أن يكون سعر الصرف صفراً.</value>
+  </data>
+
+  <!-- Finance - Configuration (System Config) -->
+  <data name="FINANCE_CONFIG_SYSTEM_KEY_ALREADY_EXISTS" xml:space="preserve">
+    <value>مفتاح الإعداد {Key} موجود مسبقاً.</value>
+  </data>
+
+  <!-- Finance - Configuration (ERP Settings) -->
+  <data name="FINANCE_CONFIG_ERPSETTINGS_DEFAULT_CURRENCY_NOT_FOUND" xml:space="preserve">
+    <value>العملة الافتراضية غير موجودة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_ERPSETTINGS_DEFAULT_CURRENCY_REQUIRED" xml:space="preserve">
+    <value>العملة الافتراضية مطلوبة عند تفعيل العملات المتعددة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_ERPSETTINGS_DEFAULT_TAXRULE_INVALID" xml:space="preserve">
+    <value>قاعدة الضريبة الافتراضية غير موجودة أو غير نشطة.</value>
+  </data>
+
+  <!-- Finance - Configuration (Auto Posting) -->
+  <data name="FINANCE_CONFIG_AUTOPOSTING_DEBIT_ACCOUNT_INVALID" xml:space="preserve">
+    <value>حساب المدين غير موجود أو غير نشط.</value>
+  </data>
+  <data name="FINANCE_CONFIG_AUTOPOSTING_CREDIT_ACCOUNT_INVALID" xml:space="preserve">
+    <value>حساب الدائن غير موجود أو غير نشط.</value>
+  </data>
+  <data name="FINANCE_CONFIG_AUTOPOSTING_ACCOUNT_REQUIRED" xml:space="preserve">
+    <value>يجب تحديد حساب واحد على الأقل (مدين أو دائن).</value>
+  </data>
+
+  <!-- Finance - Configuration (Tax Rule) -->
+  <data name="FINANCE_CONFIG_TAXRULE_GL_ACCOUNT_INVALID" xml:space="preserve">
+    <value>حساب الضريبة غير موجود أو غير نشط.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAXRULE_RATE_OUT_OF_RANGE" xml:space="preserve">
+    <value>نسبة الضريبة يجب أن تكون بين 0 و 100. القيمة: {Rate}</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAXRULE_NOT_FOUND" xml:space="preserve">
+    <value>قاعدة الضريبة غير موجودة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAXRULE_INACTIVE" xml:space="preserve">
+    <value>قاعدة الضريبة غير نشطة.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAXRULE_NOT_EFFECTIVE_YET" xml:space="preserve">
+    <value>قاعدة الضريبة غير سارية بعد.</value>
+  </data>
+  <data name="FINANCE_CONFIG_TAXRULE_EXPIRED" xml:space="preserve">
+    <value>قاعدة الضريبة منتهية الصلاحية.</value>
+  </data>
+
+  <!-- HR -->
+  <data name="HR_EMPLOYEE_NOT_FOUND" xml:space="preserve">
+    <value>الموظف بالمعرّف {EmployeeId} غير موجود.</value>
+  </data>
+  <data name="HR_EMPLOYEE_DUPLICATE" xml:space="preserve">
+    <value>كود الموظف {EmployeeCode} موجود مسبقاً.</value>
+  </data>
+  <data name="HR_EMPLOYEE_INVALID_ID" xml:space="preserve">
+    <value>معرّف الموظف غير صالح: {EmployeeId}</value>
+  </data>
+  <data name="HR_EMPLOYEE_REQUIRED" xml:space="preserve">
+    <value>بيانات الموظف مطلوبة.</value>
+  </data>
+  <data name="HR_EMPLOYEE_JOB_REQUIRED" xml:space="preserve">
+    <value>وظيفة/منصب الموظف مطلوب.</value>
+  </data>
+  <data name="HR_EMPLOYEE_NAME_REQUIRED" xml:space="preserve">
+    <value>اسم الموظف مطلوب.</value>
+  </data>
+  <data name="HR_EMPLOYEE_INVALID_EMAIL" xml:space="preserve">
+    <value>تنسيق البريد الإلكتروني غير صالح: {Email}</value>
+  </data>
+  <data name="HR_EMPLOYEE_DELETE_NO_IDS" xml:space="preserve">
+    <value>لم يتم تحديد أي معرّفات موظفين للحذف.</value>
+  </data>
+  <data name="HR_EMPLOYEE_DELETE_HAS_PENDING_LEAVE" xml:space="preserve">
+    <value>لا يمكن حذف الموظف {EmployeeId}: لديه طلبات إجازة معلّقة.</value>
+  </data>
+  <data name="HR_EMPLOYEE_DELETE_HAS_PENDING_PAYROLL" xml:space="preserve">
+    <value>لا يمكن حذف الموظف {EmployeeId}: لديه سجلات رواتب معلّقة.</value>
+  </data>
+  <data name="HR_EMPLOYEE_STATUS_REQUIRED" xml:space="preserve">
+    <value>الحالة مطلوبة.</value>
+  </data>
+  <data name="HR_EMPLOYEE_INVALID_STATUS" xml:space="preserve">
+    <value>حالة غير صالحة. يجب أن تكون واحدة من: {ValidStatuses}</value>
+  </data>
+  <data name="HR_EMPLOYEE_IMPORT_EMPTY" xml:space="preserve">
+    <value>لا يوجد موظفون للاستيراد.</value>
+  </data>
+  <data name="HR_EMPLOYEE_IMPORT_VALIDATION_FAILED" xml:space="preserve">
+    <value>فشل التحقق من بيانات الاستيراد: {Errors}</value>
+  </data>
+  <data name="HR_EMPLOYEE_IMPORT_DUPLICATE_CODES_IN_FILE" xml:space="preserve">
+    <value>تم العثور على أكواد موظفين مكررة في بيانات الاستيراد.</value>
+  </data>
+  <data name="HR_EMPLOYEE_IMPORT_CODES_ALREADY_EXIST" xml:space="preserve">
+    <value>أكواد الموظفين التالية موجودة مسبقاً: {EmployeeCodes}</value>
+  </data>
+  <data name="HR_LEAVE_INSUFFICIENT_BALANCE" xml:space="preserve">
+    <value>رصيد الإجازات غير كافٍ. المتاح: {AvailableDays}، المطلوب: {RequestedDays}</value>
+  </data>
+</root>

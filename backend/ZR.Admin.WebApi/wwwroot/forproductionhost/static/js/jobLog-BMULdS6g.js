@@ -1,0 +1,1 @@
+import{a3 as t}from"./index-8SBl9OsZ.js";function r(o){return t({url:"/monitor/jobLog/list",method:"get",params:o})}function n(o){return t({url:"/monitor/jobLog/"+o,method:"delete"})}function a(){return t({url:"/monitor/jobLog/clean",method:"delete"})}function i(o){return t({url:"/monitor/jobLog/export",method:"get",params:o})}export{a as c,n as d,i as e,r as l};

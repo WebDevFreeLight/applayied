@@ -1,0 +1,7 @@
+{
+  "dictType": "event_tenants",
+  "dictName": "Event Tenant - event_tenants",
+  "status": "0",
+  "remark": "Generated from EventTenant table (ZR.Model.EventManagement)",
+  "createBy": "system"
+}

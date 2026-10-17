@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_bp_businesspartnerkind",
+  "dictName": "Bp Businesspartnerkind - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from bp_businesspartnerkind table (ZR.Model.Partnertype)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM bp_businesspartnerkind"
+}

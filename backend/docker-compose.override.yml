@@ -1,0 +1,15 @@
+
+services:
+  zradminwebapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8887
+      - ASPNETCORE_HTTPS_PORTS=8887
+    ports:
+      - "8887"
+      # - "8081"
+    # volumes:
+      # - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro df
+      # - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      # - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      # - ${APPDATA}/ASP.NET/Https:/root/.microsoft/usersecrets:ro

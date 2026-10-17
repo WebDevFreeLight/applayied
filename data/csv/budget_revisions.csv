@@ -1,0 +1,6 @@
+﻿RevisionId,ProjectId,Amount,Reason,Status,RequestedByUserId,ApprovedByUserId,ApprovedAt
+8101,2006,150000,Additional pen-test scope approved by steering committee.,Approved,1007,1001,2026-09-10
+8102,2006,100000,Requested extra tooling budget (awaiting approval).,Pending,1007,,
+8103,2001,300000,Scope addition: fraud analytics module.,Approved,1003,1001,2026-08-21
+8104,2003,200000,"Extra GPU budget — rejected, use cloud credits.",Rejected,1005,1002,2026-09-20
+8105,2002,50000,Redundant links added.,Approved,1004,1001,2026-09-05

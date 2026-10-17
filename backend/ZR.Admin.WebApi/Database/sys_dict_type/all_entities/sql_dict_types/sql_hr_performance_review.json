@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_performance_review",
+  "dictName": "Hr Performance Review - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_performance_review table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_performance_review"
+}

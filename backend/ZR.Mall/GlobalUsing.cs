@@ -1,0 +1,13 @@
+global using ZR.Model;
+global using ZR.Repository;
+global using ZR.ServiceCore;
+global using SqlSugar;
+global using MiniExcelLibs.Attributes;
+global using Newtonsoft.Json;
+global using System.ComponentModel.DataAnnotations;
+global using Infrastructure;
+global using Infrastructure.Attribute;
+global using Infrastructure.Controllers;
+global using Infrastructure.Enums;
+global using Mapster;
+global using ZR.ServiceCore.Middleware;

@@ -1,0 +1,98 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<UserSecretsId>ab105cb4-b03c-419a-bd44-303b90114268</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;1591,8603,8602,8604,8600,8618</NoWarn>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Controllers\ERP\Cash_Bank\**" />
+	  <Compile Remove="Controllers\ERP\FixedAssets\**" />
+	  <Compile Remove="Controllers\Partners\**" />
+	  <Content Remove="Controllers\ERP\Cash_Bank\**" />
+	  <Content Remove="Controllers\ERP\FixedAssets\**" />
+	  <Content Remove="Controllers\Partners\**" />
+	  <EmbeddedResource Remove="Controllers\ERP\Cash_Bank\**" />
+	  <EmbeddedResource Remove="Controllers\ERP\FixedAssets\**" />
+	  <EmbeddedResource Remove="Controllers\Partners\**" />
+	  <None Remove="Controllers\ERP\Cash_Bank\**" />
+	  <None Remove="Controllers\ERP\FixedAssets\**" />
+	  <None Remove="Controllers\Partners\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ZR.CodeGenerator\ZR.CodeGenerator.csproj" />
+		<ProjectReference Include="..\ZR.Mall\ZR.Mall.csproj" />
+		<ProjectReference Include="..\ZR.Service\ZR.Service.csproj" />
+		<ProjectReference Include="..\ZR.Tasks\ZR.Tasks.csproj" />
+		<ProjectReference Include="..\ZR.Puppeteer\ZR.Puppeteer.csproj" />
+		<ProjectReference Include="..\ZR.Pdf\ZR.Pdf.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Lazy.Captcha.Core" Version="2.0.9" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+		<PackageReference Include="Npgsql" Version="9.0.3" />
+		<PackageReference Include="Scalar.AspNetCore" Version="1.2.43" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />
+		<PackageReference Include="Mapster" Version="7.4.0" />
+		<!--<PackageReference Include="Zatca.EInvoice.SDK" Version="2.2.0" />-->
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Controllers\Finance\Budget\" />
+		<Folder Include="Controllers\ERP\ProjectManagement\" />
+		<Folder Include="Controllers\ERP\Purchase\" />
+		<Folder Include="Controllers\ERP\Reports\" />
+		<Folder Include="Controllers\HR\Attendance\" />
+		<Folder Include="Properties\PublishProfiles\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="BouncyCastle.Crypto">
+	    <HintPath>Ref\BouncyCastle.Crypto.dll</HintPath>
+	  </Reference>
+	  <Reference Include="saxon">
+	    <HintPath>Ref\saxon.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Zatca.EInvoice.SDK">
+	    <HintPath>Ref\Zatca.EInvoice.SDK.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Zatca.EInvoice.SDK.Contracts">
+	    <HintPath>Ref\Zatca.EInvoice.SDK.Contracts.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Zatca.EInvoice.SDK.Saxon">
+	    <HintPath>Ref\Zatca.EInvoice.SDK.Saxon.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="ip2region.xdb">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<Content Update="wwwroot\Generatecode\**\*">
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\export\**\*">
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+
+	<!-- Database Seeder Files -->
+	<ItemGroup>
+		<None Update="Database\Seeders\*.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Database\Seeders\*.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

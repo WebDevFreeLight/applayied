@@ -1,0 +1,175 @@
+@model ZR.Model.EventManagement.Event
+<!DOCTYPE html>
+<html dir='rtl' lang='ar'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Event Details - @Model.Eventname</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+            font-size: 28px;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .section-title {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .info-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-label {
+            font-weight: bold;
+            width: 200px;
+            color: #555;
+        }
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .status-active {
+            background-color: #28a745;
+            color: white;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #777;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h1>@Model.Eventnamear</h1>
+            <h2 style='color: #666; margin: 10px 0 0 0;'>@Model.Eventname</h2>
+            <p style='color: #888; margin: 10px 0 0 0;'>Event Code: @Model.Eventcode</p>
+        </div>
+
+        <div class='section'>
+            <div class='section-title'>معلومات أساسية - Basic Information</div>
+            <div class='info-row'>
+                <div class='info-label'>Event Type / نوع الفعالية:</div>
+                <div class='info-value'>@Model.Eventtype</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>Description / الوصف:</div>
+                <div class='info-value'>@Model.Description</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>Organizer / المنظم:</div>
+                <div class='info-value'>@Model.Organizer</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>Status / الحالة:</div>
+                <div class='info-value'>
+                    <span class='status-badge status-active'>@Model.Status</span>
+                </div>
+            </div>
+        </div>
+
+        <div class='section'>
+            <div class='section-title'>التواريخ والمواعيد - Dates and Times</div>
+            <div class='info-row'>
+                <div class='info-label'>Start Date / تاريخ البدء:</div>
+                <div class='info-value'>@Model.Startdate.ToString("yyyy-MM-dd HH:mm")</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>End Date / تاريخ الانتهاء:</div>
+                <div class='info-value'>@Model.Enddate.ToString("yyyy-MM-dd HH:mm")</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>Duration / المدة:</div>
+                <div class='info-value'>@((Model.Enddate - Model.Startdate).Days) days</div>
+            </div>
+        </div>
+
+        <div class='section'>
+            <div class='section-title'>الموقع - Location</div>
+            <div class='info-row'>
+                <div class='info-label'>Venue / المكان:</div>
+                <div class='info-value'>@Model.Venue</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>City / المدينة:</div>
+                <div class='info-value'>@Model.City</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>Country / الدولة:</div>
+                <div class='info-value'>@Model.Country</div>
+            </div>
+        </div>
+
+        <div class='section'>
+            <div class='section-title'>السعة والإحصائيات - Capacity and Statistics</div>
+            <div class='info-row'>
+                <div class='info-label'>Expected Attendance / الحضور المتوقع:</div>
+                <div class='info-value'>@Model.Expectedattendance.ToString("N0")</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>Max Capacity / السعة القصوى:</div>
+                <div class='info-value'>@Model.Maxcapacity.ToString("N0")</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>Total Area / المساحة الإجمالية:</div>
+                <div class='info-value'>@Model.Totalareasqm.ToString("N2") m²</div>
+            </div>
+        </div>
+
+        <div class='section'>
+            <div class='section-title'>الميزانية - Budget</div>
+            <div class='info-row'>
+                <div class='info-label'>Budget / الميزانية:</div>
+                <div class='info-value'>@Model.Budget.ToString("N2") @Model.Currency</div>
+            </div>
+            <div class='info-row'>
+                <div class='info-label'>Actual Cost / التكلفة الفعلية:</div>
+                <div class='info-value'>@Model.Actualcost.ToString("N2") @Model.Currency</div>
+            </div>
+        </div>
+
+        <div class='footer'>
+            <p>Generated by ZR.Admin.NET Event Management System</p>
+            <p>Generated on: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</p>
+        </div>
+    </div>
+</body>
+</html>

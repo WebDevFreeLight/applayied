@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_sys_role_dept",
+  "dictName": "Sys Role Dept - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from sys_role_dept table (ZR.Model.System)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM sys_role_dept"
+}

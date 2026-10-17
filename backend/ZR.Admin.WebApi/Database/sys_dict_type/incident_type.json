@@ -1,0 +1,7 @@
+{
+  "dictType": "incident_type",
+  "dictName": "أنواع الحوادث - Incident Types",
+  "status": "0",
+  "remark": "Generated from IncidentType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM incident_types",
+  "createBy": "system"
+}

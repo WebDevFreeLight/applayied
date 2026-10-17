@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_employee_document",
+  "dictName": "Hr Employee Document - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_employee_document table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_employee_document"
+}

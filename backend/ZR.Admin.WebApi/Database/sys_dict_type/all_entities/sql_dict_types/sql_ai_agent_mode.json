@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_ai_agent_mode",
+  "dictName": "Ai Agent Mode - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from ai_agent_mode table (ZR.Model.Ai)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM ai_agent_mode"
+}

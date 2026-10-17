@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "عطلة رسمية - National Holiday",
+    "remark": "Public holiday recognized by government",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 2,
+    "name": "عطلة دينية - Religious Holiday",
+    "remark": "Islamic religious holiday",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 3,
+    "name": "عطلة الشركة - Company Holiday",
+    "remark": "Company-specific holiday",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 4,
+    "name": "يوم المؤسس - Founder's Day",
+    "remark": "Company founder's day celebration",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

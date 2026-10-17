@@ -1,0 +1,9 @@
+﻿ProjectId,Code,Name,DeptId,OwnerUserId,Status,Priority,StartDate,PlannedEndDate,ActualEndDate,Description,InitialApprovedBudget
+2001,PRJ-CBM,Core Banking Modernization,101,1003,Active,Critical,2025-10-01,2026-12-31,,Replace the legacy core banking platform with a modern service-based system.,5000000
+2002,PRJ-NET,Network Backbone Upgrade,102,1004,Active,High,2025-11-15,2026-10-31,,Upgrade the inter-site network backbone to 100G and add redundancy.,2000000
+2003,PRJ-AII,AI Customer Insights,103,1005,Active,High,2026-01-10,2026-11-30,,Build an AI platform for customer behaviour insights and churn prediction.,1500000
+2004,PRJ-HRP,HR Self-Service Portal,104,1006,Active,Medium,2026-02-01,2026-10-15,,"Employee self-service portal for leave, payslips and HR requests.",800000
+2005,PRJ-DLP,Data Lake Platform,103,1005,OnHold,Medium,2025-09-01,2027-03-31,,Central data lake consolidating enterprise sources for analytics.,3000000
+2006,PRJ-SEC,Cybersecurity Hardening,102,1007,Active,Critical,2025-12-01,2026-12-15,,Enterprise-wide security hardening and zero-trust rollout.,1200000
+2007,PRJ-MOB,Mobile App Revamp,101,1003,Planning,Low,2026-09-01,2027-01-31,,Redesign and rebuild the customer mobile application.,600000
+2008,PRJ-LEG,Legacy Decommissioning,101,1006,Completed,Medium,2025-06-01,2026-06-30,2026-06-25,Decommission retired legacy applications and migrate residual data.,900000

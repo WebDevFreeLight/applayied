@@ -1,0 +1,2004 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "generatedDate": "2026-01-08",
+    "description": "Complete permission structure for Maham ERP System",
+    "menuTypes": {
+      "M": "Directory (Module)",
+      "C": "Component (Page)",
+      "F": "Function (Button/Action)"
+    }
+  },
+  "modules": [
+    {
+      "menuId": 1,
+      "menuName": "System Management",
+      "menuNameAr": "إدارة النظام",
+      "parentId": 0,
+      "orderNum": 1,
+      "path": "system",
+      "menuType": "M",
+      "perms": "",
+      "icon": "settings",
+      "children": [
+        {
+          "menuId": 100,
+          "menuName": "User Management",
+          "menuNameAr": "إدارة المستخدمين",
+          "parentId": 1,
+          "orderNum": 1,
+          "path": "user",
+          "component": "system/user/index",
+          "menuType": "C",
+          "perms": "system:user:list",
+          "icon": "user",
+          "children": [
+            { "menuId": 1001, "menuName": "Query User", "parentId": 100, "orderNum": 1, "menuType": "F", "perms": "system:user:query" },
+            { "menuId": 1002, "menuName": "Add User", "parentId": 100, "orderNum": 2, "menuType": "F", "perms": "system:user:add" },
+            { "menuId": 1003, "menuName": "Edit User", "parentId": 100, "orderNum": 3, "menuType": "F", "perms": "system:user:edit" },
+            { "menuId": 1004, "menuName": "Delete User", "parentId": 100, "orderNum": 4, "menuType": "F", "perms": "system:user:remove" },
+            { "menuId": 1005, "menuName": "Update Status", "parentId": 100, "orderNum": 5, "menuType": "F", "perms": "system:user:update" },
+            { "menuId": 1006, "menuName": "Reset Password", "parentId": 100, "orderNum": 6, "menuType": "F", "perms": "system:user:resetPwd" },
+            { "menuId": 1007, "menuName": "Import Users", "parentId": 100, "orderNum": 7, "menuType": "F", "perms": "system:user:import" },
+            { "menuId": 1008, "menuName": "Export Users", "parentId": 100, "orderNum": 8, "menuType": "F", "perms": "system:user:export" }
+          ]
+        },
+        {
+          "menuId": 101,
+          "menuName": "Role Management",
+          "menuNameAr": "إدارة الأدوار",
+          "parentId": 1,
+          "orderNum": 2,
+          "path": "role",
+          "component": "system/role/index",
+          "menuType": "C",
+          "perms": "system:role:list",
+          "icon": "peoples",
+          "children": [
+            { "menuId": 1011, "menuName": "Query Role", "parentId": 101, "orderNum": 1, "menuType": "F", "perms": "system:role:query" },
+            { "menuId": 1012, "menuName": "Add Role", "parentId": 101, "orderNum": 2, "menuType": "F", "perms": "system:role:add" },
+            { "menuId": 1013, "menuName": "Edit Role", "parentId": 101, "orderNum": 3, "menuType": "F", "perms": "system:role:edit" },
+            { "menuId": 1014, "menuName": "Delete Role", "parentId": 101, "orderNum": 4, "menuType": "F", "perms": "system:role:remove" },
+            { "menuId": 1015, "menuName": "Authorize Role", "parentId": 101, "orderNum": 5, "menuType": "F", "perms": "system:role:authorize" },
+            { "menuId": 1016, "menuName": "Export Roles", "parentId": 101, "orderNum": 6, "menuType": "F", "perms": "system:role:export" }
+          ]
+        },
+        {
+          "menuId": 102,
+          "menuName": "Menu Management",
+          "menuNameAr": "إدارة القوائم",
+          "parentId": 1,
+          "orderNum": 3,
+          "path": "menu",
+          "component": "system/menu/index",
+          "menuType": "C",
+          "perms": "system:menu:list",
+          "icon": "tree-table",
+          "children": [
+            { "menuId": 1021, "menuName": "Query Menu", "parentId": 102, "orderNum": 1, "menuType": "F", "perms": "system:menu:query" },
+            { "menuId": 1022, "menuName": "Add Menu", "parentId": 102, "orderNum": 2, "menuType": "F", "perms": "system:menu:add" },
+            { "menuId": 1023, "menuName": "Edit Menu", "parentId": 102, "orderNum": 3, "menuType": "F", "perms": "system:menu:edit" },
+            { "menuId": 1024, "menuName": "Delete Menu", "parentId": 102, "orderNum": 4, "menuType": "F", "perms": "system:menu:remove" },
+            { "menuId": 1025, "menuName": "Update Sort", "parentId": 102, "orderNum": 5, "menuType": "F", "perms": "system:menu:update" },
+            { "menuId": 1026, "menuName": "Sync Permissions", "parentId": 102, "orderNum": 6, "menuType": "F", "perms": "system:menu:sync" }
+          ]
+        },
+        {
+          "menuId": 103,
+          "menuName": "Department Management",
+          "menuNameAr": "إدارة الأقسام",
+          "parentId": 1,
+          "orderNum": 4,
+          "path": "dept",
+          "component": "system/dept/index",
+          "menuType": "C",
+          "perms": "system:dept:list",
+          "icon": "tree",
+          "children": [
+            { "menuId": 1031, "menuName": "Query Dept", "parentId": 103, "orderNum": 1, "menuType": "F", "perms": "system:dept:query" },
+            { "menuId": 1032, "menuName": "Add Dept", "parentId": 103, "orderNum": 2, "menuType": "F", "perms": "system:dept:add" },
+            { "menuId": 1033, "menuName": "Edit Dept", "parentId": 103, "orderNum": 3, "menuType": "F", "perms": "system:dept:update" },
+            { "menuId": 1034, "menuName": "Delete Dept", "parentId": 103, "orderNum": 4, "menuType": "F", "perms": "system:dept:remove" }
+          ]
+        },
+        {
+          "menuId": 104,
+          "menuName": "Post Management",
+          "menuNameAr": "إدارة الوظائف",
+          "parentId": 1,
+          "orderNum": 5,
+          "path": "post",
+          "component": "system/post/index",
+          "menuType": "C",
+          "perms": "system:post:list",
+          "icon": "post",
+          "children": [
+            { "menuId": 1041, "menuName": "Query Post", "parentId": 104, "orderNum": 1, "menuType": "F", "perms": "system:post:query" },
+            { "menuId": 1042, "menuName": "Add Post", "parentId": 104, "orderNum": 2, "menuType": "F", "perms": "system:post:add" },
+            { "menuId": 1043, "menuName": "Edit Post", "parentId": 104, "orderNum": 3, "menuType": "F", "perms": "system:post:edit" },
+            { "menuId": 1044, "menuName": "Delete Post", "parentId": 104, "orderNum": 4, "menuType": "F", "perms": "system:post:remove" },
+            { "menuId": 1045, "menuName": "Export Posts", "parentId": 104, "orderNum": 5, "menuType": "F", "perms": "system:post:export" }
+          ]
+        },
+        {
+          "menuId": 105,
+          "menuName": "Dictionary Management",
+          "menuNameAr": "إدارة القواميس",
+          "parentId": 1,
+          "orderNum": 6,
+          "path": "dict",
+          "component": "system/dict/index",
+          "menuType": "C",
+          "perms": "system:dict:list",
+          "icon": "dict",
+          "children": [
+            { "menuId": 1051, "menuName": "Query Dict", "parentId": 105, "orderNum": 1, "menuType": "F", "perms": "system:dict:query" },
+            { "menuId": 1052, "menuName": "Add Dict", "parentId": 105, "orderNum": 2, "menuType": "F", "perms": "system:dict:add" },
+            { "menuId": 1053, "menuName": "Edit Dict", "parentId": 105, "orderNum": 3, "menuType": "F", "perms": "system:dict:edit" },
+            { "menuId": 1054, "menuName": "Delete Dict", "parentId": 105, "orderNum": 4, "menuType": "F", "perms": "system:dict:remove" },
+            { "menuId": 1055, "menuName": "Export Dict", "parentId": 105, "orderNum": 5, "menuType": "F", "perms": "system:dict:export" }
+          ]
+        },
+        {
+          "menuId": 106,
+          "menuName": "Config Management",
+          "menuNameAr": "إدارة الإعدادات",
+          "parentId": 1,
+          "orderNum": 7,
+          "path": "config",
+          "component": "system/config/index",
+          "menuType": "C",
+          "perms": "system:config:list",
+          "icon": "edit",
+          "children": [
+            { "menuId": 1061, "menuName": "Query Config", "parentId": 106, "orderNum": 1, "menuType": "F", "perms": "system:config:query" },
+            { "menuId": 1062, "menuName": "Add Config", "parentId": 106, "orderNum": 2, "menuType": "F", "perms": "system:config:add" },
+            { "menuId": 1063, "menuName": "Edit Config", "parentId": 106, "orderNum": 3, "menuType": "F", "perms": "system:config:update" },
+            { "menuId": 1064, "menuName": "Delete Config", "parentId": 106, "orderNum": 4, "menuType": "F", "perms": "system:config:remove" }
+          ]
+        },
+        {
+          "menuId": 107,
+          "menuName": "Notice Management",
+          "menuNameAr": "إدارة الإشعارات",
+          "parentId": 1,
+          "orderNum": 8,
+          "path": "notice",
+          "component": "system/notice/index",
+          "menuType": "C",
+          "perms": "system:notice:list",
+          "icon": "message",
+          "children": [
+            { "menuId": 1071, "menuName": "Query Notice", "parentId": 107, "orderNum": 1, "menuType": "F", "perms": "system:notice:query" },
+            { "menuId": 1072, "menuName": "Add Notice", "parentId": 107, "orderNum": 2, "menuType": "F", "perms": "system:notice:add" },
+            { "menuId": 1073, "menuName": "Edit Notice", "parentId": 107, "orderNum": 3, "menuType": "F", "perms": "system:notice:update" },
+            { "menuId": 1074, "menuName": "Delete Notice", "parentId": 107, "orderNum": 4, "menuType": "F", "perms": "system:notice:delete" },
+            { "menuId": 1075, "menuName": "Export Notice", "parentId": 107, "orderNum": 5, "menuType": "F", "perms": "system:notice:export" }
+          ]
+        },
+        {
+          "menuId": 108,
+          "menuName": "Language Management",
+          "menuNameAr": "إدارة اللغات",
+          "parentId": 1,
+          "orderNum": 9,
+          "path": "lang",
+          "component": "system/lang/index",
+          "menuType": "C",
+          "perms": "system:lang:list",
+          "icon": "language",
+          "children": [
+            { "menuId": 1081, "menuName": "Query Lang", "parentId": 108, "orderNum": 1, "menuType": "F", "perms": "system:lang:query" },
+            { "menuId": 1082, "menuName": "Edit Lang", "parentId": 108, "orderNum": 2, "menuType": "F", "perms": "system:lang:edit" },
+            { "menuId": 1083, "menuName": "Delete Lang", "parentId": 108, "orderNum": 3, "menuType": "F", "perms": "system:lang:delete" },
+            { "menuId": 1084, "menuName": "Export Lang", "parentId": 108, "orderNum": 4, "menuType": "F", "perms": "system:lang:export" },
+            { "menuId": 1085, "menuName": "Import Lang", "parentId": 108, "orderNum": 5, "menuType": "F", "perms": "system:lang:import" }
+          ]
+        },
+        {
+          "menuId": 109,
+          "menuName": "Post Role Management",
+          "menuNameAr": "إدارة أدوار الوظائف",
+          "parentId": 1,
+          "orderNum": 10,
+          "path": "post-role",
+          "component": "system/postRole/index",
+          "menuType": "C",
+          "perms": "system:postRole:list",
+          "icon": "user-check",
+          "children": [
+            { "menuId": 1091, "menuName": "Query Post Role", "parentId": 109, "orderNum": 1, "menuType": "F", "perms": "system:postRole:query" },
+            { "menuId": 1092, "menuName": "Add Post Role", "parentId": 109, "orderNum": 2, "menuType": "F", "perms": "system:postRole:add" },
+            { "menuId": 1093, "menuName": "Edit Post Role", "parentId": 109, "orderNum": 3, "menuType": "F", "perms": "system:postRole:edit" },
+            { "menuId": 1094, "menuName": "Delete Post Role", "parentId": 109, "orderNum": 4, "menuType": "F", "perms": "system:postRole:remove" }
+          ]
+        },
+        {
+          "menuId": 110,
+          "menuName": "Employee Access",
+          "menuNameAr": "وصول الموظفين",
+          "parentId": 1,
+          "orderNum": 11,
+          "path": "employee-access",
+          "component": "system/employeeAccess/index",
+          "menuType": "C",
+          "perms": "system:employeeAccess:list",
+          "icon": "key",
+          "children": [
+            { "menuId": 1101, "menuName": "Query Employee Access", "parentId": 110, "orderNum": 1, "menuType": "F", "perms": "system:employeeAccess:query" },
+            { "menuId": 1102, "menuName": "Activate Access", "parentId": 110, "orderNum": 2, "menuType": "F", "perms": "system:employeeAccess:activate" }
+          ]
+        },
+        {
+          "menuId": 111,
+          "menuName": "Role Users",
+          "menuNameAr": "مستخدمو الأدوار",
+          "parentId": 1,
+          "orderNum": 12,
+          "path": "role-users",
+          "component": "system/roleUsers/index",
+          "menuType": "C",
+          "perms": "system:roleusers:list",
+          "icon": "users",
+          "children": [
+            { "menuId": 1111, "menuName": "Add Role User", "parentId": 111, "orderNum": 1, "menuType": "F", "perms": "system:roleusers:add" },
+            { "menuId": 1112, "menuName": "Remove Role User", "parentId": 111, "orderNum": 2, "menuType": "F", "perms": "system:roleusers:remove" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 2,
+      "menuName": "Monitor",
+      "menuNameAr": "المراقبة",
+      "parentId": 0,
+      "orderNum": 2,
+      "path": "monitor",
+      "menuType": "M",
+      "perms": "",
+      "icon": "monitor",
+      "children": [
+        {
+          "menuId": 200,
+          "menuName": "Online Users",
+          "menuNameAr": "المستخدمون المتصلون",
+          "parentId": 2,
+          "orderNum": 1,
+          "path": "online",
+          "component": "monitor/online/index",
+          "menuType": "C",
+          "perms": "monitor:online:list",
+          "icon": "online",
+          "children": [
+            { "menuId": 2001, "menuName": "Force Logout", "parentId": 200, "orderNum": 1, "menuType": "F", "perms": "monitor:online:forceLogout" },
+            { "menuId": 2002, "menuName": "Batch Logout", "parentId": 200, "orderNum": 2, "menuType": "F", "perms": "monitor:online:batchLogout" }
+          ]
+        },
+        {
+          "menuId": 201,
+          "menuName": "Job Scheduler",
+          "menuNameAr": "جدولة المهام",
+          "parentId": 2,
+          "orderNum": 2,
+          "path": "job",
+          "component": "monitor/job/index",
+          "menuType": "C",
+          "perms": "monitor:job:list",
+          "icon": "job",
+          "children": [
+            { "menuId": 2011, "menuName": "Query Job", "parentId": 201, "orderNum": 1, "menuType": "F", "perms": "monitor:job:query" },
+            { "menuId": 2012, "menuName": "Add Job", "parentId": 201, "orderNum": 2, "menuType": "F", "perms": "monitor:job:add" },
+            { "menuId": 2013, "menuName": "Edit Job", "parentId": 201, "orderNum": 3, "menuType": "F", "perms": "monitor:job:edit" },
+            { "menuId": 2014, "menuName": "Delete Job", "parentId": 201, "orderNum": 4, "menuType": "F", "perms": "monitor:job:delete" },
+            { "menuId": 2015, "menuName": "Start Job", "parentId": 201, "orderNum": 5, "menuType": "F", "perms": "monitor:job:start" },
+            { "menuId": 2016, "menuName": "Stop Job", "parentId": 201, "orderNum": 6, "menuType": "F", "perms": "monitor:job:stop" },
+            { "menuId": 2017, "menuName": "Run Job", "parentId": 201, "orderNum": 7, "menuType": "F", "perms": "monitor:job:run" },
+            { "menuId": 2018, "menuName": "Export Job", "parentId": 201, "orderNum": 8, "menuType": "F", "perms": "monitor:job:export" }
+          ]
+        },
+        {
+          "menuId": 202,
+          "menuName": "Operation Logs",
+          "menuNameAr": "سجلات العمليات",
+          "parentId": 2,
+          "orderNum": 3,
+          "path": "operlog",
+          "component": "monitor/operlog/index",
+          "menuType": "C",
+          "perms": "monitor:operlog:list",
+          "icon": "form",
+          "children": [
+            { "menuId": 2021, "menuName": "Delete Log", "parentId": 202, "orderNum": 1, "menuType": "F", "perms": "monitor:operlog:delete" },
+            { "menuId": 2022, "menuName": "Export Log", "parentId": 202, "orderNum": 2, "menuType": "F", "perms": "monitor:operlog:export" }
+          ]
+        },
+        {
+          "menuId": 203,
+          "menuName": "Login Logs",
+          "menuNameAr": "سجلات الدخول",
+          "parentId": 2,
+          "orderNum": 4,
+          "path": "logininfor",
+          "component": "monitor/logininfor/index",
+          "menuType": "C",
+          "perms": "monitor:logininfor:list",
+          "icon": "logininfor",
+          "children": [
+            { "menuId": 2031, "menuName": "Delete Login Log", "parentId": 203, "orderNum": 1, "menuType": "F", "perms": "monitor:logininfor:remove" },
+            { "menuId": 2032, "menuName": "Export Login Log", "parentId": 203, "orderNum": 2, "menuType": "F", "perms": "monitor:logininfor:export" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 3,
+      "menuName": "Tools",
+      "menuNameAr": "الأدوات",
+      "parentId": 0,
+      "orderNum": 3,
+      "path": "tool",
+      "menuType": "M",
+      "perms": "",
+      "icon": "tool",
+      "children": [
+        {
+          "menuId": 300,
+          "menuName": "Code Generator",
+          "menuNameAr": "مولد الأكواد",
+          "parentId": 3,
+          "orderNum": 1,
+          "path": "gen",
+          "component": "tool/gen/index",
+          "menuType": "C",
+          "perms": "tool:gen:list",
+          "icon": "code",
+          "children": [
+            { "menuId": 3001, "menuName": "Query Gen", "parentId": 300, "orderNum": 1, "menuType": "F", "perms": "tool:gen:query" },
+            { "menuId": 3002, "menuName": "Edit Gen", "parentId": 300, "orderNum": 2, "menuType": "F", "perms": "tool:gen:edit" },
+            { "menuId": 3003, "menuName": "Delete Gen", "parentId": 300, "orderNum": 3, "menuType": "F", "perms": "tool:gen:remove" },
+            { "menuId": 3004, "menuName": "Import Gen", "parentId": 300, "orderNum": 4, "menuType": "F", "perms": "tool:gen:import" },
+            { "menuId": 3005, "menuName": "Preview Gen", "parentId": 300, "orderNum": 5, "menuType": "F", "perms": "tool:gen:preview" },
+            { "menuId": 3006, "menuName": "Generate Code", "parentId": 300, "orderNum": 6, "menuType": "F", "perms": "tool:gen:code" }
+          ]
+        },
+        {
+          "menuId": 301,
+          "menuName": "File Management",
+          "menuNameAr": "إدارة الملفات",
+          "parentId": 3,
+          "orderNum": 2,
+          "path": "file",
+          "component": "tool/file/index",
+          "menuType": "C",
+          "perms": "tool:file:list",
+          "icon": "upload",
+          "children": [
+            { "menuId": 3011, "menuName": "Query File", "parentId": 301, "orderNum": 1, "menuType": "F", "perms": "tool:file:query" },
+            { "menuId": 3012, "menuName": "Add File", "parentId": 301, "orderNum": 2, "menuType": "F", "perms": "tool:file:add" },
+            { "menuId": 3013, "menuName": "Edit File", "parentId": 301, "orderNum": 3, "menuType": "F", "perms": "tool:file:edit" },
+            { "menuId": 3014, "menuName": "Delete File", "parentId": 301, "orderNum": 4, "menuType": "F", "perms": "tool:file:delete" },
+            { "menuId": 3015, "menuName": "Export File", "parentId": 301, "orderNum": 5, "menuType": "F", "perms": "tool:file:export" }
+          ]
+        },
+        {
+          "menuId": 302,
+          "menuName": "Email Templates",
+          "menuNameAr": "قوالب البريد",
+          "parentId": 3,
+          "orderNum": 3,
+          "path": "emailtpl",
+          "component": "tool/email/index",
+          "menuType": "C",
+          "perms": "tool:emailtpl:list",
+          "icon": "email",
+          "children": [
+            { "menuId": 3021, "menuName": "Add Template", "parentId": 302, "orderNum": 1, "menuType": "F", "perms": "tool:emailtpl:add" },
+            { "menuId": 3022, "menuName": "Edit Template", "parentId": 302, "orderNum": 2, "menuType": "F", "perms": "tool:emailtpl:edit" },
+            { "menuId": 3023, "menuName": "Delete Template", "parentId": 302, "orderNum": 3, "menuType": "F", "perms": "tool:emailtpl:delete" },
+            { "menuId": 3024, "menuName": "Send Email", "parentId": 302, "orderNum": 4, "menuType": "F", "perms": "tool:email:send" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 4,
+      "menuName": "Marketing",
+      "menuNameAr": "التسويق",
+      "parentId": 0,
+      "orderNum": 4,
+      "path": "marketing",
+      "menuType": "M",
+      "perms": "",
+      "icon": "chart",
+      "children": [
+        {
+          "menuId": 400,
+          "menuName": "Leads",
+          "menuNameAr": "العملاء المحتملين",
+          "parentId": 4,
+          "orderNum": 1,
+          "path": "leads",
+          "component": "marketing/leads/index",
+          "menuType": "C",
+          "perms": "marketing:leads:list",
+          "icon": "peoples",
+          "children": [
+            { "menuId": 4001, "menuName": "View Lead", "parentId": 400, "orderNum": 1, "menuType": "F", "perms": "marketing:leads:view" },
+            { "menuId": 4002, "menuName": "Add Lead", "parentId": 400, "orderNum": 2, "menuType": "F", "perms": "marketing:leads:add" },
+            { "menuId": 4003, "menuName": "Edit Lead", "parentId": 400, "orderNum": 3, "menuType": "F", "perms": "marketing:leads:edit" },
+            { "menuId": 4004, "menuName": "Delete Lead", "parentId": 400, "orderNum": 4, "menuType": "F", "perms": "marketing:leads:delete" },
+            { "menuId": 4005, "menuName": "Export Leads", "parentId": 400, "orderNum": 5, "menuType": "F", "perms": "marketing:leads:export" },
+            { "menuId": 4006, "menuName": "Import Leads", "parentId": 400, "orderNum": 6, "menuType": "F", "perms": "marketing:leads:import" }
+          ]
+        },
+        {
+          "menuId": 401,
+          "menuName": "Lead Activities",
+          "menuNameAr": "أنشطة العملاء",
+          "parentId": 4,
+          "orderNum": 2,
+          "path": "activities",
+          "component": "marketing/activities/index",
+          "menuType": "C",
+          "perms": "marketing:activities:list",
+          "icon": "activity",
+          "children": [
+            { "menuId": 4011, "menuName": "View Activity", "parentId": 401, "orderNum": 1, "menuType": "F", "perms": "marketing:activities:view" },
+            { "menuId": 4012, "menuName": "Add Activity", "parentId": 401, "orderNum": 2, "menuType": "F", "perms": "marketing:activities:add" },
+            { "menuId": 4013, "menuName": "Delete Activity", "parentId": 401, "orderNum": 3, "menuType": "F", "perms": "marketing:activities:delete" },
+            { "menuId": 4014, "menuName": "Activity Stats", "parentId": 401, "orderNum": 4, "menuType": "F", "perms": "marketing:activities:stats" }
+          ]
+        },
+        {
+          "menuId": 402,
+          "menuName": "Lead Assignments",
+          "menuNameAr": "تعيينات العملاء",
+          "parentId": 4,
+          "orderNum": 3,
+          "path": "assignments",
+          "component": "marketing/assignments/index",
+          "menuType": "C",
+          "perms": "marketing:assignments:list",
+          "icon": "user-check",
+          "children": [
+            { "menuId": 4021, "menuName": "View Assignment", "parentId": 402, "orderNum": 1, "menuType": "F", "perms": "marketing:assignments:view" },
+            { "menuId": 4022, "menuName": "Assign Lead", "parentId": 402, "orderNum": 2, "menuType": "F", "perms": "marketing:assignments:assign" },
+            { "menuId": 4023, "menuName": "Assignment Stats", "parentId": 402, "orderNum": 3, "menuType": "F", "perms": "marketing:assignments:stats" }
+          ]
+        },
+        {
+          "menuId": 403,
+          "menuName": "Marketing Team",
+          "menuNameAr": "فريق التسويق",
+          "parentId": 4,
+          "orderNum": 4,
+          "path": "employees",
+          "component": "marketing/employees/index",
+          "menuType": "C",
+          "perms": "marketing:employees:list",
+          "icon": "peoples",
+          "children": [
+            { "menuId": 4031, "menuName": "Query Employee", "parentId": 403, "orderNum": 1, "menuType": "F", "perms": "marketing:employees:query" }
+          ]
+        },
+        {
+          "menuId": 404,
+          "menuName": "Meetings",
+          "menuNameAr": "الاجتماعات",
+          "parentId": 4,
+          "orderNum": 5,
+          "path": "meetings",
+          "component": "marketing/meetings/index",
+          "menuType": "C",
+          "perms": "marketing:meetings:list",
+          "icon": "date",
+          "children": [
+            { "menuId": 4041, "menuName": "View Meeting", "parentId": 404, "orderNum": 1, "menuType": "F", "perms": "marketing:meetings:view" },
+            { "menuId": 4042, "menuName": "Add Meeting", "parentId": 404, "orderNum": 2, "menuType": "F", "perms": "marketing:meetings:add" },
+            { "menuId": 4043, "menuName": "Edit Meeting", "parentId": 404, "orderNum": 3, "menuType": "F", "perms": "marketing:meetings:edit" },
+            { "menuId": 4044, "menuName": "Cancel Meeting", "parentId": 404, "orderNum": 4, "menuType": "F", "perms": "marketing:meetings:cancel" },
+            { "menuId": 4045, "menuName": "Complete Meeting", "parentId": 404, "orderNum": 5, "menuType": "F", "perms": "marketing:meetings:complete" },
+            { "menuId": 4046, "menuName": "Meeting Stats", "parentId": 404, "orderNum": 6, "menuType": "F", "perms": "marketing:meetings:stats" }
+          ]
+        },
+        {
+          "menuId": 405,
+          "menuName": "Promotions",
+          "menuNameAr": "العروض الترويجية",
+          "parentId": 4,
+          "orderNum": 6,
+          "path": "promotions",
+          "component": "marketing/promotions/index",
+          "menuType": "C",
+          "perms": "marketing:promotion:list",
+          "icon": "shopping",
+          "children": [
+            { "menuId": 4051, "menuName": "Query Promotion", "parentId": 405, "orderNum": 1, "menuType": "F", "perms": "marketing:promotion:query" },
+            { "menuId": 4052, "menuName": "Add Promotion", "parentId": 405, "orderNum": 2, "menuType": "F", "perms": "marketing:promotion:add" },
+            { "menuId": 4053, "menuName": "Edit Promotion", "parentId": 405, "orderNum": 3, "menuType": "F", "perms": "marketing:promotion:edit" },
+            { "menuId": 4054, "menuName": "Delete Promotion", "parentId": 405, "orderNum": 4, "menuType": "F", "perms": "marketing:promotion:delete" },
+            { "menuId": 4055, "menuName": "Export Promotion", "parentId": 405, "orderNum": 5, "menuType": "F", "perms": "marketing:promotion:export" }
+          ]
+        },
+        {
+          "menuId": 406,
+          "menuName": "Gift Cards",
+          "menuNameAr": "بطاقات الهدايا",
+          "parentId": 4,
+          "orderNum": 7,
+          "path": "giftcards",
+          "component": "marketing/giftcards/index",
+          "menuType": "C",
+          "perms": "marketing:giftcard:list",
+          "icon": "gift",
+          "children": [
+            { "menuId": 4061, "menuName": "Query Gift Card", "parentId": 406, "orderNum": 1, "menuType": "F", "perms": "marketing:giftcard:query" },
+            { "menuId": 4062, "menuName": "Add Gift Card", "parentId": 406, "orderNum": 2, "menuType": "F", "perms": "marketing:giftcard:add" },
+            { "menuId": 4063, "menuName": "Edit Gift Card", "parentId": 406, "orderNum": 3, "menuType": "F", "perms": "marketing:giftcard:edit" },
+            { "menuId": 4064, "menuName": "Delete Gift Card", "parentId": 406, "orderNum": 4, "menuType": "F", "perms": "marketing:giftcard:delete" },
+            { "menuId": 4065, "menuName": "Activate Gift Card", "parentId": 406, "orderNum": 5, "menuType": "F", "perms": "marketing:giftcard:activate" },
+            { "menuId": 4066, "menuName": "Redeem Gift Card", "parentId": 406, "orderNum": 6, "menuType": "F", "perms": "marketing:giftcard:redeem" },
+            { "menuId": 4067, "menuName": "Refund Gift Card", "parentId": 406, "orderNum": 7, "menuType": "F", "perms": "marketing:giftcard:refund" },
+            { "menuId": 4068, "menuName": "Cancel Gift Card", "parentId": 406, "orderNum": 8, "menuType": "F", "perms": "marketing:giftcard:cancel" },
+            { "menuId": 4069, "menuName": "Send Gift Card", "parentId": 406, "orderNum": 9, "menuType": "F", "perms": "marketing:giftcard:send" },
+            { "menuId": 4070, "menuName": "Gift Card Statistics", "parentId": 406, "orderNum": 10, "menuType": "F", "perms": "marketing:giftcard:statistics" },
+            { "menuId": 4071, "menuName": "Export Gift Cards", "parentId": 406, "orderNum": 11, "menuType": "F", "perms": "marketing:giftcard:export" },
+            { "menuId": 40610, "menuName": "Use Gift Card", "parentId": 406, "orderNum": 12, "menuType": "F", "perms": "marketing:giftcard:use" },
+            { "menuId": 40611, "menuName": "Deactivate Gift Card", "parentId": 406, "orderNum": 13, "menuType": "F", "perms": "marketing:giftcard:deactivate" },
+            { "menuId": 40612, "menuName": "Gift Card Report", "parentId": 406, "orderNum": 14, "menuType": "F", "perms": "marketing:giftcard:report" }
+          ]
+        },
+        {
+          "menuId": 407,
+          "menuName": "Loyalty Program",
+          "menuNameAr": "برنامج الولاء",
+          "parentId": 4,
+          "orderNum": 8,
+          "path": "loyalty",
+          "component": "marketing/loyalty/index",
+          "menuType": "C",
+          "perms": "marketing:loyalty:list",
+          "icon": "star",
+          "children": [
+            { "menuId": 4071, "menuName": "Query Loyalty", "parentId": 407, "orderNum": 1, "menuType": "F", "perms": "marketing:loyalty:query" },
+            { "menuId": 4072, "menuName": "Earn Points", "parentId": 407, "orderNum": 2, "menuType": "F", "perms": "marketing:loyalty:earn" },
+            { "menuId": 4073, "menuName": "Redeem Points", "parentId": 407, "orderNum": 3, "menuType": "F", "perms": "marketing:loyalty:redeem" },
+            { "menuId": 4074, "menuName": "Manage Tiers", "parentId": 407, "orderNum": 4, "menuType": "F", "perms": "marketing:loyalty:tiers" },
+            { "menuId": 4075, "menuName": "Add Tier", "parentId": 407, "orderNum": 5, "menuType": "F", "perms": "marketing:loyalty:tiers:add" },
+            { "menuId": 4076, "menuName": "Edit Tier", "parentId": 407, "orderNum": 6, "menuType": "F", "perms": "marketing:loyalty:tiers:edit" },
+            { "menuId": 4077, "menuName": "Delete Tier", "parentId": 407, "orderNum": 7, "menuType": "F", "perms": "marketing:loyalty:tiers:delete" },
+            { "menuId": 4078, "menuName": "Loyalty Analytics", "parentId": 407, "orderNum": 8, "menuType": "F", "perms": "marketing:loyalty:analytics" },
+            { "menuId": 4079, "menuName": "Manage Rules", "parentId": 407, "orderNum": 9, "menuType": "F", "perms": "marketing:loyalty:rules" },
+            { "menuId": 4080, "menuName": "Add Rule", "parentId": 407, "orderNum": 10, "menuType": "F", "perms": "marketing:loyalty:rules:add" },
+            { "menuId": 4081, "menuName": "Edit Rule", "parentId": 407, "orderNum": 11, "menuType": "F", "perms": "marketing:loyalty:rules:edit" },
+            { "menuId": 4082, "menuName": "Delete Rule", "parentId": 407, "orderNum": 12, "menuType": "F", "perms": "marketing:loyalty:rules:delete" },
+            { "menuId": 40713, "menuName": "Add Program/Tier", "parentId": 407, "orderNum": 13, "menuType": "F", "perms": "marketing:loyalty:add" },
+            { "menuId": 40714, "menuName": "Edit Program/Tier", "parentId": 407, "orderNum": 14, "menuType": "F", "perms": "marketing:loyalty:edit" },
+            { "menuId": 40715, "menuName": "Delete Program/Tier", "parentId": 407, "orderNum": 15, "menuType": "F", "perms": "marketing:loyalty:delete" },
+            { "menuId": 40716, "menuName": "Enroll Member", "parentId": 407, "orderNum": 16, "menuType": "F", "perms": "marketing:loyalty:enroll" },
+            { "menuId": 40717, "menuName": "Unenroll Member", "parentId": 407, "orderNum": 17, "menuType": "F", "perms": "marketing:loyalty:unenroll" },
+            { "menuId": 40718, "menuName": "Adjust Points", "parentId": 407, "orderNum": 18, "menuType": "F", "perms": "marketing:loyalty:adjust" },
+            { "menuId": 40719, "menuName": "Expire Points", "parentId": 407, "orderNum": 19, "menuType": "F", "perms": "marketing:loyalty:expire" },
+            { "menuId": 40720, "menuName": "Loyalty Report", "parentId": 407, "orderNum": 20, "menuType": "F", "perms": "marketing:loyalty:report" }
+          ]
+        },
+        {
+          "menuId": 408,
+          "menuName": "Promo Codes",
+          "menuNameAr": "أكواد الخصم",
+          "parentId": 4,
+          "orderNum": 9,
+          "path": "promo-codes",
+          "component": "marketing/promo-codes/index",
+          "menuType": "C",
+          "perms": "marketing:promocode:list",
+          "icon": "coupon",
+          "children": [
+            { "menuId": 4084, "menuName": "Query Promo Code", "parentId": 408, "orderNum": 1, "menuType": "F", "perms": "marketing:promocode:query" },
+            { "menuId": 4085, "menuName": "Add Promo Code", "parentId": 408, "orderNum": 2, "menuType": "F", "perms": "marketing:promocode:add" },
+            { "menuId": 4086, "menuName": "Edit Promo Code", "parentId": 408, "orderNum": 3, "menuType": "F", "perms": "marketing:promocode:edit" },
+            { "menuId": 4087, "menuName": "Delete Promo Code", "parentId": 408, "orderNum": 4, "menuType": "F", "perms": "marketing:promocode:delete" },
+            { "menuId": 4088, "menuName": "Validate Promo Code", "parentId": 408, "orderNum": 5, "menuType": "F", "perms": "marketing:promocode:validate" },
+            { "menuId": 4089, "menuName": "Apply Promo Code", "parentId": 408, "orderNum": 6, "menuType": "F", "perms": "marketing:promocode:apply" },
+            { "menuId": 4090, "menuName": "Record Usage", "parentId": 408, "orderNum": 7, "menuType": "F", "perms": "marketing:promocode:usage" },
+            { "menuId": 4091, "menuName": "Usage Report", "parentId": 408, "orderNum": 8, "menuType": "F", "perms": "marketing:promocode:report" }
+          ]
+        },
+        {
+          "menuId": 409,
+          "menuName": "Notifications",
+          "menuNameAr": "الإشعارات",
+          "parentId": 4,
+          "orderNum": 10,
+          "path": "notifications",
+          "component": "marketing/notifications/index",
+          "menuType": "C",
+          "perms": "marketing:notification:list",
+          "icon": "message",
+          "children": [
+            { "menuId": 40911, "menuName": "Query Notification", "parentId": 409, "orderNum": 1, "menuType": "F", "perms": "marketing:notification:query" },
+            { "menuId": 40912, "menuName": "Add Notification", "parentId": 409, "orderNum": 2, "menuType": "F", "perms": "marketing:notification:add" },
+            { "menuId": 40913, "menuName": "Edit Notification", "parentId": 409, "orderNum": 3, "menuType": "F", "perms": "marketing:notification:edit" },
+            { "menuId": 40914, "menuName": "Delete Notification", "parentId": 409, "orderNum": 4, "menuType": "F", "perms": "marketing:notification:delete" },
+            { "menuId": 40915, "menuName": "Send Bulk Notification", "parentId": 409, "orderNum": 5, "menuType": "F", "perms": "marketing:notification:send" },
+            { "menuId": 40916, "menuName": "Send SMS", "parentId": 409, "orderNum": 6, "menuType": "F", "perms": "marketing:notification:sms" },
+            { "menuId": 40917, "menuName": "Send Email", "parentId": 409, "orderNum": 7, "menuType": "F", "perms": "marketing:notification:email" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 5,
+      "menuName": "Human Resources",
+      "menuNameAr": "الموارد البشرية",
+      "parentId": 0,
+      "orderNum": 5,
+      "path": "hr",
+      "menuType": "M",
+      "perms": "",
+      "icon": "peoples",
+      "children": [
+        {
+          "menuId": 500,
+          "menuName": "Employees",
+          "menuNameAr": "الموظفين",
+          "parentId": 5,
+          "orderNum": 1,
+          "path": "employees",
+          "component": "hr/employees/index",
+          "menuType": "C",
+          "perms": "hr:employees:list",
+          "icon": "user",
+          "children": [
+            { "menuId": 5001, "menuName": "Query Employee", "parentId": 500, "orderNum": 1, "menuType": "F", "perms": "hr:employees:query" },
+            { "menuId": 5002, "menuName": "Add Employee", "parentId": 500, "orderNum": 2, "menuType": "F", "perms": "hr:employees:add" },
+            { "menuId": 5003, "menuName": "Edit Employee", "parentId": 500, "orderNum": 3, "menuType": "F", "perms": "hr:employees:edit" },
+            { "menuId": 5004, "menuName": "Delete Employee", "parentId": 500, "orderNum": 4, "menuType": "F", "perms": "hr:employees:delete" },
+            { "menuId": 5005, "menuName": "Export Employees", "parentId": 500, "orderNum": 5, "menuType": "F", "perms": "hr:employees:export" }
+          ]
+        },
+        {
+          "menuId": 501,
+          "menuName": "Employee Core",
+          "menuNameAr": "بيانات الموظفين الأساسية",
+          "parentId": 5,
+          "orderNum": 2,
+          "path": "employee-core",
+          "component": "hr/employeeCore/index",
+          "menuType": "C",
+          "perms": "hr:employeecore:list",
+          "icon": "user-settings",
+          "children": [
+            { "menuId": 5011, "menuName": "Create Employee", "parentId": 501, "orderNum": 1, "menuType": "F", "perms": "hr:employeecore:create" },
+            { "menuId": 5012, "menuName": "Update Employee", "parentId": 501, "orderNum": 2, "menuType": "F", "perms": "hr:employeecore:update" },
+            { "menuId": 5013, "menuName": "Query Employee", "parentId": 501, "orderNum": 3, "menuType": "F", "perms": "hr:employeecore:query" },
+            { "menuId": 5014, "menuName": "Terminate Employee", "parentId": 501, "orderNum": 4, "menuType": "F", "perms": "hr:employeecore:terminate" },
+            { "menuId": 5015, "menuName": "Activate Employee", "parentId": 501, "orderNum": 5, "menuType": "F", "perms": "hr:employeecore:activate" },
+            { "menuId": 5016, "menuName": "Transfer Employee", "parentId": 501, "orderNum": 6, "menuType": "F", "perms": "hr:employeecore:transfer" },
+            { "menuId": 5017, "menuName": "Promote Employee", "parentId": 501, "orderNum": 7, "menuType": "F", "perms": "hr:employeecore:promote" },
+            { "menuId": 5018, "menuName": "Person List", "parentId": 501, "orderNum": 8, "menuType": "F", "perms": "hr:employeecore:person:list" },
+            { "menuId": 5019, "menuName": "Person Query", "parentId": 501, "orderNum": 9, "menuType": "F", "perms": "hr:employeecore:person:query" },
+            { "menuId": 5020, "menuName": "Person Edit", "parentId": 501, "orderNum": 10, "menuType": "F", "perms": "hr:employeecore:person:edit" },
+            { "menuId": 5021, "menuName": "Employee List", "parentId": 501, "orderNum": 11, "menuType": "F", "perms": "hr:employeecore:employee:list" },
+            { "menuId": 5022, "menuName": "Employee Query", "parentId": 501, "orderNum": 12, "menuType": "F", "perms": "hr:employeecore:employee:query" },
+            { "menuId": 5023, "menuName": "Contact Query", "parentId": 501, "orderNum": 13, "menuType": "F", "perms": "hr:employeecore:contact:query" },
+            { "menuId": 5024, "menuName": "Contact Add", "parentId": 501, "orderNum": 14, "menuType": "F", "perms": "hr:employeecore:contact:add" },
+            { "menuId": 5025, "menuName": "Contact Edit", "parentId": 501, "orderNum": 15, "menuType": "F", "perms": "hr:employeecore:contact:edit" },
+            { "menuId": 5026, "menuName": "Contact Delete", "parentId": 501, "orderNum": 16, "menuType": "F", "perms": "hr:employeecore:contact:delete" },
+            { "menuId": 5027, "menuName": "Address Query", "parentId": 501, "orderNum": 17, "menuType": "F", "perms": "hr:employeecore:address:query" },
+            { "menuId": 5028, "menuName": "Address Add", "parentId": 501, "orderNum": 18, "menuType": "F", "perms": "hr:employeecore:address:add" },
+            { "menuId": 5029, "menuName": "Address Edit", "parentId": 501, "orderNum": 19, "menuType": "F", "perms": "hr:employeecore:address:edit" },
+            { "menuId": 5030, "menuName": "Address Delete", "parentId": 501, "orderNum": 20, "menuType": "F", "perms": "hr:employeecore:address:delete" },
+            { "menuId": 5031, "menuName": "Family List", "parentId": 501, "orderNum": 21, "menuType": "F", "perms": "hr:employeecore:family:list" },
+            { "menuId": 5032, "menuName": "Family Query", "parentId": 501, "orderNum": 22, "menuType": "F", "perms": "hr:employeecore:family:query" },
+            { "menuId": 5033, "menuName": "Family Add", "parentId": 501, "orderNum": 23, "menuType": "F", "perms": "hr:employeecore:family:add" },
+            { "menuId": 5034, "menuName": "Family Edit", "parentId": 501, "orderNum": 24, "menuType": "F", "perms": "hr:employeecore:family:edit" },
+            { "menuId": 5035, "menuName": "Family Delete", "parentId": 501, "orderNum": 25, "menuType": "F", "perms": "hr:employeecore:family:delete" },
+            { "menuId": 5036, "menuName": "Assignment Query", "parentId": 501, "orderNum": 26, "menuType": "F", "perms": "hr:employeecore:assignment:query" },
+            { "menuId": 5037, "menuName": "Assignment Add", "parentId": 501, "orderNum": 27, "menuType": "F", "perms": "hr:employeecore:assignment:add" },
+            { "menuId": 5038, "menuName": "Assignment Edit", "parentId": 501, "orderNum": 28, "menuType": "F", "perms": "hr:employeecore:assignment:edit" },
+            { "menuId": 5039, "menuName": "Assignment Delete", "parentId": 501, "orderNum": 29, "menuType": "F", "perms": "hr:employeecore:assignment:delete" },
+            { "menuId": 5040, "menuName": "Contract Query", "parentId": 501, "orderNum": 30, "menuType": "F", "perms": "hr:employeecore:contract:query" },
+            { "menuId": 5041, "menuName": "Contract Add", "parentId": 501, "orderNum": 31, "menuType": "F", "perms": "hr:employeecore:contract:add" },
+            { "menuId": 5042, "menuName": "Contract Edit", "parentId": 501, "orderNum": 32, "menuType": "F", "perms": "hr:employeecore:contract:edit" },
+            { "menuId": 5043, "menuName": "Contract Delete", "parentId": 501, "orderNum": 33, "menuType": "F", "perms": "hr:employeecore:contract:delete" },
+            { "menuId": 5044, "menuName": "Document Query", "parentId": 501, "orderNum": 34, "menuType": "F", "perms": "hr:employeecore:document:query" },
+            { "menuId": 5045, "menuName": "Document Add", "parentId": 501, "orderNum": 35, "menuType": "F", "perms": "hr:employeecore:document:add" },
+            { "menuId": 5046, "menuName": "Document Edit", "parentId": 501, "orderNum": 36, "menuType": "F", "perms": "hr:employeecore:document:edit" },
+            { "menuId": 5047, "menuName": "Document Delete", "parentId": 501, "orderNum": 37, "menuType": "F", "perms": "hr:employeecore:document:delete" },
+            { "menuId": 5048, "menuName": "Compensation List", "parentId": 501, "orderNum": 38, "menuType": "F", "perms": "hr:employeecore:compensation:list" },
+            { "menuId": 5049, "menuName": "Compensation Query", "parentId": 501, "orderNum": 39, "menuType": "F", "perms": "hr:employeecore:compensation:query" },
+            { "menuId": 5050, "menuName": "Compensation Add", "parentId": 501, "orderNum": 40, "menuType": "F", "perms": "hr:employeecore:compensation:add" },
+            { "menuId": 5051, "menuName": "Emergency Contact Query", "parentId": 501, "orderNum": 41, "menuType": "F", "perms": "hr:employeecore:emergencycontact:query" },
+            { "menuId": 5052, "menuName": "Emergency Contact Add", "parentId": 501, "orderNum": 42, "menuType": "F", "perms": "hr:employeecore:emergencycontact:add" },
+            { "menuId": 5053, "menuName": "Emergency Contact Edit", "parentId": 501, "orderNum": 43, "menuType": "F", "perms": "hr:employeecore:emergencycontact:edit" },
+            { "menuId": 5054, "menuName": "Emergency Contact Delete", "parentId": 501, "orderNum": 44, "menuType": "F", "perms": "hr:employeecore:emergencycontact:delete" },
+            { "menuId": 5055, "menuName": "Statutory Query", "parentId": 501, "orderNum": 45, "menuType": "F", "perms": "hr:employeecore:statutory:query" },
+            { "menuId": 5056, "menuName": "Statutory Add", "parentId": 501, "orderNum": 46, "menuType": "F", "perms": "hr:employeecore:statutory:add" },
+            { "menuId": 5057, "menuName": "Statutory Edit", "parentId": 501, "orderNum": 47, "menuType": "F", "perms": "hr:employeecore:statutory:edit" },
+            { "menuId": 5058, "menuName": "Statutory Delete", "parentId": 501, "orderNum": 48, "menuType": "F", "perms": "hr:employeecore:statutory:delete" }
+          ]
+        },
+        {
+          "menuId": 502,
+          "menuName": "Attendance",
+          "menuNameAr": "الحضور",
+          "parentId": 5,
+          "orderNum": 3,
+          "path": "attendance",
+          "component": "hr/attendance/index",
+          "menuType": "C",
+          "perms": "hr:attendance:list",
+          "icon": "time",
+          "children": [
+            { "menuId": 5061, "menuName": "View Attendance", "parentId": 502, "orderNum": 1, "menuType": "F", "perms": "hr:attendance:view" },
+            { "menuId": 5062, "menuName": "Query Attendance", "parentId": 502, "orderNum": 2, "menuType": "F", "perms": "hr:attendance:query" },
+            { "menuId": 5063, "menuName": "Add Attendance", "parentId": 502, "orderNum": 3, "menuType": "F", "perms": "hr:attendance:add" },
+            { "menuId": 5064, "menuName": "Edit Attendance", "parentId": 502, "orderNum": 4, "menuType": "F", "perms": "hr:attendance:edit" },
+            { "menuId": 5065, "menuName": "Delete Attendance", "parentId": 502, "orderNum": 5, "menuType": "F", "perms": "hr:attendance:delete" },
+            { "menuId": 5066, "menuName": "Check In", "parentId": 502, "orderNum": 6, "menuType": "F", "perms": "hr:attendance:checkin" },
+            { "menuId": 5067, "menuName": "Check Out", "parentId": 502, "orderNum": 7, "menuType": "F", "perms": "hr:attendance:checkout" },
+            { "menuId": 5068, "menuName": "Statistics", "parentId": 502, "orderNum": 8, "menuType": "F", "perms": "hr:attendance:statistics" },
+            { "menuId": 5069, "menuName": "Approve Attendance", "parentId": 502, "orderNum": 9, "menuType": "F", "perms": "hr:attendance:approve" },
+            { "menuId": 5070, "menuName": "Calculate Attendance", "parentId": 502, "orderNum": 10, "menuType": "F", "perms": "hr:attendance:calculate" },
+            { "menuId": 5071, "menuName": "Import Attendance", "parentId": 502, "orderNum": 11, "menuType": "F", "perms": "hr:attendance:import" },
+            { "menuId": 5072, "menuName": "Export Attendance", "parentId": 502, "orderNum": 12, "menuType": "F", "perms": "hr:attendance:export" }
+          ]
+        },
+        {
+          "menuId": 503,
+          "menuName": "Leave Management",
+          "menuNameAr": "إدارة الإجازات",
+          "parentId": 5,
+          "orderNum": 4,
+          "path": "leave",
+          "component": "hr/leave/index",
+          "menuType": "C",
+          "perms": "hr:leave:list",
+          "icon": "vacation",
+          "children": [
+            { "menuId": 5081, "menuName": "View Leave", "parentId": 503, "orderNum": 1, "menuType": "F", "perms": "hr:leave:view" },
+            { "menuId": 5082, "menuName": "Query Leave", "parentId": 503, "orderNum": 2, "menuType": "F", "perms": "hr:leave:query" },
+            { "menuId": 5083, "menuName": "Add Leave", "parentId": 503, "orderNum": 3, "menuType": "F", "perms": "hr:leave:add" },
+            { "menuId": 5084, "menuName": "Edit Leave", "parentId": 503, "orderNum": 4, "menuType": "F", "perms": "hr:leave:edit" },
+            { "menuId": 5085, "menuName": "Approve Leave", "parentId": 503, "orderNum": 5, "menuType": "F", "perms": "hr:leave:approve" },
+            { "menuId": 5086, "menuName": "Reject Leave", "parentId": 503, "orderNum": 6, "menuType": "F", "perms": "hr:leave:reject" },
+            { "menuId": 5087, "menuName": "Cancel Leave", "parentId": 503, "orderNum": 7, "menuType": "F", "perms": "hr:leave:cancel" },
+            { "menuId": 5088, "menuName": "Leave Balance", "parentId": 503, "orderNum": 8, "menuType": "F", "perms": "hr:leave:balance" }
+          ]
+        },
+        {
+          "menuId": 504,
+          "menuName": "Payroll",
+          "menuNameAr": "الرواتب",
+          "parentId": 5,
+          "orderNum": 5,
+          "path": "payroll",
+          "component": "hr/payroll/index",
+          "menuType": "C",
+          "perms": "hr:payroll:list",
+          "icon": "money",
+          "children": [
+            { "menuId": 5091, "menuName": "View Payroll", "parentId": 504, "orderNum": 1, "menuType": "F", "perms": "hr:payroll:view" },
+            { "menuId": 5092, "menuName": "Calculate Payroll", "parentId": 504, "orderNum": 2, "menuType": "F", "perms": "hr:payroll:calculate" },
+            { "menuId": 5093, "menuName": "Process Payroll", "parentId": 504, "orderNum": 3, "menuType": "F", "perms": "hr:payroll:process" },
+            { "menuId": 5094, "menuName": "Approve Payroll", "parentId": 504, "orderNum": 4, "menuType": "F", "perms": "hr:payroll:approve" },
+            { "menuId": 5095, "menuName": "Payment", "parentId": 504, "orderNum": 5, "menuType": "F", "perms": "hr:payroll:payment" },
+            { "menuId": 5096, "menuName": "View Payslip", "parentId": 504, "orderNum": 6, "menuType": "F", "perms": "hr:payroll:payslip" },
+            { "menuId": 5097, "menuName": "Report", "parentId": 504, "orderNum": 7, "menuType": "F", "perms": "hr:payroll:report" },
+            { "menuId": 5098, "menuName": "Transfer", "parentId": 504, "orderNum": 8, "menuType": "F", "perms": "hr:payroll:transfer" },
+            { "menuId": 5099, "menuName": "Export Payroll", "parentId": 504, "orderNum": 9, "menuType": "F", "perms": "hr:payroll:export" }
+          ]
+        },
+        {
+          "menuId": 505,
+          "menuName": "Training",
+          "menuNameAr": "التدريب",
+          "parentId": 5,
+          "orderNum": 6,
+          "path": "training",
+          "component": "hr/training/index",
+          "menuType": "C",
+          "perms": "hr:training:list",
+          "icon": "education",
+          "children": [
+            { "menuId": 5101, "menuName": "Add Training", "parentId": 505, "orderNum": 1, "menuType": "F", "perms": "hr:training:add" },
+            { "menuId": 5102, "menuName": "Edit Training", "parentId": 505, "orderNum": 2, "menuType": "F", "perms": "hr:training:edit" },
+            { "menuId": 5103, "menuName": "Delete Training", "parentId": 505, "orderNum": 3, "menuType": "F", "perms": "hr:training:delete" },
+            { "menuId": 5104, "menuName": "Schedule Training", "parentId": 505, "orderNum": 4, "menuType": "F", "perms": "hr:training:schedule" },
+            { "menuId": 5105, "menuName": "Cancel Training", "parentId": 505, "orderNum": 5, "menuType": "F", "perms": "hr:training:cancel" },
+            { "menuId": 5106, "menuName": "Enroll Training", "parentId": 505, "orderNum": 6, "menuType": "F", "perms": "hr:training:enroll" },
+            { "menuId": 5107, "menuName": "Complete Training", "parentId": 505, "orderNum": 7, "menuType": "F", "perms": "hr:training:complete" },
+            { "menuId": 5108, "menuName": "Training Progress", "parentId": 505, "orderNum": 8, "menuType": "F", "perms": "hr:training:progress" },
+            { "menuId": 5109, "menuName": "Training Budget", "parentId": 505, "orderNum": 9, "menuType": "F", "perms": "hr:training:budget" },
+            { "menuId": 5110, "menuName": "Training Analytics", "parentId": 505, "orderNum": 10, "menuType": "F", "perms": "hr:training:analytics" },
+            { "menuId": 5111, "menuName": "Training Certificates", "parentId": 505, "orderNum": 11, "menuType": "F", "perms": "hr:training:certificates" },
+            { "menuId": 5112, "menuName": "Training Feedback", "parentId": 505, "orderNum": 12, "menuType": "F", "perms": "hr:training:feedback" },
+            { "menuId": 5113, "menuName": "Training Reports", "parentId": 505, "orderNum": 13, "menuType": "F", "perms": "hr:training:reports" },
+            { "menuId": 5114, "menuName": "Training Export", "parentId": 505, "orderNum": 14, "menuType": "F", "perms": "hr:training:export" },
+            { "menuId": 5115, "menuName": "Training Recommendations", "parentId": 505, "orderNum": 15, "menuType": "F", "perms": "hr:training:recommendations" },
+            { "menuId": 5116, "menuName": "Training Development", "parentId": 505, "orderNum": 16, "menuType": "F", "perms": "hr:training:development" }
+          ]
+        },
+        {
+          "menuId": 506,
+          "menuName": "Performance",
+          "menuNameAr": "الأداء",
+          "parentId": 5,
+          "orderNum": 7,
+          "path": "performance",
+          "component": "hr/performance/index",
+          "menuType": "C",
+          "perms": "hr:performance:list",
+          "icon": "chart",
+          "children": [
+            { "menuId": 5121, "menuName": "View Performance", "parentId": 506, "orderNum": 1, "menuType": "F", "perms": "hr:performance:view" },
+            { "menuId": 5122, "menuName": "Query Performance", "parentId": 506, "orderNum": 2, "menuType": "F", "perms": "hr:performance:query" },
+            { "menuId": 5123, "menuName": "Add Performance", "parentId": 506, "orderNum": 3, "menuType": "F", "perms": "hr:performance:add" },
+            { "menuId": 5124, "menuName": "Edit Performance", "parentId": 506, "orderNum": 4, "menuType": "F", "perms": "hr:performance:edit" },
+            { "menuId": 5125, "menuName": "Delete Performance", "parentId": 506, "orderNum": 5, "menuType": "F", "perms": "hr:performance:delete" },
+            { "menuId": 5126, "menuName": "Submit Performance", "parentId": 506, "orderNum": 6, "menuType": "F", "perms": "hr:performance:submit" },
+            { "menuId": 5127, "menuName": "Approve Performance", "parentId": 506, "orderNum": 7, "menuType": "F", "perms": "hr:performance:approve" },
+            { "menuId": 5128, "menuName": "Performance Goals", "parentId": 506, "orderNum": 8, "menuType": "F", "perms": "hr:performance:goals" },
+            { "menuId": 5129, "menuName": "Export Performance", "parentId": 506, "orderNum": 9, "menuType": "F", "perms": "hr:performance:export" }
+          ]
+        },
+        {
+          "menuId": 507,
+          "menuName": "Recruitment",
+          "menuNameAr": "التوظيف",
+          "parentId": 5,
+          "orderNum": 8,
+          "path": "recruitment",
+          "component": "hr/recruitment/index",
+          "menuType": "C",
+          "perms": "hr:recruitment:list",
+          "icon": "search",
+          "children": [
+            { "menuId": 5131, "menuName": "View Recruitment", "parentId": 507, "orderNum": 1, "menuType": "F", "perms": "hr:recruitment:view" },
+            { "menuId": 5132, "menuName": "Query Recruitment", "parentId": 507, "orderNum": 2, "menuType": "F", "perms": "hr:recruitment:query" },
+            { "menuId": 5133, "menuName": "Add Recruitment", "parentId": 507, "orderNum": 3, "menuType": "F", "perms": "hr:recruitment:add" },
+            { "menuId": 5134, "menuName": "Edit Recruitment", "parentId": 507, "orderNum": 4, "menuType": "F", "perms": "hr:recruitment:edit" },
+            { "menuId": 5135, "menuName": "Approve Recruitment", "parentId": 507, "orderNum": 5, "menuType": "F", "perms": "hr:recruitment:approve" },
+            { "menuId": 5136, "menuName": "Publish Recruitment", "parentId": 507, "orderNum": 6, "menuType": "F", "perms": "hr:recruitment:publish" },
+            { "menuId": 5137, "menuName": "Close Recruitment", "parentId": 507, "orderNum": 7, "menuType": "F", "perms": "hr:recruitment:close" },
+            { "menuId": 5138, "menuName": "Candidates", "parentId": 507, "orderNum": 8, "menuType": "F", "perms": "hr:recruitment:candidates" },
+            { "menuId": 5139, "menuName": "Interviews", "parentId": 507, "orderNum": 9, "menuType": "F", "perms": "hr:recruitment:interviews" },
+            { "menuId": 5140, "menuName": "Offers", "parentId": 507, "orderNum": 10, "menuType": "F", "perms": "hr:recruitment:offers" },
+            { "menuId": 5141, "menuName": "Analytics", "parentId": 507, "orderNum": 11, "menuType": "F", "perms": "hr:recruitment:analytics" },
+            { "menuId": 5142, "menuName": "Onboarding", "parentId": 507, "orderNum": 12, "menuType": "F", "perms": "hr:recruitment:onboarding" }
+          ]
+        },
+        {
+          "menuId": 508,
+          "menuName": "Loans",
+          "menuNameAr": "القروض",
+          "parentId": 5,
+          "orderNum": 9,
+          "path": "loans",
+          "component": "hr/loans/index",
+          "menuType": "C",
+          "perms": "hr:loans:list",
+          "icon": "money",
+          "children": [
+            { "menuId": 5151, "menuName": "Apply Loan", "parentId": 508, "orderNum": 1, "menuType": "F", "perms": "hr:loans:apply" },
+            { "menuId": 5152, "menuName": "Edit Loan", "parentId": 508, "orderNum": 2, "menuType": "F", "perms": "hr:loans:edit" },
+            { "menuId": 5153, "menuName": "Cancel Loan", "parentId": 508, "orderNum": 3, "menuType": "F", "perms": "hr:loans:cancel" },
+            { "menuId": 5154, "menuName": "Approve Loan", "parentId": 508, "orderNum": 4, "menuType": "F", "perms": "hr:loans:approve" },
+            { "menuId": 5155, "menuName": "Repay Loan", "parentId": 508, "orderNum": 5, "menuType": "F", "perms": "hr:loans:repay" },
+            { "menuId": 5156, "menuName": "Process Loan", "parentId": 508, "orderNum": 6, "menuType": "F", "perms": "hr:loans:process" },
+            { "menuId": 5157, "menuName": "Settle Loan", "parentId": 508, "orderNum": 7, "menuType": "F", "perms": "hr:loans:settle" },
+            { "menuId": 5158, "menuName": "Loan Analytics", "parentId": 508, "orderNum": 8, "menuType": "F", "perms": "hr:loans:analytics" },
+            { "menuId": 5159, "menuName": "Loan Documents", "parentId": 508, "orderNum": 9, "menuType": "F", "perms": "hr:loans:documents" },
+            { "menuId": 5160, "menuName": "Loan Reports", "parentId": 508, "orderNum": 10, "menuType": "F", "perms": "hr:loans:reports" },
+            { "menuId": 5161, "menuName": "Export Loans", "parentId": 508, "orderNum": 11, "menuType": "F", "perms": "hr:loans:export" },
+            { "menuId": 5162, "menuName": "Bulk Operations", "parentId": 508, "orderNum": 12, "menuType": "F", "perms": "hr:loans:bulk" }
+          ]
+        },
+        {
+          "menuId": 509,
+          "menuName": "Benefits",
+          "menuNameAr": "المزايا",
+          "parentId": 5,
+          "orderNum": 10,
+          "path": "benefits",
+          "component": "hr/benefits/index",
+          "menuType": "C",
+          "perms": "hr:benefits:list",
+          "icon": "gift",
+          "children": [
+            { "menuId": 5171, "menuName": "Add Benefit", "parentId": 509, "orderNum": 1, "menuType": "F", "perms": "hr:benefits:add" },
+            { "menuId": 5172, "menuName": "Edit Benefit", "parentId": 509, "orderNum": 2, "menuType": "F", "perms": "hr:benefits:edit" },
+            { "menuId": 5173, "menuName": "Delete Benefit", "parentId": 509, "orderNum": 3, "menuType": "F", "perms": "hr:benefits:delete" },
+            { "menuId": 5174, "menuName": "Enroll Benefit", "parentId": 509, "orderNum": 4, "menuType": "F", "perms": "hr:benefits:enroll" },
+            { "menuId": 5175, "menuName": "Terminate Benefit", "parentId": 509, "orderNum": 5, "menuType": "F", "perms": "hr:benefits:terminate" },
+            { "menuId": 5176, "menuName": "Claim Benefit", "parentId": 509, "orderNum": 6, "menuType": "F", "perms": "hr:benefits:claim" },
+            { "menuId": 5177, "menuName": "Approve Benefit", "parentId": 509, "orderNum": 7, "menuType": "F", "perms": "hr:benefits:approve" },
+            { "menuId": 5178, "menuName": "Benefit Payment", "parentId": 509, "orderNum": 8, "menuType": "F", "perms": "hr:benefits:payment" },
+            { "menuId": 5179, "menuName": "Benefits Analytics", "parentId": 509, "orderNum": 9, "menuType": "F", "perms": "hr:benefits:analytics" }
+          ]
+        },
+        {
+          "menuId": 510,
+          "menuName": "KPI",
+          "menuNameAr": "مؤشرات الأداء",
+          "parentId": 5,
+          "orderNum": 11,
+          "path": "kpi",
+          "component": "hr/kpi/index",
+          "menuType": "C",
+          "perms": "hr:kpi:list",
+          "icon": "chart",
+          "children": [
+            { "menuId": 5181, "menuName": "Add KPI", "parentId": 510, "orderNum": 1, "menuType": "F", "perms": "hr:kpi:add" },
+            { "menuId": 5182, "menuName": "Edit KPI", "parentId": 510, "orderNum": 2, "menuType": "F", "perms": "hr:kpi:edit" },
+            { "menuId": 5183, "menuName": "Delete KPI", "parentId": 510, "orderNum": 3, "menuType": "F", "perms": "hr:kpi:delete" },
+            { "menuId": 5184, "menuName": "Assign KPI", "parentId": 510, "orderNum": 4, "menuType": "F", "perms": "hr:kpi:assign" },
+            { "menuId": 5185, "menuName": "Record KPI", "parentId": 510, "orderNum": 5, "menuType": "F", "perms": "hr:kpi:record" },
+            { "menuId": 5186, "menuName": "Verify KPI", "parentId": 510, "orderNum": 6, "menuType": "F", "perms": "hr:kpi:verify" },
+            { "menuId": 5187, "menuName": "Calculate KPI", "parentId": 510, "orderNum": 7, "menuType": "F", "perms": "hr:kpi:calculate" },
+            { "menuId": 5188, "menuName": "Process KPI", "parentId": 510, "orderNum": 8, "menuType": "F", "perms": "hr:kpi:process" },
+            { "menuId": 5189, "menuName": "KPI Analytics", "parentId": 510, "orderNum": 9, "menuType": "F", "perms": "hr:kpi:analytics" },
+            { "menuId": 5190, "menuName": "Export KPI", "parentId": 510, "orderNum": 10, "menuType": "F", "perms": "hr:kpi:export" }
+          ]
+        },
+        {
+          "menuId": 511,
+          "menuName": "Documents",
+          "menuNameAr": "الوثائق",
+          "parentId": 5,
+          "orderNum": 12,
+          "path": "documents",
+          "component": "hr/documents/index",
+          "menuType": "C",
+          "perms": "hr:documents:list",
+          "icon": "document",
+          "children": [
+            { "menuId": 5191, "menuName": "View Document", "parentId": 511, "orderNum": 1, "menuType": "F", "perms": "hr:documents:view" },
+            { "menuId": 5192, "menuName": "Upload Document", "parentId": 511, "orderNum": 2, "menuType": "F", "perms": "hr:documents:upload" },
+            { "menuId": 5193, "menuName": "Edit Document", "parentId": 511, "orderNum": 3, "menuType": "F", "perms": "hr:documents:edit" },
+            { "menuId": 5194, "menuName": "Delete Document", "parentId": 511, "orderNum": 4, "menuType": "F", "perms": "hr:documents:delete" },
+            { "menuId": 5195, "menuName": "Verify Document", "parentId": 511, "orderNum": 5, "menuType": "F", "perms": "hr:documents:verify" },
+            { "menuId": 5196, "menuName": "Download Document", "parentId": 511, "orderNum": 6, "menuType": "F", "perms": "hr:documents:download" },
+            { "menuId": 5197, "menuName": "Document Types", "parentId": 511, "orderNum": 7, "menuType": "F", "perms": "hr:documents:types" },
+            { "menuId": 5198, "menuName": "Document Compliance", "parentId": 511, "orderNum": 8, "menuType": "F", "perms": "hr:documents:compliance" },
+            { "menuId": 5199, "menuName": "Document Remind", "parentId": 511, "orderNum": 9, "menuType": "F", "perms": "hr:documents:remind" },
+            { "menuId": 5200, "menuName": "Document Templates", "parentId": 511, "orderNum": 10, "menuType": "F", "perms": "hr:documents:templates" },
+            { "menuId": 5201, "menuName": "Export Documents", "parentId": 511, "orderNum": 11, "menuType": "F", "perms": "hr:documents:export" }
+          ]
+        },
+        {
+          "menuId": 512,
+          "menuName": "Manager Dashboard",
+          "menuNameAr": "لوحة المدير",
+          "parentId": 5,
+          "orderNum": 13,
+          "path": "manager",
+          "component": "hr/manager/index",
+          "menuType": "C",
+          "perms": "hr:manager:dashboard",
+          "icon": "dashboard",
+          "children": [
+            { "menuId": 5211, "menuName": "Team Overview", "parentId": 512, "orderNum": 1, "menuType": "F", "perms": "hr:manager:team" },
+            { "menuId": 5212, "menuName": "Attendance Overview", "parentId": 512, "orderNum": 2, "menuType": "F", "perms": "hr:manager:attendance" },
+            { "menuId": 5213, "menuName": "Approvals", "parentId": 512, "orderNum": 3, "menuType": "F", "perms": "hr:manager:approvals" },
+            { "menuId": 5214, "menuName": "Performance Overview", "parentId": 512, "orderNum": 4, "menuType": "F", "perms": "hr:manager:performance" },
+            { "menuId": 5215, "menuName": "Leave Overview", "parentId": 512, "orderNum": 5, "menuType": "F", "perms": "hr:manager:leave" },
+            { "menuId": 5216, "menuName": "Training Overview", "parentId": 512, "orderNum": 6, "menuType": "F", "perms": "hr:manager:training" },
+            { "menuId": 5217, "menuName": "Approve Request", "parentId": 512, "orderNum": 7, "menuType": "F", "perms": "hr:manager:approve" },
+            { "menuId": 5218, "menuName": "Reject Request", "parentId": 512, "orderNum": 8, "menuType": "F", "perms": "hr:manager:reject" },
+            { "menuId": 5219, "menuName": "Statistics", "parentId": 512, "orderNum": 9, "menuType": "F", "perms": "hr:manager:statistics" },
+            { "menuId": 5220, "menuName": "Schedule Meeting", "parentId": 512, "orderNum": 10, "menuType": "F", "perms": "hr:manager:meeting" },
+            { "menuId": 5221, "menuName": "Assign Task", "parentId": 512, "orderNum": 11, "menuType": "F", "perms": "hr:manager:task" },
+            { "menuId": 5222, "menuName": "Workload Analysis", "parentId": 512, "orderNum": 12, "menuType": "F", "perms": "hr:manager:workload" },
+            { "menuId": 5223, "menuName": "Review", "parentId": 512, "orderNum": 13, "menuType": "F", "perms": "hr:manager:review" }
+          ]
+        },
+        {
+          "menuId": 513,
+          "menuName": "Notifications",
+          "menuNameAr": "الإشعارات",
+          "parentId": 5,
+          "orderNum": 14,
+          "path": "notifications",
+          "component": "hr/notifications/index",
+          "menuType": "C",
+          "perms": "hr:notifications:list",
+          "icon": "bell",
+          "children": [
+            { "menuId": 5231, "menuName": "Send Notification", "parentId": 513, "orderNum": 1, "menuType": "F", "perms": "hr:notifications:send" },
+            { "menuId": 5232, "menuName": "Send Bulk", "parentId": 513, "orderNum": 2, "menuType": "F", "perms": "hr:notifications:bulk" },
+            { "menuId": 5233, "menuName": "Delete Notification", "parentId": 513, "orderNum": 3, "menuType": "F", "perms": "hr:notifications:delete" },
+            { "menuId": 5234, "menuName": "Mark Read", "parentId": 513, "orderNum": 4, "menuType": "F", "perms": "hr:notifications:read" }
+          ]
+        },
+        {
+          "menuId": 514,
+          "menuName": "Analytics",
+          "menuNameAr": "التحليلات",
+          "parentId": 5,
+          "orderNum": 15,
+          "path": "analytics",
+          "component": "hr/analytics/index",
+          "menuType": "C",
+          "perms": "hr:analytics:list",
+          "icon": "chart",
+          "children": [
+            { "menuId": 5241, "menuName": "View Analytics", "parentId": 514, "orderNum": 1, "menuType": "F", "perms": "hr:analytics:view" },
+            { "menuId": 5242, "menuName": "Headcount Report", "parentId": 514, "orderNum": 2, "menuType": "F", "perms": "hr:analytics:headcount" },
+            { "menuId": 5243, "menuName": "Turnover Report", "parentId": 514, "orderNum": 3, "menuType": "F", "perms": "hr:analytics:turnover" },
+            { "menuId": 5244, "menuName": "Attendance Report", "parentId": 514, "orderNum": 4, "menuType": "F", "perms": "hr:analytics:attendance" },
+            { "menuId": 5245, "menuName": "Leave Report", "parentId": 514, "orderNum": 5, "menuType": "F", "perms": "hr:analytics:leave" },
+            { "menuId": 5246, "menuName": "Payroll Report", "parentId": 514, "orderNum": 6, "menuType": "F", "perms": "hr:analytics:payroll" },
+            { "menuId": 5247, "menuName": "Performance Report", "parentId": 514, "orderNum": 7, "menuType": "F", "perms": "hr:analytics:performance" },
+            { "menuId": 5248, "menuName": "Export Report", "parentId": 514, "orderNum": 8, "menuType": "F", "perms": "hr:analytics:export" }
+          ]
+        },
+        {
+          "menuId": 515,
+          "menuName": "Holidays",
+          "menuNameAr": "العطلات",
+          "parentId": 5,
+          "orderNum": 16,
+          "path": "holidays",
+          "component": "hr/holidays/index",
+          "menuType": "C",
+          "perms": "hr:holidays:list",
+          "icon": "calendar",
+          "children": [
+            { "menuId": 5251, "menuName": "Add Holiday", "parentId": 515, "orderNum": 1, "menuType": "F", "perms": "hr:holidays:add" },
+            { "menuId": 5252, "menuName": "Edit Holiday", "parentId": 515, "orderNum": 2, "menuType": "F", "perms": "hr:holidays:edit" },
+            { "menuId": 5253, "menuName": "Delete Holiday", "parentId": 515, "orderNum": 3, "menuType": "F", "perms": "hr:holidays:delete" },
+            { "menuId": 5254, "menuName": "Export Holidays", "parentId": 515, "orderNum": 4, "menuType": "F", "perms": "hr:holidays:export" }
+          ]
+        },
+        {
+          "menuId": 516,
+          "menuName": "Insurance",
+          "menuNameAr": "التأمين",
+          "parentId": 5,
+          "orderNum": 17,
+          "path": "insurance",
+          "component": "hr/insurance/index",
+          "menuType": "C",
+          "perms": "hr:insurance:list",
+          "icon": "shield",
+          "children": [
+            { "menuId": 5261, "menuName": "Add Insurance", "parentId": 516, "orderNum": 1, "menuType": "F", "perms": "hr:insurance:add" },
+            { "menuId": 5262, "menuName": "Edit Insurance", "parentId": 516, "orderNum": 2, "menuType": "F", "perms": "hr:insurance:edit" },
+            { "menuId": 5263, "menuName": "Delete Insurance", "parentId": 516, "orderNum": 3, "menuType": "F", "perms": "hr:insurance:delete" },
+            { "menuId": 5264, "menuName": "Enroll Insurance", "parentId": 516, "orderNum": 4, "menuType": "F", "perms": "hr:insurance:enroll" },
+            { "menuId": 5265, "menuName": "Claim Insurance", "parentId": 516, "orderNum": 5, "menuType": "F", "perms": "hr:insurance:claim" },
+            { "menuId": 5266, "menuName": "Approve Claim", "parentId": 516, "orderNum": 6, "menuType": "F", "perms": "hr:insurance:approve" },
+            { "menuId": 5267, "menuName": "Insurance Export", "parentId": 516, "orderNum": 7, "menuType": "F", "perms": "hr:insurance:export" }
+          ]
+        },
+        {
+          "menuId": 517,
+          "menuName": "Workflow",
+          "menuNameAr": "سير العمل",
+          "parentId": 5,
+          "orderNum": 18,
+          "path": "workflow",
+          "component": "hr/workflow/index",
+          "menuType": "C",
+          "perms": "hr:workflow:list",
+          "icon": "flow",
+          "children": [
+            { "menuId": 5271, "menuName": "Add Workflow", "parentId": 517, "orderNum": 1, "menuType": "F", "perms": "hr:workflow:add" },
+            { "menuId": 5272, "menuName": "Edit Workflow", "parentId": 517, "orderNum": 2, "menuType": "F", "perms": "hr:workflow:edit" },
+            { "menuId": 5273, "menuName": "Delete Workflow", "parentId": 517, "orderNum": 3, "menuType": "F", "perms": "hr:workflow:delete" },
+            { "menuId": 5274, "menuName": "Start Workflow", "parentId": 517, "orderNum": 4, "menuType": "F", "perms": "hr:workflow:start" },
+            { "menuId": 5275, "menuName": "Approve Workflow", "parentId": 517, "orderNum": 5, "menuType": "F", "perms": "hr:workflow:approve" },
+            { "menuId": 5276, "menuName": "Reject Workflow", "parentId": 517, "orderNum": 6, "menuType": "F", "perms": "hr:workflow:reject" }
+          ]
+        },
+        {
+          "menuId": 518,
+          "menuName": "Self Service",
+          "menuNameAr": "الخدمة الذاتية",
+          "parentId": 5,
+          "orderNum": 19,
+          "path": "selfservice",
+          "component": "hr/selfservice/index",
+          "menuType": "C",
+          "perms": "hr:selfservice:list",
+          "icon": "user",
+          "children": [
+            { "menuId": 5281, "menuName": "View Profile", "parentId": 518, "orderNum": 1, "menuType": "F", "perms": "hr:selfservice:profile" },
+            { "menuId": 5282, "menuName": "Update Profile", "parentId": 518, "orderNum": 2, "menuType": "F", "perms": "hr:selfservice:update" },
+            { "menuId": 5283, "menuName": "View Payslip", "parentId": 518, "orderNum": 3, "menuType": "F", "perms": "hr:selfservice:payslip" },
+            { "menuId": 5284, "menuName": "Request Leave", "parentId": 518, "orderNum": 4, "menuType": "F", "perms": "hr:selfservice:leave" },
+            { "menuId": 5285, "menuName": "View Attendance", "parentId": 518, "orderNum": 5, "menuType": "F", "perms": "hr:selfservice:attendance" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 6,
+      "menuName": "Event Management",
+      "menuNameAr": "إدارة الفعاليات",
+      "parentId": 0,
+      "orderNum": 6,
+      "path": "events",
+      "menuType": "M",
+      "perms": "",
+      "icon": "calendar",
+      "children": [
+        {
+          "menuId": 600,
+          "menuName": "Events",
+          "menuNameAr": "الفعاليات",
+          "parentId": 6,
+          "orderNum": 1,
+          "path": "list",
+          "component": "events/list/index",
+          "menuType": "C",
+          "perms": "event:event:list",
+          "icon": "calendar",
+          "children": [
+            { "menuId": 6001, "menuName": "View Event", "parentId": 600, "orderNum": 1, "menuType": "F", "perms": "event:event:view" },
+            { "menuId": 6002, "menuName": "Add Event", "parentId": 600, "orderNum": 2, "menuType": "F", "perms": "event:event:add" },
+            { "menuId": 6003, "menuName": "Edit Event", "parentId": 600, "orderNum": 3, "menuType": "F", "perms": "event:event:edit" },
+            { "menuId": 6004, "menuName": "Delete Event", "parentId": 600, "orderNum": 4, "menuType": "F", "perms": "event:event:delete" },
+            { "menuId": 6005, "menuName": "Publish Event", "parentId": 600, "orderNum": 5, "menuType": "F", "perms": "event:event:publish" },
+            { "menuId": 6006, "menuName": "Cancel Event", "parentId": 600, "orderNum": 6, "menuType": "F", "perms": "event:event:cancel" },
+            { "menuId": 6007, "menuName": "Export Events", "parentId": 600, "orderNum": 7, "menuType": "F", "perms": "event:event:export" }
+          ]
+        },
+        {
+          "menuId": 601,
+          "menuName": "Registrations",
+          "menuNameAr": "التسجيلات",
+          "parentId": 6,
+          "orderNum": 2,
+          "path": "registrations",
+          "component": "events/registrations/index",
+          "menuType": "C",
+          "perms": "event:registration:list",
+          "icon": "form",
+          "children": [
+            { "menuId": 6011, "menuName": "View Registration", "parentId": 601, "orderNum": 1, "menuType": "F", "perms": "event:registration:view" },
+            { "menuId": 6012, "menuName": "Add Registration", "parentId": 601, "orderNum": 2, "menuType": "F", "perms": "event:registration:add" },
+            { "menuId": 6013, "menuName": "Edit Registration", "parentId": 601, "orderNum": 3, "menuType": "F", "perms": "event:registration:edit" },
+            { "menuId": 6014, "menuName": "Cancel Registration", "parentId": 601, "orderNum": 4, "menuType": "F", "perms": "event:registration:cancel" },
+            { "menuId": 6015, "menuName": "Check In", "parentId": 601, "orderNum": 5, "menuType": "F", "perms": "event:registration:checkin" },
+            { "menuId": 6016, "menuName": "Export Registrations", "parentId": 601, "orderNum": 6, "menuType": "F", "perms": "event:registration:export" }
+          ]
+        },
+        {
+          "menuId": 602,
+          "menuName": "Venues",
+          "menuNameAr": "الأماكن",
+          "parentId": 6,
+          "orderNum": 3,
+          "path": "venues",
+          "component": "events/venues/index",
+          "menuType": "C",
+          "perms": "event:venue:list",
+          "icon": "location",
+          "children": [
+            { "menuId": 6021, "menuName": "View Venue", "parentId": 602, "orderNum": 1, "menuType": "F", "perms": "event:venue:view" },
+            { "menuId": 6022, "menuName": "Add Venue", "parentId": 602, "orderNum": 2, "menuType": "F", "perms": "event:venue:add" },
+            { "menuId": 6023, "menuName": "Edit Venue", "parentId": 602, "orderNum": 3, "menuType": "F", "perms": "event:venue:edit" },
+            { "menuId": 6024, "menuName": "Delete Venue", "parentId": 602, "orderNum": 4, "menuType": "F", "perms": "event:venue:delete" }
+          ]
+        },
+        {
+          "menuId": 603,
+          "menuName": "Speakers",
+          "menuNameAr": "المتحدثون",
+          "parentId": 6,
+          "orderNum": 4,
+          "path": "speakers",
+          "component": "events/speakers/index",
+          "menuType": "C",
+          "perms": "event:speaker:list",
+          "icon": "microphone",
+          "children": [
+            { "menuId": 6031, "menuName": "Add Speaker", "parentId": 603, "orderNum": 1, "menuType": "F", "perms": "event:speaker:add" },
+            { "menuId": 6032, "menuName": "Edit Speaker", "parentId": 603, "orderNum": 2, "menuType": "F", "perms": "event:speaker:edit" },
+            { "menuId": 6033, "menuName": "Delete Speaker", "parentId": 603, "orderNum": 3, "menuType": "F", "perms": "event:speaker:delete" }
+          ]
+        },
+        {
+          "menuId": 604,
+          "menuName": "Sessions",
+          "menuNameAr": "الجلسات",
+          "parentId": 6,
+          "orderNum": 5,
+          "path": "sessions",
+          "component": "events/sessions/index",
+          "menuType": "C",
+          "perms": "event:session:list",
+          "icon": "schedule",
+          "children": [
+            { "menuId": 6041, "menuName": "Add Session", "parentId": 604, "orderNum": 1, "menuType": "F", "perms": "event:session:add" },
+            { "menuId": 6042, "menuName": "Edit Session", "parentId": 604, "orderNum": 2, "menuType": "F", "perms": "event:session:edit" },
+            { "menuId": 6043, "menuName": "Delete Session", "parentId": 604, "orderNum": 3, "menuType": "F", "perms": "event:session:delete" }
+          ]
+        },
+        {
+          "menuId": 605,
+          "menuName": "Sponsors",
+          "menuNameAr": "الرعاة",
+          "parentId": 6,
+          "orderNum": 6,
+          "path": "sponsors",
+          "component": "events/sponsors/index",
+          "menuType": "C",
+          "perms": "event:sponsor:list",
+          "icon": "star",
+          "children": [
+            { "menuId": 6051, "menuName": "Add Sponsor", "parentId": 605, "orderNum": 1, "menuType": "F", "perms": "event:sponsor:add" },
+            { "menuId": 6052, "menuName": "Edit Sponsor", "parentId": 605, "orderNum": 2, "menuType": "F", "perms": "event:sponsor:edit" },
+            { "menuId": 6053, "menuName": "Delete Sponsor", "parentId": 605, "orderNum": 3, "menuType": "F", "perms": "event:sponsor:delete" }
+          ]
+        },
+        {
+          "menuId": 606,
+          "menuName": "Tickets",
+          "menuNameAr": "التذاكر",
+          "parentId": 6,
+          "orderNum": 7,
+          "path": "tickets",
+          "component": "events/tickets/index",
+          "menuType": "C",
+          "perms": "event:ticket:list",
+          "icon": "ticket",
+          "children": [
+            { "menuId": 6061, "menuName": "Add Ticket", "parentId": 606, "orderNum": 1, "menuType": "F", "perms": "event:ticket:add" },
+            { "menuId": 6062, "menuName": "Edit Ticket", "parentId": 606, "orderNum": 2, "menuType": "F", "perms": "event:ticket:edit" },
+            { "menuId": 6063, "menuName": "Delete Ticket", "parentId": 606, "orderNum": 3, "menuType": "F", "perms": "event:ticket:delete" },
+            { "menuId": 6064, "menuName": "Issue Ticket", "parentId": 606, "orderNum": 4, "menuType": "F", "perms": "event:ticket:issue" },
+            { "menuId": 6065, "menuName": "Refund Ticket", "parentId": 606, "orderNum": 5, "menuType": "F", "perms": "event:ticket:refund" }
+          ]
+        },
+        {
+          "menuId": 607,
+          "menuName": "Event Analytics",
+          "menuNameAr": "تحليلات الفعاليات",
+          "parentId": 6,
+          "orderNum": 8,
+          "path": "analytics",
+          "component": "events/analytics/index",
+          "menuType": "C",
+          "perms": "event:analytics:view",
+          "icon": "chart",
+          "children": [
+            { "menuId": 6071, "menuName": "Export Analytics", "parentId": 607, "orderNum": 1, "menuType": "F", "perms": "event:analytics:export" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 7,
+      "menuName": "Business Partners",
+      "menuNameAr": "شركاء الأعمال",
+      "parentId": 0,
+      "orderNum": 7,
+      "path": "bp",
+      "menuType": "M",
+      "perms": "",
+      "icon": "peoples",
+      "children": [
+        {
+          "menuId": 700,
+          "menuName": "Partners",
+          "menuNameAr": "الشركاء",
+          "parentId": 7,
+          "orderNum": 1,
+          "path": "partners",
+          "component": "bp/partners/index",
+          "menuType": "C",
+          "perms": "bp:partner:list",
+          "icon": "handshake",
+          "children": [
+            { "menuId": 7001, "menuName": "View Partner", "parentId": 700, "orderNum": 1, "menuType": "F", "perms": "bp:partner:view" },
+            { "menuId": 7002, "menuName": "Add Partner", "parentId": 700, "orderNum": 2, "menuType": "F", "perms": "bp:partner:add" },
+            { "menuId": 7003, "menuName": "Edit Partner", "parentId": 700, "orderNum": 3, "menuType": "F", "perms": "bp:partner:edit" },
+            { "menuId": 7004, "menuName": "Delete Partner", "parentId": 700, "orderNum": 4, "menuType": "F", "perms": "bp:partner:delete" },
+            { "menuId": 7005, "menuName": "Export Partners", "parentId": 700, "orderNum": 5, "menuType": "F", "perms": "bp:partner:export" }
+          ]
+        },
+        {
+          "menuId": 701,
+          "menuName": "Customers",
+          "menuNameAr": "العملاء",
+          "parentId": 7,
+          "orderNum": 2,
+          "path": "customers",
+          "component": "bp/customers/index",
+          "menuType": "C",
+          "perms": "bp:customer:list",
+          "icon": "user",
+          "children": [
+            { "menuId": 7011, "menuName": "View Customer", "parentId": 701, "orderNum": 1, "menuType": "F", "perms": "bp:customer:view" },
+            { "menuId": 7012, "menuName": "Add Customer", "parentId": 701, "orderNum": 2, "menuType": "F", "perms": "bp:customer:add" },
+            { "menuId": 7013, "menuName": "Edit Customer", "parentId": 701, "orderNum": 3, "menuType": "F", "perms": "bp:customer:edit" },
+            { "menuId": 7014, "menuName": "Delete Customer", "parentId": 701, "orderNum": 4, "menuType": "F", "perms": "bp:customer:delete" },
+            { "menuId": 7015, "menuName": "Export Customers", "parentId": 701, "orderNum": 5, "menuType": "F", "perms": "bp:customer:export" }
+          ]
+        },
+        {
+          "menuId": 702,
+          "menuName": "Vendors",
+          "menuNameAr": "الموردون",
+          "parentId": 7,
+          "orderNum": 3,
+          "path": "vendors",
+          "component": "bp/vendors/index",
+          "menuType": "C",
+          "perms": "bp:vendor:list",
+          "icon": "shop",
+          "children": [
+            { "menuId": 7021, "menuName": "View Vendor", "parentId": 702, "orderNum": 1, "menuType": "F", "perms": "bp:vendor:view" },
+            { "menuId": 7022, "menuName": "Add Vendor", "parentId": 702, "orderNum": 2, "menuType": "F", "perms": "bp:vendor:add" },
+            { "menuId": 7023, "menuName": "Edit Vendor", "parentId": 702, "orderNum": 3, "menuType": "F", "perms": "bp:vendor:edit" },
+            { "menuId": 7024, "menuName": "Delete Vendor", "parentId": 702, "orderNum": 4, "menuType": "F", "perms": "bp:vendor:delete" },
+            { "menuId": 7025, "menuName": "Export Vendors", "parentId": 702, "orderNum": 5, "menuType": "F", "perms": "bp:vendor:export" }
+          ]
+        },
+        {
+          "menuId": 703,
+          "menuName": "Contacts",
+          "menuNameAr": "جهات الاتصال",
+          "parentId": 7,
+          "orderNum": 4,
+          "path": "contacts",
+          "component": "bp/contacts/index",
+          "menuType": "C",
+          "perms": "bp:contact:list",
+          "icon": "contact",
+          "children": [
+            { "menuId": 7031, "menuName": "Add Contact", "parentId": 703, "orderNum": 1, "menuType": "F", "perms": "bp:contact:add" },
+            { "menuId": 7032, "menuName": "Edit Contact", "parentId": 703, "orderNum": 2, "menuType": "F", "perms": "bp:contact:edit" },
+            { "menuId": 7033, "menuName": "Delete Contact", "parentId": 703, "orderNum": 3, "menuType": "F", "perms": "bp:contact:delete" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 8,
+      "menuName": "Boulevard",
+      "menuNameAr": "بوليفارد",
+      "parentId": 0,
+      "orderNum": 8,
+      "path": "boulevard",
+      "menuType": "M",
+      "perms": "",
+      "icon": "shop",
+      "children": [
+        {
+          "menuId": 800,
+          "menuName": "Locations",
+          "menuNameAr": "المواقع",
+          "parentId": 8,
+          "orderNum": 1,
+          "path": "locations",
+          "component": "boulevard/locations/index",
+          "menuType": "C",
+          "perms": "boulevard:location:list",
+          "icon": "location",
+          "children": [
+            { "menuId": 8001, "menuName": "View Location", "parentId": 800, "orderNum": 1, "menuType": "F", "perms": "boulevard:location:view" },
+            { "menuId": 8002, "menuName": "Sync Locations", "parentId": 800, "orderNum": 2, "menuType": "F", "perms": "boulevard:location:sync" }
+          ]
+        },
+        {
+          "menuId": 801,
+          "menuName": "Services",
+          "menuNameAr": "الخدمات",
+          "parentId": 8,
+          "orderNum": 2,
+          "path": "services",
+          "component": "boulevard/services/index",
+          "menuType": "C",
+          "perms": "boulevard:service:list",
+          "icon": "service",
+          "children": [
+            { "menuId": 8011, "menuName": "View Service", "parentId": 801, "orderNum": 1, "menuType": "F", "perms": "boulevard:service:view" },
+            { "menuId": 8012, "menuName": "Sync Services", "parentId": 801, "orderNum": 2, "menuType": "F", "perms": "boulevard:service:sync" }
+          ]
+        },
+        {
+          "menuId": 802,
+          "menuName": "Appointments",
+          "menuNameAr": "المواعيد",
+          "parentId": 8,
+          "orderNum": 3,
+          "path": "appointments",
+          "component": "boulevard/appointments/index",
+          "menuType": "C",
+          "perms": "boulevard:appointment:list",
+          "icon": "calendar",
+          "children": [
+            { "menuId": 8021, "menuName": "View Appointment", "parentId": 802, "orderNum": 1, "menuType": "F", "perms": "boulevard:appointment:view" },
+            { "menuId": 8022, "menuName": "Create Appointment", "parentId": 802, "orderNum": 2, "menuType": "F", "perms": "boulevard:appointment:create" },
+            { "menuId": 8023, "menuName": "Update Appointment", "parentId": 802, "orderNum": 3, "menuType": "F", "perms": "boulevard:appointment:update" },
+            { "menuId": 8024, "menuName": "Cancel Appointment", "parentId": 802, "orderNum": 4, "menuType": "F", "perms": "boulevard:appointment:cancel" },
+            { "menuId": 8025, "menuName": "Sync Appointments", "parentId": 802, "orderNum": 5, "menuType": "F", "perms": "boulevard:appointment:sync" }
+          ]
+        },
+        {
+          "menuId": 803,
+          "menuName": "Clients",
+          "menuNameAr": "العملاء",
+          "parentId": 8,
+          "orderNum": 4,
+          "path": "clients",
+          "component": "boulevard/clients/index",
+          "menuType": "C",
+          "perms": "boulevard:client:list",
+          "icon": "user",
+          "children": [
+            { "menuId": 8031, "menuName": "View Client", "parentId": 803, "orderNum": 1, "menuType": "F", "perms": "boulevard:client:view" },
+            { "menuId": 8032, "menuName": "Sync Clients", "parentId": 803, "orderNum": 2, "menuType": "F", "perms": "boulevard:client:sync" }
+          ]
+        },
+        {
+          "menuId": 804,
+          "menuName": "Staff",
+          "menuNameAr": "الموظفون",
+          "parentId": 8,
+          "orderNum": 5,
+          "path": "staff",
+          "component": "boulevard/staff/index",
+          "menuType": "C",
+          "perms": "boulevard:staff:list",
+          "icon": "peoples",
+          "children": [
+            { "menuId": 8041, "menuName": "View Staff", "parentId": 804, "orderNum": 1, "menuType": "F", "perms": "boulevard:staff:view" },
+            { "menuId": 8042, "menuName": "Sync Staff", "parentId": 804, "orderNum": 2, "menuType": "F", "perms": "boulevard:staff:sync" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 9,
+      "menuName": "AI Assistant",
+      "menuNameAr": "المساعد الذكي",
+      "parentId": 0,
+      "orderNum": 9,
+      "path": "ai",
+      "menuType": "M",
+      "perms": "",
+      "icon": "robot",
+      "children": [
+        {
+          "menuId": 900,
+          "menuName": "Chat",
+          "menuNameAr": "المحادثة",
+          "parentId": 9,
+          "orderNum": 1,
+          "path": "chat",
+          "component": "ai/chat/index",
+          "menuType": "C",
+          "perms": "ai:chat:access",
+          "icon": "message",
+          "children": [
+            { "menuId": 9001, "menuName": "Send Message", "parentId": 900, "orderNum": 1, "menuType": "F", "perms": "ai:chat:send" },
+            { "menuId": 9002, "menuName": "View History", "parentId": 900, "orderNum": 2, "menuType": "F", "perms": "ai:chat:history" }
+          ]
+        },
+        {
+          "menuId": 901,
+          "menuName": "Knowledge Base",
+          "menuNameAr": "قاعدة المعرفة",
+          "parentId": 9,
+          "orderNum": 2,
+          "path": "knowledge",
+          "component": "ai/knowledge/index",
+          "menuType": "C",
+          "perms": "ai:knowledge:list",
+          "icon": "book",
+          "children": [
+            { "menuId": 9011, "menuName": "Add Knowledge", "parentId": 901, "orderNum": 1, "menuType": "F", "perms": "ai:knowledge:add" },
+            { "menuId": 9012, "menuName": "Edit Knowledge", "parentId": 901, "orderNum": 2, "menuType": "F", "perms": "ai:knowledge:edit" },
+            { "menuId": 9013, "menuName": "Delete Knowledge", "parentId": 901, "orderNum": 3, "menuType": "F", "perms": "ai:knowledge:delete" }
+          ]
+        },
+        {
+          "menuId": 902,
+          "menuName": "AI Settings",
+          "menuNameAr": "إعدادات الذكاء",
+          "parentId": 9,
+          "orderNum": 3,
+          "path": "settings",
+          "component": "ai/settings/index",
+          "menuType": "C",
+          "perms": "ai:settings:view",
+          "icon": "setting",
+          "children": [
+            { "menuId": 9021, "menuName": "Update Settings", "parentId": 902, "orderNum": 1, "menuType": "F", "perms": "ai:settings:update" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 10,
+      "menuName": "Content",
+      "menuNameAr": "المحتوى",
+      "parentId": 0,
+      "orderNum": 10,
+      "path": "content",
+      "menuType": "M",
+      "perms": "",
+      "icon": "edit",
+      "children": [
+        {
+          "menuId": 1000,
+          "menuName": "Articles",
+          "menuNameAr": "المقالات",
+          "parentId": 10,
+          "orderNum": 1,
+          "path": "articles",
+          "component": "content/articles/index",
+          "menuType": "C",
+          "perms": "content:article:list",
+          "icon": "documentation",
+          "children": [
+            { "menuId": 10001, "menuName": "View Article", "parentId": 1000, "orderNum": 1, "menuType": "F", "perms": "content:article:view" },
+            { "menuId": 10002, "menuName": "Add Article", "parentId": 1000, "orderNum": 2, "menuType": "F", "perms": "content:article:add" },
+            { "menuId": 10003, "menuName": "Edit Article", "parentId": 1000, "orderNum": 3, "menuType": "F", "perms": "content:article:edit" },
+            { "menuId": 10004, "menuName": "Delete Article", "parentId": 1000, "orderNum": 4, "menuType": "F", "perms": "content:article:delete" },
+            { "menuId": 10005, "menuName": "Publish Article", "parentId": 1000, "orderNum": 5, "menuType": "F", "perms": "content:article:publish" }
+          ]
+        },
+        {
+          "menuId": 1001,
+          "menuName": "Categories",
+          "menuNameAr": "التصنيفات",
+          "parentId": 10,
+          "orderNum": 2,
+          "path": "categories",
+          "component": "content/categories/index",
+          "menuType": "C",
+          "perms": "content:category:list",
+          "icon": "tree",
+          "children": [
+            { "menuId": 10011, "menuName": "Add Category", "parentId": 1001, "orderNum": 1, "menuType": "F", "perms": "content:category:add" },
+            { "menuId": 10012, "menuName": "Edit Category", "parentId": 1001, "orderNum": 2, "menuType": "F", "perms": "content:category:edit" },
+            { "menuId": 10013, "menuName": "Delete Category", "parentId": 1001, "orderNum": 3, "menuType": "F", "perms": "content:category:delete" }
+          ]
+        },
+        {
+          "menuId": 1002,
+          "menuName": "Media",
+          "menuNameAr": "الوسائط",
+          "parentId": 10,
+          "orderNum": 3,
+          "path": "media",
+          "component": "content/media/index",
+          "menuType": "C",
+          "perms": "content:media:list",
+          "icon": "image",
+          "children": [
+            { "menuId": 10021, "menuName": "Upload Media", "parentId": 1002, "orderNum": 1, "menuType": "F", "perms": "content:media:upload" },
+            { "menuId": 10022, "menuName": "Delete Media", "parentId": 1002, "orderNum": 2, "menuType": "F", "perms": "content:media:delete" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 11,
+      "menuName": "Finance",
+      "menuNameAr": "المالية",
+      "parentId": 0,
+      "orderNum": 11,
+      "path": "finance",
+      "menuType": "M",
+      "perms": "",
+      "icon": "money",
+      "children": [
+        {
+          "menuId": 1100,
+          "menuName": "Accounts",
+          "menuNameAr": "الحسابات",
+          "parentId": 11,
+          "orderNum": 1,
+          "path": "accounts",
+          "component": "finance/accounts/index",
+          "menuType": "C",
+          "perms": "finance:account:list",
+          "icon": "wallet",
+          "children": [
+            { "menuId": 11001, "menuName": "View Account", "parentId": 1100, "orderNum": 1, "menuType": "F", "perms": "finance:account:view" },
+            { "menuId": 11002, "menuName": "Add Account", "parentId": 1100, "orderNum": 2, "menuType": "F", "perms": "finance:account:add" },
+            { "menuId": 11003, "menuName": "Edit Account", "parentId": 1100, "orderNum": 3, "menuType": "F", "perms": "finance:account:edit" },
+            { "menuId": 11004, "menuName": "Delete Account", "parentId": 1100, "orderNum": 4, "menuType": "F", "perms": "finance:account:delete" }
+          ]
+        },
+        {
+          "menuId": 1101,
+          "menuName": "Transactions",
+          "menuNameAr": "المعاملات",
+          "parentId": 11,
+          "orderNum": 2,
+          "path": "transactions",
+          "component": "finance/transactions/index",
+          "menuType": "C",
+          "perms": "finance:transaction:list",
+          "icon": "swap",
+          "children": [
+            { "menuId": 11011, "menuName": "View Transaction", "parentId": 1101, "orderNum": 1, "menuType": "F", "perms": "finance:transaction:view" },
+            { "menuId": 11012, "menuName": "Add Transaction", "parentId": 1101, "orderNum": 2, "menuType": "F", "perms": "finance:transaction:add" },
+            { "menuId": 11013, "menuName": "Edit Transaction", "parentId": 1101, "orderNum": 3, "menuType": "F", "perms": "finance:transaction:edit" },
+            { "menuId": 11014, "menuName": "Delete Transaction", "parentId": 1101, "orderNum": 4, "menuType": "F", "perms": "finance:transaction:delete" },
+            { "menuId": 11015, "menuName": "Approve Transaction", "parentId": 1101, "orderNum": 5, "menuType": "F", "perms": "finance:transaction:approve" },
+            { "menuId": 11016, "menuName": "Export Transactions", "parentId": 1101, "orderNum": 6, "menuType": "F", "perms": "finance:transaction:export" }
+          ]
+        },
+        {
+          "menuId": 1102,
+          "menuName": "Invoices",
+          "menuNameAr": "الفواتير",
+          "parentId": 11,
+          "orderNum": 3,
+          "path": "invoices",
+          "component": "finance/invoices/index",
+          "menuType": "C",
+          "perms": "finance:invoice:list",
+          "icon": "bill",
+          "children": [
+            { "menuId": 11021, "menuName": "View Invoice", "parentId": 1102, "orderNum": 1, "menuType": "F", "perms": "finance:invoice:view" },
+            { "menuId": 11022, "menuName": "Add Invoice", "parentId": 1102, "orderNum": 2, "menuType": "F", "perms": "finance:invoice:add" },
+            { "menuId": 11023, "menuName": "Edit Invoice", "parentId": 1102, "orderNum": 3, "menuType": "F", "perms": "finance:invoice:edit" },
+            { "menuId": 11024, "menuName": "Delete Invoice", "parentId": 1102, "orderNum": 4, "menuType": "F", "perms": "finance:invoice:delete" },
+            { "menuId": 11025, "menuName": "Send Invoice", "parentId": 1102, "orderNum": 5, "menuType": "F", "perms": "finance:invoice:send" },
+            { "menuId": 11026, "menuName": "Export Invoices", "parentId": 1102, "orderNum": 6, "menuType": "F", "perms": "finance:invoice:export" }
+          ]
+        },
+        {
+          "menuId": 1103,
+          "menuName": "Payments",
+          "menuNameAr": "المدفوعات",
+          "parentId": 11,
+          "orderNum": 4,
+          "path": "payments",
+          "component": "finance/payments/index",
+          "menuType": "C",
+          "perms": "finance:payment:list",
+          "icon": "money",
+          "children": [
+            { "menuId": 11031, "menuName": "View Payment", "parentId": 1103, "orderNum": 1, "menuType": "F", "perms": "finance:payment:view" },
+            { "menuId": 11032, "menuName": "Add Payment", "parentId": 1103, "orderNum": 2, "menuType": "F", "perms": "finance:payment:add" },
+            { "menuId": 11033, "menuName": "Refund Payment", "parentId": 1103, "orderNum": 3, "menuType": "F", "perms": "finance:payment:refund" },
+            { "menuId": 11034, "menuName": "Export Payments", "parentId": 1103, "orderNum": 4, "menuType": "F", "perms": "finance:payment:export" }
+          ]
+        },
+        {
+          "menuId": 1104,
+          "menuName": "Expenses",
+          "menuNameAr": "المصروفات",
+          "parentId": 11,
+          "orderNum": 5,
+          "path": "expenses",
+          "component": "finance/expenses/index",
+          "menuType": "C",
+          "perms": "finance:expense:list",
+          "icon": "expense",
+          "children": [
+            { "menuId": 11041, "menuName": "View Expense", "parentId": 1104, "orderNum": 1, "menuType": "F", "perms": "finance:expense:view" },
+            { "menuId": 11042, "menuName": "Add Expense", "parentId": 1104, "orderNum": 2, "menuType": "F", "perms": "finance:expense:add" },
+            { "menuId": 11043, "menuName": "Edit Expense", "parentId": 1104, "orderNum": 3, "menuType": "F", "perms": "finance:expense:edit" },
+            { "menuId": 11044, "menuName": "Delete Expense", "parentId": 1104, "orderNum": 4, "menuType": "F", "perms": "finance:expense:delete" },
+            { "menuId": 11045, "menuName": "Approve Expense", "parentId": 1104, "orderNum": 5, "menuType": "F", "perms": "finance:expense:approve" },
+            { "menuId": 11046, "menuName": "Export Expenses", "parentId": 1104, "orderNum": 6, "menuType": "F", "perms": "finance:expense:export" }
+          ]
+        },
+        {
+          "menuId": 1105,
+          "menuName": "Reports",
+          "menuNameAr": "التقارير",
+          "parentId": 11,
+          "orderNum": 6,
+          "path": "reports",
+          "component": "finance/reports/index",
+          "menuType": "C",
+          "perms": "finance:report:list",
+          "icon": "chart",
+          "children": [
+            { "menuId": 11051, "menuName": "View Report", "parentId": 1105, "orderNum": 1, "menuType": "F", "perms": "finance:report:view" },
+            { "menuId": 11052, "menuName": "Generate Report", "parentId": 1105, "orderNum": 2, "menuType": "F", "perms": "finance:report:generate" },
+            { "menuId": 11053, "menuName": "Export Report", "parentId": 1105, "orderNum": 3, "menuType": "F", "perms": "finance:report:export" }
+          ]
+        },
+        {
+          "menuId": 1106,
+          "menuName": "Budget",
+          "menuNameAr": "الميزانية",
+          "parentId": 11,
+          "orderNum": 7,
+          "path": "budget",
+          "component": "finance/budget/index",
+          "menuType": "C",
+          "perms": "finance:budget:list",
+          "icon": "calculator",
+          "children": [
+            { "menuId": 11061, "menuName": "View Budget", "parentId": 1106, "orderNum": 1, "menuType": "F", "perms": "finance:budget:view" },
+            { "menuId": 11062, "menuName": "Add Budget", "parentId": 1106, "orderNum": 2, "menuType": "F", "perms": "finance:budget:add" },
+            { "menuId": 11063, "menuName": "Edit Budget", "parentId": 1106, "orderNum": 3, "menuType": "F", "perms": "finance:budget:edit" },
+            { "menuId": 11064, "menuName": "Approve Budget", "parentId": 1106, "orderNum": 4, "menuType": "F", "perms": "finance:budget:approve" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 12,
+      "menuName": "ERP",
+      "menuNameAr": "تخطيط الموارد",
+      "parentId": 0,
+      "orderNum": 12,
+      "path": "erp",
+      "menuType": "M",
+      "perms": "",
+      "icon": "component",
+      "children": [
+        {
+          "menuId": 1200,
+          "menuName": "Products",
+          "menuNameAr": "المنتجات",
+          "parentId": 12,
+          "orderNum": 1,
+          "path": "products",
+          "component": "erp/products/index",
+          "menuType": "C",
+          "perms": "erp:product:list",
+          "icon": "shopping",
+          "children": [
+            { "menuId": 12001, "menuName": "View Product", "parentId": 1200, "orderNum": 1, "menuType": "F", "perms": "erp:product:view" },
+            { "menuId": 12002, "menuName": "Add Product", "parentId": 1200, "orderNum": 2, "menuType": "F", "perms": "erp:product:add" },
+            { "menuId": 12003, "menuName": "Edit Product", "parentId": 1200, "orderNum": 3, "menuType": "F", "perms": "erp:product:edit" },
+            { "menuId": 12004, "menuName": "Delete Product", "parentId": 1200, "orderNum": 4, "menuType": "F", "perms": "erp:product:delete" },
+            { "menuId": 12005, "menuName": "Export Products", "parentId": 1200, "orderNum": 5, "menuType": "F", "perms": "erp:product:export" }
+          ]
+        },
+        {
+          "menuId": 1201,
+          "menuName": "Inventory",
+          "menuNameAr": "المخزون",
+          "parentId": 12,
+          "orderNum": 2,
+          "path": "inventory",
+          "component": "erp/inventory/index",
+          "menuType": "C",
+          "perms": "erp:inventory:list",
+          "icon": "inventory",
+          "children": [
+            { "menuId": 12011, "menuName": "View Inventory", "parentId": 1201, "orderNum": 1, "menuType": "F", "perms": "erp:inventory:view" },
+            { "menuId": 12012, "menuName": "Adjust Inventory", "parentId": 1201, "orderNum": 2, "menuType": "F", "perms": "erp:inventory:adjust" },
+            { "menuId": 12013, "menuName": "Transfer Inventory", "parentId": 1201, "orderNum": 3, "menuType": "F", "perms": "erp:inventory:transfer" },
+            { "menuId": 12014, "menuName": "Stock Count", "parentId": 1201, "orderNum": 4, "menuType": "F", "perms": "erp:inventory:count" },
+            { "menuId": 12015, "menuName": "Export Inventory", "parentId": 1201, "orderNum": 5, "menuType": "F", "perms": "erp:inventory:export" }
+          ]
+        },
+        {
+          "menuId": 1202,
+          "menuName": "Purchase Orders",
+          "menuNameAr": "أوامر الشراء",
+          "parentId": 12,
+          "orderNum": 3,
+          "path": "purchase",
+          "component": "erp/purchase/index",
+          "menuType": "C",
+          "perms": "erp:purchase:list",
+          "icon": "shopping-cart",
+          "children": [
+            { "menuId": 12021, "menuName": "View Purchase", "parentId": 1202, "orderNum": 1, "menuType": "F", "perms": "erp:purchase:view" },
+            { "menuId": 12022, "menuName": "Add Purchase", "parentId": 1202, "orderNum": 2, "menuType": "F", "perms": "erp:purchase:add" },
+            { "menuId": 12023, "menuName": "Edit Purchase", "parentId": 1202, "orderNum": 3, "menuType": "F", "perms": "erp:purchase:edit" },
+            { "menuId": 12024, "menuName": "Delete Purchase", "parentId": 1202, "orderNum": 4, "menuType": "F", "perms": "erp:purchase:delete" },
+            { "menuId": 12025, "menuName": "Approve Purchase", "parentId": 1202, "orderNum": 5, "menuType": "F", "perms": "erp:purchase:approve" },
+            { "menuId": 12026, "menuName": "Receive Purchase", "parentId": 1202, "orderNum": 6, "menuType": "F", "perms": "erp:purchase:receive" }
+          ]
+        },
+        {
+          "menuId": 1203,
+          "menuName": "Sales Orders",
+          "menuNameAr": "أوامر البيع",
+          "parentId": 12,
+          "orderNum": 4,
+          "path": "sales",
+          "component": "erp/sales/index",
+          "menuType": "C",
+          "perms": "erp:sales:list",
+          "icon": "sell",
+          "children": [
+            { "menuId": 12031, "menuName": "View Sales", "parentId": 1203, "orderNum": 1, "menuType": "F", "perms": "erp:sales:view" },
+            { "menuId": 12032, "menuName": "Add Sales", "parentId": 1203, "orderNum": 2, "menuType": "F", "perms": "erp:sales:add" },
+            { "menuId": 12033, "menuName": "Edit Sales", "parentId": 1203, "orderNum": 3, "menuType": "F", "perms": "erp:sales:edit" },
+            { "menuId": 12034, "menuName": "Delete Sales", "parentId": 1203, "orderNum": 4, "menuType": "F", "perms": "erp:sales:delete" },
+            { "menuId": 12035, "menuName": "Fulfill Sales", "parentId": 1203, "orderNum": 5, "menuType": "F", "perms": "erp:sales:fulfill" }
+          ]
+        },
+        {
+          "menuId": 1204,
+          "menuName": "Warehouses",
+          "menuNameAr": "المستودعات",
+          "parentId": 12,
+          "orderNum": 5,
+          "path": "warehouses",
+          "component": "erp/warehouses/index",
+          "menuType": "C",
+          "perms": "erp:warehouse:list",
+          "icon": "warehouse",
+          "children": [
+            { "menuId": 12041, "menuName": "View Warehouse", "parentId": 1204, "orderNum": 1, "menuType": "F", "perms": "erp:warehouse:view" },
+            { "menuId": 12042, "menuName": "Add Warehouse", "parentId": 1204, "orderNum": 2, "menuType": "F", "perms": "erp:warehouse:add" },
+            { "menuId": 12043, "menuName": "Edit Warehouse", "parentId": 1204, "orderNum": 3, "menuType": "F", "perms": "erp:warehouse:edit" },
+            { "menuId": 12044, "menuName": "Delete Warehouse", "parentId": 1204, "orderNum": 4, "menuType": "F", "perms": "erp:warehouse:delete" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 50000,
+      "menuName": "Sales Management",
+      "menuNameAr": "إدارة المبيعات",
+      "parentId": 0,
+      "orderNum": 30,
+      "path": "sales",
+      "menuType": "M",
+      "icon": "shopping-bag",
+      "children": [
+        {
+          "menuId": 50100,
+          "menuName": "Leads Management",
+          "menuNameAr": "إدارة العملاء المحتملين",
+          "parentId": 50000,
+          "orderNum": 1,
+          "path": "leads",
+          "menuType": "C",
+          "perms": "sales:leads:list",
+          "icon": "target",
+          "children": [
+            { "menuId": 50101, "menuName": "Query Leads", "menuNameAr": "استعلام العملاء", "parentId": 50100, "orderNum": 1, "menuType": "F", "perms": "sales:leads:list" },
+            { "menuId": 50102, "menuName": "View Lead", "menuNameAr": "عرض العميل", "parentId": 50100, "orderNum": 2, "menuType": "F", "perms": "sales:leads:view" },
+            { "menuId": 50103, "menuName": "Edit Lead", "menuNameAr": "تعديل العميل", "parentId": 50100, "orderNum": 3, "menuType": "F", "perms": "sales:leads:edit" }
+          ]
+        },
+        {
+          "menuId": 50200,
+          "menuName": "Deals Management",
+          "menuNameAr": "إدارة الصفقات",
+          "parentId": 50000,
+          "orderNum": 2,
+          "path": "deals",
+          "menuType": "C",
+          "perms": "sales:deals:list",
+          "icon": "handshake",
+          "children": [
+            { "menuId": 50201, "menuName": "Query Deals", "menuNameAr": "استعلام الصفقات", "parentId": 50200, "orderNum": 1, "menuType": "F", "perms": "sales:deals:list" },
+            { "menuId": 50202, "menuName": "View Deal", "menuNameAr": "عرض الصفقة", "parentId": 50200, "orderNum": 2, "menuType": "F", "perms": "sales:deals:view" },
+            { "menuId": 50203, "menuName": "Add Deal", "menuNameAr": "إضافة صفقة", "parentId": 50200, "orderNum": 3, "menuType": "F", "perms": "sales:deals:add" },
+            { "menuId": 50204, "menuName": "Edit Deal", "menuNameAr": "تعديل الصفقة", "parentId": 50200, "orderNum": 4, "menuType": "F", "perms": "sales:deals:edit" },
+            { "menuId": 50205, "menuName": "Delete Deal", "menuNameAr": "حذف الصفقة", "parentId": 50200, "orderNum": 5, "menuType": "F", "perms": "sales:deals:delete" }
+          ]
+        },
+        {
+          "menuId": 50300,
+          "menuName": "Sales Visits",
+          "menuNameAr": "زيارات المبيعات",
+          "parentId": 50000,
+          "orderNum": 3,
+          "path": "visits",
+          "menuType": "C",
+          "perms": "sales:visits:list",
+          "icon": "map-pin",
+          "children": [
+            { "menuId": 50301, "menuName": "Query Visits", "menuNameAr": "استعلام الزيارات", "parentId": 50300, "orderNum": 1, "menuType": "F", "perms": "sales:visits:list" },
+            { "menuId": 50302, "menuName": "Add Visit", "menuNameAr": "إضافة زيارة", "parentId": 50300, "orderNum": 2, "menuType": "F", "perms": "sales:visits:add" }
+          ]
+        },
+        {
+          "menuId": 50400,
+          "menuName": "Sales Dashboard",
+          "menuNameAr": "لوحة المبيعات",
+          "parentId": 50000,
+          "orderNum": 4,
+          "path": "dashboard",
+          "menuType": "C",
+          "perms": "sales:dashboard:view",
+          "icon": "chart-bar",
+          "children": [
+            { "menuId": 50401, "menuName": "View Dashboard", "menuNameAr": "عرض اللوحة", "parentId": 50400, "orderNum": 1, "menuType": "F", "perms": "sales:dashboard:view" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 51000,
+      "menuName": "Operations Management",
+      "menuNameAr": "إدارة العمليات",
+      "parentId": 0,
+      "orderNum": 31,
+      "path": "operations",
+      "menuType": "M",
+      "icon": "gear",
+      "children": [
+        {
+          "menuId": 51100,
+          "menuName": "Site Visits",
+          "menuNameAr": "الزيارات الميدانية",
+          "parentId": 51000,
+          "orderNum": 1,
+          "path": "visits",
+          "menuType": "C",
+          "perms": "operations:visits:list",
+          "icon": "map-pin",
+          "children": [
+            { "menuId": 51101, "menuName": "Query Visits", "menuNameAr": "استعلام الزيارات", "parentId": 51100, "orderNum": 1, "menuType": "F", "perms": "operations:visits:list" },
+            { "menuId": 51102, "menuName": "View Visit", "menuNameAr": "عرض الزيارة", "parentId": 51100, "orderNum": 2, "menuType": "F", "perms": "operations:visits:view" },
+            { "menuId": 51103, "menuName": "Add Visit", "menuNameAr": "إضافة زيارة", "parentId": 51100, "orderNum": 3, "menuType": "F", "perms": "operations:visits:add" },
+            { "menuId": 51104, "menuName": "Edit Visit", "menuNameAr": "تعديل الزيارة", "parentId": 51100, "orderNum": 4, "menuType": "F", "perms": "operations:visits:edit" },
+            { "menuId": 51105, "menuName": "Delete Visit", "menuNameAr": "حذف الزيارة", "parentId": 51100, "orderNum": 5, "menuType": "F", "perms": "operations:visits:delete" }
+          ]
+        },
+        {
+          "menuId": 51200,
+          "menuName": "Tickets",
+          "menuNameAr": "التذاكر",
+          "parentId": 51000,
+          "orderNum": 2,
+          "path": "tickets",
+          "menuType": "C",
+          "perms": "operations:tickets:list",
+          "icon": "file-text",
+          "children": [
+            { "menuId": 51201, "menuName": "Query Tickets", "menuNameAr": "استعلام التذاكر", "parentId": 51200, "orderNum": 1, "menuType": "F", "perms": "operations:tickets:list" },
+            { "menuId": 51202, "menuName": "View Ticket", "menuNameAr": "عرض التذكرة", "parentId": 51200, "orderNum": 2, "menuType": "F", "perms": "operations:tickets:view" },
+            { "menuId": 51203, "menuName": "Add Ticket", "menuNameAr": "إضافة تذكرة", "parentId": 51200, "orderNum": 3, "menuType": "F", "perms": "operations:tickets:add" },
+            { "menuId": 51204, "menuName": "Edit Ticket", "menuNameAr": "تعديل التذكرة", "parentId": 51200, "orderNum": 4, "menuType": "F", "perms": "operations:tickets:edit" },
+            { "menuId": 51205, "menuName": "Delete Ticket", "menuNameAr": "حذف التذكرة", "parentId": 51200, "orderNum": 5, "menuType": "F", "perms": "operations:tickets:delete" }
+          ]
+        },
+        {
+          "menuId": 51300,
+          "menuName": "Operations Leads",
+          "menuNameAr": "العملاء المحتملين للعمليات",
+          "parentId": 51000,
+          "orderNum": 3,
+          "path": "leads",
+          "menuType": "C",
+          "perms": "operations:leads:list",
+          "icon": "target",
+          "children": [
+            { "menuId": 51301, "menuName": "Query Leads", "menuNameAr": "استعلام العملاء", "parentId": 51300, "orderNum": 1, "menuType": "F", "perms": "operations:leads:list" },
+            { "menuId": 51302, "menuName": "View Lead", "menuNameAr": "عرض العميل", "parentId": 51300, "orderNum": 2, "menuType": "F", "perms": "operations:leads:view" }
+          ]
+        }
+      ]
+    },
+    {
+      "menuId": 52000,
+      "menuName": "Contracts Management",
+      "menuNameAr": "إدارة العقود",
+      "parentId": 0,
+      "orderNum": 32,
+      "path": "contracts",
+      "menuType": "M",
+      "icon": "file-text",
+      "children": [
+        {
+          "menuId": 52100,
+          "menuName": "Contracts List",
+          "menuNameAr": "قائمة العقود",
+          "parentId": 52000,
+          "orderNum": 1,
+          "path": "list",
+          "menuType": "C",
+          "perms": "contracts:contract:list",
+          "icon": "file-text",
+          "children": [
+            { "menuId": 52101, "menuName": "Query Contracts", "menuNameAr": "استعلام العقود", "parentId": 52100, "orderNum": 1, "menuType": "F", "perms": "contracts:contract:list" },
+            { "menuId": 52102, "menuName": "View Contract", "menuNameAr": "عرض العقد", "parentId": 52100, "orderNum": 2, "menuType": "F", "perms": "contracts:contract:view" },
+            { "menuId": 52103, "menuName": "Add Contract", "menuNameAr": "إضافة عقد", "parentId": 52100, "orderNum": 3, "menuType": "F", "perms": "contracts:contract:add" },
+            { "menuId": 52104, "menuName": "Edit Contract", "menuNameAr": "تعديل العقد", "parentId": 52100, "orderNum": 4, "menuType": "F", "perms": "contracts:contract:edit" },
+            { "menuId": 52105, "menuName": "Delete Contract", "menuNameAr": "حذف العقد", "parentId": 52100, "orderNum": 5, "menuType": "F", "perms": "contracts:contract:delete" }
+          ]
+        }
+      ]
+    }
+  ]
+}

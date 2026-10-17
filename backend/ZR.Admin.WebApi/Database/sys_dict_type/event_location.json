@@ -1,0 +1,7 @@
+{
+  "dictType": "event_location",
+  "dictName": "مواقع الفعاليات - Event Locations",
+  "status": "0",
+  "remark": "Generated from EventLocation table - SELECT locationid AS dictValue, CONCAT(locationid, ' - ', locationname, ' - ', city) AS dictLabel, address AS remark FROM event_locations",
+  "createBy": "system"
+}

@@ -1,0 +1,7 @@
+{
+  "dictType": "gate_type",
+  "dictName": "أنواع البوابات - Gate Types",
+  "status": "0",
+  "remark": "Generated from EventGateType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM event_gate_types",
+  "createBy": "system"
+}

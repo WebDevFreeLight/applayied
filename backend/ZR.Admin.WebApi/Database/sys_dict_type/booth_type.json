@@ -1,0 +1,7 @@
+{
+  "dictType": "booth_type",
+  "dictName": "أنواع الأكشاك - Booth Types",
+  "status": "0",
+  "remark": "Generated from BoothType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM booth_types",
+  "createBy": "system"
+}

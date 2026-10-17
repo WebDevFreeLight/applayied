@@ -1,0 +1,68 @@
+[
+  {
+    "TypeId": 1,
+    "typeCode": "conference",
+    "typeName": "Conference",
+    "typeNameAr": "مؤتمر",
+    "description": "Professional conferences and seminars",
+    "icon": "🎤",
+    "colorCode": "#3498db",
+    "displayOrder": 1,
+    "isActive": "0"
+  },
+  {
+    "TypeId": 2,
+    "typeCode": "exhibition",
+    "typeName": "Exhibition",
+    "typeNameAr": "معرض",
+    "description": "Trade exhibitions and expos",
+    "icon": "🏪",
+    "colorCode": "#2ecc71",
+    "displayOrder": 2,
+    "isActive": "0"
+  },
+  {
+    "TypeId": 3,
+    "typeCode": "festival",
+    "typeName": "Festival",
+    "typeNameAr": "مهرجان",
+    "description": "Festivals and celebrations",
+    "icon": "🎉",
+    "colorCode": "#e74c3c",
+    "displayOrder": 3,
+    "isActive": "0"
+  },
+  {
+    "TypeId": 4,
+    "typeCode": "concert",
+    "typeName": "Concert",
+    "typeNameAr": "حفل موسيقي",
+    "description": "Musical concerts and performances",
+    "icon": "🎵",
+    "colorCode": "#9b59b6",
+    "displayOrder": 4,
+    "isActive": "0"
+  },
+  {
+    "TypeId": 5,
+    "typeCode": "sports",
+    "typeName": "Sports Event",
+    "typeNameAr": "حدث رياضي",
+    "description": "Sports events and tournaments",
+    "icon": "⚽",
+    "colorCode": "#f39c12",
+    "displayOrder": 5,
+    "isActive": "0"
+  },
+  {
+    "TypeId": 6,
+    "typeCode": "workshop",
+    "typeName": "Workshop",
+    "typeNameAr": "ورشة عمل",
+    "description": "Training workshops and courses",
+    "icon": "📚",
+    "colorCode": "#1abc9c",
+    "displayOrder": 6,
+    "isActive": "0"
+  }
+]

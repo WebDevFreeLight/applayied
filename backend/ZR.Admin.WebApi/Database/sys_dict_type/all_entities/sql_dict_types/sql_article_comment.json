@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_article_comment",
+  "dictName": "Article Comment - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from article_comment table (ZR.Model.Content)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM article_comment"
+}

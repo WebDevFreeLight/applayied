@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_banner_config",
+  "dictName": "Banner Config - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from banner_config table (ZR.Model.Public)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM banner_config"
+}

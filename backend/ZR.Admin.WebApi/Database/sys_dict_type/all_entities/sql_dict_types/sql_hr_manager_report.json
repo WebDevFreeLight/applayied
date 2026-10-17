@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_manager_report",
+  "dictName": "Hr Manager Dashboard - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_manager_report table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_manager_report"
+}

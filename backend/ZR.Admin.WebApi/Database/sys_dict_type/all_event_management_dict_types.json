@@ -1,0 +1,86 @@
+[
+  {
+    "dictType": "event_type",
+    "dictName": "أنواع الفعاليات - Event Types",
+    "status": "0",
+    "remark": "Generated from EventType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM event_types",
+    "createBy": "system"
+  },
+  {
+    "dictType": "zone_type",
+    "dictName": "أنواع المناطق - Zone Types",
+    "status": "0",
+    "remark": "Generated from EventZoneType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM event_zone_types",
+    "createBy": "system"
+  },
+  {
+    "dictType": "gate_type",
+    "dictName": "أنواع البوابات - Gate Types",
+    "status": "0",
+    "remark": "Generated from EventGateType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM event_gate_types",
+    "createBy": "system"
+  },
+  {
+    "dictType": "visitor_type",
+    "dictName": "أنواع الزوار - Visitor Types",
+    "status": "0",
+    "remark": "Generated from VisitorType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM visitor_types",
+    "createBy": "system"
+  },
+  {
+    "dictType": "ticket_type",
+    "dictName": "أنواع التذاكر - Ticket Types",
+    "status": "0",
+    "remark": "Generated from TicketType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM ticket_types",
+    "createBy": "system"
+  },
+  {
+    "dictType": "permit_type",
+    "dictName": "أنواع التصاريح - Permit Types",
+    "status": "0",
+    "remark": "Generated from PermitType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM permit_types",
+    "createBy": "system"
+  },
+  {
+    "dictType": "booth_type",
+    "dictName": "أنواع الأكشاك - Booth Types",
+    "status": "0",
+    "remark": "Generated from BoothType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM booth_types",
+    "createBy": "system"
+  },
+  {
+    "dictType": "incident_type",
+    "dictName": "أنواع الحوادث - Incident Types",
+    "status": "0",
+    "remark": "Generated from IncidentType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM incident_types",
+    "createBy": "system"
+  },
+  {
+    "dictType": "payment_method",
+    "dictName": "طرق الدفع - Payment Methods",
+    "status": "0",
+    "remark": "Generated from PaymentMethod table - SELECT methodcode AS dictValue, CONCAT(methodcode, ' - ', methodname, ' - ', methodnamear) AS dictLabel, remark FROM payment_methods",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_status",
+    "dictName": "حالات الفعاليات - Event Status",
+    "status": "0",
+    "remark": "Generated from EventStatus table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM event_status",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_location",
+    "dictName": "مواقع الفعاليات - Event Locations",
+    "status": "0",
+    "remark": "Generated from EventLocation table - SELECT locationid AS dictValue, CONCAT(locationid, ' - ', locationname, ' - ', city) AS dictLabel, address AS remark FROM event_locations",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_employee",
+    "dictName": "الموظفين - Employees",
+    "status": "0",
+    "remark": "Generated from HrEmployee table - SELECT employeeid AS dictValue, CONCAT(firstname, ' ', lastname, ' ', namear) AS dictLabel, remark FROM hr_employee",
+    "createBy": "system"
+  }
+]

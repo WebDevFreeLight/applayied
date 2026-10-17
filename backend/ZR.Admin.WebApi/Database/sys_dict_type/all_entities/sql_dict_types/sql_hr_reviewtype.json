@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_reviewtype",
+  "dictName": "Hr Reviewtype - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_reviewtype table (ZR.Model.Business)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_reviewtype"
+}

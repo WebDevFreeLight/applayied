@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_insurance_enrollment_status",
+  "dictName": "Hr Insurance Enrollment Status - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_insurance_enrollment_status table (ZR.Model.Hr)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_insurance_enrollment_status"
+}

@@ -1,0 +1,88 @@
+using System;
+using Microsoft.AspNetCore.Mvc;
+using ZR.Admin.WebApi.Filters;
+using ZR.Model.PMO;
+using ZR.Model.PMO.Dto;
+using ZR.Service.PMO.IPmoService;
+
+namespace ZR.Admin.WebApi.Controllers.PMO
+{
+    /// <summary>
+    /// Financial management — budgets/revisions, cost transactions, forecasts, summary and drill-down.
+    /// Finance is a Project-Manager/Administrator domain; Contributors are refused at the route (403).
+    /// </summary>
+    [Route("pmo/finance")]
+    [ApiExplorerSettings(GroupName = "pmo")]
+    public class PmoFinanceController : PmoBaseController
+    {
+        private readonly IPmoFinanceService _finance;
+        public PmoFinanceController(IPmoFinanceService finance) => _finance = finance;
+
+        /// <summary>Derived financial summary for a project at an optional reporting cutoff.</summary>
+        [HttpGet("summary/{projectId}")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        public IActionResult Summary(long projectId, [FromQuery] DateTime? cutoff)
+            => SUCCESS(_finance.GetProjectSummary(projectId, cutoff, CurrentActor));
+
+        // ---- Cost transactions ----
+        [HttpGet("transactions")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        public IActionResult Transactions([FromQuery] PmoCostTransactionQueryDto parm)
+            => SUCCESS(_finance.GetTransactions(parm, CurrentActor));
+
+        [HttpPost("transactions")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [Log(Title = "PMO Cost Transaction", BusinessType = BusinessType.INSERT)]
+        public IActionResult AddTransaction([FromBody] PmoCostTransactionInputDto dto)
+            => SUCCESS(_finance.AddTransaction(dto, CurrentActor));
+
+        [HttpPut("transactions")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [Log(Title = "PMO Cost Transaction", BusinessType = BusinessType.UPDATE)]
+        public IActionResult UpdateTransaction([FromBody] PmoCostTransactionInputDto dto)
+            => ToResponse(_finance.UpdateTransaction(dto, CurrentActor));
+
+        /// <summary>Post a draft cost (atomic with its audit event). Updates spend/remaining/utilization.</summary>
+        [HttpPost("transactions/{transactionId}/post")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [Log(Title = "PMO Cost Transaction Post", BusinessType = BusinessType.UPDATE)]
+        public IActionResult PostTransaction(long transactionId)
+            => SUCCESS(_finance.PostTransaction(transactionId, CurrentActor));
+
+        // ---- Budget revisions ----
+        [HttpGet("revisions")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        public IActionResult Revisions([FromQuery] PmoBudgetRevisionQueryDto parm)
+            => SUCCESS(_finance.GetRevisions(parm, CurrentActor));
+
+        [HttpPost("revisions")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [Log(Title = "PMO Budget Revision", BusinessType = BusinessType.INSERT)]
+        public IActionResult AddRevision([FromBody] PmoBudgetRevisionInputDto dto)
+            => SUCCESS(_finance.AddRevision(dto, CurrentActor));
+
+        [HttpPost("revisions/decision")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [Log(Title = "PMO Budget Revision Decision", BusinessType = BusinessType.UPDATE)]
+        public IActionResult DecideRevision([FromBody] PmoBudgetRevisionDecisionDto dto)
+            => SUCCESS(_finance.DecideRevision(dto, CurrentActor));
+
+        // ---- Forecasts ----
+        [HttpGet("forecasts/{projectId}")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        public IActionResult Forecasts(long projectId) => SUCCESS(_finance.GetForecasts(projectId));
+
+        [HttpPost("forecasts")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [Log(Title = "PMO Forecast", BusinessType = BusinessType.UPDATE)]
+        public IActionResult UpsertForecast([FromBody] PmoForecastInputDto dto)
+            => SUCCESS(_finance.UpsertForecast(dto, CurrentActor));
+
+        // ---- Drill-down (finance KPI -> underlying posted transactions) ----
+        [HttpGet("drilldown")]
+        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        public IActionResult Drilldown([FromQuery] long? projectId, [FromQuery] long? categoryId,
+            [FromQuery] string period, [FromQuery] DateTime? cutoff)
+            => SUCCESS(_finance.GetTransactionDrilldown(projectId, categoryId, period, cutoff));
+    }
+}

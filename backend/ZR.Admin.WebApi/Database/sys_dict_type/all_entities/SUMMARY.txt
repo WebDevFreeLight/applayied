@@ -1,0 +1,21 @@
+=== Entity Count by Module ===
+
+AI Module:
+4
+Boulevard Module:
+6
+Event Management:
+23
+HR Module:
+38
+System Module:
+22
+Business Partner:
+8
+Article/Content:
+7
+Organizations:
+2
+
+Total JSON Files:
+121

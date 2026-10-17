@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_article_userCircles",
+  "dictName": "Article User Circles - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from article_userCircles table (ZR.Model.Content)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM article_userCircles"
+}

@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_event_ticket_types",
+  "dictName": "Ticket Type - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from event_ticket_types table (ZR.Model.EventManagement)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM event_ticket_types"
+}

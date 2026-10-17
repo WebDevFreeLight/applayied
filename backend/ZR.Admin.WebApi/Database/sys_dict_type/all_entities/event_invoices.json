@@ -1,0 +1,7 @@
+{
+  "dictType": "event_invoices",
+  "dictName": "Event Invoice - event_invoices",
+  "status": "0",
+  "remark": "Generated from EventInvoice table (ZR.Model.EventManagement)",
+  "createBy": "system"
+}

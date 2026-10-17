@@ -1,0 +1,7 @@
+{
+  "dictType": "permit_type",
+  "dictName": "أنواع التصاريح - Permit Types",
+  "status": "0",
+  "remark": "Generated from PermitType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM permit_types",
+  "createBy": "system"
+}

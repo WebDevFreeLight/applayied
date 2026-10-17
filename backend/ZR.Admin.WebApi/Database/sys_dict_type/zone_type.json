@@ -1,0 +1,7 @@
+{
+  "dictType": "zone_type",
+  "dictName": "أنواع المناطق - Zone Types",
+  "status": "0",
+  "remark": "Generated from EventZoneType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM event_zone_types",
+  "createBy": "system"
+}

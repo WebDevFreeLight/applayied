@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "name": "المنطقة الشمالية - North Zone",
+    "imageFile": "/images/zones/north_zone.jpg",
+    "remark": "المنطقة الشمالية من البوليفار",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 2,
+    "name": "المنطقة الجنوبية - South Zone",
+    "imageFile": "/images/zones/south_zone.jpg",
+    "remark": "المنطقة الجنوبية من البوليفار",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 3,
+    "name": "المنطقة الشرقية - East Zone",
+    "imageFile": "/images/zones/east_zone.jpg",
+    "remark": "المنطقة الشرقية من البوليفار",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 4,
+    "name": "المنطقة الغربية - West Zone",
+    "imageFile": "/images/zones/west_zone.jpg",
+    "remark": "المنطقة الغربية من البوليفار",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 5,
+    "name": "المنطقة الوسطى - Central Zone",
+    "imageFile": "/images/zones/central_zone.jpg",
+    "remark": "المنطقة الوسطى من البوليفار",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 6,
+    "name": "منطقة الطعام والشراب - F&B Zone",
+    "imageFile": "/images/zones/food_beverage_zone.jpg",
+    "remark": "منطقة المطاعم والكافيهات",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 7,
+    "name": "منطقة الترفيه - Entertainment Zone",
+    "imageFile": "/images/zones/entertainment_zone.jpg",
+    "remark": "منطقة الترفيه والألعاب",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 8,
+    "name": "منطقة الإلكترونيات - Tech Zone",
+    "imageFile": "/images/zones/tech_zone.jpg",
+    "remark": "منطقة الأجهزة الإلكترونية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  }
+]

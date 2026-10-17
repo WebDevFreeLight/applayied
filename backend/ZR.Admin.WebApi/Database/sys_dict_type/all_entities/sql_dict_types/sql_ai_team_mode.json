@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_ai_team_mode",
+  "dictName": "Ai Team Mode - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from ai_team_mode table (ZR.Model.AI)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM ai_team_mode"
+}

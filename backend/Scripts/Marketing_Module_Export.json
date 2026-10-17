@@ -1,0 +1,281 @@
+{
+  "exportDate": "2026-01-07",
+  "moduleName": "Marketing",
+  "version": "1.0",
+
+  "permissions": [
+    {
+      "code": "marketing:leads:list",
+      "name": "View Leads List",
+      "nameAr": "عرض قائمة العملاء المحتملين",
+      "description": "Permission to view leads list. Admin sees all, non-admin sees only assigned leads.",
+      "menuId": 9001
+    },
+    {
+      "code": "marketing:leads:view",
+      "name": "View Lead Details",
+      "nameAr": "عرض تفاصيل العميل المحتمل",
+      "description": "Permission to view individual lead details",
+      "menuId": 9002
+    },
+    {
+      "code": "marketing:leads:add",
+      "name": "Add Lead",
+      "nameAr": "إضافة عميل محتمل",
+      "description": "Permission to create new leads. Non-admin users are auto-assigned.",
+      "menuId": 9003
+    },
+    {
+      "code": "marketing:leads:edit",
+      "name": "Edit Lead",
+      "nameAr": "تعديل العميل المحتمل",
+      "description": "Permission to edit lead information and change status",
+      "menuId": 9004
+    },
+    {
+      "code": "marketing:leads:delete",
+      "name": "Delete Lead",
+      "nameAr": "حذف العميل المحتمل",
+      "description": "Permission to delete leads",
+      "menuId": 9005
+    },
+    {
+      "code": "marketing:leads:export",
+      "name": "Export Leads",
+      "nameAr": "تصدير العملاء المحتملين",
+      "description": "Permission to export leads to Excel",
+      "menuId": 9006
+    },
+    {
+      "code": "marketing:leads:import",
+      "name": "Import Leads",
+      "nameAr": "استيراد العملاء المحتملين",
+      "description": "Permission to import leads from Excel",
+      "menuId": 9007
+    },
+    {
+      "code": "marketing:activities:list",
+      "name": "View Activities List",
+      "nameAr": "عرض قائمة الأنشطة",
+      "description": "Permission to view lead activities list",
+      "menuId": 9010
+    },
+    {
+      "code": "marketing:activities:view",
+      "name": "View Activity Details",
+      "nameAr": "عرض تفاصيل النشاط",
+      "description": "Permission to view activity details",
+      "menuId": 9011
+    },
+    {
+      "code": "marketing:activities:add",
+      "name": "Add Activity",
+      "nameAr": "إضافة نشاط",
+      "description": "Permission to create new activities",
+      "menuId": 9012
+    },
+    {
+      "code": "marketing:activities:delete",
+      "name": "Delete Activity",
+      "nameAr": "حذف النشاط",
+      "description": "Permission to delete activities",
+      "menuId": 9013
+    },
+    {
+      "code": "marketing:activities:stats",
+      "name": "View Activity Statistics",
+      "nameAr": "عرض إحصائيات الأنشطة",
+      "description": "Permission to view activity statistics",
+      "menuId": 9014
+    },
+    {
+      "code": "marketing:assignments:list",
+      "name": "View Assignment History",
+      "nameAr": "عرض سجل التعيينات",
+      "description": "Permission to view lead assignment history",
+      "menuId": 9020
+    },
+    {
+      "code": "marketing:assignments:view",
+      "name": "View Assignment Details",
+      "nameAr": "عرض تفاصيل التعيين",
+      "description": "Permission to view assignment details",
+      "menuId": 9021
+    },
+    {
+      "code": "marketing:assignments:assign",
+      "name": "Assign Leads",
+      "nameAr": "تعيين العملاء المحتملين",
+      "description": "Permission to assign/reassign leads to employees",
+      "menuId": 9022
+    },
+    {
+      "code": "marketing:assignments:stats",
+      "name": "View Assignment Statistics",
+      "nameAr": "عرض إحصائيات التعيينات",
+      "description": "Permission to view assignment statistics",
+      "menuId": 9023
+    },
+    {
+      "code": "marketing:employees:list",
+      "name": "View Marketing Team",
+      "nameAr": "عرض فريق التسويق",
+      "description": "Permission to view marketing team members",
+      "menuId": 9030
+    },
+    {
+      "code": "marketing:employees:query",
+      "name": "View Employee Details",
+      "nameAr": "عرض تفاصيل الموظف",
+      "description": "Permission to view employee details and KPIs",
+      "menuId": 9031
+    }
+  ],
+
+  "roles": [
+    {
+      "roleId": 100,
+      "roleKey": "marketing_staff",
+      "roleName": "Marketing Staff",
+      "roleNameAr": "موظف التسويق",
+      "description": "Basic marketing role - can view and manage own leads only",
+      "permissions": [
+        "marketing:leads:list",
+        "marketing:leads:view",
+        "marketing:leads:add",
+        "marketing:leads:edit",
+        "marketing:activities:list",
+        "marketing:activities:view",
+        "marketing:activities:add",
+        "marketing:employees:list",
+        "marketing:employees:query"
+      ]
+    },
+    {
+      "roleId": 101,
+      "roleKey": "marketing_manager",
+      "roleName": "Marketing Manager",
+      "roleNameAr": "مدير التسويق",
+      "description": "Full marketing access - can view all leads and manage team",
+      "permissions": [
+        "marketing:leads:list",
+        "marketing:leads:view",
+        "marketing:leads:add",
+        "marketing:leads:edit",
+        "marketing:leads:delete",
+        "marketing:leads:export",
+        "marketing:leads:import",
+        "marketing:activities:list",
+        "marketing:activities:view",
+        "marketing:activities:add",
+        "marketing:activities:delete",
+        "marketing:activities:stats",
+        "marketing:assignments:list",
+        "marketing:assignments:view",
+        "marketing:assignments:assign",
+        "marketing:assignments:stats",
+        "marketing:employees:list",
+        "marketing:employees:query"
+      ]
+    }
+  ],
+
+  "apiEndpoints": [
+    {
+      "method": "GET",
+      "path": "/api/marketing/leads/list",
+      "permission": "marketing:leads:list",
+      "description": "Get paginated leads list (filtered by role)",
+      "roleBasedFiltering": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/marketing/leads/{leadId}",
+      "permission": "marketing:leads:view",
+      "description": "Get single lead details"
+    },
+    {
+      "method": "POST",
+      "path": "/api/marketing/leads/add",
+      "permission": "marketing:leads:add",
+      "description": "Create new lead (auto-assigns for non-admin)"
+    },
+    {
+      "method": "POST",
+      "path": "/api/marketing/leads/update",
+      "permission": "marketing:leads:edit",
+      "description": "Update lead information"
+    },
+    {
+      "method": "POST",
+      "path": "/api/marketing/leads/update-status",
+      "permission": "marketing:leads:edit",
+      "description": "Update lead status with notes"
+    },
+    {
+      "method": "POST",
+      "path": "/api/marketing/leads/delete",
+      "permission": "marketing:leads:delete",
+      "description": "Delete leads"
+    },
+    {
+      "method": "GET",
+      "path": "/api/marketing/leads/export",
+      "permission": "marketing:leads:export",
+      "description": "Export leads to Excel"
+    },
+    {
+      "method": "POST",
+      "path": "/api/marketing/leads/import",
+      "permission": "marketing:leads:import",
+      "description": "Import leads from Excel"
+    },
+    {
+      "method": "GET",
+      "path": "/api/marketing/employees",
+      "permission": "marketing:employees:list",
+      "description": "Get marketing team members"
+    },
+    {
+      "method": "GET",
+      "path": "/api/marketing/employees/{id}",
+      "permission": "marketing:employees:query",
+      "description": "Get employee details"
+    },
+    {
+      "method": "GET",
+      "path": "/api/marketing/employees/{id}/kpis",
+      "permission": "marketing:employees:query",
+      "description": "Get employee KPIs"
+    }
+  ],
+
+  "dataFilteringRules": {
+    "adminUsers": {
+      "description": "Users with 'admin' role key or userId=1",
+      "dataAccess": "ALL leads in the system",
+      "canAssignToOthers": true
+    },
+    "nonAdminUsers": {
+      "description": "Users without admin role",
+      "dataAccess": "Only leads assigned to their employee profile",
+      "autoAssignment": "New leads created by non-admin are auto-assigned to their employee ID",
+      "employeeLinking": "User is linked to employee via matching email or phone number"
+    }
+  },
+
+  "troubleshooting": {
+    "403Error": {
+      "cause": "User doesn't have the required permission",
+      "solution": "1. Check if permission exists in sys_menu\n2. Check if role has the permission in sys_role_menu\n3. Check if user has the role in sys_user_role\n4. Clear permission cache (GlobalConstant.UserPermKEY + userId)"
+    },
+    "emptyLeadsList": {
+      "cause": "Non-admin user with no employee profile",
+      "solution": "1. Ensure user email/phone matches an employee in hr_employee_core\n2. Or manually link user to employee"
+    },
+    "modalPermissionDenied": {
+      "cause": "Missing specific action permission",
+      "solution": "Add the required permission (e.g., marketing:leads:add) to user's role"
+    }
+  }
+}

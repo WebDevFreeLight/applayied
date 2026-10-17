@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_event_tenants",
+  "dictName": "Event Tenant - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from event_tenants table (ZR.Model.EventManagement)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM event_tenants"
+}

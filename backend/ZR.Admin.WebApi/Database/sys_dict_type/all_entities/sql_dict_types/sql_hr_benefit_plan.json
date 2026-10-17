@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_benefit_plan",
+  "dictName": "Hr Benefit Plan - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_benefit_plan table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_benefit_plan"
+}

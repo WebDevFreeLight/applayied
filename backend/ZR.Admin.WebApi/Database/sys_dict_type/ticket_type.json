@@ -1,0 +1,7 @@
+{
+  "dictType": "ticket_type",
+  "dictName": "أنواع التذاكر - Ticket Types",
+  "status": "0",
+  "remark": "Generated from TicketType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM ticket_types",
+  "createBy": "system"
+}

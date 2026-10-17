@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>1701;1702;1591;1570</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="ERP\Cash_Bank\**" />
+	  <EmbeddedResource Remove="ERP\Cash_Bank\**" />
+	  <None Remove="ERP\Cash_Bank\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+		<PackageReference Include="MiniExcel" Version="1.41.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="SqlSugarCoreNoDrive" Version="5.1.4.193" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Infrastructure\ZR.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="ERP\Finance\ARAP\Entities\" />
+	  <Folder Include="ERP\Finance\Dto\" />
+	  <Folder Include="ERP\Inventory\Dto\" />
+	  <Folder Include="ERP\ProjectManagement\Dto\" />
+	  <Folder Include="ERP\Purchase\Dto\" />
+	  <Folder Include="HR\Settings\" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_sys_file_group",
+  "dictName": "Sys File Group - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from sys_file_group table (ZR.Model.System.Model)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM sys_file_group"
+}

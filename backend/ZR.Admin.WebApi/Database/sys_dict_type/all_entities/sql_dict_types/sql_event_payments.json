@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_event_payments",
+  "dictName": "Event Payment - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from event_payments table (ZR.Model.EventManagement)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM event_payments"
+}

@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_blv_customerregistrationform",
+  "dictName": "Blv Customerregistrationform - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from blv_customerregistrationform table (ZR.Model.Boulevard)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM blv_customerregistrationform"
+}

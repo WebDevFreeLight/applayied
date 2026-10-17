@@ -1,0 +1,72 @@
+[
+  {
+    "planid": 1,
+    "planname": "الخطة الأساسية - Basic Plan",
+    "provider": "المؤسسة العامة للتأمينات الاجتماعية",
+    "plantype": "تأمين صحي - Health Insurance",
+    "coveragelevel": "شامل - Comprehensive",
+    "coveragedetails": "تغطية شاملة للرعاية الطبية الأساسية",
+    "monthlypremium": 450.0,
+    "employercontribution": 300.0,
+    "employeecontribution": 150.0,
+    "remark": "خطة التأمين الأساسية للموظفين",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "planid": 2,
+    "planname": "الخطة المتميزة - Premium Plan",
+    "provider": "شركة الاتحاد للتأمين",
+    "plantype": "تأمين صحي - Health Insurance",
+    "coveragelevel": "متقدم - Advanced",
+    "coveragedetails": "تغطية متقدمة تشمل العلاجات المتخصصة",
+    "monthlypremium": 750.0,
+    "employercontribution": 500.0,
+    "employeecontribution": 250.0,
+    "remark": "خطة التأمين المتميزة للموظفين الكبار",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "planid": 3,
+    "planname": "خطة الأسرة - Family Plan",
+    "provider": "المؤسسة العامة للتأمينات الاجتماعية",
+    "plantype": "تأمين صحي عائلي - Family Health Insurance",
+    "coveragelevel": "شامل - Comprehensive",
+    "coveragedetails": "تغطية للموظف والأسرة",
+    "monthlypremium": 1200.0,
+    "employercontribution": 800.0,
+    "employeecontribution": 400.0,
+    "remark": "خطة التأمين العائلي",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "planid": 4,
+    "planname": "التأمين ضد الحوادث - Accident Insurance",
+    "provider": "شركة التأمين الخليجية",
+    "plantype": "تأمين حوادث - Accident Insurance",
+    "coveragelevel": "معياري - Standard",
+    "coveragedetails": "حماية من الحوادث والإصابات",
+    "monthlypremium": 100.0,
+    "employercontribution": 70.0,
+    "employeecontribution": 30.0,
+    "remark": "تأمين ضد الحوادث العملية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "planid": 5,
+    "planname": "تأمين الحياة - Life Insurance",
+    "provider": "شركة أرامكو للتأمين",
+    "plantype": "تأمين حياة - Life Insurance",
+    "coveragelevel": "متقدم - Advanced",
+    "coveragedetails": "حماية مالية للأسرة في حالة الوفاة",
+    "monthlypremium": 200.0,
+    "employercontribution": 150.0,
+    "employeecontribution": 50.0,
+    "remark": "تأمين على الحياة للموظفين",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  }
+]

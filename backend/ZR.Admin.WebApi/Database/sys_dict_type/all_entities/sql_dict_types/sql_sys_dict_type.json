@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_sys_dict_type",
+  "dictName": "Sys Dict Type - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from sys_dict_type table (ZR.Model.System)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM sys_dict_type"
+}

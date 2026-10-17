@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1591</NoWarn>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="ERP\Cash_Bank\**" />
+	  <Compile Remove="ERP\FixedAssets\**" />
+	  <EmbeddedResource Remove="ERP\Cash_Bank\**" />
+	  <EmbeddedResource Remove="ERP\FixedAssets\**" />
+	  <None Remove="ERP\Cash_Bank\**" />
+	  <None Remove="ERP\FixedAssets\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="itext7" Version="8.0.2" />
+		<PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.2" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ZR.ServiceCore\ZR.ServiceCore.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="ERP\Finance\Budget\" />
+	  <Folder Include="ERP\ProjectManagement\" />
+	  <Folder Include="ERP\Purchase\" />
+	</ItemGroup>
+
+</Project>

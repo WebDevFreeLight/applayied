@@ -1,0 +1,37 @@
+[
+  {
+    "organizationtypeid": 1,
+    "organizationtypename": "شركة خاصة - Private Company",
+    "remark": "شركة خاصة وغير حكومية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationtypeid": 2,
+    "organizationtypename": "شركة عامة - Public Company",
+    "remark": "شركة عامة مدرجة في البورصة",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationtypeid": 3,
+    "organizationtypename": "مؤسسة حكومية - Government Agency",
+    "remark": "جهة حكومية رسمية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationtypeid": 4,
+    "organizationtypename": "منظمة غير ربحية - Non-Profit Organization",
+    "remark": "منظمة لا تهدف للربح",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationtypeid": 5,
+    "organizationtypename": "مقاول ومورد - Contractor & Supplier",
+    "remark": "مقاول أو مورد للخدمات",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "dictType": "sys_dependent_relationship",
+  "dictName": "علاقة المعال - Dependent Relationship",
+  "status": "0",
+  "remark": "Employee dependent relationship types (Spouse, Child, Parent, Sibling, Other)",
+  "createBy": "system"
+}

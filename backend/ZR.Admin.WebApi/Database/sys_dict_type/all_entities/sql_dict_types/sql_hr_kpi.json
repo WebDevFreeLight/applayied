@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_kpi",
+  "dictName": "Hr Kpi - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_kpi table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_kpi"
+}

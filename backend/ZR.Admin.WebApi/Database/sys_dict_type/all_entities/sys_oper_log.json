@@ -1,0 +1,7 @@
+{
+  "dictType": "sys_oper_log",
+  "dictName": "Sys Oper Log - sys_oper_log",
+  "status": "0",
+  "remark": "Generated from SysOperLog table (ZR.Model.System)",
+  "createBy": "system"
+}

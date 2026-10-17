@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_holiday",
+  "dictName": "Hr Holiday - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_holiday table (ZR.Model.Hr)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_holiday"
+}

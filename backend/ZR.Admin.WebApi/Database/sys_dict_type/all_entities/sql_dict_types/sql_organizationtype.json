@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_organizationtype",
+  "dictName": "Organizationtype - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from organizationtype table (ZR.Model.Business)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM organizationtype"
+}

@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_attendance",
+  "dictName": "Hr Attendance - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_attendance table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_attendance"
+}

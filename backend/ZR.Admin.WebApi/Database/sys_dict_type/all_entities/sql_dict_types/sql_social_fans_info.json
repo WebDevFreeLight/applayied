@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_social_fans_info",
+  "dictName": "Social Fans Info - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from social_fans_info table (ZR.Model.social)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM social_fans_info"
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "reviewtypeid": 1,
+    "name": "تقييم سنوي - Annual Review",
+    "remark": "التقييم السنوي للأداء",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "reviewtypeid": 2,
+    "name": "تقييم ربع سنوي - Quarterly Review",
+    "remark": "التقييم الربع سنوي",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "reviewtypeid": 3,
+    "name": "تقييم نصف سنوي - Mid-Year Review",
+    "remark": "التقييم في منتصف السنة",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "reviewtypeid": 4,
+    "name": "تقييم الفترة التجريبية - Probation Review",
+    "remark": "تقييم الموظف الجديد خلال الفترة التجريبية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "reviewtypeid": 5,
+    "name": "تقييم التطور الوظيفي - Career Development Review",
+    "remark": "تقييم التطور والترقيات الوظيفية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "reviewtypeid": 6,
+    "name": "تقييم 360 درجة - 360 Degree Review",
+    "remark": "تقييم شامل من جميع الأطراف",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  }
+]

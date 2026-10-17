@@ -1,0 +1,7 @@
+{
+  "dictType": "event_type",
+  "dictName": "أنواع الفعاليات - Event Types",
+  "status": "0",
+  "remark": "Generated from EventType table - SELECT typecode AS dictValue, CONCAT(typecode, ' - ', typename, ' - ', typenamear) AS dictLabel, remark FROM event_types",
+  "createBy": "system"
+}

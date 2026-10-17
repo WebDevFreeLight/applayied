@@ -1,0 +1,7 @@
+{
+  "dictType": "event_ticket_types",
+  "dictName": "Ticket Type - event_ticket_types",
+  "status": "0",
+  "remark": "Generated from TicketType table (ZR.Model.EventManagement)",
+  "createBy": "system"
+}

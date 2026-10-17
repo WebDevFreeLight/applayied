@@ -1,0 +1,16 @@
+﻿UserId,UserName,NickName,NickNameAr,DeptId,RoleKey,Sex
+1001,pmo.admin,Omar Al Blooshi,عمر البلوشي,104,pmo_admin,0
+1002,pmo.admin2,Aisha Al Nuaimi,عائشة النعيمي,104,pmo_admin,1
+1003,pm.hamdan,Hamdan Al Zaabi,حمدان الزعابي,101,pmo_pm,0
+1004,pm.sara,Sara Al Hashimi,سارة الهاشمي,102,pmo_pm,1
+1005,pm.yousef,Yousef Al Marri,يوسف المري,103,pmo_pm,0
+1006,pm.fatima,Fatima Al Qubaisi,فاطمة القبيسي,101,pmo_pm,1
+1007,pm.khalid,Khalid Al Shamsi,خالد الشامسي,102,pmo_pm,0
+1008,con.mariam,Mariam Al Ali,مريم العلي,101,pmo_contributor,1
+1009,con.rashid,Rashid Al Falasi,راشد الفلاسي,101,pmo_contributor,0
+1010,con.layla,Layla Al Mazrouei,ليلى المزروعي,102,pmo_contributor,1
+1011,con.saeed,Saeed Al Ketbi,سعيد الكتبي,102,pmo_contributor,0
+1012,con.huda,Huda Al Dhaheri,هدى الظاهري,103,pmo_contributor,1
+1013,con.ali,Ali Al Hammadi,علي الحمادي,103,pmo_contributor,0
+1014,con.amna,Amna Al Rumaithi,آمنة الرميثي,104,pmo_contributor,1
+1015,con.tariq,Tariq Al Jaberi,طارق الجابري,104,pmo_contributor,0

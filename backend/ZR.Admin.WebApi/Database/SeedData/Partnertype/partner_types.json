@@ -1,0 +1,72 @@
+[
+  {
+    "typeid": 1,
+    "name": "الموردون - Vendors",
+    "code": "VENDOR",
+    "remark": "Companies providing goods and materials to our organization",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "typeid": 2,
+    "name": "المقاولون - Contractors",
+    "code": "CONTRACTOR",
+    "remark": "Service providers and contractors for projects",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "typeid": 3,
+    "name": "موفري الخدمات - Service Providers",
+    "code": "SERVICE_PROVIDER",
+    "remark": "Companies providing professional services",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "typeid": 4,
+    "name": "الموردين الفرعيين - Sub-contractors",
+    "code": "SUBCONTRACTOR",
+    "remark": "Secondary level contractors for specialized work",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "typeid": 5,
+    "name": "الاستشاريون - Consultants",
+    "code": "CONSULTANT",
+    "remark": "Expert consultants and advisors",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "typeid": 6,
+    "name": "الموزعون - Distributors",
+    "code": "DISTRIBUTOR",
+    "remark": "Partners handling distribution and logistics",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "typeid": 7,
+    "name": "الشركاء الاستراتيجيين - Strategic Partners",
+    "code": "STRATEGIC",
+    "remark": "Long-term strategic partnership relationships",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

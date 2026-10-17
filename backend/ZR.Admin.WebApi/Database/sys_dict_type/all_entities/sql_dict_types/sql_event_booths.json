@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_event_booths",
+  "dictName": "Event Booth - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from event_booths table (ZR.Model.EventManagement)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM event_booths"
+}

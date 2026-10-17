@@ -1,0 +1,56 @@
+[
+  {
+    "contactmethodenumid": 1,
+    "name": "الهاتف - Phone",
+    "remark": "Contact via telephone",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "contactmethodenumid": 2,
+    "name": "البريد الإلكتروني - Email",
+    "remark": "Contact via email",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "contactmethodenumid": 3,
+    "name": "الاجتماع الشخصي - In-Person",
+    "remark": "Face-to-face meetings",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "contactmethodenumid": 4,
+    "name": "البريد - Letter",
+    "remark": "Official correspondence by mail",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "contactmethodenumid": 5,
+    "name": "المحادثة عبر الإنترنت - Online Chat",
+    "remark": "Real-time online messaging",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "contactmethodenumid": 6,
+    "name": "البوابة الإلكترونية - Online Portal",
+    "remark": "Web-based partner portal",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

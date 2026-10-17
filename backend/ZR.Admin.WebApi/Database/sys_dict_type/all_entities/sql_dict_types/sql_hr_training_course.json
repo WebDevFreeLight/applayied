@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_training_course",
+  "dictName": "Hr Training Course - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_training_course table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_training_course"
+}

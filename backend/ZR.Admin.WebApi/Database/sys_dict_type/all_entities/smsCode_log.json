@@ -1,0 +1,7 @@
+{
+  "dictType": "smsCode_log",
+  "dictName": "Sms Code Log - smsCode_log",
+  "status": "0",
+  "remark": "Generated from SmsCodeLog table (ZR.Model.Models)",
+  "createBy": "system"
+}

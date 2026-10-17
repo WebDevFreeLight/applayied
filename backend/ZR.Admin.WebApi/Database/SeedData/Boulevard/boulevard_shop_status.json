@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "متاح - Available",
+    "remark": "المحل متاح للإيجار",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 2,
+    "name": "مؤجر - Rented",
+    "remark": "المحل مؤجر حالياً",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 3,
+    "name": "تحت الصيانة - Under Maintenance",
+    "remark": "المحل قيد الصيانة",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 4,
+    "name": "مغلق - Closed",
+    "remark": "المحل مغلق",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "id": 5,
+    "name": "قيد التطوير - Under Development",
+    "remark": "المحل قيد التطوير والتجهيز",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  }
+]

@@ -1,0 +1,7 @@
+﻿RunId,RuleKey,TriggeredAt,Status,Detail,DedupeKey
+12001,budget_overrun_alert,2026-09-30,Failed,budget_overrun_alert executed with status Failed.,budget_overrun_alert:2026-09-30
+12002,overdue_task_escalation,2026-09-28,Skipped,overdue_task_escalation executed with status Skipped.,overdue_task_escalation:2026-09-28
+12003,budget_overrun_alert,2026-09-26,Failed,budget_overrun_alert executed with status Failed.,budget_overrun_alert:2026-09-26
+12004,overdue_task_escalation,2026-09-24,Success,overdue_task_escalation executed with status Success.,overdue_task_escalation:2026-09-24
+12005,milestone_due_soon,2026-09-22,Success,milestone_due_soon executed with status Success.,milestone_due_soon:2026-09-22
+12006,overdue_task_escalation,2026-09-20,Success,overdue_task_escalation executed with status Success.,overdue_task_escalation:2026-09-20

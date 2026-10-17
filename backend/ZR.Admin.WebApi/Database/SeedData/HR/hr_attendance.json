@@ -1,0 +1,40 @@
+[
+  {
+    "attendanceId": 1001,
+    "employeeId": 101,
+    "attendanceDate": "2024-10-15T00:00:00",
+    "shiftId": 1,
+    "checkInTime": "2024-10-15T08:15:00",
+    "checkOutTime": "2024-10-15T17:00:00",
+    "workHours": 8.75,
+    "overtimeHours": 0,
+    "lateMinutes": 15,
+    "earlyLeaveMinutes": 0,
+    "status": "present",
+    "isAbnormal": false,
+    "abnormalReason": null,
+    "create_by": "system",
+    "create_time": "2024-10-15T08:15:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "attendanceId": 1002,
+    "employeeId": 102,
+    "attendanceDate": "2024-10-15T00:00:00",
+    "shiftId": 1,
+    "checkInTime": "2024-10-15T08:00:00",
+    "checkOutTime": "2024-10-15T17:30:00",
+    "workHours": 9.5,
+    "overtimeHours": 1.5,
+    "lateMinutes": 0,
+    "earlyLeaveMinutes": 0,
+    "status": "present",
+    "isAbnormal": false,
+    "abnormalReason": null,
+    "create_by": "system",
+    "create_time": "2024-10-15T08:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

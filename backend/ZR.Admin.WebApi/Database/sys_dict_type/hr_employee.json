@@ -1,0 +1,7 @@
+{
+  "dictType": "hr_employee",
+  "dictName": "الموظفين - Employees",
+  "status": "0",
+  "remark": "Generated from HrEmployee table - SELECT employeeid AS dictValue, CONCAT(firstname, ' ', lastname, ' ', namear) AS dictLabel, remark FROM hr_employee",
+  "createBy": "system"
+}

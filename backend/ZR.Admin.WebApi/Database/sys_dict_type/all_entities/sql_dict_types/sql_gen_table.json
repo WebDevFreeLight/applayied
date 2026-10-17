@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_gen_table",
+  "dictName": "Gen Table - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from gen_table table (ZR.Model.System.Generate)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM gen_table"
+}

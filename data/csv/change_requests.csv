@@ -1,0 +1,16 @@
+﻿ChangeRequestId,ProjectId,Title,Description,RequestedByUserId,Status,DecisionByUserId,DecisionReason,DecisionAt,EstimatedCostImpact,Version
+7001,2001,Extend timeline 4 weeks,Change request: Extend timeline 4 weeks.,1008,Returned,1003,Need updated impact analysis before decision.,2026-09-18,0,1
+7002,2003,Switch vendor,Change request: Switch vendor.,1012,Rejected,1005,Not justified; current vendor meets SLAs.,2026-09-22,120000,1
+7003,2006,Increase scope: SSO,Change request: Increase scope: SSO.,1011,Approved,1007,Aligns with zero-trust objectives.,2026-09-25,90000,1
+7004,2002,Add reporting module,Change request: Add reporting module.,1010,Submitted,,,,40000,1
+7005,2004,Add mobile support,Change request: Add mobile support.,1014,UnderReview,,,,60000,1
+7006,2006,Extend timeline 4 weeks,Change request: Extend timeline 4 weeks.,1015,UnderReview,,,,30000,1
+7007,2008,Increase scope: SSO,Change request: Increase scope: SSO.,1008,UnderReview,,,,0,1
+7008,2004,Switch vendor,Change request: Switch vendor.,1015,UnderReview,,,,30000,1
+7009,2007,Add audit logging,Change request: Add audit logging.,1010,Rejected,1003,Decision recorded.,2026-09-13,0,1
+7010,2002,Add reporting module,Change request: Add reporting module.,1010,Returned,1004,Decision recorded.,2026-09-16,0,1
+7011,2004,Increase scope: SSO,Change request: Increase scope: SSO.,1008,Draft,,,,0,1
+7012,2008,Change hosting region,Change request: Change hosting region.,1013,Returned,1006,Decision recorded.,2026-09-12,25000,1
+7013,2003,Add reporting module,Change request: Add reporting module.,1014,Rejected,1005,Decision recorded.,2026-08-31,25000,1
+7014,2006,Change hosting region,Change request: Change hosting region.,1010,Submitted,,,,0,1
+7015,2003,Upgrade database tier,Change request: Upgrade database tier.,1014,Submitted,,,,0,1

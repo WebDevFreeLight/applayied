@@ -1,0 +1,193 @@
+{
+  "sys_menu_entries": [
+    {
+      "menuName": "Performance Review Table",
+      "component": "business/HrPerformanceReview",
+      "menuType": "C",
+      "path": "HrPerformanceReview",
+      "parentId": 1961754012059574272
+    },
+    {
+      "menuName": "DocumentType",
+      "component": "business/HrDocumenttype",
+      "menuType": "C",
+      "path": "HrDocumenttype",
+      "parentId": 1959780454651535360
+    },
+    {
+      "menuName": "Reviewtype Information Table",
+      "component": "business/HrReviewtype",
+      "menuType": "C",
+      "path": "HrReviewtype",
+      "parentId": 1959780454651535360
+    },
+    {
+      "menuName": "insurancetype",
+      "component": "hrinsurancetype/HrInsuranceCoveragelevel",
+      "menuType": "C",
+      "path": "HrInsuranceCoveragelevel",
+      "parentId": 1962838989119561728
+    },
+    {
+      "menuName": "Holiday Table",
+      "component": "hr/HrHoliday",
+      "menuType": "C",
+      "path": "HrHoliday",
+      "parentId": 1962306698194591744
+    },
+    {
+      "menuName": "hrinsuranceplanype",
+      "component": "hrinsurancetype/HrInsurancePlanYpe",
+      "menuType": "C",
+      "path": "HrInsurancePlanYpe",
+      "parentId": 1962838989119561728
+    },
+    {
+      "menuName": "Employee Documents Table",
+      "component": "hR/HrEmployeeDocument",
+      "menuType": "C",
+      "path": "HrEmployeeDocument",
+      "parentId": 1959780454651535360
+    },
+    {
+      "menuName": "employeeependentrelationship",
+      "component": "insurancetype/employeeependentrelationship",
+      "menuType": "C",
+      "path": "employeeependentrelationship",
+      "parentId": 1962838989119561728
+    },
+    {
+      "menuName": "ContactMethod",
+      "component": "partnertype/BpContactmethod",
+      "menuType": "C",
+      "path": "BpContactmethod",
+      "parentId": 1962108035782549504
+    },
+    {
+      "menuName": "BusinessPartnerkind",
+      "component": "partnertype/BpBusinesspartnerkind",
+      "menuType": "C",
+      "path": "BpBusinesspartnerkind",
+      "parentId": 1962108035782549504
+    },
+    {
+      "menuName": "Tool Type Table",
+      "component": "ai/AiTooltype",
+      "menuType": "C",
+      "path": "AiTooltype",
+      "parentId": 1963270494673313792
+    },
+    {
+      "menuName": "employeeependentrelationship",
+      "component": "hrinsurancetype/hr",
+      "menuType": "C",
+      "path": "hr",
+      "parentId": 1962838989119561728
+    },
+    {
+      "menuName": "Agent Mode Table",
+      "component": "ai/AiAgentMode",
+      "menuType": "C",
+      "path": "AiAgentMode",
+      "parentId": 1963270494673313792
+    },
+    {
+      "menuName": "businesspartner",
+      "component": "businesspartnerdata/BpBusinesspartner",
+      "menuType": "C",
+      "path": "BpBusinesspartner",
+      "parentId": 1962153861531705344
+    },
+    {
+      "menuName": "Organizations Information Table",
+      "component": "business/Organizations",
+      "menuType": "C",
+      "path": "Organizations",
+      "parentId": 1959780454651535360
+    },
+    {
+      "menuName": "compliancestatus",
+      "component": "partnertype/BpCompliancestatus",
+      "menuType": "C",
+      "path": "BpCompliancestatus",
+      "parentId": 1962108035782549504
+    },
+    {
+      "menuName": "BusinessPartnerStatus",
+      "component": "partnertype/BpBusinesspartnerstatus",
+      "menuType": "C",
+      "path": "BpBusinesspartnerstatus",
+      "parentId": 1962108035782549504
+    },
+    {
+      "menuName": "Model Provider Table",
+      "component": "ai/AiModelprovider",
+      "menuType": "C",
+      "path": "AiModelprovider",
+      "parentId": 1963270494673313792
+    },
+    {
+      "menuName": "insuranceenrollment",
+      "component": "hr/HrInsuranceEnrollment",
+      "menuType": "C",
+      "path": "HrInsuranceEnrollment",
+      "parentId": 1962838989119561728
+    },
+    {
+      "menuName": "Salary Compliance - امتثال الرواتب",
+      "component": "hr/HrSalaryCompliance",
+      "menuType": "C",
+      "path": "HrSalaryCompliance",
+      "parentId": 1962198537072680960
+    },
+    {
+      "menuName": "BusinessPartnerType",
+      "component": "partnertype/BpBusinesspartnertype",
+      "menuType": "C",
+      "path": "BpBusinesspartnertype",
+      "parentId": 1962108035782549504
+    },
+    {
+      "menuName": "Insurance Plans Table",
+      "component": "business/HrInsurancePlan",
+      "menuType": "C",
+      "path": "HrInsurancePlan",
+      "parentId": 1962838989119561728
+    },
+    {
+      "menuName": "Team Mode Table",
+      "component": "aI/AiTeamMode",
+      "menuType": "C",
+      "path": "AiTeamMode",
+      "parentId": 1963270494673313792
+    },
+    {
+      "menuName": "HolidayType Table",
+      "component": "hrtypes/HrHolidaytype",
+      "menuType": "C",
+      "path": "HrHolidaytype",
+      "parentId": 1962306698194591744
+    },
+    {
+      "menuName": "hrinsuranceenrollmentstatus",
+      "component": "hr/HrInsuranceEnrollmentStatus",
+      "menuType": "C",
+      "path": "HrInsuranceEnrollmentStatus",
+      "parentId": 1962838989119561728
+    },
+    {
+      "menuName": "Organizations Information Table",
+      "component": "business/Organizationtype",
+      "menuType": "C",
+      "path": "Organizationtype",
+      "parentId": 1959780454651535360
+    },
+    {
+      "menuName": "Leave Type Table",
+      "component": "hrtypes/HrLeaveType",
+      "menuType": "C",
+      "path": "HrLeaveType",
+      "parentId": 1962306698194591744
+    }
+  ]
+}

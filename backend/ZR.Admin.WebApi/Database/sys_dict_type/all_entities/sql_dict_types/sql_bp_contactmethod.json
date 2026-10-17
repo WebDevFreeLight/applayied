@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_bp_contactmethod",
+  "dictName": "Bp Contactmethod - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from bp_contactmethod table (ZR.Model.Partnertype)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM bp_contactmethod"
+}

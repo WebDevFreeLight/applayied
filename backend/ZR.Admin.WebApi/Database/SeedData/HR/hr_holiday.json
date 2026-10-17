@@ -1,0 +1,72 @@
+[
+  {
+    "holidayid": 1,
+    "holidaydate": "2024-02-22T00:00:00",
+    "holidayname": "Foundation Day",
+    "holidaynamear": "يوم التأسيس",
+    "holidaytype": "National",
+    "ispaid": "Y",
+    "year": 2024,
+    "description": "Saudi Arabia Foundation Day",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "holidayid": 2,
+    "holidaydate": "2024-03-15T00:00:00",
+    "holidayname": "Eid al-Fitr",
+    "holidaynamear": "عيد الفطر",
+    "holidaytype": "Religious",
+    "ispaid": "Y",
+    "year": 2024,
+    "description": "Islamic celebration at the end of Ramadan",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "holidayid": 3,
+    "holidaydate": "2024-06-15T00:00:00",
+    "holidayname": "Eid al-Adha",
+    "holidaynamear": "عيد الأضحى",
+    "holidaytype": "Religious",
+    "ispaid": "Y",
+    "year": 2024,
+    "description": "Islamic pilgrimage festival",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "holidayid": 4,
+    "holidaydate": "2024-09-23T00:00:00",
+    "holidayname": "Saudi National Day",
+    "holidaynamear": "اليوم الوطني السعودي",
+    "holidaytype": "National",
+    "ispaid": "Y",
+    "year": 2024,
+    "description": "Saudi Arabia's National Day",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "holidayid": 5,
+    "holidaydate": "2024-01-01T00:00:00",
+    "holidayname": "New Year",
+    "holidaynamear": "رأس السنة",
+    "holidaytype": "National",
+    "ispaid": "Y",
+    "year": 2024,
+    "description": "New Year's Day",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

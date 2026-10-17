@@ -1,0 +1,74 @@
+[
+  {
+    "kindid": 1,
+    "name": "شركات محلية - Local Companies",
+    "remark": "Companies operating within Saudi Arabia",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "kindid": 2,
+    "name": "شركات دولية - International Companies",
+    "remark": "Companies from other countries",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "kindid": 3,
+    "name": "منشآت حكومية - Government Entities",
+    "remark": "Government agencies and institutions",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "kindid": 4,
+    "name": "شركات خاصة - Private Companies",
+    "remark": "Privately owned companies",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "kindid": 5,
+    "name": "أفراد - Individuals",
+    "remark": "Individual service providers and freelancers",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "kindid": 6,
+    "name": "منظمات غير ربحية - Non-Profit Organizations",
+    "remark": "NGOs and non-profit organizations",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "kindid": 7,
+    "name": "مؤسسات صغيرة ومتوسطة - SMEs",
+    "remark": "Small and medium-sized enterprises",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "kindid": 8,
+    "name": "مؤسسات كبرى - Large Enterprises",
+    "remark": "Large multinational corporations",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

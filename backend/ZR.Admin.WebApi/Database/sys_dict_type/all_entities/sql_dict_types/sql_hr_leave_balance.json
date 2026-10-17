@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_leave_balance",
+  "dictName": "Hr Leave Balance - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_leave_balance table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_leave_balance"
+}

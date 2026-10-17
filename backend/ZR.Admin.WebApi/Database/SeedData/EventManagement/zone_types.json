@@ -1,0 +1,74 @@
+[
+  {
+    "typeid": 1,
+    "typecode": "vip",
+    "typename": "VIP Area",
+    "typenamear": "منطقة VIP",
+    "description": "VIP exclusive area with premium services",
+    "icon": "👑",
+    "colorcode": "#FFD700",
+    "requiresspecialaccess": "1",
+    "displayorder": 1,
+    "isactive": "1"
+  },
+  {
+    "typeid": 2,
+    "typecode": "general",
+    "typename": "General Area",
+    "typenamear": "منطقة عامة",
+    "description": "Public general area for all visitors",
+    "icon": "👥",
+    "colorcode": "#3498db",
+    "requiresspecialaccess": "0",
+    "displayorder": 2,
+    "isactive": "1"
+  },
+  {
+    "typeid": 3,
+    "typecode": "food",
+    "typename": "Food & Beverage",
+    "typenamear": "منطقة الطعام والمشروبات",
+    "description": "Food court and dining area",
+    "icon": "🍽️",
+    "colorcode": "#e67e22",
+    "requiresspecialaccess": "0",
+    "displayorder": 3,
+    "isactive": "1"
+  },
+  {
+    "typeid": 4,
+    "typecode": "exhibition",
+    "typename": "Exhibition Area",
+    "typenamear": "منطقة المعارض",
+    "description": "Exhibition halls and display areas",
+    "icon": "🏛️",
+    "colorcode": "#9b59b6",
+    "requiresspecialaccess": "0",
+    "displayorder": 4,
+    "isactive": "1"
+  },
+  {
+    "typeid": 5,
+    "typecode": "parking",
+    "typename": "Parking Area",
+    "typenamear": "منطقة الانتظار",
+    "description": "Vehicle parking zones",
+    "icon": "🚗",
+    "colorcode": "#95a5a6",
+    "requiresspecialaccess": "0",
+    "displayorder": 5,
+    "isactive": "1"
+  },
+  {
+    "typeid": 6,
+    "typecode": "stage",
+    "typename": "Main Stage",
+    "typenamear": "المسرح الرئيسي",
+    "description": "Main event stage and performance area",
+    "icon": "🎭",
+    "colorcode": "#e74c3c",
+    "requiresspecialaccess": "1",
+    "displayorder": 6,
+    "isactive": "1"
+  }
+]

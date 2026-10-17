@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_sys_user_post",
+  "dictName": "Sys User Post - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from sys_user_post table (ZR.Model.System)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM sys_user_post"
+}

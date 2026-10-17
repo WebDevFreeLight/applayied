@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_ai_ToolType",
+  "dictName": "Tool Type - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from ai_ToolType table (ZR.Model.Ai)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM ai_ToolType"
+}

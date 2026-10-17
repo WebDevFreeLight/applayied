@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_email_log",
+  "dictName": "Email Log - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from email_log table (ZR.Model.Models)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM email_log"
+}

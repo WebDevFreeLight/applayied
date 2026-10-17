@@ -1,0 +1,870 @@
+[
+  {
+    "dictType": "ai_agent_mode",
+    "dictName": "Ai Agent Mode - ai_agent_mode",
+    "status": "0",
+    "remark": "Generated from AiAgentMode table (ZR.Model.Ai)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "ai_modelprovider",
+    "dictName": "Ai Modelprovider - ai_modelprovider",
+    "status": "0",
+    "remark": "Generated from AiModelprovider table (ZR.Model.Ai)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "ai_team_mode",
+    "dictName": "Ai Team Mode - ai_team_mode",
+    "status": "0",
+    "remark": "Generated from AiTeamMode table (ZR.Model.AI)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "ai_ToolType",
+    "dictName": "Tool Type - ai_ToolType",
+    "status": "0",
+    "remark": "Generated from ToolType table (ZR.Model.Ai)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "set_admin_settings",
+    "dictName": "admin_settings - set_admin_settings",
+    "status": "0",
+    "remark": "Generated from admin_settings table (ZR.Model.Boulevard)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "blv_boulevard_seasons_shops",
+    "dictName": "Blv Boulevard Seasons Shops - blv_boulevard_seasons_shops",
+    "status": "0",
+    "remark": "Generated from BlvBoulevardSeasonsShops table (ZR.Model.Boulevard)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "blv_boulevard_seasons_shops",
+    "dictName": "Blv Boulevard Seasons Shops - blv_boulevard_seasons_shops",
+    "status": "0",
+    "remark": "Generated from BlvBoulevardSeasonsShops table (ZR.Model.Boulevard)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "blv_boulevard_season_zones",
+    "dictName": "Blv Boulevard Season Zones - blv_boulevard_season_zones",
+    "status": "0",
+    "remark": "Generated from BlvBoulevardSeasonZones table (ZR.Model.Boulevard)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "blv_boulevard_shop_category",
+    "dictName": "Blv Boulevard Shop Category - blv_boulevard_shop_category",
+    "status": "0",
+    "remark": "Generated from BlvBoulevardShopCategory table (ZR.Model.Boulevard)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "blv_boulevard_shops",
+    "dictName": "Blv Boulevard Shops - blv_boulevard_shops",
+    "status": "0",
+    "remark": "Generated from BlvBoulevardShops table (ZR.Model.Boulevard)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "blv_boulevard_shop_status",
+    "dictName": "Blv Boulevard Shop Status - blv_boulevard_shop_status",
+    "status": "0",
+    "remark": "Generated from BlvBoulevardShopStatus table (ZR.Model.Boulevard)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "blv_customerregistrationform",
+    "dictName": "Blv Customerregistrationform - blv_customerregistrationform",
+    "status": "0",
+    "remark": "Generated from BlvCustomerregistrationform table (ZR.Model.Boulevard)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_documenttype",
+    "dictName": "Hr Documenttype - hr_documenttype",
+    "status": "0",
+    "remark": "Generated from HrDocumenttype table (ZR.Model.Business)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_insurance_plan",
+    "dictName": "Hr Insurance Plan - hr_insurance_plan",
+    "status": "0",
+    "remark": "Generated from HrInsurancePlan table (ZR.Model.Business)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_performance_review",
+    "dictName": "Hr Performance Review - hr_performance_review",
+    "status": "0",
+    "remark": "Generated from HrPerformanceReview table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_reviewtype",
+    "dictName": "Hr Reviewtype - hr_reviewtype",
+    "status": "0",
+    "remark": "Generated from HrReviewtype table (ZR.Model.Business)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "organizations",
+    "dictName": "Organizations - organizations",
+    "status": "0",
+    "remark": "Generated from Organizations table (ZR.Model.Business)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "organizationtype",
+    "dictName": "Organizationtype - organizationtype",
+    "status": "0",
+    "remark": "Generated from Organizationtype table (ZR.Model.Business)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "bp_businesspartner",
+    "dictName": "Bp Businesspartner - bp_businesspartner",
+    "status": "0",
+    "remark": "Generated from BpBusinesspartner table (ZR.Model.Businesspartnerdata)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "article",
+    "dictName": "Article - article",
+    "status": "0",
+    "remark": "Generated from Article table (ZR.Model.Content)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "article_browsing_log",
+    "dictName": "Article Browsing Log - article_browsing_log",
+    "status": "0",
+    "remark": "Generated from ArticleBrowsingLog table (ZR.Model.Content)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "articleCategory",
+    "dictName": "Article Category - articleCategory",
+    "status": "0",
+    "remark": "Generated from ArticleCategory table (ZR.Model.Content)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "article_comment",
+    "dictName": "Article Comment - article_comment",
+    "status": "0",
+    "remark": "Generated from ArticleComment table (ZR.Model.Content)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "article_praise",
+    "dictName": "Article Praise - article_praise",
+    "status": "0",
+    "remark": "Generated from ArticlePraise table (ZR.Model.Content)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "article_topic",
+    "dictName": "Article Topic - article_topic",
+    "status": "0",
+    "remark": "Generated from ArticleTopic table (ZR.Model.Content)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "article_userCircles",
+    "dictName": "Article User Circles - article_userCircles",
+    "status": "0",
+    "remark": "Generated from ArticleUserCircles table (ZR.Model.Content)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_booth_types",
+    "dictName": "Booth Type - event_booth_types",
+    "status": "0",
+    "remark": "Generated from BoothType table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_events",
+    "dictName": "Event - event_events",
+    "status": "0",
+    "remark": "Generated from Event table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_booths",
+    "dictName": "Event Booth - event_booths",
+    "status": "0",
+    "remark": "Generated from EventBooth table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_contracts",
+    "dictName": "Event Contract - event_contracts",
+    "status": "0",
+    "remark": "Generated from EventContract table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_gates",
+    "dictName": "Event Gate - event_gates",
+    "status": "0",
+    "remark": "Generated from EventGate table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_gate_types",
+    "dictName": "Event Gate Type - event_gate_types",
+    "status": "0",
+    "remark": "Generated from EventGateType table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_incidents",
+    "dictName": "Event Incident - event_incidents",
+    "status": "0",
+    "remark": "Generated from EventIncident table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_invoices",
+    "dictName": "Event Invoice - event_invoices",
+    "status": "0",
+    "remark": "Generated from EventInvoice table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_locations",
+    "dictName": "Event Location - event_locations",
+    "status": "0",
+    "remark": "Generated from EventLocation table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_payments",
+    "dictName": "Event Payment - event_payments",
+    "status": "0",
+    "remark": "Generated from EventPayment table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_permits",
+    "dictName": "Event Permit - event_permits",
+    "status": "0",
+    "remark": "Generated from EventPermit table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_status",
+    "dictName": "Event Status - event_status",
+    "status": "0",
+    "remark": "Generated from EventStatus table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_tenants",
+    "dictName": "Event Tenant - event_tenants",
+    "status": "0",
+    "remark": "Generated from EventTenant table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_tickets",
+    "dictName": "Event Ticket - event_tickets",
+    "status": "0",
+    "remark": "Generated from EventTicket table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_types",
+    "dictName": "Event Type - event_types",
+    "status": "0",
+    "remark": "Generated from EventType table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_visitors",
+    "dictName": "Event Visitor - event_visitors",
+    "status": "0",
+    "remark": "Generated from EventVisitor table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_zones",
+    "dictName": "Event Zone - event_zones",
+    "status": "0",
+    "remark": "Generated from EventZone table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_zone_types",
+    "dictName": "Event Zone Type - event_zone_types",
+    "status": "0",
+    "remark": "Generated from EventZoneType table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_incident_types",
+    "dictName": "Incident Type - event_incident_types",
+    "status": "0",
+    "remark": "Generated from IncidentType table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_payment_methods",
+    "dictName": "Payment Method - event_payment_methods",
+    "status": "0",
+    "remark": "Generated from PaymentMethod table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_permit_types",
+    "dictName": "Permit Type - event_permit_types",
+    "status": "0",
+    "remark": "Generated from PermitType table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_ticket_types",
+    "dictName": "Ticket Type - event_ticket_types",
+    "status": "0",
+    "remark": "Generated from TicketType table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "event_visitor_types",
+    "dictName": "Visitor Type - event_visitor_types",
+    "status": "0",
+    "remark": "Generated from VisitorType table (ZR.Model.EventManagement)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_analytics_report",
+    "dictName": "Hr Analytics Report - hr_analytics_report",
+    "status": "0",
+    "remark": "Generated from HrAnalyticsReport table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_attendance",
+    "dictName": "Hr Attendance - hr_attendance",
+    "status": "0",
+    "remark": "Generated from HrAttendance table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_attendance_device",
+    "dictName": "Hr Attendance Device - hr_attendance_device",
+    "status": "0",
+    "remark": "Generated from HrAttendanceDevice table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_attendance_log",
+    "dictName": "Hr Attendance Log - hr_attendance_log",
+    "status": "0",
+    "remark": "Generated from HrAttendanceLog table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_attendance_shift",
+    "dictName": "Hr Attendance Shift - hr_attendance_shift",
+    "status": "0",
+    "remark": "Generated from HrAttendanceShift table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_benefit_plan",
+    "dictName": "Hr Benefit Plan - hr_benefit_plan",
+    "status": "0",
+    "remark": "Generated from HrBenefitPlan table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_manager_report",
+    "dictName": "Hr Manager Dashboard - hr_manager_report",
+    "status": "0",
+    "remark": "Generated from HrManagerDashboard table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_document",
+    "dictName": "Hr Document - hr_document",
+    "status": "0",
+    "remark": "Generated from HrDocument table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_employee",
+    "dictName": "Hr Employee - hr_employee",
+    "status": "0",
+    "remark": "Generated from HrEmployee table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_employee_document",
+    "dictName": "Hr Employee Document - hr_employee_document",
+    "status": "0",
+    "remark": "Generated from HrEmployeeDocument table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_employee_shift",
+    "dictName": "Hr Employee Shift - hr_employee_shift",
+    "status": "0",
+    "remark": "Generated from HrEmployeeShift table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_holiday",
+    "dictName": "Hr Holiday - hr_holiday",
+    "status": "0",
+    "remark": "Generated from HrHoliday table (ZR.Model.Hr)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_insurance_enrollment",
+    "dictName": "Hr Insurance Enrollment - hr_insurance_enrollment",
+    "status": "0",
+    "remark": "Generated from HrInsuranceEnrollment table (ZR.Model.Hr)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_insurance_enrollment_status",
+    "dictName": "Hr Insurance Enrollment Status - hr_insurance_enrollment_status",
+    "status": "0",
+    "remark": "Generated from HrInsuranceEnrollmentStatus table (ZR.Model.Hr)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_kpi",
+    "dictName": "Hr Kpi - hr_kpi",
+    "status": "0",
+    "remark": "Generated from HrKpi table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_leave",
+    "dictName": "Hr Leave - hr_leave",
+    "status": "0",
+    "remark": "Generated from HrLeave table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_leave_balance",
+    "dictName": "Hr Leave Balance - hr_leave_balance",
+    "status": "0",
+    "remark": "Generated from HrLeaveBalance table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_leave_request",
+    "dictName": "Hr Leave Request - hr_leave_request",
+    "status": "0",
+    "remark": "Generated from HrLeaveRequest table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_loan",
+    "dictName": "Hr Loan - hr_loan",
+    "status": "0",
+    "remark": "Generated from HrLoan table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_notification",
+    "dictName": "Hr Notification - hr_notification",
+    "status": "0",
+    "remark": "Generated from HrNotification table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_hybrid_schedule",
+    "dictName": "Hr Hybrid Schedule - hr_hybrid_schedule",
+    "status": "0",
+    "remark": "Generated from HrHybridSchedule table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_payroll",
+    "dictName": "Hr Payroll - hr_payroll",
+    "status": "0",
+    "remark": "Generated from HrPayroll table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_performance_review",
+    "dictName": "Hr Performance Review - hr_performance_review",
+    "status": "0",
+    "remark": "Generated from HrPerformanceReview table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_job_requisition",
+    "dictName": "Hr Job Requisition - hr_job_requisition",
+    "status": "0",
+    "remark": "Generated from HrJobRequisition table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_recruitment",
+    "dictName": "Hr Recruitment - hr_recruitment",
+    "status": "0",
+    "remark": "Generated from HrRecruitment table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_salary_compliance",
+    "dictName": "Hr Salary Compliance - hr_salary_compliance",
+    "status": "0",
+    "remark": "Generated from HrSalaryCompliance table (ZR.Model.Hr)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_emergency_contact",
+    "dictName": "Hr Employee Profile - hr_emergency_contact",
+    "status": "0",
+    "remark": "Generated from HrEmployeeProfile table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_skills_matrix",
+    "dictName": "Hr Skills Matrix - hr_skills_matrix",
+    "status": "0",
+    "remark": "Generated from HrSkillsMatrix table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_training_course",
+    "dictName": "Hr Training Course - hr_training_course",
+    "status": "0",
+    "remark": "Generated from HrTrainingCourse table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_workflow",
+    "dictName": "Hr Workflow - hr_workflow",
+    "status": "0",
+    "remark": "Generated from HrWorkflow table (ZR.Model.HR)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_employee_dependent_relationship",
+    "dictName": "Hr Employee Dependent Relationship - hr_employee_dependent_relationship",
+    "status": "0",
+    "remark": "Generated from HrEmployeeDependentRelationship table (ZR.Model.Hrinsurancetype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_insurance_coveragelevel",
+    "dictName": "Hr Insurance Coveragelevel - hr_insurance_coveragelevel",
+    "status": "0",
+    "remark": "Generated from HrInsuranceCoveragelevel table (ZR.Model.Hrinsurancetype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_insurance_plan_ype",
+    "dictName": "Hr Insurance Plan Ype - hr_insurance_plan_ype",
+    "status": "0",
+    "remark": "Generated from HrInsurancePlanYpe table (ZR.Model.Hrinsurancetype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "ai_ToolType",
+    "dictName": "Tool Type - ai_ToolType",
+    "status": "0",
+    "remark": "Generated from ToolType table (ZR.Model.Ai)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_holidaytype",
+    "dictName": "Hr Holidaytype - hr_holidaytype",
+    "status": "0",
+    "remark": "Generated from HrHolidaytype table (ZR.Model.Hrtypes)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "hr_leave_type",
+    "dictName": "Hr Leave Type - hr_leave_type",
+    "status": "0",
+    "remark": "Generated from HrLeaveType table (ZR.Model.Hrtypes)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "bp_businesspartnerdoctype",
+    "dictName": "Bp Businesspartnerdoctype - bp_businesspartnerdoctype",
+    "status": "0",
+    "remark": "Generated from BpBusinesspartnerdoctype table (ZR.Model.Partnertype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "bp_businesspartnerkind",
+    "dictName": "Bp Businesspartnerkind - bp_businesspartnerkind",
+    "status": "0",
+    "remark": "Generated from BpBusinesspartnerkind table (ZR.Model.Partnertype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "bp_businesspartnerstatus",
+    "dictName": "Bp Businesspartnerstatus - bp_businesspartnerstatus",
+    "status": "0",
+    "remark": "Generated from BpBusinesspartnerstatus table (ZR.Model.Partnertype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "bp_businesspartnertype",
+    "dictName": "Bp Businesspartnertype - bp_businesspartnertype",
+    "status": "0",
+    "remark": "Generated from BpBusinesspartnertype table (ZR.Model.Partnertype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "bp_compliancestatus",
+    "dictName": "Bp Compliancestatus - bp_compliancestatus",
+    "status": "0",
+    "remark": "Generated from BpCompliancestatus table (ZR.Model.Partnertype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "bp_contactmethod",
+    "dictName": "Bp Contactmethod - bp_contactmethod",
+    "status": "0",
+    "remark": "Generated from BpContactmethod table (ZR.Model.Partnertype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "bp_partnerdocsments",
+    "dictName": "Bp Partnerdocsments - bp_partnerdocsments",
+    "status": "0",
+    "remark": "Generated from BpPartnerdocsments table (ZR.Model.Partnertype)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "banner_config",
+    "dictName": "Banner Config - banner_config",
+    "status": "0",
+    "remark": "Generated from BannerConfig table (ZR.Model.Public)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "social_fans",
+    "dictName": "Social Fans - social_fans",
+    "status": "0",
+    "remark": "Generated from SocialFans table (ZR.Model.social)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "social_fans_info",
+    "dictName": "Social Fans Info - social_fans_info",
+    "status": "0",
+    "remark": "Generated from SocialFansInfo table (ZR.Model.social)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_common_lang",
+    "dictName": "Common Lang - sys_common_lang",
+    "status": "0",
+    "remark": "Generated from CommonLang table (ZR.Model.Models)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_post_dto",
+    "dictName": "Sys Post Dto - sys_post_dto",
+    "status": "0",
+    "remark": "Generated from SysPostDto table (ZR.ServiceCore.Model.Dto)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "email_log",
+    "dictName": "Email Log - email_log",
+    "status": "0",
+    "remark": "Generated from EmailLog table (ZR.Model.Models)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "emailTpl",
+    "dictName": "Email Tpl - emailTpl",
+    "status": "0",
+    "remark": "Generated from EmailTpl table (ZR.Model.Models)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "gen_table",
+    "dictName": "Gen Table - gen_table",
+    "status": "0",
+    "remark": "Generated from GenTable table (ZR.Model.System.Generate)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "gen_table_column",
+    "dictName": "Gen Table Column - gen_table_column",
+    "status": "0",
+    "remark": "Generated from GenTableColumn table (ZR.Model.System.Generate)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "smsCode_log",
+    "dictName": "Sms Code Log - smsCode_log",
+    "status": "0",
+    "remark": "Generated from SmsCodeLog table (ZR.Model.Models)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sqlDiffLog",
+    "dictName": "Sql Diff Log - sqlDiffLog",
+    "status": "0",
+    "remark": "Generated from SqlDiffLog table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_config",
+    "dictName": "Sys Config - sys_config",
+    "status": "0",
+    "remark": "Generated from SysConfig table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_dept",
+    "dictName": "Sys Dept - sys_dept",
+    "status": "0",
+    "remark": "Generated from SysDept table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_dict_data",
+    "dictName": "Sys Dict Data - sys_dict_data",
+    "status": "0",
+    "remark": "Generated from SysDictData table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_dict_type",
+    "dictName": "Sys Dict Type - sys_dict_type",
+    "status": "0",
+    "remark": "Generated from SysDictType table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_file",
+    "dictName": "Sys File - sys_file",
+    "status": "0",
+    "remark": "Generated from SysFile table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_file_group",
+    "dictName": "Sys File Group - sys_file_group",
+    "status": "0",
+    "remark": "Generated from SysFileGroup table (ZR.Model.System.Model)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_logininfor",
+    "dictName": "Sys Logininfor - sys_logininfor",
+    "status": "0",
+    "remark": "Generated from SysLogininfor table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_menu",
+    "dictName": "Sys Menu - sys_menu",
+    "status": "0",
+    "remark": "Generated from SysMenu table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_notice",
+    "dictName": "Sys Notice - sys_notice",
+    "status": "0",
+    "remark": "Generated from SysNotice table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_oper_log",
+    "dictName": "Sys Oper Log - sys_oper_log",
+    "status": "0",
+    "remark": "Generated from SysOperLog table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_post",
+    "dictName": "Sys Post - sys_post",
+    "status": "0",
+    "remark": "Generated from SysPost table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_role",
+    "dictName": "Sys Role - sys_role",
+    "status": "0",
+    "remark": "Generated from SysRole table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_role_dept",
+    "dictName": "Sys Role Dept - sys_role_dept",
+    "status": "0",
+    "remark": "Generated from SysRoleDept table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_role_menu",
+    "dictName": "Sys Role Menu - sys_role_menu",
+    "status": "0",
+    "remark": "Generated from SysRoleMenu table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_tasks",
+    "dictName": "Sys Tasks - sys_tasks",
+    "status": "0",
+    "remark": "Generated from SysTasks table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_tasks_log",
+    "dictName": "Sys Tasks Log - sys_tasks_log",
+    "status": "0",
+    "remark": "Generated from SysTasksLog table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_user",
+    "dictName": "Sys User - sys_user",
+    "status": "0",
+    "remark": "Generated from SysUser table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_user_msg",
+    "dictName": "Sys User Msg - sys_user_msg",
+    "status": "0",
+    "remark": "Generated from SysUserMsg table (ZR.Model)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_user_post",
+    "dictName": "Sys User Post - sys_user_post",
+    "status": "0",
+    "remark": "Generated from SysUserPost table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "sys_user_role",
+    "dictName": "Sys User Role - sys_user_role",
+    "status": "0",
+    "remark": "Generated from SysUserRole table (ZR.Model.System)",
+    "createBy": "system"
+  },
+  {
+    "dictType": "userOnlineLog",
+    "dictName": "User Online Log - userOnlineLog",
+    "status": "0",
+    "remark": "Generated from UserOnlineLog table (ZR.Model.Models)",
+    "createBy": "system"
+  }
+]

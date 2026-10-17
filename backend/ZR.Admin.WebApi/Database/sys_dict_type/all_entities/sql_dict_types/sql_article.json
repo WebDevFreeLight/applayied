@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_article",
+  "dictName": "Article - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from article table (ZR.Model.Content)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM article"
+}

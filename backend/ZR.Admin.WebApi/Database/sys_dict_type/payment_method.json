@@ -1,0 +1,7 @@
+{
+  "dictType": "payment_method",
+  "dictName": "طرق الدفع - Payment Methods",
+  "status": "0",
+  "remark": "Generated from PaymentMethod table - SELECT methodcode AS dictValue, CONCAT(methodcode, ' - ', methodname, ' - ', methodnamear) AS dictLabel, remark FROM payment_methods",
+  "createBy": "system"
+}

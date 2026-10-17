@@ -1,0 +1,7 @@
+{
+  "dictType": "event_permit_types",
+  "dictName": "Permit Type - event_permit_types",
+  "status": "0",
+  "remark": "Generated from PermitType table (ZR.Model.EventManagement)",
+  "createBy": "system"
+}

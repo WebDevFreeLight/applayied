@@ -1,0 +1,74 @@
+[
+  {
+    "typeId": 1,
+    "typeCode": "entry",
+    "typeName": "Entry Gate",
+    "typeNameAr": "بوابة دخول",
+    "description": "Entry only gate for visitors",
+    "icon": "🚪➡️",
+    "colorCode": "#2ecc71",
+    "direction": "entry",
+    "displayOrder": 1,
+    "isActive": "0"
+  },
+  {
+    "typeId": 2,
+    "typeCode": "exit",
+    "typeName": "Exit Gate",
+    "typeNameAr": "بوابة خروج",
+    "description": "Exit only gate",
+    "icon": "🚪⬅️",
+    "colorCode": "#e74c3c",
+    "direction": "exit",
+    "displayOrder": 2,
+    "isActive": "0"
+  },
+  {
+    "typeId": 3,
+    "typeCode": "both",
+    "typeName": "Two-Way Gate",
+    "typeNameAr": "بوابة ثنائية الاتجاه",
+    "description": "Both entry and exit allowed",
+    "icon": "🚪↔️",
+    "colorCode": "#3498db",
+    "direction": "both",
+    "displayOrder": 3,
+    "isActive": "0"
+  },
+  {
+    "typeId": 4,
+    "typeCode": "vip",
+    "typeName": "VIP Gate",
+    "typeNameAr": "بوابة VIP",
+    "description": "VIP exclusive gate",
+    "icon": "👑🚪",
+    "colorCode": "#FFD700",
+    "direction": "both",
+    "displayOrder": 4,
+    "isActive": "0"
+  },
+  {
+    "typeId": 5,
+    "typeCode": "staff",
+    "typeName": "Staff Gate",
+    "typeNameAr": "بوابة الموظفين",
+    "description": "Staff and personnel only",
+    "icon": "👔🚪",
+    "colorCode": "#95a5a6",
+    "direction": "both",
+    "displayOrder": 5,
+    "isActive": "0"
+  },
+  {
+    "typeId": 6,
+    "typeCode": "emergency",
+    "typeName": "Emergency Exit",
+    "typeNameAr": "مخرج طوارئ",
+    "description": "Emergency use only",
+    "icon": "🚨🚪",
+    "colorCode": "#c0392b",
+    "direction": "exit",
+    "displayOrder": 6,
+    "isActive": "0"
+  }
+]

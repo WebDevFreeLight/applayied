@@ -1,0 +1,78 @@
+﻿AuditId,EntityType,EntityId,Action,ActorUserId,Detail,ActedAt
+13001,ChangeRequest,7001,Decision:Returned,1003,CR 7001 decided Returned.,2026-09-18
+13002,ChangeRequest,7002,Decision:Rejected,1005,CR 7002 decided Rejected.,2026-09-22
+13003,ChangeRequest,7003,Decision:Approved,1007,CR 7003 decided Approved.,2026-09-25
+13004,ChangeRequest,7009,Decision:Rejected,1003,CR 7009 decided Rejected.,2026-09-13
+13005,ChangeRequest,7010,Decision:Returned,1004,CR 7010 decided Returned.,2026-09-16
+13006,ChangeRequest,7012,Decision:Returned,1006,CR 7012 decided Returned.,2026-09-12
+13007,ChangeRequest,7013,Decision:Rejected,1005,CR 7013 decided Rejected.,2026-08-31
+13008,CostTransaction,9001,Posted,1003,Cost 9001 posted (202888.09 AED).,2026-04-15
+13009,CostTransaction,9002,Posted,1003,Cost 9002 posted (239313.43 AED).,2026-05-30
+13010,CostTransaction,9003,Posted,1003,Cost 9003 posted (239992.42 AED).,2026-08-31
+13011,CostTransaction,9004,Posted,1003,Cost 9004 posted (195256.72 AED).,2026-05-11
+13012,CostTransaction,9005,Posted,1003,Cost 9005 posted (163036.45 AED).,2026-03-16
+13013,CostTransaction,9006,Posted,1003,Cost 9006 posted (281291.1 AED).,2026-06-05
+13014,CostTransaction,9007,Posted,1003,Cost 9007 posted (256574.93 AED).,2026-04-24
+13015,CostTransaction,9008,Posted,1003,Cost 9008 posted (293078.73 AED).,2026-06-20
+13016,CostTransaction,9009,Posted,1003,Cost 9009 posted (215781.61 AED).,2026-02-23
+13017,CostTransaction,9010,Posted,1003,Cost 9010 posted (324613.56 AED).,2025-10-03
+13018,CostTransaction,9011,Posted,1003,Cost 9011 posted (269795.13 AED).,2026-08-18
+13019,CostTransaction,9012,Posted,1003,Cost 9012 posted (227320.7 AED).,2025-12-22
+13020,CostTransaction,9015,Posted,1004,Cost 9015 posted (153274.88 AED).,2026-01-04
+13021,CostTransaction,9016,Posted,1004,Cost 9016 posted (144057.14 AED).,2026-01-11
+13022,CostTransaction,9017,Posted,1004,Cost 9017 posted (202921.25 AED).,2026-01-17
+13023,CostTransaction,9018,Posted,1004,Cost 9018 posted (292800.95 AED).,2025-12-27
+13024,CostTransaction,9019,Posted,1004,Cost 9019 posted (238994.66 AED).,2026-02-02
+13025,CostTransaction,9020,Posted,1004,Cost 9020 posted (138240.55 AED).,2026-07-16
+13026,CostTransaction,9021,Posted,1004,Cost 9021 posted (204675.24 AED).,2026-04-30
+13027,CostTransaction,9022,Posted,1004,Cost 9022 posted (241715.23 AED).,2026-02-03
+13028,CostTransaction,9023,Posted,1004,Cost 9023 posted (277757.36 AED).,2026-04-01
+13029,CostTransaction,9026,Posted,1005,Cost 9026 posted (90442.34 AED).,2026-06-27
+13030,CostTransaction,9027,Posted,1005,Cost 9027 posted (57074.29 AED).,2026-05-29
+13031,CostTransaction,9028,Posted,1005,Cost 9028 posted (61632.54 AED).,2026-02-26
+13032,CostTransaction,9029,Posted,1005,Cost 9029 posted (57938.18 AED).,2026-06-27
+13033,CostTransaction,9030,Posted,1005,Cost 9030 posted (52933.78 AED).,2026-08-06
+13034,CostTransaction,9031,Posted,1005,Cost 9031 posted (67097.69 AED).,2026-04-30
+13035,CostTransaction,9032,Posted,1005,Cost 9032 posted (93641.22 AED).,2026-04-25
+13036,CostTransaction,9033,Posted,1005,Cost 9033 posted (58437.78 AED).,2026-08-04
+13037,CostTransaction,9034,Posted,1005,Cost 9034 posted (114389.53 AED).,2026-02-10
+13038,CostTransaction,9035,Posted,1005,Cost 9035 posted (103887.32 AED).,2026-06-25
+13039,CostTransaction,9036,Posted,1005,Cost 9036 posted (71943.75 AED).,2026-08-06
+13040,CostTransaction,9040,Posted,1006,Cost 9040 posted (31398.31 AED).,2026-07-10
+13041,CostTransaction,9041,Posted,1006,Cost 9041 posted (38590.92 AED).,2026-08-26
+13042,CostTransaction,9042,Posted,1006,Cost 9042 posted (36790.92 AED).,2026-03-12
+13043,CostTransaction,9043,Posted,1006,Cost 9043 posted (27217.54 AED).,2026-08-24
+13044,CostTransaction,9044,Posted,1006,Cost 9044 posted (35710.49 AED).,2026-09-06
+13045,CostTransaction,9045,Posted,1006,Cost 9045 posted (44709.19 AED).,2026-09-26
+13046,CostTransaction,9046,Posted,1006,Cost 9046 posted (62142.21 AED).,2026-08-05
+13047,CostTransaction,9047,Posted,1006,Cost 9047 posted (40170.4 AED).,2026-05-05
+13048,CostTransaction,9052,Posted,1005,Cost 9052 posted (98644.08 AED).,2026-06-20
+13049,CostTransaction,9053,Posted,1005,Cost 9053 posted (50071.64 AED).,2026-06-05
+13050,CostTransaction,9054,Posted,1005,Cost 9054 posted (91938.54 AED).,2026-08-07
+13051,CostTransaction,9055,Posted,1005,Cost 9055 posted (77258.48 AED).,2025-09-19
+13052,CostTransaction,9056,Posted,1005,Cost 9056 posted (81043.52 AED).,2026-05-26
+13053,CostTransaction,9057,Posted,1005,Cost 9057 posted (48119.24 AED).,2026-07-08
+13054,CostTransaction,9058,Posted,1005,Cost 9058 posted (71303.76 AED).,2026-01-27
+13055,CostTransaction,9059,Posted,1005,Cost 9059 posted (97280.66 AED).,2026-03-12
+13056,CostTransaction,9062,Posted,1007,Cost 9062 posted (46492.15 AED).,2026-01-24
+13057,CostTransaction,9063,Posted,1007,Cost 9063 posted (68836.45 AED).,2026-08-14
+13058,CostTransaction,9064,Posted,1007,Cost 9064 posted (54554.87 AED).,2026-05-28
+13059,CostTransaction,9065,Posted,1007,Cost 9065 posted (67337.4 AED).,2026-05-01
+13060,CostTransaction,9066,Posted,1007,Cost 9066 posted (69687.88 AED).,2026-02-09
+13061,CostTransaction,9067,Posted,1007,Cost 9067 posted (59583.99 AED).,2026-02-09
+13062,CostTransaction,9068,Posted,1007,Cost 9068 posted (60933.16 AED).,2026-07-24
+13063,CostTransaction,9069,Posted,1007,Cost 9069 posted (77609.16 AED).,2026-05-07
+13064,CostTransaction,9070,Posted,1007,Cost 9070 posted (59484.16 AED).,2025-12-26
+13065,CostTransaction,9071,Posted,1007,Cost 9071 posted (40626.06 AED).,2026-06-03
+13066,CostTransaction,9072,Posted,1007,Cost 9072 posted (64312.85 AED).,2026-02-19
+13067,CostTransaction,9073,Posted,1007,Cost 9073 posted (35352.86 AED).,2025-12-13
+13068,CostTransaction,9082,Posted,1006,Cost 9082 posted (53375.63 AED).,2026-03-14
+13069,CostTransaction,9083,Posted,1006,Cost 9083 posted (56857.34 AED).,2026-03-14
+13070,CostTransaction,9084,Posted,1006,Cost 9084 posted (93917.81 AED).,2026-03-31
+13071,CostTransaction,9085,Posted,1006,Cost 9085 posted (79992.78 AED).,2026-09-12
+13072,CostTransaction,9086,Posted,1006,Cost 9086 posted (81308.5 AED).,2026-03-09
+13073,CostTransaction,9087,Posted,1006,Cost 9087 posted (87459.33 AED).,2026-07-27
+13074,CostTransaction,9088,Posted,1006,Cost 9088 posted (86833.17 AED).,2025-12-25
+13075,CostTransaction,9089,Posted,1006,Cost 9089 posted (85990.15 AED).,2026-02-09
+13076,CostTransaction,9090,Posted,1006,Cost 9090 posted (53902.84 AED).,2025-11-22
+13077,CostTransaction,9095,Posted,1003,Cost 9095 posted (75000 AED).,2026-10-16

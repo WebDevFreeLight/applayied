@@ -1,0 +1,1 @@
+import{a3 as o}from"./index-8SBl9OsZ.js";function e(a){return o({url:"/common/UploadFile",method:"POST",data:a,headers:{"Content-Type":"multipart/form-data"}})}function r(a){return o({url:"/common/SendEmail",method:"POST",data:a})}export{r as s,e as u};

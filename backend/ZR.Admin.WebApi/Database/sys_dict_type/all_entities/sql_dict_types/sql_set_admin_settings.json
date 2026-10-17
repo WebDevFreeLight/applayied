@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_set_admin_settings",
+  "dictName": "admin_settings - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from set_admin_settings table (ZR.Model.Boulevard)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM set_admin_settings"
+}

@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_employee_dependent_relationship",
+  "dictName": "Hr Employee Dependent Relationship - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_employee_dependent_relationship table (ZR.Model.Hrinsurancetype)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_employee_dependent_relationship"
+}

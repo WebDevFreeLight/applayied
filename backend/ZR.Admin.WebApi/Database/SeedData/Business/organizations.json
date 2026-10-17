@@ -1,0 +1,68 @@
+[
+  {
+    "organizationsid": 1,
+    "name": "شركة العين الحديثة - Al-Ain Modern Co.",
+    "organizationtypeid": "1",
+    "logoUrl": "/images/organizations/al_ain_modern.png",
+    "displayOrder": 1,
+    "parentid": 0,
+    "remark": "الشركة الأم والرئيسية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationsid": 2,
+    "name": "قسم الموارد البشرية - HR Department",
+    "organizationtypeid": "1",
+    "logoUrl": "/images/organizations/hr_dept.png",
+    "displayOrder": 2,
+    "parentid": 1,
+    "remark": "قسم إدارة الموارد البشرية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationsid": 3,
+    "name": "قسم المبيعات والتسويق - Sales & Marketing",
+    "organizationtypeid": "1",
+    "logoUrl": "/images/organizations/sales_marketing.png",
+    "displayOrder": 3,
+    "parentid": 1,
+    "remark": "قسم البيع والتسويق",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationsid": 4,
+    "name": "قسم تقنية المعلومات - IT Department",
+    "organizationtypeid": "1",
+    "logoUrl": "/images/organizations/it_dept.png",
+    "displayOrder": 4,
+    "parentid": 1,
+    "remark": "قسم تقنية المعلومات والأنظمة",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationsid": 5,
+    "name": "قسم العمليات والإنتاج - Operations",
+    "organizationtypeid": "1",
+    "logoUrl": "/images/organizations/operations.png",
+    "displayOrder": 5,
+    "parentid": 1,
+    "remark": "قسم العمليات والإنتاج",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  },
+  {
+    "organizationsid": 6,
+    "name": "قسم المحاسبة والمالية - Finance",
+    "organizationtypeid": "1",
+    "logoUrl": "/images/organizations/finance.png",
+    "displayOrder": 6,
+    "parentid": 1,
+    "remark": "قسم المحاسبة والشؤون المالية",
+    "createTime": "2024-01-01T00:00:00",
+    "status": "0"
+  }
+]

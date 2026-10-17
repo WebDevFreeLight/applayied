@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_bp_compliancestatus",
+  "dictName": "Bp Compliancestatus - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from bp_compliancestatus table (ZR.Model.Partnertype)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM bp_compliancestatus"
+}

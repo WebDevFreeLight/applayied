@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_workflow",
+  "dictName": "Hr Workflow - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_workflow table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_workflow"
+}

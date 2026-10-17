@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_emergency_contact",
+  "dictName": "Hr Employee Profile - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_emergency_contact table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_emergency_contact"
+}

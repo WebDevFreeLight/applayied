@@ -1,0 +1,180 @@
+using Microsoft.AspNetCore.Mvc;
+using ZR.Model;
+using ZR.Model.Dto;
+using ZR.Model.System.Enums;
+
+//Created: 2024-05-08
+namespace ZR.Admin.WebApi.Controllers.System
+{
+    /// <summary>
+    /// User System Messages
+    /// </summary>
+    [Route("SysUserMsg")]
+    public class SysUserMsgController : BaseController
+    {
+        /// <summary>
+        /// User system message interface
+        /// </summary>
+        private readonly ISysUserMsgService _SysUserMsgService;
+
+        public SysUserMsgController(ISysUserMsgService SysUserMsgService)
+        {
+            _SysUserMsgService = SysUserMsgService;
+        }
+
+        /// <summary>
+        /// Query user system message list
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        [HttpGet("list")]
+        [ActionPermissionFilter(Permission = "usermsg:list")]
+        public IActionResult QuerySysUserMsg([FromQuery] SysUserMsgQueryDto parm)
+        {
+            var response = _SysUserMsgService.GetList(parm);
+            return SUCCESS(response);
+        }
+
+        /// <summary>
+        /// Query my system messages
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        [HttpGet("mylist")]
+        public IActionResult QueryMySysUserMsg([FromQuery] SysUserMsgQueryDto parm)
+        {
+            parm.UserId = HttpContext.GetUId();
+            var response = _SysUserMsgService.GetList(parm);
+            return SUCCESS(response);
+        }
+
+        /// <summary>
+        /// Query my unread message count
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        [HttpGet("myMsgNum")]
+        public IActionResult QueryMyUnReadMsg([FromQuery] SysUserMsgQueryDto parm)
+        {
+            parm.UserId = HttpContext.GetUId();
+            var response = _SysUserMsgService
+                .Queryable()
+                .Where(f => f.IsRead == 0 && f.UserId == parm.UserId)
+                .WithCache(60 * 10)
+                .ToList();
+            var data = from a in response
+                       group a by new { a.MsgType } into grp
+                       select new
+                       {
+                           msgType = grp.Key.MsgType,
+                           num = grp.Count(),
+                           d = 3
+                       };
+            var lastSysMsgInfo = _SysUserMsgService
+                .Queryable()
+                .Where(f => f.MsgType == UserMsgType.SYSTEM)
+                .OrderByDescending(x => x.MsgId)
+                .First();
+
+            return SUCCESS(new { data, lastSysMsgInfo });
+        }
+
+        /// <summary>
+        /// Query user system message details
+        /// </summary>
+        /// <param name="MsgId"></param>
+        /// <returns></returns>
+        [HttpGet("{MsgId}")]
+        [ActionPermissionFilter(Permission = "usermsg:query")]
+        public IActionResult GetSysUserMsg(long MsgId)
+        {
+            var response = _SysUserMsgService.GetInfo(MsgId);
+
+            var info = response.Adapt<SysUserMsgDto>();
+            return SUCCESS(info);
+        }
+
+        /// <summary>
+        /// Add user system message
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionPermissionFilter(Permission = "usermsg:add")]
+        [Log(Title = "User System Messages", BusinessType = BusinessType.INSERT)]
+        public IActionResult AddSysUserMsg([FromBody] SysUserMsgDto parm)
+        {
+            var modal = parm.Adapt<SysUserMsg>().ToCreate(HttpContext);
+
+            var response = _SysUserMsgService.AddSysUserMsg(modal);
+
+            return SUCCESS(response);
+        }
+
+        /// <summary>
+        /// Delete user system message
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete("delete/{ids}")]
+        [ActionPermissionFilter(Permission = "usermsg:delete")]
+        [Log(Title = "User System Messages", BusinessType = BusinessType.DELETE)]
+        public IActionResult DeleteSysUserMsg([FromRoute] string ids)
+        {
+            var idArr = Tools.SplitAndConvert<long>(ids);
+
+            return ToResponse(_SysUserMsgService.Delete(idArr));
+        }
+
+        /// <summary>
+        /// Read message
+        /// </summary>
+        /// <param name="msgId"></param>
+        /// <param name="msgType"></param>
+        /// <returns></returns>
+        [HttpPost("read/{msgId}/{msgType}")]
+        [ActionPermissionFilter(Permission = "common")]
+        public IActionResult ReadMsg([FromRoute] long msgId, [FromRoute] UserMsgType msgType)
+        {
+            var userId = HttpContext.GetUId();
+            var response = _SysUserMsgService.ReadMsg(userId, msgId, msgType);
+
+            return SUCCESS(response);
+        }
+
+        /// <summary>
+        /// Export user system messages
+        /// </summary>
+        /// <returns></returns>
+        [Log(Title = "User System Messages", BusinessType = BusinessType.EXPORT, IsSaveResponseData = false)]
+        [HttpGet("export")]
+        [ActionPermissionFilter(Permission = "usermsg:export")]
+        public IActionResult Export([FromQuery] SysUserMsgQueryDto parm)
+        {
+            parm.PageNum = 1;
+            parm.PageSize = 100000;
+            var list = _SysUserMsgService.ExportList(parm).Result;
+            if (list == null || list.Count <= 0)
+            {
+                return ToResponse(ResultCode.FAIL, "No data to export");
+            }
+            var result = ExportExcelMini(list, "User System Messages", "User System Messages");
+            return ExportExcel(result.Item2, result.Item1);
+        }
+
+        /// <summary>
+        /// Clear user system messages
+        /// </summary>
+        /// <returns></returns>
+        [Log(Title = "User System Messages", BusinessType = BusinessType.CLEAN)]
+        [ActionPermissionFilter(Permission = "usermsg:delete")]
+        [HttpDelete("clean")]
+        public IActionResult Clear()
+        {
+            if (!HttpContext.IsAdmin())
+            {
+                return ToResponse(ResultCode.FAIL, "Operation failed");
+            }
+            return SUCCESS(_SysUserMsgService.TruncateSysUserMsg());
+        }
+
+    }
+}

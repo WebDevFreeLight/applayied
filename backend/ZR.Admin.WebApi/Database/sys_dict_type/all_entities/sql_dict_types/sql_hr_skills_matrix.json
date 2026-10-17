@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_skills_matrix",
+  "dictName": "Hr Skills Matrix - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_skills_matrix table (ZR.Model.HR)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_skills_matrix"
+}

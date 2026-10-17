@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_hr_salary_compliance",
+  "dictName": "Hr Salary Compliance - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from hr_salary_compliance table (ZR.Model.Hr)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM hr_salary_compliance"
+}

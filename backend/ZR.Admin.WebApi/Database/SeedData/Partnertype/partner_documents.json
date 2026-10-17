@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "partner": 1,
+    "doctype": 1,
+    "fileurl": "/partner_documents/tax_cert_alnoor_2024.pdf",
+    "remark": "Tax certificate for Al-Noor Distribution",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 2,
+    "partner": 1,
+    "doctype": 2,
+    "fileurl": "/partner_documents/license_alnoor_2024.pdf",
+    "remark": "Commercial license for Al-Noor Distribution",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 3,
+    "partner": 1,
+    "doctype": 3,
+    "fileurl": "/partner_documents/insurance_alnoor_2024.pdf",
+    "remark": "Insurance certificate for Al-Noor Distribution",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 4,
+    "partner": 2,
+    "doctype": 4,
+    "fileurl": "/partner_documents/contract_moderntech_2024.pdf",
+    "remark": "Service contract for Modern Tech",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 5,
+    "partner": 2,
+    "doctype": 1,
+    "fileurl": "/partner_documents/tax_cert_moderntech_2024.pdf",
+    "remark": "Tax certificate for Modern Tech",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 6,
+    "partner": 3,
+    "doctype": 5,
+    "fileurl": "/partner_documents/registration_quality_2024.pdf",
+    "remark": "Registration certificate for Quality Manufacturing",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 7,
+    "partner": 4,
+    "doctype": 8,
+    "fileurl": "/partner_documents/iso_globalconsult_2024.pdf",
+    "remark": "ISO certification for Global Consultancy",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 8,
+    "partner": 4,
+    "doctype": 6,
+    "fileurl": "/partner_documents/financials_globalconsult_2023.pdf",
+    "remark": "Financial statements for Global Consultancy",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 9,
+    "partner": 5,
+    "doctype": 2,
+    "fileurl": "/partner_documents/license_accounting_2024.pdf",
+    "remark": "Commercial license for Accounting Services",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  },
+  {
+    "id": 10,
+    "partner": 5,
+    "doctype": 7,
+    "fileurl": "/partner_documents/compliance_accounting_2024.pdf",
+    "remark": "Compliance certificate for Accounting Services",
+    "create_by": "admin",
+    "create_time": "2024-01-15T10:00:00",
+    "companyid": 0,
+    "BranchID": 0
+  }
+]

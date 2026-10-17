@@ -1,0 +1,170 @@
+@using ZR.Infrastructure.Extensions.Qrcode
+@model ZR.Model.EventManagement.Dto.TicketViewModel
+@{
+    var ticket = Model.Ticket;
+    var qrCodeBase64 = string.IsNullOrEmpty(ticket.QRCode) ? "" : ticket.QRCode.GenerateQRCodeBase64();
+    var barcodeBase64 = string.IsNullOrEmpty(ticket.Barcode) ? "" : ticket.Barcode.GenerateBarcodeBase64();
+
+    // Safe property access with fallback values
+    // Note: VisitorName is REQUIRED and validated in the controller
+    var ticketNumber = ticket.TicketNumber ?? "N/A";
+    var ticketType = ticket.TicketType ?? "General";
+    var visitorName = Model.VisitorName; // Required - validated in controller
+    var status = ticket.Status ?? "Active";
+    var currency = ticket.Currency ?? "SAR";
+    var price = ticket.Price;
+    var issueDate = ticket.IssueDate;
+    var barcode = ticket.Barcode ?? "N/A";
+}
+<!DOCTYPE html>
+<html dir='rtl' lang='ar'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Event Ticket</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .ticket {
+            background: white;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .ticket-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .ticket-header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+        .ticket-number {
+            font-size: 18px;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        .ticket-body {
+            padding: 30px;
+        }
+        .ticket-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        .ticket-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .ticket-value {
+            color: #333;
+        }
+        .qr-section {
+            text-align: center;
+            padding: 30px;
+            background: #f9f9f9;
+            margin: 20px -30px -30px -30px;
+        }
+        .qr-code-image {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 15px auto;
+            background: white;
+            border: 2px solid #ddd;
+            padding: 10px;
+        }
+        .barcode-image {
+            width: 300px;
+            height: 80px;
+            margin: 15px auto;
+            background: white;
+            border: 2px solid #ddd;
+            padding: 10px;
+        }
+        .price-box {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .price-box .amount {
+            font-size: 36px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class='ticket'>
+        <div class='ticket-header'>
+            <h1>🎫 Event Ticket</h1>
+            <div class='ticket-number'>Ticket No: @ticketNumber</div>
+        </div>
+        <div class='ticket-body'>
+            <div class='ticket-info'>
+                <span class='ticket-label'>Ticket Type / نوع التذكرة:</span>
+                <span class='ticket-value'>@ticketType</span>
+            </div>
+            <div class='ticket-info'>
+                <span class='ticket-label'>Visitor Name / اسم الزائر:</span>
+                <span class='ticket-value'>@visitorName</span>
+            </div>
+            @if (ticket.IssueDate != default(DateTime))
+            {
+                <div class='ticket-info'>
+                    <span class='ticket-label'>Issue Date / تاريخ الإصدار:</span>
+                    <span class='ticket-value'>@ticket.IssueDate.ToString("yyyy-MM-dd HH:mm")</span>
+                </div>
+            }
+            <div class='ticket-info'>
+                <span class='ticket-label'>Status / الحالة:</span>
+                <span class='ticket-value'>@status</span>
+            </div>
+
+            <div class='price-box'>
+                <div style='font-size: 14px; margin-bottom: 10px;'>Ticket Price / سعر التذكرة</div>
+                <div class='amount'>@price.ToString("N2") @currency</div>
+            </div>
+        </div>
+        <div class='qr-section'>
+            @if (!string.IsNullOrEmpty(qrCodeBase64))
+            {
+                <img src='data:image/png;base64,@qrCodeBase64' alt='QR Code' class='qr-code-image' />
+                <p style='margin: 10px 0; color: #666; font-size: 12px;'>
+                    Scan this QR code at the event entrance
+                </p>
+            }
+            else
+            {
+                <div class='qr-code-image' style='display: flex; align-items: center; justify-content: center; color: #999;'>
+                    <p>QR Code Not Available</p>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(barcodeBase64))
+            {
+                <img src='data:image/png;base64,@barcodeBase64' alt='Barcode' class='barcode-image' />
+                <p style='margin: 5px 0; color: #888; font-size: 10px;'>
+                    Barcode: @barcode
+                </p>
+            }
+            else
+            {
+                <div class='barcode-image' style='display: flex; align-items: center; justify-content: center; color: #999;'>
+                    <p>Barcode Not Available</p>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+[
+  {
+    "typeid": 1,
+    "typecode": "PLANNED",
+    "typename": "Planned",
+    "typenamear": "مخطط",
+    "description": "Event is in planning stage",
+    "icon": "calendar-outline",
+    "colorcode": "#3B82F6",
+    "displayorder": 1,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 2,
+    "typecode": "ACTIVE",
+    "typename": "Active",
+    "typenamear": "نشط",
+    "description": "Event is currently active and ongoing",
+    "icon": "play-circle",
+    "colorcode": "#10B981",
+    "displayorder": 2,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 3,
+    "typecode": "COMPLETED",
+    "typename": "Completed",
+    "typenamear": "مكتمل",
+    "description": "Event has been successfully completed",
+    "icon": "checkmark-circle",
+    "colorcode": "#059669",
+    "displayorder": 3,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 4,
+    "typecode": "CANCELLED",
+    "typename": "Cancelled",
+    "typenamear": "ملغى",
+    "description": "Event has been cancelled",
+    "icon": "close-circle",
+    "colorcode": "#EF4444",
+    "displayorder": 4,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 5,
+    "typecode": "POSTPONED",
+    "typename": "Postponed",
+    "typenamear": "مؤجل",
+    "description": "Event has been postponed to a later date",
+    "icon": "time-outline",
+    "colorcode": "#F59E0B",
+    "displayorder": 5,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 6,
+    "typecode": "PENDING",
+    "typename": "Pending",
+    "typenamear": "قيد الانتظار",
+    "description": "Event is pending approval or confirmation",
+    "icon": "hourglass-outline",
+    "colorcode": "#8B5CF6",
+    "displayorder": 6,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 7,
+    "typecode": "APPROVED",
+    "typename": "Approved",
+    "typenamear": "موافق عليه",
+    "description": "Event has been approved and ready to proceed",
+    "icon": "checkmark-done-circle",
+    "colorcode": "#06B6D4",
+    "displayorder": 7,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 8,
+    "typecode": "REJECTED",
+    "typename": "Rejected",
+    "typenamear": "مرفوض",
+    "description": "Event proposal has been rejected",
+    "icon": "ban-outline",
+    "colorcode": "#DC2626",
+    "displayorder": 8,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 9,
+    "typecode": "ON_HOLD",
+    "typename": "On Hold",
+    "typenamear": "معلق",
+    "description": "Event is temporarily on hold",
+    "icon": "pause-circle",
+    "colorcode": "#F97316",
+    "displayorder": 9,
+    "isactive": "Y"
+  },
+  {
+    "typeid": 10,
+    "typecode": "DRAFT",
+    "typename": "Draft",
+    "typenamear": "مسودة",
+    "description": "Event is in draft mode",
+    "icon": "document-text-outline",
+    "colorcode": "#6B7280",
+    "displayorder": 10,
+    "isactive": "Y"
+  }
+]

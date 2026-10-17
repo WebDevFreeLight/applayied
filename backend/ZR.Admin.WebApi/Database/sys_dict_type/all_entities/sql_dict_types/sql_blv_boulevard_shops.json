@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_blv_boulevard_shops",
+  "dictName": "Blv Boulevard Shops - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from blv_boulevard_shops table (ZR.Model.Boulevard)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM blv_boulevard_shops"
+}

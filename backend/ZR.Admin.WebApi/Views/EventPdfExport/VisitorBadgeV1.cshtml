@@ -1,0 +1,651 @@
+@using ZR.Infrastructure.Extensions.Qrcode
+ 
+@model ZR.Model.EventManagement.EventVisitor
+@{
+    var qrCodeBase64 = !string.IsNullOrEmpty(Model.VisitorCode) ? Model.VisitorCode.GenerateQRCodeBase64() : string.Empty;
+
+    // Generate zones from access data if needed
+    var accessZones = new List<string> { "1. FRONT OF HOUSE", "2. BACK OF HOUSE", "3. PROTOCOL" };
+
+    // Helper function to convert local images to base64
+    string GetImageBase64(string fileName)
+    {
+        try
+        {
+            var currentDir = Directory.GetCurrentDirectory();
+            var imagePath = System.IO.Path.Combine(currentDir, "wwwroot", "images", "badges", fileName);
+            if (File.Exists(imagePath))
+            {
+                var imageBytes = File.ReadAllBytes(imagePath);
+                var extension = System.IO.Path.GetExtension(fileName).ToLower().Replace(".", "");
+                if (extension == "jpg") extension = "jpeg";
+                return $"data:image/{extension};base64,{Convert.ToBase64String(imageBytes)}";
+            }
+        }
+        catch { }
+        return string.Empty;
+    }
+
+    // Helper function to get background image
+    string GetBackgroundImageBase64()
+    {
+        try
+        {
+            var currentDir = Directory.GetCurrentDirectory();
+            var imagePath = System.IO.Path.Combine(currentDir, "wwwroot", "images", "riyadh-background.jpg");
+            if (File.Exists(imagePath))
+            {
+                var imageBytes = File.ReadAllBytes(imagePath);
+                return Convert.ToBase64String(imageBytes);
+            }
+        }
+        catch { }
+        return string.Empty;
+    }
+
+    var backgroundBase64 = GetBackgroundImageBase64();
+
+    // Load all partner logos as base64
+    var riyadhSeasonLogo = GetImageBase64("riyadh-season-logo.png");
+    var aramcoLogo = GetImageBase64("aramco.png");
+    var snbLogo = GetImageBase64("snb.png");
+    var stcLogo = GetImageBase64("stc.png");
+    var drSulaimanLogo = GetImageBase64("dr-sulaiman-al-habib.png");
+    var mucLogo = GetImageBase64("muc.jpg");
+    var aroyaLogo = GetImageBase64("aroya.jpeg");
+    var saudiaLogo = GetImageBase64("saudia.png");
+    var shgLogo = GetImageBase64("shg.jpg");
+    var primeoLogo = GetImageBase64("primeo.jpg");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLVD WORLD Riyadh Season 2025 - Badge Design</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        @@page {
+            size: 720px 960px;
+            margin: 0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        .poster-container {
+            width: 720px;
+            min-height: 960px;
+            background: linear-gradient(135deg, #6a1b9a, #311b92);
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .bg-decoration {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0) 70%);
+            z-index: 1;
+        }
+        .bg-decoration-1 {
+            top: -100px;
+            right: -100px;
+        }
+        .bg-decoration-2 {
+            bottom: -50px;
+            left: -100px;
+        }
+        .lanyard {
+            width: 90%;
+            height: 80px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .badge-container {
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .badge-front, .badge-back {
+            background: @(!string.IsNullOrEmpty(backgroundBase64) ? $"url('data:image/jpeg;base64,{backgroundBase64}') center center / cover no-repeat" : "transparent");
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .badge-front > *, .badge-back > * {
+            position: relative;
+            z-index: 1;
+        }
+        .badge-label {
+            position: absolute;
+            top: -12px;
+            left: 30px;
+            background: rgba(106, 27, 154, 0.9);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 3;
+        }
+        .badge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .badge-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #6a1b9a;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), -1px -1px 2px rgba(255, 255, 255, 0.9);
+        }
+        .badge-subtitle {
+            font-size: 16px;
+            color: #9c27b0;
+            margin-top: 5px;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9);
+        }
+        .badge-year {
+            font-size: 22px;
+            font-weight: 700;
+            color: #e91e63;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+        }
+        .welcome-text {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #311b92;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9);
+        }
+        .badge-content {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .photo-section {
+            width: 150px;
+            height: 180px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            border: 3px solid #9c27b0;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .photo-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .photo-icon {
+            font-size: 48px;
+            color: #9c27b0;
+            margin-bottom: 10px;
+        }
+        .photo-text {
+            font-size: 14px;
+            color: #9c27b0;
+        }
+        .info-section {
+            flex: 1;
+        }
+        .name-field {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .badge-type {
+            display: inline-block;
+            background: rgba(106, 27, 154, 0.9);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .access-areas {
+            margin-bottom: 15px;
+        }
+        .access-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .access-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .access-item {
+            display: flex;
+            align-items: center;
+            background: rgba(245, 245, 245, 0.9);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+        }
+        .access-icon {
+            font-size: 16px;
+            color: #9c27b0;
+            margin-right: 5px;
+        }
+        .qr-section {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #9c27b0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .qr-section img {
+            width: 90px;
+            height: 90px;
+        }
+        .partners-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+        .partner-category {
+            margin-bottom: 15px;
+        }
+        .partner-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .partner-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .partner-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(245, 245, 245, 0.9);
+            padding: 8px;
+            border-radius: 6px;
+            height: 50px;
+            min-width: 100px;
+        }
+        .partner-logo {
+            max-height: 35px;
+            max-width: 90px;
+            object-fit: contain;
+        }
+        .terms-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+        .terms-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .terms-text {
+            font-size: 10px;
+            color: #666;
+            line-height: 1.4;
+        }
+        .badge-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .badge-number {
+            font-size: 12px;
+            color: #666;
+        }
+        .local-structure {
+            font-size: 12px;
+            color: #666;
+        }
+        .saudi-text {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6a1b9a;
+            background: rgba(255, 215, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .security-features {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .security-icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(240, 240, 240, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #9c27b0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .hologram {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, rgba(156, 39, 176, 0.1), rgba(233, 30, 99, 0.1));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: rgba(156, 39, 176, 0.3);
+            z-index: 1;
+        }
+        .riyadh-season-logo {
+            max-height: 50px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster-container">
+        <div class="bg-decoration bg-decoration-1"></div>
+        <div class="bg-decoration bg-decoration-2"></div>
+
+        <div class="lanyard">
+            RIYADH SEASON 2025
+        </div>
+
+        <div class="badge-container">
+            <!-- Front Side -->
+            <div class="badge-front">
+                <div class="badge-label">FRONT</div>
+
+                <div class="badge-header">
+                    <div>
+                        @if (!string.IsNullOrEmpty(riyadhSeasonLogo))
+                        {
+                            <img src="@riyadhSeasonLogo" alt="RIYADH SEASON 2025" class="riyadh-season-logo">
+                        }
+                        <div class="badge-title">BLVD WORLD</div>
+                        <div class="badge-subtitle">RIYADH SEASON</div>
+                    </div>
+                    <div class="badge-year">2025</div>
+                </div>
+
+                <div class="welcome-text">Welcome to Arabia</div>
+
+                <div class="badge-content">
+                    <div class="photo-section">
+                        @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                        {
+                            @if (Model.PhotoUrl.StartsWith("data:image"))
+                            {
+                                <img src="@Model.PhotoUrl" alt="Visitor Photo" />
+                            }
+                            else if (Model.PhotoUrl.StartsWith("http://") || Model.PhotoUrl.StartsWith("https://"))
+                            {
+                                <img src="@Model.PhotoUrl" alt="Visitor Photo" />
+                            }
+                            else
+                            {
+                                <img src="file://@Model.PhotoUrl" alt="Visitor Photo" />
+                            }
+                        }
+                        else
+                        {
+                            <span class="photo-icon">&#128100;</span>
+                            <div class="photo-text">PHOTO</div>
+                        }
+                    </div>
+
+                    <div class="info-section">
+                        <div class="name-field">@Model.FirstName @Model.LastName</div>
+                        <div class="badge-type">@(Model.VisitorType ?? "REGULAR")</div>
+
+                        <div class="access-areas">
+                            <div class="access-title">ACCESS AREAS</div>
+                            <div class="access-list">
+                                @foreach (var zone in accessZones)
+                                {
+                                    <div class="access-item">
+                                        <span class="access-icon">✓</span>
+                                        @zone
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="qr-section">
+                        @if (!string.IsNullOrEmpty(qrCodeBase64))
+                        {
+                            <img src="data:image/png;base64,@qrCodeBase64" alt="QR Code" />
+                        }
+                        else
+                        {
+                            <span style="font-size: 48px; color: #9c27b0;">⧉</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="badge-footer">
+                    <div class="badge-number">ID: @Model.VisitorCode</div>
+                    <div class="local-structure">LOCAL STRUCTURE 2025 | BLVD CITY & BLVD WORLD</div>
+                </div>
+
+                <div class="saudi-text">SAUDI</div>
+            </div>
+
+            <!-- Back Side -->
+            <div class="badge-back">
+                <div class="badge-label">BACK</div>
+
+                <div class="badge-header">
+                    <div>
+                        @if (!string.IsNullOrEmpty(riyadhSeasonLogo))
+                        {
+                            <img src="@riyadhSeasonLogo" alt="RIYADH SEASON 2025" class="riyadh-season-logo">
+                        }
+                        <div class="badge-title">BLVD WORLD</div>
+                        <div class="badge-subtitle">RIYADH SEASON</div>
+                    </div>
+                    <div class="badge-year">2025</div>
+                </div>
+
+                <div class="partners-section">
+                    <div class="partner-category">
+                        <div class="partner-title">OFFICIAL PREMIUM PARTNERS</div>
+                        <div class="partner-list">
+                            @if (!string.IsNullOrEmpty(aramcoLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@aramcoLogo" alt="aramco" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">aramco</div>
+                            }
+                            @if (!string.IsNullOrEmpty(snbLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@snbLogo" alt="SNB" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">SNB</div>
+                            }
+                            @if (!string.IsNullOrEmpty(stcLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@stcLogo" alt="stc" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">stc</div>
+                            }
+                            @if (!string.IsNullOrEmpty(drSulaimanLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@drSulaimanLogo" alt="DR SULAIMAN AL HABIB" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">DR SULAIMAN AL HABIB</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="partner-category">
+                        <div class="partner-title">OFFICIAL STRATEGIC PARTNERS</div>
+                        <div class="partner-list">
+                            @if (!string.IsNullOrEmpty(mucLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@mucLogo" alt="MUC" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">MUC</div>
+                            }
+                            @if (!string.IsNullOrEmpty(aroyaLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@aroyaLogo" alt="AROYA" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">AROYA</div>
+                            }
+                            @if (!string.IsNullOrEmpty(saudiaLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@saudiaLogo" alt="Saudia" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">Saudia</div>
+                            }
+                            @if (!string.IsNullOrEmpty(shgLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@shgLogo" alt="SHG" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">SHG</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="partner-category">
+                        <div class="partner-title">COMMERCIAL PARTNER</div>
+                        <div class="partner-list">
+                            @if (!string.IsNullOrEmpty(primeoLogo))
+                            {
+                                <div class="partner-item">
+                                    <img src="@primeoLogo" alt="PRIMEO" class="partner-logo">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="partner-item">PRIMEO</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="terms-section">
+                    <div class="terms-title">TERMS & CONDITIONS</div>
+                    <div class="terms-text">
+                        THIS ACCREDITATION PASS REMAINS THE PROPERTY OF THE (GEA). THIS PASS IS NON-TRANSFERABLE AND GEA CAN WITHDRAW IT AT ANY TIME. THE BEARER HAS ACCESS AS STATED ON THE PASS AND IS SUBJECT TO ALL GEA RULES AND PROVISIONS (INCLUDING BODY SEARCH AND PERSONAL ITEM SEARCH). THE ACCREDITATION MUST BE VISIBLE AT ALL TIMES WHEN THE BEARER IS IN THE ZONE FOR WHICH HE/SHE IS ACCREDITED. ANY NON-COMPLIANCE (BY THE BEARER) TO ACCREDITATION INSTRUCTIONS AND LIMITATIONS MAY RESULT IN THE PASS BEING WITHDRAWN AND THE BEARER REMOVED FROM THE ZONE. BY USING AND OR WEARING THIS PASS, THE USER GRANTS GEA UNLIMITED LICENSE, VOICE AND WORDS IN TELEVISION, RADIO, FILM OR ANY MEDIA IN PERPETUITY TO PROMOTE AND PUBLICIZE THE EVENT WITH NO COMPENSATION DUE TO THE BEARER.
+                    </div>
+                </div>
+
+                <div class="badge-footer">
+                    <div class="badge-number">ID: @Model.VisitorCode</div>
+                    <div class="local-structure">LOCAL STRUCTURE 2025 | BLVD CITY & BLVD WORLD</div>
+                </div>
+
+                <div class="hologram">RIYADH SEASON</div>
+
+                <div class="security-features">
+                    <div class="security-icon">🔒</div>
+                    <div class="security-icon">✓</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

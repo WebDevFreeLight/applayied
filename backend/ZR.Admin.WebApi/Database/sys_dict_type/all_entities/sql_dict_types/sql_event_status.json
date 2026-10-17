@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_event_status",
+  "dictName": "Event Status - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from event_status table (ZR.Model.EventManagement)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM event_status"
+}

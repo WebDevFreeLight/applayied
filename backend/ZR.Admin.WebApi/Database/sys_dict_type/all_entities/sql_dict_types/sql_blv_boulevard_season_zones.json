@@ -1,0 +1,8 @@
+{
+  "dictType": "sql_blv_boulevard_season_zones",
+  "dictName": "Blv Boulevard Season Zones - SQL Query",
+  "status": "0",
+  "remark": "SQL-generated dictionary from blv_boulevard_season_zones table (ZR.Model.Boulevard)",
+  "createBy": "system",
+  "sqlQuery": "SELECT * FROM blv_boulevard_season_zones"
+}

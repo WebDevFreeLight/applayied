@@ -1,0 +1,7 @@
+{
+  "dictType": "event_incidents",
+  "dictName": "Event Incident - event_incidents",
+  "status": "0",
+  "remark": "Generated from EventIncident table (ZR.Model.EventManagement)",
+  "createBy": "system"
+}

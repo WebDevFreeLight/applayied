@@ -1,0 +1,7 @@
+{
+  "dictType": "event_payments",
+  "dictName": "Event Payment - event_payments",
+  "status": "0",
+  "remark": "Generated from EventPayment table (ZR.Model.EventManagement)",
+  "createBy": "system"
+}
