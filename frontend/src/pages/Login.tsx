@@ -52,7 +52,8 @@ export default function Login() {
           {captchaRequired && (
             <div className="row" style={{ gap: 8 }}>
               <input placeholder="Captcha" value={code} onChange={(e) => setCode(e.target.value)} style={{ flex: 1 }} required />
-              <img src={captcha.img} alt="captcha" onClick={loadCaptcha} title="click to refresh"
+              <img src={captcha.img.startsWith('data:') ? captcha.img : `data:image/jpeg;base64,${captcha.img}`}
+                alt="captcha" onClick={loadCaptcha} title="click to refresh"
                 style={{ height: 38, borderRadius: 6, cursor: 'pointer' }} />
             </div>
           )}

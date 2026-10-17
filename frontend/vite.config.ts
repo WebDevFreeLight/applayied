@@ -4,7 +4,8 @@ import react from '@vitejs/plugin-react'
 // The dev server proxies /api -> the .NET backend so the browser makes same-origin calls
 // (avoids CORS in development). Override the target with VITE_API_TARGET if needed.
 export default defineConfig(({ mode }) => {
-  const target = process.env.VITE_API_TARGET || 'http://localhost:5000'
+  // Default to the backend's launchSettings http port; override with VITE_API_TARGET if yours differs.
+  const target = process.env.VITE_API_TARGET || 'http://localhost:63873'
   return {
     plugins: [react()],
     server: {
