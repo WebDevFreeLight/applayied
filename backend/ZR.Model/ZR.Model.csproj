@@ -7,9 +7,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="ERP\Cash_Bank\**" />
-	  <EmbeddedResource Remove="ERP\Cash_Bank\**" />
-	  <None Remove="ERP\Cash_Bank\**" />
+	  <Compile Remove="ERP\**" />
+	  <EmbeddedResource Remove="ERP\**" />
+	  <None Remove="ERP\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -25,11 +25,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ERP\Finance\ARAP\Entities\" />
-	  <Folder Include="ERP\Finance\Dto\" />
-	  <Folder Include="ERP\Inventory\Dto\" />
-	  <Folder Include="ERP\ProjectManagement\Dto\" />
-	  <Folder Include="ERP\Purchase\Dto\" />
 	  <Folder Include="HR\Settings\" />
 	</ItemGroup>
 </Project>

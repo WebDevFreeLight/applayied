@@ -376,6 +376,27 @@ if (initDb)
     }
 }
 
+// PMO synthetic-data seeding (independent of InitDb). Set "PmoSeed": true once to import the
+// reproducible CSV package (data/csv) via the ORM. Idempotent: existing rows are left untouched.
+if (builder.Configuration["PmoSeed"].ParseToBool())
+{
+    try
+    {
+        var csvDir = builder.Configuration["PmoSeedPath"];
+        if (string.IsNullOrWhiteSpace(csvDir))
+            csvDir = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data", "csv"));
+        Console.WriteLine($"[PMO seed] Importing from: {csvDir}");
+        foreach (var line in new ZR.Service.PMO.PmoDataSeeder().Seed(csvDir))
+            Console.WriteLine(line);
+    }
+    catch (Exception ex)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"[PMO seed] Error: {ex.Message}");
+        Console.ForegroundColor = ConsoleColor.White;
+    }
+}
+
 
 // Initialize Sales module table (sync deal_type + share_percentage columns)
 
