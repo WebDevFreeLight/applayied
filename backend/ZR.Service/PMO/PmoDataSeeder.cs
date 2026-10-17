@@ -146,34 +146,41 @@ namespace ZR.Service.PMO
 
         private void SeedRolesAndUsers(string dir, List<string> log)
         {
-            // 3 PMO roles (role_key carried into the JWT as RoleKeys → drives RBAC).
-            var roles = new List<(long Id, string Key, string Name, string NameAr)>
+            // 3 PMO roles (role_key carried into the JWT as RoleKeys → drives RBAC). sys_role.RoleId
+            // is an IDENTITY column, so a provided id is ignored — we insert by key, then read back the
+            // DB-assigned ids to wire the user-role links (never assume hardcoded ids).
+            var roles = new List<(int Sort, string Key, string Name, string NameAr)>
             {
-                (201, PmoRoleKeys.Admin,          "PMO Administrator",   "مدير مكتب المشاريع"),
-                (202, PmoRoleKeys.ProjectManager, "PMO Project Manager", "مدير مشروع"),
-                (203, PmoRoleKeys.Contributor,    "PMO Contributor",     "مساهم"),
+                (1, PmoRoleKeys.Admin,          "PMO Administrator",   "مدير مكتب المشاريع"),
+                (2, PmoRoleKeys.ProjectManager, "PMO Project Manager", "مدير مشروع"),
+                (3, PmoRoleKeys.Contributor,    "PMO Contributor",     "مساهم"),
             };
             var newRoles = new List<SysRole>();
-            foreach (var (id, key, name, _) in roles)
+            foreach (var (sort, key, name, _) in roles)
             {
-                if (_db.Queryable<SysRole>().Any(x => x.RoleId == id || x.RoleKey == key)) continue;
+                if (_db.Queryable<SysRole>().Any(x => x.RoleKey == key)) continue;
                 newRoles.Add(new SysRole
                 {
-                    RoleId = id,
-                    RoleName = name,
-                    RoleKey = key,
-                    RoleSort = (int)(id - 200),
-                    Status = 0,
-                    DelFlag = 0,
+                    RoleName = name, RoleKey = key, RoleSort = sort,
+                    Status = 0, DelFlag = 0,
                     DataScope = 1, // all-data scope; PMO scoping is enforced in services, not sys dataScope
-                    Create_by = "seed",
-                    Create_time = DateTime.Now
+                    Create_by = "seed", Create_time = DateTime.Now
                 });
             }
             if (newRoles.Count > 0) _db.Insertable(newRoles).ExecuteCommand();
             log.Add($"[PMO seed] roles: inserted {newRoles.Count}");
 
-            var roleIdByKey = roles.ToDictionary(x => x.Key, x => x.Id);
+            // Resolve the ACTUAL (DB-assigned) role ids by key.
+            var keys = roles.Select(x => x.Key).ToList();
+            var roleIdByKey = _db.Queryable<SysRole>().Where(x => keys.Contains(x.RoleKey))
+                .ToList().ToDictionary(x => x.RoleKey, x => x.RoleId);
+
+            // Repair: drop any seeded-user links that point to a role which no longer exists
+            // (e.g. earlier runs wrote links to ids that identity re-assigned).
+            var existingRoleIds = _db.Queryable<SysRole>().Select(x => x.RoleId).ToList();
+            _db.Deleteable<SysUserRole>()
+                .Where(x => x.UserId >= 1001 && x.UserId <= 1015 && !existingRoleIds.Contains(x.RoleId))
+                .ExecuteCommand();
 
             var users = ReadCsv(Path.Combine(dir, "users.csv"));
             var newUsers = new List<SysUser>();
