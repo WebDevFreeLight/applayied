@@ -6,6 +6,8 @@ import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
 import Select from '../components/Select'
+import { EntityDetail } from '../components/EntityDetail'
+import Tasks from './Tasks'
 
 export default function ChangeRequests({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
@@ -18,6 +20,7 @@ export default function ChangeRequests({ projectId: pin }: { projectId?: string 
   const [edit, setEdit] = useState<Partial<ChangeRequest> | null>(null)
   const [history, setHistory] = useState<{ cr: ChangeRequest; rows: ChangeHistory[] } | null>(null)
   const [decide, setDecide] = useState<{ cr: ChangeRequest; action: string; reason: string } | null>(null)
+  const [view, setView] = useState<ChangeRequest | null>(null)
   const [toast, setToast] = useState('')
 
   const load = () => {
@@ -72,6 +75,7 @@ export default function ChangeRequests({ projectId: pin }: { projectId?: string 
                 <td>{c.title}</td><td>{c.projectName}</td><td>{c.requestedByName}</td>
                 <td><Badge value={c.status} /></td><td>{c.estimatedCostImpact ?? '—'}</td><td>{c.decisionByName || '—'}</td>
                 <td className="row">
+                  <button className="btn sm" onClick={() => setView(c)}>{t('project.details')}</button>
                   <button className="btn sm" onClick={() => openHistory(c)}>{t('cr.history')}</button>
                   {c.status === 'Draft' && <button className="btn sm" onClick={() => submit(c)}>{t('cr.submit')}</button>}
                   {canDecide(c) && <>
@@ -120,6 +124,18 @@ export default function ChangeRequests({ projectId: pin }: { projectId?: string 
               </table>)}
           </div>
         </Modal>
+      )}
+
+      {view && (
+        <EntityDetail title={view.title} projectId={view.projectId} onClose={() => setView(null)} rows={[
+          [t('project.title'), view.projectName],
+          [t('cr.requestedBy'), view.requestedByName],
+          [t('cr.status'), <Badge value={view.status} />],
+          [t('cr.decisionBy'), view.decisionByName],
+          [t('cr.reason'), view.decisionReason],
+          [t('cr.costImpact'), view.estimatedCostImpact ?? '—'],
+          [t('cr.description'), view.description],
+        ]} extra={<><h3>{t('task.title')}</h3><Tasks projectId={view.projectId} /></>} />
       )}
       {toast && <Toast message={toast} />}
     </div>
