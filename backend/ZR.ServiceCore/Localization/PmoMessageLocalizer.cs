@@ -60,6 +60,9 @@ namespace ZR.ServiceCore.Localization
             // projects / generic
             ["Project not found"] = "المشروع غير موجود",
             ["Title is required"] = "العنوان مطلوب",
+
+            // RBAC route filter (authorization-denial responses)
+            ["Unauthorized - please sign in"] = "غير مُصرّح — يرجى تسجيل الدخول",
         };
 
         // Regex rules for the interpolated messages — $1/$2 keep the concrete value from the thrown text.
@@ -71,7 +74,16 @@ namespace ZR.ServiceCore.Localization
             (new Regex(@"^Revision already (.+)$"), "حالة المراجعة بالفعل '$1'"),
             (new Regex(@"^Transition (.+) → (.+) is not permitted$"), "الانتقال من $1 إلى $2 غير مسموح به"),
             (new Regex(@"^Unknown action '(.+)'$"), "إجراء غير معروف '$1'"),
+            (new Regex(@"^Forbidden - this action requires the '(.+)' role or higher$"),
+                "ممنوع — يتطلب هذا الإجراء دور '$1' أو أعلى"),
         };
+
+        /// <summary>Derive the primary language code (e.g. "ar") from a raw Accept-Language header.</summary>
+        public static string LanguageFromHeader(string acceptLanguage)
+        {
+            if (string.IsNullOrEmpty(acceptLanguage)) return "en";
+            return acceptLanguage.Split(',')[0].Split('-')[0].Trim().ToLowerInvariant();
+        }
 
         /// <summary>Return <paramref name="message"/> localized to <paramref name="language"/> (currently Arabic), else unchanged.</summary>
         public static string Translate(string message, string language)

@@ -45,6 +45,11 @@ namespace ZR.Service.PMO
                 return log;
             }
 
+            // Make sure every pmo_* table exists (CodeFirst is non-destructive: it only creates
+            // missing tables and adds missing columns). This lets PmoSeed work without a separate
+            // InitDb pass. DDL runs outside the data transaction.
+            EnsureTables(log);
+
             try
             {
                 _db.Ado.BeginTran();
@@ -81,6 +86,34 @@ namespace ZR.Service.PMO
             }
 
             return log;
+        }
+
+        // ------------------------------------------------------------------ schema
+
+        /// <summary>Create any missing pmo_* tables (non-destructive CodeFirst).</summary>
+        private void EnsureTables(List<string> log)
+        {
+            try
+            {
+                // Align the reused identity tables with the current entities first — the legacy
+                // MahamDB sys_user may predate columns the entity now defines (all added columns
+                // are nullable; CodeFirst never drops or narrows existing columns).
+                _db.CodeFirst.InitTables(
+                    typeof(SysDept), typeof(SysRole), typeof(SysUserRole), typeof(SysUser));
+
+                _db.CodeFirst.InitTables(
+                    typeof(PmoCostCategory), typeof(PmoProject), typeof(PmoProjectMember),
+                    typeof(PmoTask), typeof(PmoMilestone), typeof(PmoRisk),
+                    typeof(PmoChangeRequest), typeof(PmoChangeHistory),
+                    typeof(PmoBudgetRevision), typeof(PmoCostTransaction),
+                    typeof(PmoFinancialForecast), typeof(PmoProgressSnapshot),
+                    typeof(PmoAutomationRun), typeof(PmoOutboxNotification), typeof(PmoAuditEvent));
+                log.Add("[PMO seed] ensured pmo_* tables exist");
+            }
+            catch (Exception ex)
+            {
+                log.Add($"[PMO seed] EnsureTables warning: {ex.Message}");
+            }
         }
 
         // ------------------------------------------------------------------ identity

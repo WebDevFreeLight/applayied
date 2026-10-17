@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <!-- SQLite driver for the in-memory test database (backend uses SqlSugarCoreNoDrive). -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZR.Service\ZR.Service.csproj" />
+    <ProjectReference Include="..\ZR.ServiceCore\ZR.ServiceCore.csproj" />
+    <ProjectReference Include="..\ZR.Model\ZR.Model.csproj" />
+    <ProjectReference Include="..\Infrastructure\ZR.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

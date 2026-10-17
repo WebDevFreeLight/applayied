@@ -24,6 +24,11 @@ namespace Infrastructure
         /// <returns></returns>
         public static TokenModel GetLoginUser(HttpContext httpContext)
         {
+            // No HttpContext (e.g. startup seeding, background jobs, scheduled tasks): there is no
+            // signed-in user. Return null so audit AOP / scoping treat it as a system operation
+            // instead of dereferencing a null context.
+            if (httpContext == null) return null;
+
             string token = httpContext.GetToken();
 
             if (string.IsNullOrEmpty(token)) return null;

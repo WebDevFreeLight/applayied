@@ -133,9 +133,12 @@ namespace ZR.ServiceCore.Middleware
             }
             else if (exception is CustomException customException)
             {
-                // Handle legacy CustomException
+                // Handle legacy CustomException. Localize the message to the request language
+                // (ar/en) at this single boundary so services can keep throwing plain English.
                 httpStatusCode = customException.Code == (int)ResultCode.GLOBAL_ERROR ? 500 : 400;
-                responseObject = new ApiResult(customException.Code, customException.Message);
+                var localizedMsg = ZR.ServiceCore.Localization.PmoMessageLocalizer.Translate(
+                    customException.Message, localizationService.GetCurrentLanguage());
+                responseObject = new ApiResult(customException.Code, localizedMsg);
 
                 // Log to database
                 await LogToDatabase(context, customException.Message, exception, user, path, method);

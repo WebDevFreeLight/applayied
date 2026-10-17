@@ -1,0 +1,107 @@
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import * as pmo from '../api/pmo'
+import type { Risk } from '../api/types'
+import { useLookups } from '../hooks/useLookups'
+import { useAuth } from '../auth/auth'
+import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
+
+const STATUSES = ['Open', 'Mitigating', 'Closed']
+const KINDS = ['Risk', 'Issue']
+
+export default function Risks() {
+  const { t } = useTranslation()
+  const lk = useLookups()
+  const { hasRole } = useAuth()
+  const [rows, setRows] = useState<Risk[]>([])
+  const [query, setQuery] = useState({ projectId: '', status: '', highExposureOnly: false })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [edit, setEdit] = useState<Partial<Risk> | null>(null)
+  const [toast, setToast] = useState('')
+
+  const load = () => {
+    setLoading(true); setError('')
+    const params: Record<string, unknown> = { pageNum: 1, pageSize: 200 }
+    if (query.projectId) params.projectId = query.projectId
+    if (query.status) params.status = query.status
+    if (query.highExposureOnly) params.highExposureOnly = true
+    pmo.listRisks(params).then((p) => setRows(p.result || []))
+      .catch((e) => setError((e as Error).message)).finally(() => setLoading(false))
+  }
+  useEffect(load, [query.projectId, query.status, query.highExposureOnly])
+
+  const save = async () => {
+    if (!edit) return
+    try {
+      if (edit.riskId) await pmo.updateRisk(edit); else await pmo.createRisk(edit)
+      setEdit(null); setToast(t('common.saved')); setTimeout(() => setToast(''), 2500); load()
+    } catch (e) { setError((e as Error).message) }
+  }
+  const score = (edit?.probability || 0) * (edit?.impact || 0)
+
+  return (
+    <div>
+      <div className="row">
+        <h2 style={{ margin: 0 }}>{t('risk.title')}</h2>
+        <div className="spacer" />
+        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ kind: 'Risk', status: 'Open', probability: 3, impact: 3 })}>{t('risk.newRisk')}</button>}
+      </div>
+      <div className="row panel" style={{ marginTop: 12 }}>
+        <select value={query.projectId} onChange={(e) => setQuery((q) => ({ ...q, projectId: e.target.value }))}>
+          <option value="">{t('project.title')}: {t('common.all')}</option>
+          {lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
+        </select>
+        <select value={query.status} onChange={(e) => setQuery((q) => ({ ...q, status: e.target.value }))}>
+          <option value="">{t('risk.status')}: {t('common.all')}</option>
+          {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
+        </select>
+        <label className="row" style={{ gap: 6 }}>
+          <input type="checkbox" checked={query.highExposureOnly} onChange={(e) => setQuery((q) => ({ ...q, highExposureOnly: e.target.checked }))} />
+          {t('risk.highExposure')}
+        </label>
+      </div>
+      {error && <ErrorBox message={error} />}
+      {loading ? <Loading /> : rows.length === 0 ? <Empty /> : (
+        <div className="table-wrap" style={{ marginTop: 12 }}>
+          <table><thead><tr>
+            <th>{t('risk.kind')}</th><th>{t('risk.riskTitle')}</th><th>{t('project.title')}</th><th>{t('risk.owner')}</th>
+            <th>{t('risk.probability')}</th><th>{t('risk.impact')}</th><th>{t('risk.score')}</th>
+            <th>{t('risk.status')}</th><th>{t('common.actions')}</th></tr></thead>
+            <tbody>{rows.map((r) => (
+              <tr key={r.riskId}><td><Badge value={r.kind} /></td><td>{r.title}</td><td>{r.projectName}</td><td>{r.ownerName}</td>
+                <td>{r.probability}</td><td>{r.impact}</td>
+                <td><b className={r.score >= 12 ? 'badge red' : ''}>{r.score}</b></td>
+                <td><Badge value={r.status} /></td>
+                <td>{hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...r })}>{t('common.edit')}</button>}</td></tr>))}</tbody>
+          </table>
+        </div>
+      )}
+      {edit && (
+        <Modal title={edit.riskId ? t('risk.editRisk') : t('risk.newRisk')} onClose={() => setEdit(null)}
+          footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
+            <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
+          <label className="field">{t('risk.kind')}
+            <select value={edit.kind} onChange={(e) => setEdit({ ...edit, kind: e.target.value })}>
+              {KINDS.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}</select></label>
+          <label className="field">{t('project.title')}
+            <select value={edit.projectId || ''} onChange={(e) => setEdit({ ...edit, projectId: e.target.value })}>
+              <option value="">—</option>{lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}</select></label>
+          <label className="field full">{t('risk.riskTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
+          <label className="field">{t('risk.owner')}
+            <select value={edit.ownerUserId || ''} onChange={(e) => setEdit({ ...edit, ownerUserId: e.target.value || undefined })}>
+              <option value="">—</option>{lk.users.map((u) => <option key={u.id} value={u.id}>{u.label}</option>)}</select></label>
+          <label className="field">{t('risk.status')}
+            <select value={edit.status} onChange={(e) => setEdit({ ...edit, status: e.target.value })}>
+              {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}</select></label>
+          <label className="field">{t('risk.probability')} (1–5)<input type="number" min={1} max={5} value={edit.probability ?? 3} onChange={(e) => setEdit({ ...edit, probability: Number(e.target.value) })} /></label>
+          <label className="field">{t('risk.impact')} (1–5)<input type="number" min={1} max={5} value={edit.impact ?? 3} onChange={(e) => setEdit({ ...edit, impact: Number(e.target.value) })} /></label>
+          <label className="field">{t('risk.score')}<input value={score} disabled /></label>
+          <label className="field">{t('risk.due')}<input type="date" value={(edit.dueDate || '').substring(0, 10)} onChange={(e) => setEdit({ ...edit, dueDate: e.target.value })} /></label>
+          <label className="field full">{t('risk.mitigation')}<textarea rows={2} value={edit.mitigation || ''} onChange={(e) => setEdit({ ...edit, mitigation: e.target.value })} /></label>
+        </Modal>
+      )}
+      {toast && <Toast message={toast} />}
+    </div>
+  )
+}

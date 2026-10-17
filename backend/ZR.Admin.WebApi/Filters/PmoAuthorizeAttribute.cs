@@ -22,27 +22,25 @@ namespace ZR.Admin.WebApi.Filters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            // Resolve the request language (ar/en) so denial responses are localized too.
+            var lang = ZR.ServiceCore.Localization.PmoMessageLocalizer.LanguageFromHeader(
+                context.HttpContext.Request.Headers["Accept-Language"].ToString());
+
             var token = JwtUtil.GetLoginUser(context.HttpContext);
             if (token == null || token.UserId <= 0)
             {
-                context.Result = new JsonResult(new { code = 401, msg = "Unauthorized - please sign in" })
-                {
-                    StatusCode = 401
-                };
+                var msg = ZR.ServiceCore.Localization.PmoMessageLocalizer.Translate(
+                    "Unauthorized - please sign in", lang);
+                context.Result = new JsonResult(new { code = 401, msg }) { StatusCode = 401 };
                 return;
             }
 
             var actor = PmoActor.From(token);
             if (actor.Level < PmoActor.RankOf(_minRole))
             {
-                context.Result = new JsonResult(new
-                {
-                    code = 403,
-                    msg = $"Forbidden - this action requires the '{_minRole}' role or higher"
-                })
-                {
-                    StatusCode = 403
-                };
+                var msg = ZR.ServiceCore.Localization.PmoMessageLocalizer.Translate(
+                    $"Forbidden - this action requires the '{_minRole}' role or higher", lang);
+                context.Result = new JsonResult(new { code = 403, msg }) { StatusCode = 403 };
                 return;
             }
 
