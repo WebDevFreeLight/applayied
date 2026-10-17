@@ -3,7 +3,7 @@ export default {
   app: { title: 'PMO Portal', subtitle: 'Project Portfolio & Financial Control' },
   nav: {
     dashboard: 'Dashboard', projects: 'Projects', tasks: 'Tasks', milestones: 'Milestones',
-    risks: 'Risks & Issues', changeRequests: 'Change Requests', finance: 'Finance',
+    risks: 'Risks & Issues', changeRequests: 'Change Requests', finance: 'Finance', categories: 'Cost Categories',
     logout: 'Sign out', language: 'العربية',
   },
   auth: {
@@ -56,6 +56,7 @@ export default {
     utilization: 'Utilization', eac: 'EAC', variance: 'Projected variance', newRevision: 'New revision',
     period: 'Period', kind: 'Kind', forecastAmount: 'Forecast amount',
   },
+  category: { title: 'Cost Categories', code: 'Code', name: 'Name', newCat: 'New category', editCat: 'Edit category' },
   dash: {
     title: 'Executive Dashboard', cutoff: 'Reporting cutoff',
     totalProjects: 'Total projects', activeProjects: 'Active projects',

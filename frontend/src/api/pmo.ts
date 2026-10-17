@@ -20,6 +20,8 @@ export const getManagers = () => unwrap<LookupItem[]>(api.get('/pmo/lookup/manag
 export const getProjectOptions = () => unwrap<LookupItem[]>(api.get('/pmo/lookup/projects'))
 export const getCategoryOptions = () => unwrap<LookupItem[]>(api.get('/pmo/lookup/categories'))
 export const getCategories = () => unwrap<CostCategory[]>(api.get('/pmo/cost-category/list'))
+export const createCategory = (dto: Partial<CostCategory>) => unwrap<unknown>(api.post('/pmo/cost-category', dto))
+export const updateCategory = (dto: Partial<CostCategory>) => unwrap<unknown>(api.put('/pmo/cost-category', dto))
 
 // ---- projects ---------------------------------------------------------------
 export const listProjects = (params: Record<string, unknown>) =>

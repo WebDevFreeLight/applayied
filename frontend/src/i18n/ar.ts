@@ -3,7 +3,7 @@ export default {
   app: { title: 'بوابة مكتب المشاريع', subtitle: 'محفظة المشاريع والتحكم المالي' },
   nav: {
     dashboard: 'لوحة القيادة', projects: 'المشاريع', tasks: 'المهام', milestones: 'المعالم الرئيسية',
-    risks: 'المخاطر والمشكلات', changeRequests: 'طلبات التغيير', finance: 'الشؤون المالية',
+    risks: 'المخاطر والمشكلات', changeRequests: 'طلبات التغيير', finance: 'الشؤون المالية', categories: 'فئات التكلفة',
     logout: 'تسجيل الخروج', language: 'English',
   },
   auth: {
@@ -56,6 +56,7 @@ export default {
     utilization: 'نسبة الاستخدام', eac: 'التقدير عند الإنجاز', variance: 'التباين المتوقع', newRevision: 'مراجعة جديدة',
     period: 'الفترة', kind: 'النوع', forecastAmount: 'مبلغ التوقع',
   },
+  category: { title: 'فئات التكلفة', code: 'الرمز', name: 'الاسم', newCat: 'فئة جديدة', editCat: 'تعديل الفئة' },
   dash: {
     title: 'لوحة القيادة التنفيذية', cutoff: 'تاريخ القطع',
     totalProjects: 'إجمالي المشاريع', activeProjects: 'المشاريع النشطة',
