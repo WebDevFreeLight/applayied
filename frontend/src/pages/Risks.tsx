@@ -5,6 +5,7 @@ import type { Risk } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
+import Select from '../components/Select'
 
 const STATUSES = ['Open', 'Mitigating', 'Closed']
 const KINDS = ['Risk', 'Issue']
@@ -48,14 +49,12 @@ export default function Risks() {
         {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ kind: 'Risk', status: 'Open', probability: 3, impact: 3 })}>{t('risk.newRisk')}</button>}
       </div>
       <div className="row panel" style={{ marginTop: 12 }}>
-        <select value={query.projectId} onChange={(e) => setQuery((q) => ({ ...q, projectId: e.target.value }))}>
-          <option value="">{t('project.title')}: {t('common.all')}</option>
-          {lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
-        </select>
-        <select value={query.status} onChange={(e) => setQuery((q) => ({ ...q, status: e.target.value }))}>
-          <option value="">{t('risk.status')}: {t('common.all')}</option>
-          {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-        </select>
+        <div style={{ minWidth: 200 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+          value={query.projectId} onChange={(v) => setQuery((q) => ({ ...q, projectId: v || '' }))}
+          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>
+        <div style={{ minWidth: 170 }}><Select options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+          value={query.status} onChange={(v) => setQuery((q) => ({ ...q, status: v || '' }))}
+          placeholder={`${t('risk.status')}: ${t('common.all')}`} /></div>
         <label className="row" style={{ gap: 6 }}>
           <input type="checkbox" checked={query.highExposureOnly} onChange={(e) => setQuery((q) => ({ ...q, highExposureOnly: e.target.checked }))} />
           {t('risk.highExposure')}
@@ -82,18 +81,18 @@ export default function Risks() {
           footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
           <label className="field">{t('risk.kind')}
-            <select value={edit.kind} onChange={(e) => setEdit({ ...edit, kind: e.target.value })}>
-              {KINDS.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}</select></label>
+            <Select isClearable={false} options={KINDS.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+              value={edit.kind} onChange={(v) => setEdit({ ...edit, kind: v || 'Risk' })} /></label>
           <label className="field">{t('project.title')}
-            <select value={edit.projectId || ''} onChange={(e) => setEdit({ ...edit, projectId: e.target.value })}>
-              <option value="">—</option>{lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}</select></label>
+            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>
           <label className="field full">{t('risk.riskTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
           <label className="field">{t('risk.owner')}
-            <select value={edit.ownerUserId || ''} onChange={(e) => setEdit({ ...edit, ownerUserId: e.target.value || undefined })}>
-              <option value="">—</option>{lk.users.map((u) => <option key={u.id} value={u.id}>{u.label}</option>)}</select></label>
+            <Select options={lk.users.map((u) => ({ value: u.id, label: u.label }))}
+              value={edit.ownerUserId || null} onChange={(v) => setEdit({ ...edit, ownerUserId: v || undefined })} /></label>
           <label className="field">{t('risk.status')}
-            <select value={edit.status} onChange={(e) => setEdit({ ...edit, status: e.target.value })}>
-              {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}</select></label>
+            <Select isClearable={false} options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+              value={edit.status} onChange={(v) => setEdit({ ...edit, status: v || 'Open' })} /></label>
           <label className="field">{t('risk.probability')} (1–5)<input type="number" min={1} max={5} value={edit.probability ?? 3} onChange={(e) => setEdit({ ...edit, probability: Number(e.target.value) })} /></label>
           <label className="field">{t('risk.impact')} (1–5)<input type="number" min={1} max={5} value={edit.impact ?? 3} onChange={(e) => setEdit({ ...edit, impact: Number(e.target.value) })} /></label>
           <label className="field">{t('risk.score')}<input value={score} disabled /></label>

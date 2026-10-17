@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactECharts from 'echarts-for-react'
 import * as pmo from '../api/pmo'
 import type { DashboardKpis, DashboardAnalytics, DashboardFilter, Task, Risk } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { Badge, Empty, ErrorBox, Loading, Modal, fmtDate, fmtMoney } from '../components/ui'
+import Select from '../components/Select'
 
 const BASELINE_CUTOFF = '2026-09-30' // fixed baseline snapshot; production would use today.
 
@@ -115,28 +116,24 @@ function Kpi({ label, value, sub, onClick }: { label: string; value: React.React
 
 function FilterBar({ filter, set, lk }: { filter: DashboardFilter; set: (p: Partial<DashboardFilter>) => void; lk: ReturnType<typeof useLookups> }) {
   const { t } = useTranslation()
+  const w = (node: ReactNode) => <div style={{ minWidth: 190 }}>{node}</div>
   return (
     <div className="row">
-      <select value={filter.deptId || ''} onChange={(e) => set({ deptId: e.target.value || undefined })}>
-        <option value="">{t('project.department')}: {t('common.all')}</option>
-        {lk.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}
-      </select>
-      <select value={filter.managerId || ''} onChange={(e) => set({ managerId: e.target.value || undefined })}>
-        <option value="">{t('project.owner')}: {t('common.all')}</option>
-        {lk.managers.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
-      </select>
-      <select value={filter.projectId || ''} onChange={(e) => set({ projectId: e.target.value || undefined })}>
-        <option value="">{t('project.title')}: {t('common.all')}</option>
-        {lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
-      </select>
-      <select value={filter.status || ''} onChange={(e) => set({ status: e.target.value || undefined })}>
-        <option value="">{t('project.status')}: {t('common.all')}</option>
-        {['Planning', 'Active', 'OnHold', 'Completed', 'Cancelled'].map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-      </select>
-      <select value={filter.categoryId || ''} onChange={(e) => set({ categoryId: e.target.value || undefined })}>
-        <option value="">{t('finance.category')}: {t('common.all')}</option>
-        {lk.categories.map((c) => <option key={c.categoryId} value={c.categoryId}>{c.name}</option>)}
-      </select>
+      {w(<Select options={lk.departments.map((d) => ({ value: d.id, label: d.label }))}
+        value={filter.deptId} onChange={(v) => set({ deptId: v || undefined })}
+        placeholder={`${t('project.department')}: ${t('common.all')}`} />)}
+      {w(<Select options={lk.managers.map((m) => ({ value: m.id, label: m.label }))}
+        value={filter.managerId} onChange={(v) => set({ managerId: v || undefined })}
+        placeholder={`${t('project.owner')}: ${t('common.all')}`} />)}
+      {w(<Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+        value={filter.projectId} onChange={(v) => set({ projectId: v || undefined })}
+        placeholder={`${t('project.title')}: ${t('common.all')}`} />)}
+      {w(<Select options={['Planning', 'Active', 'OnHold', 'Completed', 'Cancelled'].map((s) => ({ value: s, label: t(`status.${s}`) }))}
+        value={filter.status} onChange={(v) => set({ status: v || undefined })}
+        placeholder={`${t('project.status')}: ${t('common.all')}`} />)}
+      {w(<Select options={lk.categories.map((c) => ({ value: c.categoryId, label: c.name }))}
+        value={filter.categoryId} onChange={(v) => set({ categoryId: v || undefined })}
+        placeholder={`${t('finance.category')}: ${t('common.all')}`} />)}
       <input type="date" value={filter.cutoff || ''} onChange={(e) => set({ cutoff: e.target.value || undefined })} title={t('dash.cutoff')} />
     </div>
   )

@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/auth'
 import { changeLanguage } from '../i18n'
+import { getTheme, toggleTheme } from '../theme'
 
 const LINKS = [
   { to: '/', key: 'dashboard', end: true },
@@ -16,7 +18,9 @@ const LINKS = [
 export default function Layout() {
   const { t, i18n } = useTranslation()
   const { session, signOut } = useAuth()
+  const [theme, setThemeState] = useState(getTheme())
   const toggleLang = () => changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
+  const onToggleTheme = () => setThemeState(toggleTheme())
 
   return (
     <div className="shell">
@@ -33,6 +37,7 @@ export default function Layout() {
         <header className="topbar">
           <strong>{t('app.title')}</strong>
           <div className="row">
+            <button className="btn sm" onClick={onToggleTheme} title="theme">{theme === 'dark' ? '☀️' : '🌙'}</button>
             <button className="btn sm" onClick={toggleLang}>{t('nav.language')}</button>
             <span className="user">{session?.nickName} · {session?.roles.join(', ')}</span>
             <button className="btn sm" onClick={signOut}>{t('nav.logout')}</button>

@@ -5,6 +5,7 @@ import type { Project } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate, fmtMoney } from '../components/ui'
+import Select from '../components/Select'
 
 const STATUSES = ['Planning', 'Active', 'OnHold', 'Completed', 'Cancelled']
 const PRIORITIES = ['Low', 'Medium', 'High', 'Critical']
@@ -57,18 +58,15 @@ export default function Projects() {
       <div className="row panel" style={{ marginTop: 12 }}>
         <input placeholder={t('project.keyword')} value={query.keyword}
           onChange={(e) => setQuery((q) => ({ ...q, keyword: e.target.value }))} />
-        <select value={query.deptId} onChange={(e) => setQuery((q) => ({ ...q, deptId: e.target.value }))}>
-          <option value="">{t('project.department')}: {t('common.all')}</option>
-          {lk.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}
-        </select>
-        <select value={query.ownerUserId} onChange={(e) => setQuery((q) => ({ ...q, ownerUserId: e.target.value }))}>
-          <option value="">{t('project.owner')}: {t('common.all')}</option>
-          {lk.managers.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
-        </select>
-        <select value={query.status} onChange={(e) => setQuery((q) => ({ ...q, status: e.target.value }))}>
-          <option value="">{t('project.status')}: {t('common.all')}</option>
-          {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-        </select>
+        <div style={{ minWidth: 180 }}><Select options={lk.departments.map((d) => ({ value: d.id, label: d.label }))}
+          value={query.deptId} onChange={(v) => setQuery((q) => ({ ...q, deptId: v || '' }))}
+          placeholder={`${t('project.department')}: ${t('common.all')}`} /></div>
+        <div style={{ minWidth: 180 }}><Select options={lk.managers.map((m) => ({ value: m.id, label: m.label }))}
+          value={query.ownerUserId} onChange={(v) => setQuery((q) => ({ ...q, ownerUserId: v || '' }))}
+          placeholder={`${t('project.owner')}: ${t('common.all')}`} /></div>
+        <div style={{ minWidth: 170 }}><Select options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+          value={query.status} onChange={(v) => setQuery((q) => ({ ...q, status: v || '' }))}
+          placeholder={`${t('project.status')}: ${t('common.all')}`} /></div>
         <button className="btn primary" onClick={() => setQuery((q) => ({ ...q, pageNum: 1 }))}>{t('common.apply')}</button>
         <button className="btn" onClick={() => setQuery({ pageNum: 1, pageSize: 10, keyword: '', deptId: '', ownerUserId: '', status: '' })}>{t('common.reset')}</button>
       </div>
@@ -108,21 +106,17 @@ export default function Projects() {
           <label className="field">{t('project.code')}<input value={edit.code || ''} onChange={(e) => setEdit({ ...edit, code: e.target.value })} /></label>
           <label className="field">{t('project.name')}<input value={edit.name || ''} onChange={(e) => setEdit({ ...edit, name: e.target.value })} /></label>
           <label className="field">{t('project.department')}
-            <select value={edit.deptId || ''} onChange={(e) => setEdit({ ...edit, deptId: e.target.value })}>
-              <option value="">—</option>{lk.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}
-            </select></label>
+            <Select options={lk.departments.map((d) => ({ value: d.id, label: d.label }))}
+              value={edit.deptId || null} onChange={(v) => setEdit({ ...edit, deptId: v || undefined })} /></label>
           <label className="field">{t('project.owner')}
-            <select value={edit.ownerUserId || ''} onChange={(e) => setEdit({ ...edit, ownerUserId: e.target.value })}>
-              <option value="">—</option>{lk.managers.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
-            </select></label>
+            <Select options={lk.managers.map((m) => ({ value: m.id, label: m.label }))}
+              value={edit.ownerUserId || null} onChange={(v) => setEdit({ ...edit, ownerUserId: v || undefined })} /></label>
           <label className="field">{t('project.status')}
-            <select value={edit.status} onChange={(e) => setEdit({ ...edit, status: e.target.value })}>
-              {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-            </select></label>
+            <Select isClearable={false} options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+              value={edit.status} onChange={(v) => setEdit({ ...edit, status: v || 'Planning' })} /></label>
           <label className="field">{t('project.priority')}
-            <select value={edit.priority} onChange={(e) => setEdit({ ...edit, priority: e.target.value })}>
-              {PRIORITIES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-            </select></label>
+            <Select isClearable={false} options={PRIORITIES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+              value={edit.priority} onChange={(v) => setEdit({ ...edit, priority: v || 'Medium' })} /></label>
           <label className="field">{t('project.startDate')}<input type="date" value={(edit.startDate || '').substring(0, 10)} onChange={(e) => setEdit({ ...edit, startDate: e.target.value })} /></label>
           <label className="field">{t('project.plannedEnd')}<input type="date" value={(edit.plannedEndDate || '').substring(0, 10)} onChange={(e) => setEdit({ ...edit, plannedEndDate: e.target.value })} /></label>
           <label className="field">{t('project.budget')} ({t('common.currency')})<input type="number" value={edit.initialApprovedBudget ?? 0} onChange={(e) => setEdit({ ...edit, initialApprovedBudget: Number(e.target.value) })} /></label>

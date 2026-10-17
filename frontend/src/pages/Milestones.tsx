@@ -5,6 +5,7 @@ import type { Milestone } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
+import Select from '../components/Select'
 
 const STATUSES = ['Pending', 'Achieved', 'Missed']
 
@@ -41,10 +42,9 @@ export default function Milestones() {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('milestone.title')}</h2>
         <div className="spacer" />
-        <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
-          <option value="">{t('project.title')}: {t('common.all')}</option>
-          {lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
-        </select>
+        <div style={{ minWidth: 220 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+          value={projectId} onChange={(v) => setProjectId(v || '')}
+          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>
         {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ status: 'Pending', projectId: projectId || undefined })}>{t('milestone.newMilestone')}</button>}
       </div>
       {error && <ErrorBox message={error} />}
@@ -66,12 +66,12 @@ export default function Milestones() {
             <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
           <label className="field full">{t('milestone.name')}<input value={edit.name || ''} onChange={(e) => setEdit({ ...edit, name: e.target.value })} /></label>
           <label className="field">{t('project.title')}
-            <select value={edit.projectId || ''} onChange={(e) => setEdit({ ...edit, projectId: e.target.value })}>
-              <option value="">—</option>{lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}</select></label>
+            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>
           <label className="field">{t('milestone.due')}<input type="date" value={(edit.dueDate || '').substring(0, 10)} onChange={(e) => setEdit({ ...edit, dueDate: e.target.value })} /></label>
           <label className="field">{t('milestone.status')}
-            <select value={edit.status} onChange={(e) => setEdit({ ...edit, status: e.target.value })}>
-              {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}</select></label>
+            <Select isClearable={false} options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+              value={edit.status} onChange={(v) => setEdit({ ...edit, status: v || 'Pending' })} /></label>
         </Modal>
       )}
       {toast && <Toast message={toast} />}

@@ -5,6 +5,7 @@ import type { ChangeRequest, ChangeHistory } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
+import Select from '../components/Select'
 
 export default function ChangeRequests() {
   const { t } = useTranslation()
@@ -55,10 +56,9 @@ export default function ChangeRequests() {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('cr.title')}</h2>
         <div className="spacer" />
-        <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
-          <option value="">{t('project.title')}: {t('common.all')}</option>
-          {lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
-        </select>
+        <div style={{ minWidth: 220 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+          value={projectId} onChange={(v) => setProjectId(v || '')}
+          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>
         <button className="btn primary" onClick={() => setEdit({})}>{t('cr.newCr')}</button>
       </div>
       {error && <ErrorBox message={error} />}
@@ -91,8 +91,8 @@ export default function ChangeRequests() {
             <button className="btn primary" onClick={create}>{t('common.save')}</button></>}>
           <label className="field full">{t('cr.crTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
           <label className="field">{t('project.title')}
-            <select value={edit.projectId || ''} onChange={(e) => setEdit({ ...edit, projectId: e.target.value })}>
-              <option value="">—</option>{lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}</select></label>
+            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>
           <label className="field">{t('cr.costImpact')}<input type="number" value={edit.estimatedCostImpact ?? 0} onChange={(e) => setEdit({ ...edit, estimatedCostImpact: Number(e.target.value) })} /></label>
           <label className="field full">{t('cr.description')}<textarea rows={3} value={edit.description || ''} onChange={(e) => setEdit({ ...edit, description: e.target.value })} /></label>
         </Modal>

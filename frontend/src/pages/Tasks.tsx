@@ -5,6 +5,7 @@ import type { Task } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
+import Select from '../components/Select'
 
 const STATUSES = ['ToDo', 'InProgress', 'Blocked', 'Done']
 const PRIORITIES = ['Low', 'Medium', 'High', 'Critical']
@@ -60,18 +61,15 @@ export default function Tasks() {
       </div>
 
       <div className="row panel" style={{ marginTop: 12 }}>
-        <select value={query.projectId} onChange={(e) => setQuery((q) => ({ ...q, projectId: e.target.value, pageNum: 1 }))}>
-          <option value="">{t('project.title')}: {t('common.all')}</option>
-          {lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
-        </select>
-        <select value={query.status} onChange={(e) => setQuery((q) => ({ ...q, status: e.target.value, pageNum: 1 }))}>
-          <option value="">{t('task.status')}: {t('common.all')}</option>
-          {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-        </select>
-        <select value={query.assigneeUserId} onChange={(e) => setQuery((q) => ({ ...q, assigneeUserId: e.target.value, pageNum: 1 }))}>
-          <option value="">{t('task.assignee')}: {t('common.all')}</option>
-          {lk.users.map((u) => <option key={u.id} value={u.id}>{u.label}</option>)}
-        </select>
+        <div style={{ minWidth: 190 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+          value={query.projectId} onChange={(v) => setQuery((q) => ({ ...q, projectId: v || '', pageNum: 1 }))}
+          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>
+        <div style={{ minWidth: 170 }}><Select options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+          value={query.status} onChange={(v) => setQuery((q) => ({ ...q, status: v || '', pageNum: 1 }))}
+          placeholder={`${t('task.status')}: ${t('common.all')}`} /></div>
+        <div style={{ minWidth: 190 }}><Select options={lk.users.map((u) => ({ value: u.id, label: u.label }))}
+          value={query.assigneeUserId} onChange={(v) => setQuery((q) => ({ ...q, assigneeUserId: v || '', pageNum: 1 }))}
+          placeholder={`${t('task.assignee')}: ${t('common.all')}`} /></div>
       </div>
 
       {error && <ErrorBox message={error} />}
@@ -113,9 +111,8 @@ export default function Tasks() {
             <input type="range" min={0} max={100} value={progress.progressPct}
               onChange={(e) => setProgress({ ...progress, progressPct: Number(e.target.value) })} /></label>
           <label className="field full">{t('task.status')}
-            <select value={progress.status} onChange={(e) => setProgress({ ...progress, status: e.target.value })}>
-              {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-            </select></label>
+            <Select isClearable={false} options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+              value={progress.status} onChange={(v) => setProgress({ ...progress, status: v || 'ToDo' })} /></label>
         </Modal>
       )}
 
@@ -125,19 +122,18 @@ export default function Tasks() {
             <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
           <label className="field full">{t('task.taskTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
           <label className="field">{t('project.title')}
-            <select value={edit.projectId || ''} onChange={(e) => setEdit({ ...edit, projectId: e.target.value })}>
-              <option value="">—</option>{lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
-            </select></label>
+            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>
           <label className="field">{t('task.assignee')}
-            <select value={edit.assigneeUserId || ''} onChange={(e) => setEdit({ ...edit, assigneeUserId: e.target.value || undefined })}>
-              <option value="">{t('task.unassigned')}</option>{lk.users.map((u) => <option key={u.id} value={u.id}>{u.label}</option>)}
-            </select></label>
+            <Select options={lk.users.map((u) => ({ value: u.id, label: u.label }))}
+              value={edit.assigneeUserId || null} onChange={(v) => setEdit({ ...edit, assigneeUserId: v || undefined })}
+              placeholder={t('task.unassigned')} /></label>
           <label className="field">{t('task.status')}
-            <select value={edit.status} onChange={(e) => setEdit({ ...edit, status: e.target.value })}>
-              {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}</select></label>
+            <Select isClearable={false} options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+              value={edit.status} onChange={(v) => setEdit({ ...edit, status: v || 'ToDo' })} /></label>
           <label className="field">{t('task.priority')}
-            <select value={edit.priority} onChange={(e) => setEdit({ ...edit, priority: e.target.value })}>
-              {PRIORITIES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}</select></label>
+            <Select isClearable={false} options={PRIORITIES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+              value={edit.priority} onChange={(v) => setEdit({ ...edit, priority: v || 'Medium' })} /></label>
           <label className="field">{t('task.start')}<input type="date" value={(edit.startDate || '').substring(0, 10)} onChange={(e) => setEdit({ ...edit, startDate: e.target.value })} /></label>
           <label className="field">{t('task.due')}<input type="date" value={(edit.dueDate || '').substring(0, 10)} onChange={(e) => setEdit({ ...edit, dueDate: e.target.value })} /></label>
           <label className="field">{t('task.weight')}<input type="number" value={edit.weight ?? 1} onChange={(e) => setEdit({ ...edit, weight: Number(e.target.value) })} /></label>

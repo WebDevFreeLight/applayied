@@ -5,6 +5,7 @@ import type { CostTransaction, BudgetRevision, FinanceSummary } from '../api/typ
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate, fmtMoney } from '../components/ui'
+import Select from '../components/Select'
 
 const BASELINE_CUTOFF = '2026-09-30'
 
@@ -60,10 +61,8 @@ export default function Finance() {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('finance.title')}</h2>
         <div className="spacer" />
-        <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
-          <option value="">{t('project.title')}…</option>
-          {lk.projects.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
-        </select>
+        <div style={{ minWidth: 220 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+          value={projectId} onChange={(v) => setProjectId(v || '')} placeholder={`${t('project.title')}…`} /></div>
         <input type="date" value={cutoff} onChange={(e) => setCutoff(e.target.value)} title={t('dash.cutoff')} />
       </div>
 
@@ -122,8 +121,8 @@ export default function Finance() {
           footer={<><button className="btn" onClick={() => setAddCost(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={saveCost}>{t('common.save')}</button></>}>
           <label className="field">{t('finance.category')}
-            <select value={addCost.categoryId || ''} onChange={(e) => setAddCost({ ...addCost, categoryId: e.target.value })}>
-              <option value="">—</option>{lk.categories.map((c) => <option key={c.categoryId} value={c.categoryId}>{c.name}</option>)}</select></label>
+            <Select options={lk.categories.map((c) => ({ value: c.categoryId, label: c.name }))}
+              value={addCost.categoryId || null} onChange={(v) => setAddCost({ ...addCost, categoryId: v || undefined })} /></label>
           <label className="field">{t('finance.amount')}<input type="number" value={addCost.amount ?? 0} onChange={(e) => setAddCost({ ...addCost, amount: Number(e.target.value) })} /></label>
           <label className="field">{t('finance.date')}<input type="date" value={(addCost.txnDate || '').substring(0, 10)} onChange={(e) => setAddCost({ ...addCost, txnDate: e.target.value })} /></label>
           <label className="field full">{t('finance.description')}<input value={addCost.description || ''} onChange={(e) => setAddCost({ ...addCost, description: e.target.value })} /></label>

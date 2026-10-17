@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/auth'
 import { changeLanguage } from '../i18n'
+import { getTheme, toggleTheme } from '../theme'
 import * as pmo from '../api/pmo'
 
 export default function Login() {
@@ -13,6 +14,7 @@ export default function Login() {
   const [captcha, setCaptcha] = useState<pmo.Captcha | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [theme, setThemeState] = useState(getTheme())
 
   // Load a captcha challenge. captchaOff === 'off' means the server has captcha disabled.
   const loadCaptcha = () => { pmo.getCaptcha().then(setCaptcha).catch(() => setCaptcha({ captchaOff: 'off', uuid: '', img: '' })) }
@@ -37,9 +39,14 @@ export default function Login() {
       <form className="panel login-card" onSubmit={submit}>
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <h2 style={{ margin: 0 }}>{t('app.title')}</h2>
-          <button type="button" className="btn sm" onClick={() => changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')}>
-            {t('nav.language')}
-          </button>
+          <div className="row">
+            <button type="button" className="btn sm" onClick={() => setThemeState(toggleTheme())} title="theme">
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+            <button type="button" className="btn sm" onClick={() => changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')}>
+              {t('nav.language')}
+            </button>
+          </div>
         </div>
         <p className="muted" style={{ marginTop: 4 }}>{t('app.subtitle')}</p>
         <div style={{ display: 'grid', gap: 12, marginTop: 10 }}>
