@@ -43,7 +43,9 @@ namespace ZR.ServiceCore.SqlSugar
         {
             //Get current user information
             var user = JwtUtil.GetLoginUser(App.HttpContext);
-            if (user == null || user.RoleKeys == null) return;
+            // No user, or a token without role detail → no row-level data filtering to apply.
+            // (Guards against a null Roles list, which OrderBy below would otherwise throw on.)
+            if (user == null || user.RoleKeys == null || user.Roles == null) return;
 
             var db = DbScoped.SugarScope.GetConnectionScope(configId);
             var expUser = Expressionable.Create<SysUser>().And(it => it.DelFlag == 0);

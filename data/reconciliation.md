@@ -20,6 +20,6 @@ for the same snapshot/filter scope.
 - Total projects: 8  |  Active: 5
 - Overdue incomplete tasks: 24
 - Milestones due within 14 days: 1
-- Open high-exposure risks/issues (score >= 12): 13
+- Open high-exposure risks/issues (score >= 12): 6
 - Pending change requests (Submitted/UnderReview): 7
 - Posted cost transactions: 70  |  Draft: 25

@@ -615,7 +615,8 @@ overdue = len([t for t in tasks if t[7] and date.fromisoformat(t[7]) < SNAPSHOT 
 due_soon_ms = len([m for m in milestones if m[3] and
                    SNAPSHOT <= date.fromisoformat(m[3]) <= SNAPSHOT + timedelta(days=14)
                    and m[4] == "Pending"])
-open_high = len([r for r in risks if r[10] in ("Open", "Mitigating") and r[7] >= 12])
+# Matches the dashboard KPI definition exactly: Status == "Open" AND score >= 12 (Mitigating excluded).
+open_high = len([r for r in risks if r[10] == "Open" and r[7] >= 12])
 pending_cr = len([c for c in change_requests if c[5] in ("Submitted", "UnderReview")])
 lines += [
     "",
