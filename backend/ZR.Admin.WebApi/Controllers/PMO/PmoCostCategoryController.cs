@@ -16,16 +16,16 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>All categories (any signed-in PMO user, for dropdowns/filters).</summary>
         [HttpGet("list")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:category:list")]
         public IActionResult List() => SUCCESS(_service.GetAll());
 
         [HttpPost]
-        [PmoAuthorize(PmoRoleKeys.Admin)]
+        [ActionPermissionFilter(Permission = "pmo:category:add")]
         [Log(Title = "PMO Cost Category", BusinessType = BusinessType.INSERT)]
         public IActionResult Add([FromBody] PmoCostCategoryInputDto dto) => SUCCESS(_service.Add(dto, CurrentActor));
 
         [HttpPut]
-        [PmoAuthorize(PmoRoleKeys.Admin)]
+        [ActionPermissionFilter(Permission = "pmo:category:edit")]
         [Log(Title = "PMO Cost Category", BusinessType = BusinessType.UPDATE)]
         public IActionResult Update([FromBody] PmoCostCategoryInputDto dto) => ToResponse(_service.Update(dto, CurrentActor));
     }

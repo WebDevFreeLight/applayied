@@ -17,37 +17,37 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         public PmoChangeRequestController(IPmoChangeRequestService service) => _service = service;
 
         [HttpGet("list")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:changerequest:list")]
         public IActionResult List([FromQuery] PmoChangeRequestQueryDto parm) => SUCCESS(_service.GetList(parm, CurrentActor));
 
         [HttpGet("{changeRequestId}")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:changerequest:query")]
         public IActionResult Get(long changeRequestId) => SUCCESS(_service.GetInfo(changeRequestId, CurrentActor));
 
         [HttpGet("{changeRequestId}/history")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:changerequest:query")]
         public IActionResult History(long changeRequestId) => SUCCESS(_service.GetHistory(changeRequestId));
 
         /// <summary>Create a draft change request (Contributor and above).</summary>
         [HttpPost]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:changerequest:add")]
         [Log(Title = "PMO Change Request", BusinessType = BusinessType.INSERT)]
         public IActionResult Create([FromBody] PmoChangeRequestInputDto dto) => SUCCESS(_service.Create(dto, CurrentActor));
 
         [HttpPut]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:changerequest:edit")]
         [Log(Title = "PMO Change Request", BusinessType = BusinessType.UPDATE)]
         public IActionResult Update([FromBody] PmoChangeRequestInputDto dto) => ToResponse(_service.Update(dto, CurrentActor));
 
         /// <summary>Submit a draft/returned request for review (requester only).</summary>
         [HttpPost("{changeRequestId}/submit")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:changerequest:submit")]
         [Log(Title = "PMO Change Request Submit", BusinessType = BusinessType.UPDATE)]
         public IActionResult Submit(long changeRequestId) => SUCCESS(_service.Submit(changeRequestId, CurrentActor));
 
         /// <summary>Decide a request (Project Manager / Admin). The service blocks self-approval.</summary>
         [HttpPost("decision")]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:changerequest:decision")]
         [Log(Title = "PMO Change Request Decision", BusinessType = BusinessType.UPDATE)]
         public IActionResult Decide([FromBody] PmoChangeRequestDecisionDto dto) => SUCCESS(_service.Decide(dto, CurrentActor));
     }

@@ -22,7 +22,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>List projects (scoped to the caller), with search/filter/paging.</summary>
         [HttpGet("list")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:project:list")]
         public IActionResult List([FromQuery] PmoProjectQueryDto parm)
         {
             var page = _projectService.GetList(parm, CurrentActor);
@@ -31,7 +31,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Project detail + derived delivery status.</summary>
         [HttpGet("{projectId}")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:project:query")]
         public IActionResult Get(long projectId)
         {
             return SUCCESS(_projectService.GetInfo(projectId, CurrentActor));
@@ -39,7 +39,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Create a project (Project Manager or Administrator).</summary>
         [HttpPost]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:project:add")]
         [Log(Title = "PMO Project", BusinessType = BusinessType.INSERT)]
         public IActionResult Add([FromBody] PmoProjectInputDto dto)
         {
@@ -48,7 +48,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Update a project (owner or Administrator).</summary>
         [HttpPut]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:project:edit")]
         [Log(Title = "PMO Project", BusinessType = BusinessType.UPDATE)]
         public IActionResult Update([FromBody] PmoProjectInputDto dto)
         {

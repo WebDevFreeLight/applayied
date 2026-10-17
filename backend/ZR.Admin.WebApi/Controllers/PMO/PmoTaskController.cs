@@ -22,7 +22,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>List tasks (scoped to the caller), with search/filter/paging.</summary>
         [HttpGet("list")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:task:list")]
         public IActionResult List([FromQuery] PmoTaskQueryDto parm)
         {
             var page = _taskService.GetList(parm, CurrentActor);
@@ -31,7 +31,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Task detail; enforces read scope for contributors.</summary>
         [HttpGet("{taskId}")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:task:query")]
         public IActionResult Get(long taskId)
         {
             return SUCCESS(_taskService.GetInfo(taskId, CurrentActor));
@@ -39,7 +39,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Create a task (Project Manager or Administrator).</summary>
         [HttpPost]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:task:add")]
         [Log(Title = "PMO Task", BusinessType = BusinessType.INSERT)]
         public IActionResult Add([FromBody] PmoTaskInputDto dto)
         {
@@ -48,7 +48,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Update a task (Project Manager or Administrator).</summary>
         [HttpPut]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:task:edit")]
         [Log(Title = "PMO Task", BusinessType = BusinessType.UPDATE)]
         public IActionResult Update([FromBody] PmoTaskInputDto dto)
         {
@@ -57,7 +57,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Update progress on an assigned task (contributor path; service enforces own-task rule).</summary>
         [HttpPut("{taskId}/progress")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:task:progress")]
         [Log(Title = "PMO Task Progress", BusinessType = BusinessType.UPDATE)]
         public IActionResult UpdateProgress(long taskId, [FromBody] PmoTaskProgressDto dto)
         {

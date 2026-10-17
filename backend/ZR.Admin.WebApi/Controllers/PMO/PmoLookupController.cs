@@ -14,19 +14,19 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         public PmoLookupController(IPmoLookupService service) => _service = service;
 
         [HttpGet("departments")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:lookup:list")]
         public IActionResult Departments() => SUCCESS(_service.Departments());
 
         [HttpGet("users")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:lookup:list")]
         public IActionResult Users() => SUCCESS(_service.Users());
 
         [HttpGet("managers")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:lookup:list")]
         public IActionResult Managers() => SUCCESS(_service.Managers());
 
         [HttpGet("projects")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:lookup:list")]
         public IActionResult Projects() => SUCCESS(_service.Projects());
     }
 }

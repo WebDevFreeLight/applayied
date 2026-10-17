@@ -219,6 +219,74 @@ namespace ZR.Service.PMO
             if (newUsers.Count > 0) _db.Insertable(newUsers).ExecuteCommand();
             if (newLinks.Count > 0) _db.Insertable(newLinks).ExecuteCommand();
             log.Add($"[PMO seed] users: inserted {newUsers.Count}, user-role links: {newLinks.Count}");
+
+            // PMO controllers are guarded by [ActionPermissionFilter(Permission="pmo:*")]; seed those
+            // permissions as sys_menu rows and grant them to the three roles by tier so Contributor/PM/
+            // Admin keep exactly the access they had under the old role floors.
+            SeedPmoPermissions(roleIdByKey, log);
+        }
+
+        // (perm, display name, tier) — ALL = contributor+pm+admin, PM = pm+admin, ADMIN = admin only.
+        private static readonly (string Perm, string Name, string Tier)[] PmoPermissionCatalog =
+        {
+            ("pmo:project:list", "PMO Project List", "ALL"), ("pmo:project:query", "PMO Project View", "ALL"),
+            ("pmo:project:add", "PMO Project Add", "PM"), ("pmo:project:edit", "PMO Project Edit", "PM"),
+            ("pmo:task:list", "PMO Task List", "ALL"), ("pmo:task:query", "PMO Task View", "ALL"), ("pmo:task:progress", "PMO Task Progress", "ALL"),
+            ("pmo:task:add", "PMO Task Add", "PM"), ("pmo:task:edit", "PMO Task Edit", "PM"),
+            ("pmo:milestone:list", "PMO Milestone List", "ALL"), ("pmo:milestone:query", "PMO Milestone View", "ALL"),
+            ("pmo:milestone:add", "PMO Milestone Add", "PM"), ("pmo:milestone:edit", "PMO Milestone Edit", "PM"),
+            ("pmo:risk:list", "PMO Risk List", "ALL"), ("pmo:risk:query", "PMO Risk View", "ALL"),
+            ("pmo:risk:add", "PMO Risk Add", "PM"), ("pmo:risk:edit", "PMO Risk Edit", "PM"),
+            ("pmo:changerequest:list", "PMO CR List", "ALL"), ("pmo:changerequest:query", "PMO CR View", "ALL"),
+            ("pmo:changerequest:add", "PMO CR Add", "ALL"), ("pmo:changerequest:edit", "PMO CR Edit", "ALL"), ("pmo:changerequest:submit", "PMO CR Submit", "ALL"),
+            ("pmo:changerequest:decision", "PMO CR Decision", "PM"),
+            ("pmo:finance:list", "PMO Finance View", "PM"), ("pmo:finance:add", "PMO Finance Add", "PM"), ("pmo:finance:edit", "PMO Finance Edit", "PM"),
+            ("pmo:finance:post", "PMO Finance Post", "PM"), ("pmo:finance:revision", "PMO Finance Revision", "PM"),
+            ("pmo:finance:approve", "PMO Finance Approve", "PM"), ("pmo:finance:forecast", "PMO Finance Forecast", "PM"),
+            ("pmo:dashboard:view", "PMO Dashboard", "PM"),
+            ("pmo:lookup:list", "PMO Lookups", "ALL"),
+            ("pmo:category:list", "PMO Category List", "ALL"), ("pmo:category:add", "PMO Category Add", "ADMIN"), ("pmo:category:edit", "PMO Category Edit", "ADMIN"),
+        };
+
+        private void SeedPmoPermissions(Dictionary<string, long> roleIdByKey, List<string> log)
+        {
+            if (!roleIdByKey.TryGetValue(PmoRoleKeys.Contributor, out var cId)
+                || !roleIdByKey.TryGetValue(PmoRoleKeys.ProjectManager, out var pId)
+                || !roleIdByKey.TryGetValue(PmoRoleKeys.Admin, out var aId))
+            {
+                log.Add("[PMO seed] pmo permissions: roles not resolved, skipped");
+                return;
+            }
+            long[] Tier(string t) => t == "ALL" ? new[] { cId, pId, aId } : t == "PM" ? new[] { pId, aId } : new[] { aId };
+
+            int menus = 0, links = 0;
+            foreach (var (perm, name, tier) in PmoPermissionCatalog)
+            {
+                var existing = _db.Queryable<SysMenu>().First(m => m.Perms == perm);
+                long menuId;
+                if (existing == null)
+                {
+                    var m = new SysMenu
+                    {
+                        MenuName = name, Perms = perm, MenuType = "F", ParentId = 0, OrderNum = 1,
+                        Path = "", Component = "", Icon = "", Visible = "1", Status = "0",
+                        Create_by = "seed", Create_time = DateTime.Now
+                    };
+                    menuId = _db.Insertable(m).ExecuteReturnSnowflakeId();
+                    menus++;
+                }
+                else menuId = existing.MenuId;
+
+                foreach (var rid in Tier(tier))
+                {
+                    if (!_db.Queryable<SysRoleMenu>().Any(x => x.Role_id == rid && x.Menu_id == menuId))
+                    {
+                        _db.Insertable(new SysRoleMenu { Role_id = rid, Menu_id = menuId }).ExecuteCommand();
+                        links++;
+                    }
+                }
+            }
+            log.Add($"[PMO seed] pmo permissions: {menus} menus created, {links} role grants added");
         }
 
         // ------------------------------------------------------------------ generic import

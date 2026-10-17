@@ -32,7 +32,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         /// Administrator only — a Contributor/PM calling this directly is refused by the role filter.
         /// </summary>
         [HttpPost("seed")]
-        [PmoAuthorize(PmoRoleKeys.Admin)]
+        [ActionPermissionFilter(RolePermi = "pmo_admin")]
         public IActionResult Seed()
         {
             var csvDir = _config["PmoSeedPath"];
@@ -51,7 +51,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         /// Re-login as pmo.admin afterwards to refresh the cached permission set.
         /// </summary>
         [HttpPost("setup-rbac")]
-        [PmoAuthorize(PmoRoleKeys.Admin)]
+        [ActionPermissionFilter(RolePermi = "pmo_admin")]
         public IActionResult SetupRbac(
             [FromServices] ISysMenuService menuService,
             [FromServices] ISysRoleService roleService)

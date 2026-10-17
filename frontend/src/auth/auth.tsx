@@ -5,7 +5,10 @@ import type { LoginResult } from '../api/types'
 // Role keys mirror the backend seed (sys_role.role_key carried in the JWT as RoleKeys).
 export const ROLE = { admin: 'pmo_admin', pm: 'pmo_pm', contributor: 'pmo_contributor' } as const
 
-interface Session { token: string; userName: string; nickName: string; roles: string[] }
+interface Session { token: string; userName: string; nickName: string; roles: string[]; permissions: string[] }
+
+// The backend wildcard permission (admin role) that grants everything.
+const ALL_PERM = '*:*:*'
 
 interface AuthCtx {
   session: Session | null
@@ -13,6 +16,8 @@ interface AuthCtx {
   signIn: (u: string, p: string, code?: string, uuid?: string) => Promise<void>
   signOut: () => void
   hasRole: (min: 'admin' | 'pm' | 'contributor') => boolean
+  /** True if the user holds the given backend permission (e.g. "system:user:add"), or the admin wildcard. */
+  hasPerm: (perm: string) => boolean
 }
 
 const Ctx = createContext<AuthCtx>(null as unknown as AuthCtx)
@@ -46,9 +51,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         userName: res.user.userName,
         nickName: res.user.nickName || res.user.userName,
         roles: res.roles || [],
+        permissions: res.permissions || [],
       }
       localStorage.setItem('pmo.token', s.token)
-      localStorage.setItem('pmo.session', JSON.stringify({ userName: s.userName, nickName: s.nickName, roles: s.roles }))
+      localStorage.setItem('pmo.session', JSON.stringify({
+        userName: s.userName, nickName: s.nickName, roles: s.roles, permissions: s.permissions,
+      }))
       setSession(s)
     },
     signOut() {
@@ -58,6 +66,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     hasRole(min) {
       return rank(session?.roles || []) >= MIN_RANK[min]
+    },
+    hasPerm(perm) {
+      const perms = session?.permissions || []
+      return perms.includes(ALL_PERM) || perms.includes(perm)
     },
   }), [session])
 

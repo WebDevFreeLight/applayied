@@ -14,10 +14,32 @@ const LINKS = [
   { to: '/change-requests', key: 'changeRequests' },
   { to: '/finance', key: 'finance' },
 ]
+// Admin links appear only when the user holds the matching list permission.
+// Links without a `perm` (Messages, Profile) are personal and shown to every signed-in user.
+const ADMIN_LINKS: { to: string; key: string; perm?: string }[] = [
+  { to: '/admin/users', key: 'admin.users', perm: 'system:user:list' },
+  { to: '/admin/roles', key: 'admin.roles', perm: 'system:role:list' },
+  { to: '/admin/menus', key: 'admin.menus', perm: 'system:menu:list' },
+  { to: '/admin/depts', key: 'sys.depts', perm: 'system:dept:list' },
+  { to: '/admin/posts', key: 'sys.posts', perm: 'system:post:list' },
+  { to: '/admin/dicts', key: 'sys.dicts', perm: 'system:dict:list' },
+  { to: '/admin/config', key: 'sys.config', perm: 'system:config:list' },
+  { to: '/admin/notices', key: 'sys.notices', perm: 'system:notice:list' },
+  { to: '/admin/jobs', key: 'sys.jobs', perm: 'monitor:job:list' },
+  { to: '/admin/job-logs', key: 'sys.jobLogs', perm: 'monitor:job:list' },
+  { to: '/admin/login-log', key: 'sys.loginLog', perm: 'monitor:logininfor:list' },
+  { to: '/admin/sessions', key: 'sys.sessions', perm: 'monitor:online:list' },
+  { to: '/admin/oper-log', key: 'sys.operLog', perm: 'monitor:operlog:list' },
+  { to: '/admin/online', key: 'sys.online', perm: 'monitor:online:list' },
+  { to: '/admin/server', key: 'sys.server', perm: 'monitor:server:list' },
+  { to: '/admin/messages', key: 'sys.messages' },
+  { to: '/admin/profile', key: 'sys.profile' },
+]
 
 export default function Layout() {
   const { t, i18n } = useTranslation()
-  const { session, signOut } = useAuth()
+  const { session, signOut, hasPerm } = useAuth()
+  const adminLinks = ADMIN_LINKS.filter((l) => !l.perm || hasPerm(l.perm))
   const [theme, setThemeState] = useState(getTheme())
   const toggleLang = () => changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
   const onToggleTheme = () => setThemeState(toggleTheme())
@@ -32,6 +54,17 @@ export default function Layout() {
             {t(`nav.${l.key}`)}
           </NavLink>
         ))}
+        {adminLinks.length > 0 && (
+          <>
+            <div className="section-title" style={{ padding: '0 12px' }}>{t('admin.section')}</div>
+            {adminLinks.map((l) => (
+              <NavLink key={l.to} to={l.to}
+                className={({ isActive }) => `navlink ${isActive ? 'active' : ''}`}>
+                {t(l.key)}
+              </NavLink>
+            ))}
+          </>
+        )}
       </aside>
       <div className="main">
         <header className="topbar">

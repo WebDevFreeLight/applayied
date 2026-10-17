@@ -22,7 +22,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>List risks/issues (scoped to the caller), with search/filter/paging; ordered by exposure.</summary>
         [HttpGet("list")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:risk:list")]
         public IActionResult List([FromQuery] PmoRiskQueryDto parm)
         {
             var page = _riskService.GetList(parm, CurrentActor);
@@ -31,7 +31,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Risk/issue detail.</summary>
         [HttpGet("{riskId}")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:risk:query")]
         public IActionResult Get(long riskId)
         {
             return SUCCESS(_riskService.GetInfo(riskId, CurrentActor));
@@ -39,7 +39,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Create a risk/issue (Project Manager or Administrator).</summary>
         [HttpPost]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:risk:add")]
         [Log(Title = "PMO Risk", BusinessType = BusinessType.INSERT)]
         public IActionResult Add([FromBody] PmoRiskInputDto dto)
         {
@@ -48,7 +48,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Update a risk/issue (Project Manager or Administrator).</summary>
         [HttpPut]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:risk:edit")]
         [Log(Title = "PMO Risk", BusinessType = BusinessType.UPDATE)]
         public IActionResult Update([FromBody] PmoRiskInputDto dto)
         {

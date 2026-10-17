@@ -22,7 +22,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>List milestones with filter/paging.</summary>
         [HttpGet("list")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:milestone:list")]
         public IActionResult List([FromQuery] PmoMilestoneQueryDto parm)
         {
             var page = _milestoneService.GetList(parm, CurrentActor);
@@ -31,7 +31,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Milestone detail.</summary>
         [HttpGet("{milestoneId}")]
-        [PmoAuthorize(PmoRoleKeys.Contributor)]
+        [ActionPermissionFilter(Permission = "pmo:milestone:query")]
         public IActionResult Get(long milestoneId)
         {
             return SUCCESS(_milestoneService.GetInfo(milestoneId, CurrentActor));
@@ -39,7 +39,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Create a milestone (Project Manager or Administrator).</summary>
         [HttpPost]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:milestone:add")]
         [Log(Title = "PMO Milestone", BusinessType = BusinessType.INSERT)]
         public IActionResult Add([FromBody] PmoMilestoneInputDto dto)
         {
@@ -48,7 +48,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>Update a milestone (Project Manager or Administrator).</summary>
         [HttpPut]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:milestone:edit")]
         [Log(Title = "PMO Milestone", BusinessType = BusinessType.UPDATE)]
         public IActionResult Update([FromBody] PmoMilestoneInputDto dto)
         {

@@ -19,23 +19,23 @@ namespace ZR.Admin.WebApi.Controllers.PMO
 
         /// <summary>KPI cards (delivery, risk/governance, finance) for the current filter context.</summary>
         [HttpGet("kpis")]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:dashboard:view")]
         public IActionResult Kpis([FromQuery] PmoDashboardFilter filter) => SUCCESS(_dashboard.GetKpis(filter, CurrentActor));
 
         /// <summary>Data for the interactive visuals (health, budget-vs-actual-vs-EAC, trends, risk matrix…).</summary>
         [HttpGet("analytics")]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:dashboard:view")]
         public IActionResult Analytics([FromQuery] PmoDashboardFilter filter) => SUCCESS(_dashboard.GetAnalytics(filter, CurrentActor));
 
         /// <summary>Delivery drill-down: tasks (mode = all | overdue | blocked).</summary>
         [HttpGet("drilldown/tasks")]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:dashboard:view")]
         public IActionResult DrilldownTasks([FromQuery] PmoDashboardFilter filter, [FromQuery] string mode)
             => SUCCESS(_dashboard.DrilldownTasks(filter, mode, CurrentActor));
 
         /// <summary>Delivery drill-down: risks (optionally only open high-exposure).</summary>
         [HttpGet("drilldown/risks")]
-        [PmoAuthorize(PmoRoleKeys.ProjectManager)]
+        [ActionPermissionFilter(Permission = "pmo:dashboard:view")]
         public IActionResult DrilldownRisks([FromQuery] PmoDashboardFilter filter, [FromQuery] bool highExposureOnly)
             => SUCCESS(_dashboard.DrilldownRisks(filter, highExposureOnly, CurrentActor));
     }
