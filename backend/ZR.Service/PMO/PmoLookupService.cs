@@ -43,5 +43,9 @@ namespace ZR.Service.PMO
         public List<PmoLookupItem> Projects() =>
             Context.Queryable<PmoProject>().OrderBy(p => p.Name)
                 .Select(p => new PmoLookupItem { Id = p.ProjectId.ToString(), Name = p.Name }).ToList();
+
+        public List<PmoLookupItem> Categories() =>
+            Context.Queryable<PmoCostCategory>().OrderBy(c => c.Name)
+                .Select(c => new PmoLookupItem { Id = c.CategoryId.ToString(), Name = c.Name }).ToList();
     }
 }

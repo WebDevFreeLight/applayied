@@ -23,7 +23,7 @@ export default {
     status: 'الحالة', priority: 'الأولوية', startDate: 'تاريخ البدء', plannedEnd: 'الانتهاء المخطط',
     actualEnd: 'الانتهاء الفعلي', budget: 'الميزانية الأولية', description: 'الوصف',
     progress: 'التقدم', tasks: 'المهام', newProject: 'مشروع جديد', editProject: 'تعديل المشروع',
-    keyword: 'الرمز أو الاسم',
+    keyword: 'الرمز أو الاسم', details: 'التفاصيل', back: '← العودة إلى المشاريع', overview: 'نظرة عامة',
   },
   task: {
     title: 'المهام', taskTitle: 'العنوان', assignee: 'المسؤول', status: 'الحالة', priority: 'الأولوية',

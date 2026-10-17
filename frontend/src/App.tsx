@@ -9,6 +9,7 @@ import Milestones from './pages/Milestones'
 import Risks from './pages/Risks'
 import ChangeRequests from './pages/ChangeRequests'
 import Finance from './pages/Finance'
+import ProjectDetail from './pages/ProjectDetail'
 import Users from './pages/admin/Users'
 import Roles from './pages/admin/Roles'
 import Menus from './pages/admin/Menus'
@@ -36,6 +37,7 @@ export default function App() {
         <Route element={isAuthed ? <Layout /> : <Navigate to="/login" replace />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:projectId" element={<ProjectDetail />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/milestones" element={<Milestones />} />
           <Route path="/risks" element={<Risks />} />

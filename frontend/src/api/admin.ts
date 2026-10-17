@@ -55,6 +55,9 @@ export const roleMenuTree = (roleId: string) =>
 // ---- menus / permissions (system/menu) --------------------------------------
 export const listMenus = (params?: Record<string, unknown>) =>
   unwrap<SysMenu[]>(api.get('/system/menu/list', { params }))
+/** Hierarchical menu tree (parent → children), used by the Menus & Permissions page. */
+export const treeMenus = (params?: Record<string, unknown>) =>
+  unwrap<SysMenu[]>(api.get('/system/menu/treelist', { params }))
 export const addMenu = (dto: Partial<SysMenu>) => unwrap<unknown>(api.put('/system/menu/add', dto))
 export const editMenu = (dto: Partial<SysMenu>) => unwrap<unknown>(api.post('/system/menu/edit', dto))
 export const removeMenu = (menuId: string) => unwrap<unknown>(api.delete(`/system/menu/${menuId}`))

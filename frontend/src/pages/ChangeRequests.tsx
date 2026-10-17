@@ -7,12 +7,12 @@ import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
 import Select from '../components/Select'
 
-export default function ChangeRequests() {
+export default function ChangeRequests({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
   const lk = useLookups()
   const { hasRole } = useAuth()
   const [rows, setRows] = useState<ChangeRequest[]>([])
-  const [projectId, setProjectId] = useState('')
+  const [projectId, setProjectId] = useState(pin || '')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [edit, setEdit] = useState<Partial<ChangeRequest> | null>(null)
@@ -56,10 +56,10 @@ export default function ChangeRequests() {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('cr.title')}</h2>
         <div className="spacer" />
-        <div style={{ minWidth: 220 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+        {!pin && <div style={{ minWidth: 220 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
           value={projectId} onChange={(v) => setProjectId(v || '')}
-          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>
-        <button className="btn primary" onClick={() => setEdit({})}>{t('cr.newCr')}</button>
+          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>}
+        <button className="btn primary" onClick={() => setEdit({ projectId: pin || undefined })}>{t('cr.newCr')}</button>
       </div>
       {error && <ErrorBox message={error} />}
       {loading ? <Loading /> : rows.length === 0 ? <Empty /> : (
@@ -90,9 +90,9 @@ export default function ChangeRequests() {
           footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={create}>{t('common.save')}</button></>}>
           <label className="field full">{t('cr.crTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
-          <label className="field">{t('project.title')}
-            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
-              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>
+          {!pin && <label className="field">{t('project.title')}
+            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
+              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>}
           <label className="field">{t('cr.costImpact')}<input type="number" value={edit.estimatedCostImpact ?? 0} onChange={(e) => setEdit({ ...edit, estimatedCostImpact: Number(e.target.value) })} /></label>
           <label className="field full">{t('cr.description')}<textarea rows={3} value={edit.description || ''} onChange={(e) => setEdit({ ...edit, description: e.target.value })} /></label>
         </Modal>

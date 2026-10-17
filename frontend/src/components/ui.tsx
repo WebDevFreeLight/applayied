@@ -31,8 +31,8 @@ export function ErrorBox({ message }: { message: string }) {
   return <div className="err" style={{ padding: 12 }}>{message}</div>
 }
 
-export function Modal({ title, onClose, children, footer }:
-  { title: string; onClose: () => void; children: ReactNode; footer?: ReactNode }) {
+export function Modal({ title, onClose, children, footer, wide }:
+  { title: string; onClose: () => void; children: ReactNode; footer?: ReactNode; wide?: boolean }) {
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', h)
@@ -40,7 +40,7 @@ export function Modal({ title, onClose, children, footer }:
   }, [onClose])
   return (
     <div className="overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal" onClick={(e) => e.stopPropagation()} style={wide ? { width: 'min(1100px, 96vw)' } : undefined}>
         <header>{title}</header>
         <div className="body">{children}</div>
         {footer && <footer>{footer}</footer>}

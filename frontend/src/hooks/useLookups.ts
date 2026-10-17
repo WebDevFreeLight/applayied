@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import * as pmo from '../api/pmo'
-import type { LookupItem, CostCategory } from '../api/types'
+import type { LookupItem } from '../api/types'
 
+// Every list is the same unified { id, name } lookup shape for consistent rendering.
 export interface Lookups {
   departments: LookupItem[]
   users: LookupItem[]
   managers: LookupItem[]
   projects: LookupItem[]
-  categories: CostCategory[]
+  categories: LookupItem[]
 }
 
 // Loads the reference lists once for filters and form dropdowns. Failures degrade to empty
@@ -17,7 +18,7 @@ export function useLookups(): Lookups {
   useEffect(() => {
     let alive = true
     Promise.allSettled([
-      pmo.getDepartments(), pmo.getUsers(), pmo.getManagers(), pmo.getProjectOptions(), pmo.getCategories(),
+      pmo.getDepartments(), pmo.getUsers(), pmo.getManagers(), pmo.getProjectOptions(), pmo.getCategoryOptions(),
     ]).then(([d, u, m, p, c]) => {
       if (!alive) return
       setState({

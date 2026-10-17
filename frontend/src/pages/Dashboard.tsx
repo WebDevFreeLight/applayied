@@ -119,19 +119,19 @@ function FilterBar({ filter, set, lk }: { filter: DashboardFilter; set: (p: Part
   const w = (node: ReactNode) => <div style={{ minWidth: 190 }}>{node}</div>
   return (
     <div className="row">
-      {w(<Select options={lk.departments.map((d) => ({ value: d.id, label: d.label }))}
+      {w(<Select options={lk.departments.map((d) => ({ value: d.id, label: d.name }))}
         value={filter.deptId} onChange={(v) => set({ deptId: v || undefined })}
         placeholder={`${t('project.department')}: ${t('common.all')}`} />)}
-      {w(<Select options={lk.managers.map((m) => ({ value: m.id, label: m.label }))}
+      {w(<Select options={lk.managers.map((m) => ({ value: m.id, label: m.name }))}
         value={filter.managerId} onChange={(v) => set({ managerId: v || undefined })}
         placeholder={`${t('project.owner')}: ${t('common.all')}`} />)}
-      {w(<Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+      {w(<Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
         value={filter.projectId} onChange={(v) => set({ projectId: v || undefined })}
         placeholder={`${t('project.title')}: ${t('common.all')}`} />)}
       {w(<Select options={['Planning', 'Active', 'OnHold', 'Completed', 'Cancelled'].map((s) => ({ value: s, label: t(`status.${s}`) }))}
         value={filter.status} onChange={(v) => set({ status: v || undefined })}
         placeholder={`${t('project.status')}: ${t('common.all')}`} />)}
-      {w(<Select options={lk.categories.map((c) => ({ value: c.categoryId, label: c.name }))}
+      {w(<Select options={lk.categories.map((c) => ({ value: c.id, label: c.name }))}
         value={filter.categoryId} onChange={(v) => set({ categoryId: v || undefined })}
         placeholder={`${t('finance.category')}: ${t('common.all')}`} />)}
       <input type="date" value={filter.cutoff || ''} onChange={(e) => set({ cutoff: e.target.value || undefined })} title={t('dash.cutoff')} />

@@ -24,6 +24,14 @@ namespace ZR.ServiceCore.Middleware
         /// Role string, e.g. common,admin
         /// </summary>
         public string RolePermi { get; set; } = string.Empty;
+
+        /// <summary>Human-readable name for this permission (used when auto-registering the route).</summary>
+        public string DisplayName { get; set; } = string.Empty;
+        /// <summary>Longer description of what the permission allows (stored on the generated menu row).</summary>
+        public string Description { get; set; } = string.Empty;
+        /// <summary>Intended access tier, e.g. "ALL" | "PM" | "ADMIN" or a role key — advisory metadata for setup.</summary>
+        public string Tier { get; set; } = string.Empty;
+
         private bool HasPermi { get; set; }
         public ActionPermissionFilter() { }
         public ActionPermissionFilter(string permission)

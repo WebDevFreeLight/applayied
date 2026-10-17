@@ -6,19 +6,22 @@ import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
 import Select from '../components/Select'
+import { EntityDetail } from '../components/EntityDetail'
+import Tasks from './Tasks'
 
 const STATUSES = ['Open', 'Mitigating', 'Closed']
 const KINDS = ['Risk', 'Issue']
 
-export default function Risks() {
+export default function Risks({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
   const lk = useLookups()
   const { hasRole } = useAuth()
   const [rows, setRows] = useState<Risk[]>([])
-  const [query, setQuery] = useState({ projectId: '', status: '', highExposureOnly: false })
+  const [query, setQuery] = useState({ projectId: pin || '', status: '', highExposureOnly: false })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [edit, setEdit] = useState<Partial<Risk> | null>(null)
+  const [view, setView] = useState<Risk | null>(null)
   const [toast, setToast] = useState('')
 
   const load = () => {
@@ -46,12 +49,12 @@ export default function Risks() {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('risk.title')}</h2>
         <div className="spacer" />
-        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ kind: 'Risk', status: 'Open', probability: 3, impact: 3 })}>{t('risk.newRisk')}</button>}
+        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ kind: 'Risk', status: 'Open', probability: 3, impact: 3, projectId: pin || undefined })}>{t('risk.newRisk')}</button>}
       </div>
       <div className="row panel" style={{ marginTop: 12 }}>
-        <div style={{ minWidth: 200 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+        {!pin && <div style={{ minWidth: 200 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
           value={query.projectId} onChange={(v) => setQuery((q) => ({ ...q, projectId: v || '' }))}
-          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>
+          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>}
         <div style={{ minWidth: 170 }}><Select options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
           value={query.status} onChange={(v) => setQuery((q) => ({ ...q, status: v || '' }))}
           placeholder={`${t('risk.status')}: ${t('common.all')}`} /></div>
@@ -72,7 +75,10 @@ export default function Risks() {
                 <td>{r.probability}</td><td>{r.impact}</td>
                 <td><b className={r.score >= 12 ? 'badge red' : ''}>{r.score}</b></td>
                 <td><Badge value={r.status} /></td>
-                <td>{hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...r })}>{t('common.edit')}</button>}</td></tr>))}</tbody>
+                <td className="row">
+                  <button className="btn sm" onClick={() => setView(r)}>{t('project.details')}</button>
+                  {hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...r })}>{t('common.edit')}</button>}
+                </td></tr>))}</tbody>
           </table>
         </div>
       )}
@@ -83,12 +89,12 @@ export default function Risks() {
           <label className="field">{t('risk.kind')}
             <Select isClearable={false} options={KINDS.map((s) => ({ value: s, label: t(`status.${s}`) }))}
               value={edit.kind} onChange={(v) => setEdit({ ...edit, kind: v || 'Risk' })} /></label>
-          <label className="field">{t('project.title')}
-            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
-              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>
+          {!pin && <label className="field">{t('project.title')}
+            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
+              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>}
           <label className="field full">{t('risk.riskTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
           <label className="field">{t('risk.owner')}
-            <Select options={lk.users.map((u) => ({ value: u.id, label: u.label }))}
+            <Select options={lk.users.map((u) => ({ value: u.id, label: u.name }))}
               value={edit.ownerUserId || null} onChange={(v) => setEdit({ ...edit, ownerUserId: v || undefined })} /></label>
           <label className="field">{t('risk.status')}
             <Select isClearable={false} options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
@@ -99,6 +105,19 @@ export default function Risks() {
           <label className="field">{t('risk.due')}<input type="date" value={(edit.dueDate || '').substring(0, 10)} onChange={(e) => setEdit({ ...edit, dueDate: e.target.value })} /></label>
           <label className="field full">{t('risk.mitigation')}<textarea rows={2} value={edit.mitigation || ''} onChange={(e) => setEdit({ ...edit, mitigation: e.target.value })} /></label>
         </Modal>
+      )}
+      {view && (
+        <EntityDetail title={view.title} projectId={view.projectId} onClose={() => setView(null)} rows={[
+          [t('risk.kind'), <Badge value={view.kind} />],
+          [t('project.title'), view.projectName],
+          [t('risk.owner'), view.ownerName],
+          [t('risk.probability'), view.probability],
+          [t('risk.impact'), view.impact],
+          [t('risk.score'), <b className={view.score >= 12 ? 'badge red' : ''}>{view.score}</b>],
+          [t('risk.status'), <Badge value={view.status} />],
+          [t('risk.due'), fmtDate(view.dueDate)],
+          [t('risk.mitigation'), view.mitigation],
+        ]} extra={<><h3>{t('task.title')}</h3><Tasks projectId={view.projectId} /></>} />
       )}
       {toast && <Toast message={toast} />}
     </div>

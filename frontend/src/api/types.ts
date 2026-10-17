@@ -10,7 +10,8 @@ export interface LoginResult {
   permissions: string[]
 }
 
-export interface LookupItem { id: string; label: string }
+// Unified lookup shape returned by every /pmo/lookup/* endpoint.
+export interface LookupItem { id: string; name: string }
 
 export interface Project {
   projectId: string; code: string; name: string; deptId: string; ownerUserId: string

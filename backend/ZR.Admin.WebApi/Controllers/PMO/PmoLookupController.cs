@@ -28,5 +28,9 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         [HttpGet("projects")]
         [ActionPermissionFilter(Permission = "pmo:lookup:list")]
         public IActionResult Projects() => SUCCESS(_service.Projects());
+
+        [HttpGet("categories")]
+        [ActionPermissionFilter(Permission = "pmo:lookup:list")]
+        public IActionResult Categories() => SUCCESS(_service.Categories());
     }
 }

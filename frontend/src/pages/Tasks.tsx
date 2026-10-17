@@ -6,21 +6,23 @@ import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
 import { Badge, Empty, ErrorBox, Loading, Modal, Toast, fmtDate } from '../components/ui'
 import Select from '../components/Select'
+import { EntityDetail } from '../components/EntityDetail'
 
 const STATUSES = ['ToDo', 'InProgress', 'Blocked', 'Done']
 const PRIORITIES = ['Low', 'Medium', 'High', 'Critical']
 
-export default function Tasks() {
+export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
   const lk = useLookups()
   const { hasRole } = useAuth()
   const [rows, setRows] = useState<Task[]>([])
   const [total, setTotal] = useState(0)
-  const [query, setQuery] = useState({ pageNum: 1, pageSize: 10, projectId: '', status: '', assigneeUserId: '' })
+  const [query, setQuery] = useState({ pageNum: 1, pageSize: 10, projectId: pin || '', status: '', assigneeUserId: '' })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [edit, setEdit] = useState<Partial<Task> | null>(null)
   const [progress, setProgress] = useState<Task | null>(null)
+  const [view, setView] = useState<Task | null>(null)
   const [toast, setToast] = useState('')
 
   const load = () => {
@@ -57,17 +59,17 @@ export default function Tasks() {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('task.title')}</h2>
         <div className="spacer" />
-        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ status: 'ToDo', priority: 'Medium', weight: 1, progressPct: 0 })}>{t('task.newTask')}</button>}
+        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ status: 'ToDo', priority: 'Medium', weight: 1, progressPct: 0, projectId: pin || undefined })}>{t('task.newTask')}</button>}
       </div>
 
       <div className="row panel" style={{ marginTop: 12 }}>
-        <div style={{ minWidth: 190 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
+        {!pin && <div style={{ minWidth: 190 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
           value={query.projectId} onChange={(v) => setQuery((q) => ({ ...q, projectId: v || '', pageNum: 1 }))}
-          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>
+          placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>}
         <div style={{ minWidth: 170 }}><Select options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
           value={query.status} onChange={(v) => setQuery((q) => ({ ...q, status: v || '', pageNum: 1 }))}
           placeholder={`${t('task.status')}: ${t('common.all')}`} /></div>
-        <div style={{ minWidth: 190 }}><Select options={lk.users.map((u) => ({ value: u.id, label: u.label }))}
+        <div style={{ minWidth: 190 }}><Select options={lk.users.map((u) => ({ value: u.id, label: u.name }))}
           value={query.assigneeUserId} onChange={(v) => setQuery((q) => ({ ...q, assigneeUserId: v || '', pageNum: 1 }))}
           placeholder={`${t('task.assignee')}: ${t('common.all')}`} /></div>
       </div>
@@ -88,6 +90,7 @@ export default function Tasks() {
                 <td><Badge value={x.status} /></td><td><Badge value={x.priority} /></td><td>{fmtDate(x.dueDate)}</td>
                 <td>{x.progressPct}%</td>
                 <td className="row">
+                  <button className="btn sm" onClick={() => setView(x)}>{t('project.details')}</button>
                   <button className="btn sm" onClick={() => setProgress({ ...x })}>{t('task.updateProgress')}</button>
                   {hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...x })}>{t('common.edit')}</button>}
                 </td>
@@ -121,11 +124,11 @@ export default function Tasks() {
           footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
           <label className="field full">{t('task.taskTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
-          <label className="field">{t('project.title')}
-            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.label }))}
-              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>
+          {!pin && <label className="field">{t('project.title')}
+            <Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
+              value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>}
           <label className="field">{t('task.assignee')}
-            <Select options={lk.users.map((u) => ({ value: u.id, label: u.label }))}
+            <Select options={lk.users.map((u) => ({ value: u.id, label: u.name }))}
               value={edit.assigneeUserId || null} onChange={(v) => setEdit({ ...edit, assigneeUserId: v || undefined })}
               placeholder={t('task.unassigned')} /></label>
           <label className="field">{t('task.status')}
@@ -139,6 +142,18 @@ export default function Tasks() {
           <label className="field">{t('task.weight')}<input type="number" value={edit.weight ?? 1} onChange={(e) => setEdit({ ...edit, weight: Number(e.target.value) })} /></label>
           <label className="field">{t('task.progress')}<input type="number" min={0} max={100} value={edit.progressPct ?? 0} onChange={(e) => setEdit({ ...edit, progressPct: Number(e.target.value) })} /></label>
         </Modal>
+      )}
+      {view && (
+        <EntityDetail title={view.title} projectId={view.projectId} onClose={() => setView(null)} rows={[
+          [t('project.title'), view.projectName],
+          [t('task.assignee'), view.assigneeName || t('task.unassigned')],
+          [t('task.status'), <Badge value={view.status} />],
+          [t('task.priority'), <Badge value={view.priority} />],
+          [t('task.start'), fmtDate(view.startDate)],
+          [t('task.due'), fmtDate(view.dueDate)],
+          [t('task.weight'), view.weight],
+          [t('task.progress'), `${view.progressPct}%`],
+        ]} />
       )}
       {toast && <Toast message={toast} />}
     </div>

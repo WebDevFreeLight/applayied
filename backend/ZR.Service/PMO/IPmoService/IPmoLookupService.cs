@@ -9,5 +9,6 @@ namespace ZR.Service.PMO.IPmoService
         List<PmoLookupItem> Users();
         List<PmoLookupItem> Managers();
         List<PmoLookupItem> Projects();
+        List<PmoLookupItem> Categories();
     }
 }

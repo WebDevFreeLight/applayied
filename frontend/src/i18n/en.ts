@@ -23,7 +23,7 @@ export default {
     status: 'Status', priority: 'Priority', startDate: 'Start date', plannedEnd: 'Planned end',
     actualEnd: 'Actual end', budget: 'Initial budget', description: 'Description',
     progress: 'Progress', tasks: 'Tasks', newProject: 'New project', editProject: 'Edit project',
-    keyword: 'Code or name',
+    keyword: 'Code or name', details: 'Details', back: '← Back to projects', overview: 'Overview',
   },
   task: {
     title: 'Tasks', taskTitle: 'Title', assignee: 'Assignee', status: 'Status', priority: 'Priority',

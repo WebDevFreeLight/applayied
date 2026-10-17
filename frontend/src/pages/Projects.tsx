@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
 import type { Project } from '../api/types'
@@ -13,6 +14,7 @@ const empty: Partial<Project> = { status: 'Planning', priority: 'Medium', curren
 
 export default function Projects() {
   const { t } = useTranslation()
+  const nav = useNavigate()
   const lk = useLookups()
   const { hasRole } = useAuth()
   const [rows, setRows] = useState<Project[]>([])
@@ -58,10 +60,10 @@ export default function Projects() {
       <div className="row panel" style={{ marginTop: 12 }}>
         <input placeholder={t('project.keyword')} value={query.keyword}
           onChange={(e) => setQuery((q) => ({ ...q, keyword: e.target.value }))} />
-        <div style={{ minWidth: 180 }}><Select options={lk.departments.map((d) => ({ value: d.id, label: d.label }))}
+        <div style={{ minWidth: 180 }}><Select options={lk.departments.map((d) => ({ value: d.id, label: d.name }))}
           value={query.deptId} onChange={(v) => setQuery((q) => ({ ...q, deptId: v || '' }))}
           placeholder={`${t('project.department')}: ${t('common.all')}`} /></div>
-        <div style={{ minWidth: 180 }}><Select options={lk.managers.map((m) => ({ value: m.id, label: m.label }))}
+        <div style={{ minWidth: 180 }}><Select options={lk.managers.map((m) => ({ value: m.id, label: m.name }))}
           value={query.ownerUserId} onChange={(v) => setQuery((q) => ({ ...q, ownerUserId: v || '' }))}
           placeholder={`${t('project.owner')}: ${t('common.all')}`} /></div>
         <div style={{ minWidth: 170 }}><Select options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
@@ -85,7 +87,10 @@ export default function Projects() {
                 <td>{p.code}</td><td>{p.name}</td><td>{p.deptName}</td><td>{p.ownerName}</td>
                 <td><Badge value={p.status} /></td><td><Badge value={p.priority} /></td>
                 <td>{fmtMoney(p.initialApprovedBudget, p.currency)}</td><td>{fmtDate(p.plannedEndDate)}</td>
-                <td>{hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...p })}>{t('common.edit')}</button>}</td>
+                <td className="row">
+                  <button className="btn sm primary" onClick={() => nav(`/projects/${p.projectId}`)}>{t('project.details')}</button>
+                  {hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...p })}>{t('common.edit')}</button>}
+                </td>
               </tr>))}</tbody>
           </table>
         </div>
@@ -106,10 +111,10 @@ export default function Projects() {
           <label className="field">{t('project.code')}<input value={edit.code || ''} onChange={(e) => setEdit({ ...edit, code: e.target.value })} /></label>
           <label className="field">{t('project.name')}<input value={edit.name || ''} onChange={(e) => setEdit({ ...edit, name: e.target.value })} /></label>
           <label className="field">{t('project.department')}
-            <Select options={lk.departments.map((d) => ({ value: d.id, label: d.label }))}
+            <Select options={lk.departments.map((d) => ({ value: d.id, label: d.name }))}
               value={edit.deptId || null} onChange={(v) => setEdit({ ...edit, deptId: v || undefined })} /></label>
           <label className="field">{t('project.owner')}
-            <Select options={lk.managers.map((m) => ({ value: m.id, label: m.label }))}
+            <Select options={lk.managers.map((m) => ({ value: m.id, label: m.name }))}
               value={edit.ownerUserId || null} onChange={(v) => setEdit({ ...edit, ownerUserId: v || undefined })} /></label>
           <label className="field">{t('project.status')}
             <Select isClearable={false} options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}

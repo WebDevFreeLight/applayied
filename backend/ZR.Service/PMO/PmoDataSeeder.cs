@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ZR.Admin.WebApi.Extensions;
 using ZR.Model.PMO;
 using ZR.Model.System;
 
@@ -57,6 +58,11 @@ namespace ZR.Service.PMO
                 // Identity first — they are FK targets for every pmo_* table.
                 SeedDepartments(csvDir, log);
                 SeedRolesAndUsers(csvDir, log);
+
+                // Auto-governance: detect every [ActionPermissionFilter] permission across all
+                // controllers; any that isn't saved yet is registered and parked in an "Unassigned"
+                // role so a new route never silently grants nothing and nothing is forgotten.
+                RegisterNewPermissions(log);
 
                 // pmo_* tables in dependency order.
                 Import<PmoCostCategory>(csvDir, "cost_categories.csv", log);
@@ -287,6 +293,70 @@ namespace ZR.Service.PMO
                 }
             }
             log.Add($"[PMO seed] pmo permissions: {menus} menus created, {links} role grants added");
+        }
+
+        /// <summary>The fallback role that holds any newly-detected, not-yet-assigned permission.</summary>
+        private const string UnassignedRoleKey = "unassigned";
+
+        /// <summary>
+        /// Scan every controller's [ActionPermissionFilter] permission. Any permission string that is
+        /// not yet saved as a sys_menu row is created (carrying the attribute's DisplayName/Description/
+        /// Tier) and granted to the "Unassigned" role, so new routes are detected and never lost.
+        /// </summary>
+        private void RegisterNewPermissions(List<string> log)
+        {
+            // Ensure the Unassigned fallback role exists (RoleId is identity → read back by key).
+            var role = _db.Queryable<SysRole>().First(r => r.RoleKey == UnassignedRoleKey);
+            if (role == null)
+            {
+                _db.Insertable(new SysRole
+                {
+                    RoleName = "Unassigned", RoleKey = UnassignedRoleKey, RoleSort = 99,
+                    Status = 0, DelFlag = 0, DataScope = 1, Create_by = "auto", Create_time = DateTime.Now,
+                    Remark = "Holds newly-detected permissions until an admin assigns them to real roles."
+                }).ExecuteCommand();
+                role = _db.Queryable<SysRole>().First(r => r.RoleKey == UnassignedRoleKey);
+            }
+            long unassignedRoleId = role.RoleId;
+
+            // Collect every declared permission with its metadata (first occurrence wins).
+            var declared = new Dictionary<string, (string Name, string Desc, string Tier)>();
+            foreach (var fi in ActionPermissionFilterInfo.GetAllActionPermissionFiltersWithInfo())
+            {
+                foreach (var perm in fi.IndividualPermissions)
+                {
+                    if (string.IsNullOrWhiteSpace(perm) || perm.Equals("common", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (!declared.ContainsKey(perm))
+                        declared[perm] = (fi.Filter.DisplayName, fi.Filter.Description, fi.Filter.Tier);
+                }
+            }
+
+            int created = 0;
+            foreach (var kv in declared)
+            {
+                var perm = kv.Key;
+                if (_db.Queryable<SysMenu>().Any(m => m.Perms == perm)) continue; // already saved → skip
+
+                var meta = kv.Value;
+                var remark = string.Join(" ", new[]
+                {
+                    string.IsNullOrWhiteSpace(meta.Desc) ? null : meta.Desc,
+                    string.IsNullOrWhiteSpace(meta.Tier) ? null : $"[tier:{meta.Tier}]",
+                    "[auto-registered]"
+                }.Where(s => s != null));
+
+                var menu = new SysMenu
+                {
+                    MenuName = string.IsNullOrWhiteSpace(meta.Name) ? perm : meta.Name,
+                    Perms = perm, MenuType = "F", ParentId = 0, OrderNum = 1,
+                    Path = "", Component = "", Icon = "", Visible = "1", Status = "0",
+                    Remark = remark, Create_by = "auto", Create_time = DateTime.Now
+                };
+                long menuId = _db.Insertable(menu).ExecuteReturnSnowflakeId();
+                _db.Insertable(new SysRoleMenu { Role_id = unassignedRoleId, Menu_id = menuId }).ExecuteCommand();
+                created++;
+            }
+            log.Add($"[PMO seed] new-route detection: {created} unsaved permission(s) registered → '{UnassignedRoleKey}' role");
         }
 
         // ------------------------------------------------------------------ generic import

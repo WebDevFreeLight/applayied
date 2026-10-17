@@ -18,6 +18,7 @@ export const getDepartments = () => unwrap<LookupItem[]>(api.get('/pmo/lookup/de
 export const getUsers = () => unwrap<LookupItem[]>(api.get('/pmo/lookup/users'))
 export const getManagers = () => unwrap<LookupItem[]>(api.get('/pmo/lookup/managers'))
 export const getProjectOptions = () => unwrap<LookupItem[]>(api.get('/pmo/lookup/projects'))
+export const getCategoryOptions = () => unwrap<LookupItem[]>(api.get('/pmo/lookup/categories'))
 export const getCategories = () => unwrap<CostCategory[]>(api.get('/pmo/cost-category/list'))
 
 // ---- projects ---------------------------------------------------------------
