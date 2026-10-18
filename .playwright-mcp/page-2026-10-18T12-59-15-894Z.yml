@@ -1,0 +1,16 @@
+- generic [ref=f20e4]:
+  - generic [ref=f20e5]:
+    - heading "PMO Portal" [level=2] [ref=f20e6]
+    - generic [ref=f20e7]:
+      - button "☀️" [ref=f20e8] [cursor=pointer]
+      - button "العربية" [ref=f20e9] [cursor=pointer]
+  - paragraph [ref=f20e10]: Project Portfolio & Financial Control
+  - generic [ref=f20e11]:
+    - generic [ref=f20e12]:
+      - text: Username
+      - textbox "Username" [active] [ref=f20e13]: pmo.admin
+    - generic [ref=f20e14]:
+      - text: Password
+      - textbox "Password" [ref=f20e15]: "123456"
+    - button "Sign in" [ref=f20e16] [cursor=pointer]
+    - generic [ref=f20e17]: "Demo: pmo.admin / pm.hamdan / con.mariam — password 123456"

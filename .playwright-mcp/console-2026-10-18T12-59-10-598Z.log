@@ -1,0 +1,116 @@
+[    5150ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5174/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[    5273ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5174/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[    5273ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5174/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[    5293ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/favicon.ico:0
+[    5367ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost:5174/login:0
+[   66468ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/msgHub/negotiate?negotiateVersion=1:0
+[   66468ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[   66469ms] [ERROR] [2026-10-18T13:00:17.066Z] Error: Failed to complete negotiation with the server: Error: Request Header Fields Too Large: Status code '431' @ http://localhost:5174/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[   66469ms] [ERROR] [2026-10-18T13:00:17.067Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Request Header Fields Too Large: Status code '431' @ http://localhost:5174/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[   66473ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   66475ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   66479ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   66479ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   66480ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   66480ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/dashboard/kpis?cutoff=2026-09-30:0
+[   66480ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/dashboard/analytics?cutoff=2026-09-30:0
+[   66480ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[   66488ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   66488ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   66489ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   66489ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   66489ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   66489ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/dashboard/kpis?cutoff=2026-09-30:0
+[   66489ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/dashboard/analytics?cutoff=2026-09-30:0
+[   70737ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   70740ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   70744ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   70745ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   70745ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   70746ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/project/list?pageNum=1&pageSize=10:0
+[   70746ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   70746ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   70746ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   70747ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   70747ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   70747ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/project/list?pageNum=1&pageSize=10:0
+[   71153ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   71157ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   71161ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   71161ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   71161ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   71162ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/task/list?pageNum=1&pageSize=10:0
+[   71162ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   71162ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   71162ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   71162ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   71162ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   71163ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/task/list?pageNum=1&pageSize=10:0
+[   71920ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   71925ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   71926ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   71926ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   71926ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/milestone/list?pageNum=1&pageSize=200:0
+[   71927ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   71927ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   71927ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   71927ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   71927ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   71928ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   72166ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/milestone/list?pageNum=1&pageSize=200:0
+[   72259ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   72261ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   72264ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   72266ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   72266ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   72266ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/risk/list?pageNum=1&pageSize=200:0
+[   72266ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   72267ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   72267ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   72267ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   72267ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   72270ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/risk/list?pageNum=1&pageSize=200:0
+[   77328ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[   79072ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[   81152ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   81153ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   81157ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   81160ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   81160ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   81160ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/dashboard/kpis?cutoff=2026-09-30:0
+[   81160ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/dashboard/analytics?cutoff=2026-09-30:0
+[   81160ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/departments:0
+[   81160ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/users:0
+[   81161ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/managers:0
+[   81161ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/projects:0
+[   81161ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/lookup/categories:0
+[   81161ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/dashboard/kpis?cutoff=2026-09-30:0
+[   81161ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/pmo/dashboard/analytics?cutoff=2026-09-30:0
+[   83724ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/user/profile:0
+[   83726ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/user/profile:0
+[   83826ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5174/admin/profile:0
+[   83826ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5174/admin/profile:0
+[   84454ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[   84456ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[   86676ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/server:0
+[   86677ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/server:0
+[   88217ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/UserOnlineLog/list?pageNum=1&pageSize=100:0
+[   88218ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/UserOnlineLog/list?pageNum=1&pageSize=100:0
+[   89944ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/operlog/list?pageNum=1&pageSize=20:0
+[   89945ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/operlog/list?pageNum=1&pageSize=20:0
+[   90414ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/online/list?pageNum=1&pageSize=100:0
+[   90417ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/online/list?pageNum=1&pageSize=100:0
+[   91907ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/logininfor/list?pageNum=1&pageSize=20:0
+[   91908ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/logininfor/list?pageNum=1&pageSize=20:0
+[   93124ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/jobLog/list?pageNum=1&pageSize=100:0
+[   93124ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/monitor/jobLog/list?pageNum=1&pageSize=100:0
+[   93524ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/Tasks/list?pageNum=1&pageSize=50:0
+[   93525ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/Tasks/list?pageNum=1&pageSize=50:0
+[   93846ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/notice/list?pageNum=1&pageSize=50:0
+[   93848ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/notice/list?pageNum=1&pageSize=50:0
+[   97109ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/config/list?pageNum=1&pageSize=10:0
+[   97110ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/config/list?pageNum=1&pageSize=10:0
+[   97426ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/dict/type/list?pageNum=1&pageSize=200:0
+[   97427ms] [ERROR] Failed to load resource: the server responded with a status of 431 (Request Header Fields Too Large) @ http://localhost:5174/api/system/dict/type/list?pageNum=1&pageSize=200:0
+[  100520ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost:5174/login:0
+[  117504ms] [WARNING] [2026-10-18T13:01:08.101Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5174/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
