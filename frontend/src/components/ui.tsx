@@ -30,6 +30,11 @@ export function Empty() {
 export function ErrorBox({ message }: { message: string }) {
   return <div className="err" style={{ padding: 12 }}>{message}</div>
 }
+// Shown in place of a page's content when the signed-in role lacks the required permission.
+export function NoAccess() {
+  const { t } = useTranslation()
+  return <div className="panel" style={{ padding: 24 }}>{t('admin.noAccess')}</div>
+}
 
 export function Modal({ title, onClose, children, footer, wide }:
   { title: string; onClose: () => void; children: ReactNode; footer?: ReactNode; wide?: boolean }) {

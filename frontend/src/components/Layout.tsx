@@ -7,16 +7,18 @@ import { getTheme, toggleTheme } from '../theme'
 import NotificationBell from './NotificationBell'
 import AiAssistant from './AiAssistant'
 
-const LINKS = [
-  { to: '/', key: 'dashboard', end: true },
-  { to: '/projects', key: 'projects' },
-  { to: '/tasks', key: 'tasks' },
-  { to: '/milestones', key: 'milestones' },
-  { to: '/risks', key: 'risks' },
-  { to: '/change-requests', key: 'changeRequests' },
-  { to: '/finance', key: 'finance' },
-  { to: '/activity', key: 'activity' },
-  { to: '/categories', key: 'categories' },
+// Each PMO link declares the list/view permission it needs. The nav only renders links the
+// signed-in role actually holds, so Contributors never see Dashboard/Finance/Automation, etc.
+const LINKS: { to: string; key: string; end?: boolean; perm?: string }[] = [
+  { to: '/', key: 'dashboard', end: true, perm: 'pmo:dashboard:view' },
+  { to: '/projects', key: 'projects', perm: 'pmo:project:list' },
+  { to: '/tasks', key: 'tasks', perm: 'pmo:task:list' },
+  { to: '/milestones', key: 'milestones', perm: 'pmo:milestone:list' },
+  { to: '/risks', key: 'risks', perm: 'pmo:risk:list' },
+  { to: '/change-requests', key: 'changeRequests', perm: 'pmo:changerequest:list' },
+  { to: '/finance', key: 'finance', perm: 'pmo:finance:list' },
+  { to: '/activity', key: 'activity', perm: 'pmo:automation:list' },
+  { to: '/categories', key: 'categories', perm: 'pmo:category:list' },
 ]
 // Admin links appear only when the user holds the matching list permission.
 // Links without a `perm` (Messages, Profile) are personal and shown to every signed-in user.
@@ -43,6 +45,7 @@ const ADMIN_LINKS: { to: string; key: string; perm?: string }[] = [
 export default function Layout() {
   const { t, i18n } = useTranslation()
   const { session, signOut, hasPerm } = useAuth()
+  const navLinks = LINKS.filter((l) => !l.perm || hasPerm(l.perm))
   const adminLinks = ADMIN_LINKS.filter((l) => !l.perm || hasPerm(l.perm))
   const [theme, setThemeState] = useState(getTheme())
   const toggleLang = () => changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
@@ -52,7 +55,7 @@ export default function Layout() {
     <div className="shell">
       <aside className="sidebar">
         <div className="brand">{t('app.title')}<small>{t('app.subtitle')}</small></div>
-        {LINKS.map((l) => (
+        {navLinks.map((l) => (
           <NavLink key={l.to} to={l.to} end={l.end}
             className={({ isActive }) => `navlink ${isActive ? 'active' : ''}`}>
             {t(`nav.${l.key}`)}
