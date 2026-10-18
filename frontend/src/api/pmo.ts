@@ -110,3 +110,22 @@ export const listOutbox = (params: Record<string, unknown>) =>
   unwrap<import('./types').Paged<import('./types').OutboxNotification>>(api.get('/pmo/activity/outbox', { params }))
 export const listAudit = (params: Record<string, unknown>) =>
   unwrap<import('./types').Paged<import('./types').AuditEvent>>(api.get('/pmo/activity/audit', { params }))
+
+// ---- AI assistant (multi-provider fallback chain) ---------------------------
+export interface AiReply { ok: boolean; text: string }
+export const aiStatus = () =>
+  unwrap<{ configured: boolean; providers: { name: string; model: string; order: number; isDefault: boolean }[] }>(
+    api.get('/pmo/ai/status'))
+export const aiChat = (message: string, context?: string, lang = 'en') =>
+  unwrap<AiReply>(api.post('/pmo/ai/chat', { message, context, lang }))
+export const aiProjectSummary = (facts: unknown, lang = 'en') =>
+  unwrap<AiReply>(api.post('/pmo/ai/project-summary', { facts, lang }))
+export const aiRiskAnalysis = (facts: unknown, lang = 'en') =>
+  unwrap<AiReply>(api.post('/pmo/ai/risk-analysis', { facts, lang }))
+export const aiDashboardInsights = (facts: unknown, lang = 'en') =>
+  unwrap<AiReply>(api.post('/pmo/ai/dashboard-insights', { facts, lang }))
+
+// ---- automation manual trigger (admin) --------------------------------------
+export const runAutomation = (asOf?: string) =>
+  unwrap<{ triggeredBy: string; asOf: string; aiUsed: boolean; results: { ruleKey: string; status: string; candidates: number; created: number; skipped: number; detail: string }[] }>(
+    api.post('/pmo/admin/run-automation', null, { params: asOf ? { asOf } : {} }))

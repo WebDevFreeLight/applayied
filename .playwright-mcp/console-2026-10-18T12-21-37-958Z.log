@@ -21,3 +21,110 @@
 [ 1696532ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=38fff4e2:4416
 [ 1696541ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
 [ 1696545ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1765395ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1779204ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx:51:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19137:13)
+[ 1779205ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx:51:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19137:13)
+[ 1779207ms] [ERROR] The above error occurred in the <App> component:
+
+    at App (http://localhost:5173/src/App.tsx:51:24)
+    at AuthProvider (http://localhost:5173/src/auth/auth.tsx?t=1792327877095:40:32)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries. @ http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:14031
+[ 1779207ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx:51:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:15914:22)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19753:22)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19137:13)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:19116:15)
+    at recoverFromConcurrentError (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:18736:28)
+    at performSyncWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:18879:28)
+[ 1779774ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:21550
+[ 1779802ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=38fff4e2:4416
+[ 1779803ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=38fff4e2:4416
+[ 1779810ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1779815ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1789016ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-PJEEZAML.js?v=38fff4e2:21550
+[ 1789039ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=38fff4e2:4416
+[ 1789039ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=38fff4e2:4416
+[ 1789047ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1789049ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1794238ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 1794330ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1794330ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1794340ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 1794343ms] [ERROR] [2026-10-18T12:51:32.300Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1794343ms] [ERROR] [2026-10-18T12:51:32.301Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1794344ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1794346ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1849138ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1849138ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1861382ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1861384ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1861386ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1861387ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1861388ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1861389ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/dashboard/kpis?cutoff=2026-09-30:0
+[ 1861395ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/dashboard/analytics?cutoff=2026-09-30:0
+[ 1861396ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1861396ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1861396ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1861396ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1861396ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1861396ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/dashboard/kpis?cutoff=2026-09-30:0
+[ 1861397ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/dashboard/analytics?cutoff=2026-09-30:0
+[ 1862257ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1862258ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1862258ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1862258ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1862258ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1862258ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0
+[ 1862263ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1862264ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1862264ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1862264ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1862265ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1862265ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0
+[ 1863028ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 1863081ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1863081ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1863090ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 1863090ms] [ERROR] [2026-10-18T12:52:41.048Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1863090ms] [ERROR] [2026-10-18T12:52:41.048Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1863092ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1863093ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1863093ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1863094ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1863096ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1863098ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1863100ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0
+[ 1863105ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1863106ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1863106ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1863106ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1863107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1863107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1863108ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0

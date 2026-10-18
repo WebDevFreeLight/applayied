@@ -28,6 +28,9 @@ export const removeNotice = (ids: string) => unwrap<unknown>(api.delete(`/system
 // ---- my messages (SysUserMsg) -----------------------------------------------
 export const myMessages = (params: Record<string, unknown>) => unwrap<Paged<SysUserMsg>>(api.get('/SysUserMsg/mylist', { params }))
 export const readMessage = (msgId: string, msgType: string) => unwrap<unknown>(api.post(`/SysUserMsg/read/${msgId}/${msgType}`))
+export const readAllMessages = () => unwrap<number>(api.post('/SysUserMsg/readAll'))
+// Unread count grouped by type: { data: [{msgType, num}], lastSysMsgInfo }
+export const myUnread = () => unwrap<{ data: { msgType: number; num: number }[]; lastSysMsgInfo?: SysUserMsg }>(api.get('/SysUserMsg/myMsgNum'))
 
 // ---- scheduled tasks (system/Tasks) -----------------------------------------
 export const listJobs = (params: Record<string, unknown>) => unwrap<Paged<SysJob>>(api.get('/system/Tasks/list', { params }))

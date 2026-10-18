@@ -1,6 +1,7 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import * as pmo from '../api/pmo'
 import type { LoginResult } from '../api/types'
+import { connectRealtime, disconnectRealtime } from '../realtime/hub'
 
 // Role keys mirror the backend seed (sys_role.role_key carried in the JWT as RoleKeys).
 export const ROLE = { admin: 'pmo_admin', pm: 'pmo_pm', contributor: 'pmo_contributor' } as const
@@ -40,6 +41,13 @@ const MIN_RANK = { admin: 3, pm: 2, contributor: 1 } as const
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(load)
+
+  // Keep a live SignalR connection whenever authenticated (so the user shows up on the Sessions
+  // page and receives realtime notifications/notices). Reconnects on refresh, closes on sign-out.
+  useEffect(() => {
+    if (session) connectRealtime()
+    else disconnectRealtime()
+  }, [session])
 
   const value = useMemo<AuthCtx>(() => ({
     session,

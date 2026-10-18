@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/auth'
 import { changeLanguage } from '../i18n'
 import { getTheme, toggleTheme } from '../theme'
+import NotificationBell from './NotificationBell'
 
 const LINKS = [
   { to: '/', key: 'dashboard', end: true },
@@ -72,6 +73,7 @@ export default function Layout() {
         <header className="topbar">
           <strong>{t('app.title')}</strong>
           <div className="row">
+            <NotificationBell />
             <button className="btn sm" onClick={onToggleTheme} title="theme">{theme === 'dark' ? '☀️' : '🌙'}</button>
             <button className="btn sm" onClick={toggleLang}>{t('nav.language')}</button>
             <span className="user">{session?.nickName} · {session?.roles.join(', ')}</span>
