@@ -145,9 +145,11 @@ namespace ZR.Service.PMO
                 });
             }
 
-            // Monthly trend (portfolio) — posted rows from SQL, bucketed by month.
+            // Monthly trend + spend-by-category (portfolio) — posted rows from SQL, bucketed by month.
+            // The cost-category filter applies here (these are the compatible finance visuals).
             var posted = Context.Queryable<PmoCostTransaction>()
                 .Where(t => ids.Contains(t.ProjectId) && t.Status == "Posted" && t.TxnDate <= cutoff)
+                .WhereIF(filter.CategoryId != null, t => t.CategoryId == filter.CategoryId)
                 .Select(t => new { t.TxnDate, t.Amount, t.CategoryId }).ToList();
             a.MonthlyTrend = posted.GroupBy(t => t.TxnDate.ToString("yyyy-MM"))
                 .Select(g => new PmoMonthlySpendDto { Period = g.Key, Amount = g.Sum(x => x.Amount) })
