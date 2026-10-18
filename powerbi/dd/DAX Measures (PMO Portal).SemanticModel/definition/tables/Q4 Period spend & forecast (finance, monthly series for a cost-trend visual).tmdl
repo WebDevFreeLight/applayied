@@ -1,0 +1,57 @@
+/// "Actual" rows = posted cost transactions bucketed by calendar month (on/before snapshot).
+/// "Forecast" rows = forecast-to-complete amounts by their period month.
+/// Union gives one tidy table (series column) that a line/column chart can split by legend.
+table 'Q4 Period spend & forecast (finance, monthly series for a cost-trend visual)'
+	lineageTag: a43aa54d-3f32-4871-b3de-f8457b7b1252
+
+	column period_month
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: e9626d77-d513-43d9-9130-030abd2ca847
+		summarizeBy: none
+		sourceColumn: period_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 88a3079e-3989-40a4-adda-1b752c42854d
+		summarizeBy: sum
+		sourceColumn: project_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column series
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 14daa14c-d3e6-4d84-913a-20f7f8e993f2
+		summarizeBy: none
+		sourceColumn: series
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount
+		dataType: double
+		sourceProviderType: decimal(0, 0)
+		lineageTag: 00a27dba-192f-4e54-8fc2-62ca6b085a39
+		summarizeBy: sum
+		sourceColumn: amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Q4 Period spend & forecast (finance, monthly series for a cost-trend visual)' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("localhost", "MahamDB"), "-- Q4 — Period spend & forecast (finance, monthly series for a cost-trend visual)#(lf)-- ""Actual"" rows = posted cost transactions bucketed by calendar month (on/before snapshot).#(lf)-- ""Forecast"" rows = forecast-to-complete amounts by their period month.#(lf)-- Union gives one tidy table (series column) that a line/column chart can split by legend.#(lf)SELECT  to_char(date_trunc('month', t.txn_date), 'YYYY-MM') AS period_month,#(lf)        t.project_id,#(lf)        'Actual'            AS series,#(lf)        SUM(t.amount)       AS amount#(lf)FROM    pmo_cost_transaction t#(lf)WHERE   t.status = 'Posted'#(lf)  AND   t.txn_date <= DATE '2026-09-30'#(lf)GROUP BY 1, 2#(lf)UNION ALL#(lf)SELECT  to_char(date_trunc('month', f.period_month), 'YYYY-MM') AS period_month,#(lf)        f.project_id,#(lf)        'Forecast'          AS series,#(lf)        SUM(f.forecast_amount) AS amount#(lf)FROM    pmo_financial_forecast f#(lf)WHERE   f.kind = 'ForecastToComplete'#(lf)GROUP BY 1, 2#(lf)ORDER BY period_month, series#(lf)", null, [EnableFolding=true])
+				in
+				    Source
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

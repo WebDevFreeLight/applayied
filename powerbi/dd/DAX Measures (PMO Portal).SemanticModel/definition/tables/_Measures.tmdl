@@ -1,0 +1,259 @@
+/// Home table for all report measures (AED amounts).
+table _Measures
+	lineageTag: dfd035b5-176b-4018-94bc-f8ba669997dc
+
+	/// Snapshot the whole model reconciles to. Defaults to 2026-09-30 when no single date is selected on the Snapshot slicer.
+	measure 'Snapshot Date' = SELECTEDVALUE ( 'Snapshot'[Snapshot], DATE ( 2026, 9, 30 ) )
+		formatString: yyyy-mm-dd
+		displayFolder: 0 Parameters
+		lineageTag: 1cb8376c-2497-4220-97b8-d8ec10c07df0
+
+	/// Tasks not Done with due date strictly before the snapshot.
+	measure 'Overdue Tasks' =
+			VAR _snap = [Snapshot Date]
+			RETURN
+			    CALCULATE (
+			        COUNTROWS ( 'public pmo_task' ),
+			        'public pmo_task'[status] <> "Done",
+			        'public pmo_task'[due_date] < _snap
+			    ) + 0
+		formatString: #,0
+		displayFolder: 1 Delivery
+		lineageTag: 3d7d384c-5d1a-4545-962b-b4aa8aaf4fe3
+
+	/// Weight-weighted average of task progress_pct (0-100), returned as a ratio.
+	measure 'Task Completion %' =
+			DIVIDE (
+			    SUMX ( 'public pmo_task', 'public pmo_task'[weight] * 'public pmo_task'[progress_pct] ),
+			    SUMX ( 'public pmo_task', 'public pmo_task'[weight] )
+			) / 100
+		formatString: 0.0%
+		displayFolder: 1 Delivery
+		lineageTag: af6917aa-a827-4342-92fe-0831474f1ee2
+
+	/// Initial approved budget + approved revisions (pending/rejected excluded).
+	measure 'Approved Budget' =
+			SUM ( 'public pmo_project'[initial_approved_budget] )
+			    + CALCULATE (
+			        SUM ( 'public pmo_budget_revision'[amount] ),
+			        'public pmo_budget_revision'[status] = "Approved"
+			    )
+		formatString: "AED "#,0
+		displayFolder: 2 Finance
+		lineageTag: a46e65d4-953d-4864-943d-b632f654d7f6
+
+	/// Posted cost transactions on/before the snapshot (drafts excluded).
+	measure 'Actual Spend' =
+			VAR _snap = [Snapshot Date]
+			RETURN
+			    CALCULATE (
+			        SUM ( 'public pmo_cost_transaction'[amount] ),
+			        'public pmo_cost_transaction'[status] = "Posted",
+			        'public pmo_cost_transaction'[txn_date] <= _snap
+			    )
+		formatString: "AED "#,0.00
+		displayFolder: 2 Finance
+		lineageTag: 01a8c301-2cd7-4c95-a843-c444b2d1dc90
+
+	/// Actual Spend / Approved Budget; blank when budget is 0.
+	measure 'Budget Utilization %' = DIVIDE ( [Actual Spend], [Approved Budget] )
+		formatString: 0.0%
+		displayFolder: 2 Finance
+		lineageTag: 49995f19-4638-4e2b-bc41-f1ec44198b2c
+
+	measure 'Remaining Budget' = [Approved Budget] - [Actual Spend]
+		formatString: "AED "#,0
+		displayFolder: 2 Finance
+		lineageTag: 656b6dd7-effd-4f2d-931c-e9ccd274190f
+
+	measure 'Forecast To Complete' =
+			CALCULATE (
+			    SUM ( 'public pmo_financial_forecast'[forecast_amount] ),
+			    'public pmo_financial_forecast'[kind] = "ForecastToComplete"
+			)
+		formatString: "AED "#,0
+		displayFolder: 2 Finance
+		lineageTag: bac68d72-9a62-4a96-b773-bf4510ef4896
+
+	/// Estimate at completion = Actual Spend + Forecast To Complete.
+	measure EAC = [Actual Spend] + [Forecast To Complete]
+		formatString: "AED "#,0
+		displayFolder: 2 Finance
+		lineageTag: 0ed6d298-4216-4b42-8c9b-7ea69a16d6b1
+
+	/// Approved Budget - EAC; negative = projected overrun.
+	measure 'Projected Variance' = [Approved Budget] - [EAC]
+		formatString: "AED "#,0;"AED "-#,0
+		displayFolder: 2 Finance
+		lineageTag: 3ca2e60b-9e78-4820-b487-a092e68e6d82
+
+	measure 'Projected Overruns' =
+			COUNTROWS (
+			    FILTER ( VALUES ( 'public pmo_project'[project_id] ), [Projected Variance] < 0 )
+			) + 0
+		formatString: #,0
+		displayFolder: 2 Finance
+		lineageTag: 8e9bf096-ea97-4825-aa08-9453b65c1884
+
+	measure 'Total Projects' = DISTINCTCOUNT ( 'public pmo_project'[project_id] )
+		formatString: #,0
+		displayFolder: 3 Portfolio
+		lineageTag: 5144af81-f13a-4b0a-ad14-846927aa647c
+
+	measure 'Active Projects' = CALCULATE ( [Total Projects], 'public pmo_project'[status] = "Active" ) + 0
+		formatString: #,0
+		displayFolder: 3 Portfolio
+		lineageTag: d8d03afe-9b8a-4f06-b2ea-3e382ad93409
+
+	/// Risks with status Open and score (probability x impact) >= 12. Mitigating/Closed excluded.
+	measure 'Open High Risks' =
+			CALCULATE (
+			    COUNTROWS ( 'public pmo_risk' ),
+			    'public pmo_risk'[status] = "Open",
+			    'public pmo_risk'[score] >= 12
+			) + 0
+		formatString: #,0
+		displayFolder: 4 Risk
+		lineageTag: 659f9e40-ef7d-4bfa-81cf-8e2d651dcc2b
+
+	/// All tasks in the current filter context.
+	measure 'Total Tasks' = COUNTROWS ( 'public pmo_task' ) + 0
+		formatString: #,0
+		displayFolder: 1 Delivery
+		lineageTag: c8f64fc5-134c-4abe-9d18-4d44d3de968e
+
+	/// Tasks with status other than Done.
+	measure 'Open Tasks' = CALCULATE ( COUNTROWS ( 'public pmo_task' ), 'public pmo_task'[status] <> "Done" ) + 0
+		formatString: #,0
+		displayFolder: 1 Delivery
+		lineageTag: f78fdb5e-8fab-4912-9c86-bea5bbcec212
+
+	/// Share of open tasks that are overdue at the snapshot.
+	measure 'Overdue Rate %' = DIVIDE ( [Overdue Tasks], [Open Tasks] )
+		formatString: 0.0%
+		displayFolder: 1 Delivery
+		lineageTag: 461196cf-ef0e-47c6-b510-4d7e3338ae8a
+
+	/// Count-based completion (Done / all tasks). Compare with weighted Task Completion %.
+	measure 'Tasks Done %' = DIVIDE ( CALCULATE ( COUNTROWS ( 'public pmo_task' ), 'public pmo_task'[status] = "Done" ), [Total Tasks] )
+		formatString: 0.0%
+		displayFolder: 1 Delivery
+		lineageTag: c28cb2e3-3391-40b3-a854-1163892d56dd
+
+	/// Milestones not Achieved with due date before the snapshot (matches SQL Q5 'Overdue' bucket).
+	measure 'Overdue Milestones' =
+			VAR _snap = [Snapshot Date]
+			RETURN
+			    CALCULATE (
+			        COUNTROWS ( 'public pmo_milestone' ),
+			        'public pmo_milestone'[status] <> "Achieved",
+			        'public pmo_milestone'[due_date] < _snap
+			    ) + 0
+		formatString: #,0
+		displayFolder: 1 Delivery
+		lineageTag: 3621374e-e075-4dc0-9ac6-18225c999275
+
+	/// Achieved milestones / all milestones.
+	measure 'Milestones Achieved %' =
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( 'public pmo_milestone' ), 'public pmo_milestone'[status] = "Achieved" ),
+			    COUNTROWS ( 'public pmo_milestone' )
+			)
+		formatString: 0.0%
+		displayFolder: 1 Delivery
+		lineageTag: 2b03407c-0784-4187-8728-e8545e8452eb
+
+	/// Actual posted spend for past months plus forecast-to-complete for future months; use on a Calendar[MonthName] axis.
+	measure 'Spend vs Forecast (Period)' = COALESCE ( [Actual Spend], 0 ) + COALESCE ( [Forecast To Complete], 0 )
+		formatString: "AED "#,0
+		displayFolder: 2 Finance
+		lineageTag: fed0e33f-1b76-47b0-88d5-0a0a94416d97
+
+	/// Reconciliation helper: only revisions approved on/before the snapshot. Differs from Approved Budget by revisions approved after the snapshot.
+	measure 'Approved Budget (as at snapshot)' =
+			VAR _snap = [Snapshot Date]
+			RETURN
+			    SUM ( 'public pmo_project'[initial_approved_budget] )
+			        + CALCULATE (
+			            SUM ( 'public pmo_budget_revision'[amount] ),
+			            'public pmo_budget_revision'[status] = "Approved",
+			            'public pmo_budget_revision'[approved_at] < _snap + 1
+			        )
+		formatString: "AED "#,0
+		displayFolder: 2 Finance
+		lineageTag: 7cd88156-bd2b-415a-b687-718fe4237b04
+
+	/// Reconciliation helper: high-exposure risks not Closed (Open + Mitigating).
+	measure 'Open High Risks incl. Mitigating' =
+			CALCULATE (
+			    COUNTROWS ( 'public pmo_risk' ),
+			    'public pmo_risk'[status] <> "Closed",
+			    'public pmo_risk'[score] >= 12
+			) + 0
+		formatString: #,0
+		displayFolder: 4 Risk
+		lineageTag: df6fbdd2-159d-406f-bb72-7555abc1d231
+
+	/// Header text for the dashboard.
+	measure 'Snapshot Label' = "Snapshot: " & FORMAT ( [Snapshot Date], "dd MMM yyyy" ) & "  |  amounts in AED"
+		displayFolder: 0 Parameters
+		lineageTag: 915ec520-c332-40bf-98cc-12b308f3c685
+
+	/// Row count of SQL query Q2 (snapshot fixed at 2026-09-30 in SQL).
+	measure 'SQL Overdue Tasks' = COUNTROWS ( 'Q2 Overdue incomplete tasks (delivery)' ) + 0
+		formatString: #,0
+		displayFolder: 5 Reconciliation
+		lineageTag: a4642f0b-9bbf-4b9f-a730-ee7d1676365d
+
+	/// Sum of approved_budget from SQL query Q1.
+	measure 'SQL Approved Budget' = SUM ( 'Q1 Project financial performance (finance fact, one row per project)'[approved_budget] )
+		formatString: "AED "#,0
+		displayFolder: 5 Reconciliation
+		lineageTag: 5337bb4c-9b0f-4679-962f-6119adfdbdd9
+
+	/// Sum of actual_spend from SQL query Q1.
+	measure 'SQL Actual Spend' = SUM ( 'Q1 Project financial performance (finance fact, one row per project)'[actual_spend] )
+		formatString: "AED "#,0.00
+		displayFolder: 5 Reconciliation
+		lineageTag: e5319f27-4183-4d22-a8d3-5a9706b25e92
+
+	/// Portfolio ratio of SQL sums (not an average of per-project utilization_pct).
+	measure 'SQL Budget Utilization %' = DIVIDE ( [SQL Actual Spend], [SQL Approved Budget] )
+		formatString: 0.0%
+		displayFolder: 5 Reconciliation
+		lineageTag: 30333c51-bae5-4c04-877f-b54b6c17639c
+
+	/// Sum of projected_variance from SQL query Q1.
+	measure 'SQL Projected Variance' = SUM ( 'Q1 Project financial performance (finance fact, one row per project)'[projected_variance] )
+		formatString: "AED "#,0;"AED "-#,0
+		displayFolder: 5 Reconciliation
+		lineageTag: a56f24ff-2bb0-4da1-a294-3a2dc9c4eb56
+
+	/// Row count of SQL query Q3.
+	measure 'SQL Open High Risks' = COUNTROWS ( 'Q3 High-exposure OPEN risks (risk & governance)' ) + 0
+		formatString: #,0
+		displayFolder: 5 Reconciliation
+		lineageTag: c56b2abd-7fcd-41ba-b237-7c5eef8a5aaf
+
+	/// Overdue bucket of SQL query Q5.
+	measure 'SQL Overdue Milestones' = CALCULATE ( COUNTROWS ( 'Q5Milestone status & roadmap (delivery)' ), 'Q5Milestone status & roadmap (delivery)'[roadmap_bucket] = "Overdue" ) + 0
+		formatString: #,0
+		displayFolder: 5 Reconciliation
+		lineageTag: 50d882f0-020c-4590-8532-a3033861d604
+
+	/// Forecast series of SQL query Q4.
+	measure 'SQL Forecast To Complete' = CALCULATE ( SUM ( 'Q4 Period spend & forecast (finance, monthly series for a cost-trend visual)'[amount] ), 'Q4 Period spend & forecast (finance, monthly series for a cost-trend visual)'[series] = "Forecast" )
+		formatString: "AED "#,0
+		displayFolder: 5 Reconciliation
+		lineageTag: 3255699b-f6a7-42ed-bd66-ffdee8fce1a6
+
+	column _
+		isHidden
+		lineageTag: 77a4ac5e-80e4-4046-a08e-3e878446f5cc
+		isNameInferred
+		sourceColumn: [_]
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW ( "_", BLANK () )
+

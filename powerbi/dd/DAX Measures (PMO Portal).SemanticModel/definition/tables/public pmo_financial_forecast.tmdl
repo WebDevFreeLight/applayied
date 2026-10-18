@@ -1,0 +1,134 @@
+table 'public pmo_financial_forecast'
+	lineageTag: c9312bf4-7736-47ce-988d-b8ae713f45a1
+
+	column forecast_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c7c37be-5bff-4b43-a7ff-5d3350866101
+		summarizeBy: sum
+		sourceColumn: forecast_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f4e0aa1e-88e0-45a8-904d-9fcb7b7575b5
+		summarizeBy: none
+		sourceColumn: project_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column period_month
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7415b3d2-a905-41e4-8c21-46ce0be32fd3
+		summarizeBy: none
+		sourceColumn: period_month
+
+		variation Variation
+			isDefault
+			relationship: 94c5d3b8-1baa-4e95-ba5b-20ab11b3802e
+			defaultHierarchy: LocalDateTable_832e0147-0880-4cb1-9f77-cd6fe6575c86.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column forecast_amount
+		dataType: double
+		lineageTag: ed011713-17b2-4ca9-97b0-a6bf4a214fee
+		summarizeBy: sum
+		sourceColumn: forecast_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column kind
+		dataType: string
+		lineageTag: 623c46a3-7341-4299-a02a-cdc9f584848a
+		summarizeBy: none
+		sourceColumn: kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_by
+		dataType: string
+		lineageTag: 9c484af0-7fa0-4e9e-a39c-ab4d2ff73034
+		summarizeBy: none
+		sourceColumn: create_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 359df98c-f211-4a71-9c3c-a23d2eb94bf8
+		summarizeBy: none
+		sourceColumn: create_time
+
+		variation Variation
+			isDefault
+			relationship: 7c6d23ae-1ab1-418d-ab00-917610d6802d
+			defaultHierarchy: LocalDateTable_ecb3804d-5448-46e8-97a3-bb15a34ef4ef.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_by
+		dataType: string
+		lineageTag: ecbbf695-3c00-4786-b139-5704dc3613ec
+		summarizeBy: none
+		sourceColumn: update_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0cf2ddc1-2aed-4ee9-8da2-c16e4e6083ba
+		summarizeBy: none
+		sourceColumn: update_time
+
+		variation Variation
+			isDefault
+			relationship: efba681d-5d6b-4d55-86c8-1aebc3030ac5
+			defaultHierarchy: LocalDateTable_23d6f31a-ea3d-4108-a8f2-7ef15001b36a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column remark
+		dataType: string
+		lineageTag: 1c0f41e3-697d-4475-adba-29785b3c5956
+		summarizeBy: none
+		sourceColumn: remark
+
+		annotation SummarizationSetBy = Automatic
+
+	column companyid
+		dataType: int64
+		formatString: 0
+		lineageTag: d8b99ff1-3c83-44e3-9983-fa8eb0f4683e
+		summarizeBy: sum
+		sourceColumn: companyid
+
+		annotation SummarizationSetBy = Automatic
+
+	column branchid
+		dataType: int64
+		formatString: 0
+		lineageTag: f0602ac0-74b4-4ccc-a3fb-ecf4dc9a2a19
+		summarizeBy: sum
+		sourceColumn: branchid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public pmo_financial_forecast' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "MahamDB"),
+				    public_pmo_financial_forecast = Source{[Schema="public",Item="pmo_financial_forecast"]}[Data]
+				in
+				    public_pmo_financial_forecast
+
+	annotation PBI_ResultType = Table
+

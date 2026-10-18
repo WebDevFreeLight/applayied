@@ -1,0 +1,114 @@
+/// Definition: due before the reporting snapshot and not Done. The snapshot (:snapshot) is a
+/// Power Query parameter (default 2026-09-30); production passes today() or a user-selected date.
+/// Source tables: pmo_task -> pmo_project (project name) -> sys_user (assignee display name).
+table 'Q2 Overdue incomplete tasks (delivery)'
+	lineageTag: 647f210f-f9bd-4c63-a6ed-c618436f550a
+
+	column task_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 89e2b5c7-f177-4079-81e4-4f8611d20f5a
+		summarizeBy: sum
+		sourceColumn: task_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column task_title
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 32a576e4-1d6b-474c-a520-e2e278318935
+		summarizeBy: none
+		sourceColumn: task_title
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_code
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: ebe855f7-a71f-49e2-aeac-006c7b5b252d
+		summarizeBy: none
+		sourceColumn: project_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_name
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 63dc65d6-e6c2-4a84-9c3c-9ea86dda69bb
+		summarizeBy: none
+		sourceColumn: project_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column dept_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 86bd594b-f707-44cf-84d5-17e3946581af
+		summarizeBy: sum
+		sourceColumn: dept_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column assignee
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: ae03f084-f2da-49b0-b9fe-da88371091d9
+		summarizeBy: none
+		sourceColumn: assignee
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 710e3d1c-8523-4c3c-af14-c749dd6f280b
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column priority
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 451133e4-35cb-45fa-9ac0-725d814f3f0b
+		summarizeBy: none
+		sourceColumn: priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column due_date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 91b63abe-c3fc-4b88-81ed-ee0cf7fc4589
+		summarizeBy: none
+		sourceColumn: due_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column days_overdue
+		dataType: dateTime
+		formatString: Long Time
+		sourceProviderType: time
+		lineageTag: 0793aa83-40a3-41b1-8402-2a933d79173c
+		summarizeBy: none
+		sourceColumn: days_overdue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	partition 'Q2 Overdue incomplete tasks (delivery)' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("localhost", "MahamDB"), "-- Q1 — Overdue incomplete tasks (delivery)#(lf)-- Definition: due before the reporting snapshot and not Done. The snapshot (:snapshot) is a#(lf)-- Power Query parameter (default 2026-09-30); production passes today() or a user-selected date.#(lf)-- Source tables: pmo_task -> pmo_project (project name) -> sys_user (assignee display name).#(lf)SELECT  t.task_id,#(lf)        t.title                                   AS task_title,#(lf)        p.code                                    AS project_code,#(lf)        p.name                                    AS project_name,#(lf)        p.dept_id,#(lf)        COALESCE(u.nickname, u.username, '(unassigned)') AS assignee,#(lf)        t.status,#(lf)        t.priority,#(lf)        t.due_date,#(lf)        (DATE '2026-09-30' - t.due_date)          AS days_overdue#(lf)FROM    pmo_task  t#(lf)JOIN    pmo_project p ON p.project_id = t.project_id#(lf)LEFT JOIN sys_user u  ON u.userid     = t.assignee_user_id#(lf)WHERE   t.due_date < DATE '2026-09-30'          -- strictly before the snapshot#(lf)  AND   t.status <> 'Done'#(lf)ORDER BY days_overdue DESC, p.name#(lf)", null, [EnableFolding=true])
+				in
+				    Source
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,211 @@
+table 'public pmo_project'
+	lineageTag: a8cfba50-c3c5-49fd-aa43-2b3062eef617
+
+	column project_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b2e7562-bed6-47fe-ab39-06ca0c1886f6
+		summarizeBy: none
+		sourceColumn: project_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column code
+		dataType: string
+		lineageTag: 3cd8f607-5a89-4700-b5f5-0d0da45f3053
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 0718d87d-1015-47db-affd-ab86a03fd896
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column dept_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e869e5c3-a74c-4868-8ad1-51d804ad179a
+		summarizeBy: none
+		sourceColumn: dept_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column owner_user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a4a02226-f1a6-49b7-9344-d3293f51b7e5
+		summarizeBy: sum
+		sourceColumn: owner_user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 930f722c-a43e-412b-8fe1-d7fc88c95d99
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column priority
+		dataType: string
+		lineageTag: 2586c602-048c-4ff7-8c19-3ef01aae38a1
+		summarizeBy: none
+		sourceColumn: priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d06100ab-d7e4-4e25-9bf3-0dadf47f1347
+		summarizeBy: none
+		sourceColumn: start_date
+
+		variation Variation
+			isDefault
+			relationship: bd64cfd3-b8d0-471d-93fd-5686fccdadbb
+			defaultHierarchy: LocalDateTable_4cd4766e-0ca0-4004-a335-a30920e81206.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column planned_end_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 54d8d29d-4b95-4ab1-9442-9d8dc059d4ff
+		summarizeBy: none
+		sourceColumn: planned_end_date
+
+		variation Variation
+			isDefault
+			relationship: 2593edf4-d8a1-4988-abf7-9512e0e7c69a
+			defaultHierarchy: LocalDateTable_b68a614e-fec5-4d90-b275-1c1a0280ac63.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual_end_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 884a4671-658f-42f7-af39-a6192c4df543
+		summarizeBy: none
+		sourceColumn: actual_end_date
+
+		variation Variation
+			isDefault
+			relationship: e41ed7be-2b94-429b-b901-2c2b99c2abfb
+			defaultHierarchy: LocalDateTable_5cc09f03-335e-4d52-b6fe-f003bdda07ff.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: f640ff8f-875c-423e-be81-09de5de55757
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column initial_approved_budget
+		dataType: double
+		lineageTag: 68fcd88f-4078-4efd-9ebf-9e259edd2f83
+		summarizeBy: sum
+		sourceColumn: initial_approved_budget
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column currency
+		dataType: string
+		lineageTag: 8d571285-7024-406d-ae4d-b7c0178dfa29
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_by
+		dataType: string
+		lineageTag: 0f7a3b6b-b9b1-4a3e-a99c-d95784ea64ce
+		summarizeBy: none
+		sourceColumn: create_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f2741b70-01bf-40aa-85d3-f0ce4e2f3aed
+		summarizeBy: none
+		sourceColumn: create_time
+
+		variation Variation
+			isDefault
+			relationship: 6fd08b1d-54e9-4fbb-8c69-52918dc64345
+			defaultHierarchy: LocalDateTable_beaf1434-a796-4498-bbc1-20c0f9e17340.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_by
+		dataType: string
+		lineageTag: 16428ab1-a94b-4977-aa4f-e263eed5c587
+		summarizeBy: none
+		sourceColumn: update_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a3dd83c8-d9f7-433c-8198-d054ab6467b4
+		summarizeBy: none
+		sourceColumn: update_time
+
+		variation Variation
+			isDefault
+			relationship: 1c3d7c21-3fc6-4d41-83d2-bafe0d55a30d
+			defaultHierarchy: LocalDateTable_32250538-d913-4be6-b3a8-67188e8bfbc4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column remark
+		dataType: string
+		lineageTag: 58f87da5-8efa-48ce-9075-6612449443af
+		summarizeBy: none
+		sourceColumn: remark
+
+		annotation SummarizationSetBy = Automatic
+
+	column companyid
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a0b5652-7534-437c-b81a-991624adfe23
+		summarizeBy: sum
+		sourceColumn: companyid
+
+		annotation SummarizationSetBy = Automatic
+
+	column branchid
+		dataType: int64
+		formatString: 0
+		lineageTag: cbeafab1-366f-4664-8dff-e4da4dc6de33
+		summarizeBy: sum
+		sourceColumn: branchid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public pmo_project' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "MahamDB"),
+				    public_pmo_project = Source{[Schema="public",Item="pmo_project"]}[Data]
+				in
+				    public_pmo_project
+
+	annotation PBI_ResultType = Table
+

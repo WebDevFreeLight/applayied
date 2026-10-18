@@ -1,0 +1,184 @@
+table 'public pmo_risk'
+	lineageTag: 4da1528b-b180-4aad-bff2-63282fd1c29c
+
+	column risk_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b4fa61d7-c5d4-49f3-a7fd-579148fbba1a
+		summarizeBy: sum
+		sourceColumn: risk_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_id
+		dataType: int64
+		formatString: 0
+		lineageTag: fac238ee-ae08-466f-ac1f-3c5c83846a2f
+		summarizeBy: none
+		sourceColumn: project_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column kind
+		dataType: string
+		lineageTag: 61f5f408-a794-446d-874c-bb73c2b47815
+		summarizeBy: none
+		sourceColumn: kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: 8684b2e7-45e9-436c-8f6d-06240ea68399
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column owner_user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: bb0e0ba9-eaac-40f9-9a82-941f72cc1812
+		summarizeBy: sum
+		sourceColumn: owner_user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column probability
+		dataType: int64
+		formatString: 0
+		lineageTag: 11344b93-c710-4cb7-ab9d-a18e0ba3790a
+		summarizeBy: sum
+		sourceColumn: probability
+
+		annotation SummarizationSetBy = Automatic
+
+	column impact
+		dataType: int64
+		formatString: 0
+		lineageTag: 196b992f-14bc-4f83-b19b-48b993d85ab2
+		summarizeBy: sum
+		sourceColumn: impact
+
+		annotation SummarizationSetBy = Automatic
+
+	column score
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e34789f-2b21-4857-8184-2c77e363342f
+		summarizeBy: sum
+		sourceColumn: score
+
+		annotation SummarizationSetBy = Automatic
+
+	column mitigation
+		dataType: string
+		lineageTag: a1022c27-397b-4aeb-a791-8127574c381b
+		summarizeBy: none
+		sourceColumn: mitigation
+
+		annotation SummarizationSetBy = Automatic
+
+	column due_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 59d04f22-4a58-49bd-8b1f-62389c088cdc
+		summarizeBy: none
+		sourceColumn: due_date
+
+		variation Variation
+			isDefault
+			relationship: 527edc0b-9891-4c0f-b03c-13bcc69b6bc1
+			defaultHierarchy: LocalDateTable_e97f6c5c-6687-4e0a-b450-7c5f9821a63f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: cb2155b3-6f0a-4a5d-a34e-07046498b482
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_by
+		dataType: string
+		lineageTag: 5d4360c0-3732-4d90-986d-a09be9859a57
+		summarizeBy: none
+		sourceColumn: create_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 4a760461-8062-4cb5-8c28-b523a4700603
+		summarizeBy: none
+		sourceColumn: create_time
+
+		variation Variation
+			isDefault
+			relationship: 900bad37-f5fb-41bc-928a-41aa6eabaa5e
+			defaultHierarchy: LocalDateTable_c11cdf8a-b932-4c14-909f-03ab1c4cebb2.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_by
+		dataType: string
+		lineageTag: b75cfa3a-102d-4121-b90a-d35f52214f1a
+		summarizeBy: none
+		sourceColumn: update_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7b38663d-8a79-4b9a-b07a-f27e53403c19
+		summarizeBy: none
+		sourceColumn: update_time
+
+		variation Variation
+			isDefault
+			relationship: 0cd9488d-57cd-4987-bb3f-f91e27c3fdda
+			defaultHierarchy: LocalDateTable_0fd04763-0835-4ae3-93b3-2a94310b00ce.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column remark
+		dataType: string
+		lineageTag: e9252408-4219-4cf2-a9e5-a64825aba745
+		summarizeBy: none
+		sourceColumn: remark
+
+		annotation SummarizationSetBy = Automatic
+
+	column companyid
+		dataType: int64
+		formatString: 0
+		lineageTag: 2d105042-a80d-4205-9085-8717b573b054
+		summarizeBy: sum
+		sourceColumn: companyid
+
+		annotation SummarizationSetBy = Automatic
+
+	column branchid
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ba48f70-bc06-40af-949c-33d4c2e6c176
+		summarizeBy: sum
+		sourceColumn: branchid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public pmo_risk' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "MahamDB"),
+				    public_pmo_risk = Source{[Schema="public",Item="pmo_risk"]}[Data]
+				in
+				    public_pmo_risk
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,76 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Q2 Overdue incomplete tasks (delivery)","Q1 Project financial performance (finance fact, one row per project)","Q3 High-exposure OPEN risks (risk & governance)","Q4 Period spend & forecast (finance, monthly series for a cost-trend visual)","Q5Milestone status & roadmap (delivery)","public pmo_project","public pmo_task","public pmo_risk","public pmo_milestone","public pmo_change_request","public pmo_cost_transaction","public pmo_budget_revision","public pmo_financial_forecast","public pmo_cost_category","public sys_user","public sys_dept"]
+
+annotation PBI_ProTooling = ["MCP-PBIModeling","DevMode"]
+
+ref table 'Q2 Overdue incomplete tasks (delivery)'
+ref table 'Q1 Project financial performance (finance fact, one row per project)'
+ref table 'Q3 High-exposure OPEN risks (risk & governance)'
+ref table 'Q4 Period spend & forecast (finance, monthly series for a cost-trend visual)'
+ref table 'Q5Milestone status & roadmap (delivery)'
+ref table 'public pmo_project'
+ref table DateTableTemplate_1e02c39f-cc41-4404-8b0f-2cb2d236548c
+ref table LocalDateTable_4cd4766e-0ca0-4004-a335-a30920e81206
+ref table LocalDateTable_b68a614e-fec5-4d90-b275-1c1a0280ac63
+ref table LocalDateTable_5cc09f03-335e-4d52-b6fe-f003bdda07ff
+ref table LocalDateTable_beaf1434-a796-4498-bbc1-20c0f9e17340
+ref table LocalDateTable_32250538-d913-4be6-b3a8-67188e8bfbc4
+ref table 'public pmo_task'
+ref table LocalDateTable_39106ada-aa72-43c1-8d24-b6b393869c9b
+ref table LocalDateTable_a24cbc1c-5b57-4ac2-8b25-bd208e124514
+ref table LocalDateTable_c95cbbbd-0b06-41db-bcc5-c08b1671dd0b
+ref table LocalDateTable_0631d58e-7f92-49d7-92ae-0c640583fe04
+ref table 'public pmo_risk'
+ref table LocalDateTable_e97f6c5c-6687-4e0a-b450-7c5f9821a63f
+ref table LocalDateTable_c11cdf8a-b932-4c14-909f-03ab1c4cebb2
+ref table LocalDateTable_0fd04763-0835-4ae3-93b3-2a94310b00ce
+ref table 'public pmo_milestone'
+ref table LocalDateTable_4a8280a0-7674-4c48-ac36-eb0c13ebfc05
+ref table LocalDateTable_459cdfc5-c469-46cc-9b1f-9b79606a3910
+ref table LocalDateTable_240e1e45-e47d-4c24-888a-effd0063ea06
+ref table 'public pmo_change_request'
+ref table LocalDateTable_08a23dc7-4cdb-47f6-bfec-30489ed64a01
+ref table LocalDateTable_d090b1e6-9c78-4f62-806d-6bd86866f13d
+ref table LocalDateTable_b59ee435-0c35-4ed9-9420-caec9c05276f
+ref table 'public pmo_cost_transaction'
+ref table LocalDateTable_3cd71e03-2968-4fb5-a975-27b82136ed43
+ref table LocalDateTable_4852192a-ab7c-47d3-a550-d17ca65c6289
+ref table LocalDateTable_d29cc34e-ea5a-4c12-bff4-c79e595afca7
+ref table LocalDateTable_37958d0f-6e0e-474e-bc85-fb9a459c1d00
+ref table 'public pmo_budget_revision'
+ref table LocalDateTable_3c03de69-4f9e-4a21-b7ce-e4b6f9bc25d8
+ref table LocalDateTable_5bdc1ef5-de77-494d-abbd-c141dc570c06
+ref table LocalDateTable_d71373c3-ae66-4564-b50d-531cec7cb1e2
+ref table 'public pmo_financial_forecast'
+ref table LocalDateTable_832e0147-0880-4cb1-9f77-cd6fe6575c86
+ref table LocalDateTable_ecb3804d-5448-46e8-97a3-bb15a34ef4ef
+ref table LocalDateTable_23d6f31a-ea3d-4108-a8f2-7ef15001b36a
+ref table 'public pmo_cost_category'
+ref table LocalDateTable_b1ffffbc-9043-4c61-9ec0-ae0feeebc11d
+ref table LocalDateTable_2045237c-b9de-453a-834e-bde6e99714d8
+ref table 'public sys_user'
+ref table LocalDateTable_0b3238a1-bff4-4e5a-9c2f-7d0c490dd370
+ref table LocalDateTable_cb7c515e-7e93-42b7-8046-42582faf8b38
+ref table LocalDateTable_a7e5c63a-bc08-4f4a-89a8-eab73d3d55a5
+ref table LocalDateTable_7c475fe3-89c4-48b2-ba51-04010a1176df
+ref table LocalDateTable_337f1bc8-9480-489e-bccd-e9f31c6d3a76
+ref table LocalDateTable_fd599f00-941e-4970-95a8-7b04c741fe2d
+ref table 'public sys_dept'
+ref table LocalDateTable_c9bba4ac-972e-4bb3-8245-0075c18a4054
+ref table LocalDateTable_4c72c45a-8fea-4b20-925a-54707220baa6
+ref table Calendar
+ref table Snapshot
+ref table _Measures
+
+ref cultureInfo en-US
+

@@ -1,0 +1,174 @@
+table 'public pmo_cost_transaction'
+	lineageTag: 65a3b8c2-4c44-41ca-9e2f-a1c17be90572
+
+	column transaction_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d8ed27ff-07c5-4d8b-96bd-c074c113c519
+		summarizeBy: sum
+		sourceColumn: transaction_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3220881c-b845-4273-923e-e498a1c41735
+		summarizeBy: none
+		sourceColumn: project_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column category_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a5a6723-7b86-4fef-b686-cf241523c790
+		summarizeBy: none
+		sourceColumn: category_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount
+		dataType: double
+		lineageTag: b425d86d-7954-4f33-a6ac-77ec2ffea1a2
+		summarizeBy: sum
+		sourceColumn: amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column txn_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 789ae657-31ac-4269-a630-285fea4a9379
+		summarizeBy: none
+		sourceColumn: txn_date
+
+		variation Variation
+			isDefault
+			relationship: b217ea7b-e6e1-4624-aaf6-b0dd2d9115ee
+			defaultHierarchy: LocalDateTable_3cd71e03-2968-4fb5-a975-27b82136ed43.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: d2357097-9165-493c-a1ad-843dda4568fa
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 8662f177-37fc-4513-95f0-f4153c050295
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column posted_by_user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a7617e59-644c-4722-998b-e9a4865eca81
+		summarizeBy: sum
+		sourceColumn: posted_by_user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column posted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 29d2346e-4d1f-4ffd-877a-1585587f8a2d
+		summarizeBy: none
+		sourceColumn: posted_at
+
+		variation Variation
+			isDefault
+			relationship: 6a2ff14e-5832-41ac-ba6c-70dde17349fd
+			defaultHierarchy: LocalDateTable_4852192a-ab7c-47d3-a550-d17ca65c6289.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_by
+		dataType: string
+		lineageTag: 57427efc-6b19-4481-b0d8-822ee14b5ea4
+		summarizeBy: none
+		sourceColumn: create_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9ea9c01a-13a7-496f-9281-0319844b63eb
+		summarizeBy: none
+		sourceColumn: create_time
+
+		variation Variation
+			isDefault
+			relationship: d3069534-90c6-4d2a-b850-0659171af23e
+			defaultHierarchy: LocalDateTable_d29cc34e-ea5a-4c12-bff4-c79e595afca7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_by
+		dataType: string
+		lineageTag: d5c383ea-59f9-4f6e-80db-3fbc41b5c42a
+		summarizeBy: none
+		sourceColumn: update_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5e2b42d7-45b1-42d4-802d-ab6a1d1bb843
+		summarizeBy: none
+		sourceColumn: update_time
+
+		variation Variation
+			isDefault
+			relationship: 4dc53c2d-727c-47d2-9ca4-ff0a08de7925
+			defaultHierarchy: LocalDateTable_37958d0f-6e0e-474e-bc85-fb9a459c1d00.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column remark
+		dataType: string
+		lineageTag: a00f4e11-1860-4570-83c6-1c91db53dd2b
+		summarizeBy: none
+		sourceColumn: remark
+
+		annotation SummarizationSetBy = Automatic
+
+	column companyid
+		dataType: int64
+		formatString: 0
+		lineageTag: a56e0c5c-7e40-4c65-8017-7d82eea136c5
+		summarizeBy: sum
+		sourceColumn: companyid
+
+		annotation SummarizationSetBy = Automatic
+
+	column branchid
+		dataType: int64
+		formatString: 0
+		lineageTag: f6836127-ebdb-46d5-bd52-7e4f14c2455b
+		summarizeBy: sum
+		sourceColumn: branchid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public pmo_cost_transaction' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "MahamDB"),
+				    public_pmo_cost_transaction = Source{[Schema="public",Item="pmo_cost_transaction"]}[Data]
+				in
+				    public_pmo_cost_transaction
+
+	annotation PBI_ResultType = Table
+

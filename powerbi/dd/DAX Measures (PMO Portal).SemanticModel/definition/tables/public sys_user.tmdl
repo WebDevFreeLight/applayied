@@ -1,0 +1,307 @@
+table 'public sys_user'
+	lineageTag: f87395fb-7e74-4ac5-a81b-5469767ad084
+
+	column userid
+		dataType: int64
+		formatString: 0
+		lineageTag: 7758ef01-cc15-4021-ba7e-dab0931303c0
+		summarizeBy: sum
+		sourceColumn: userid
+
+		annotation SummarizationSetBy = Automatic
+
+	column username
+		dataType: string
+		lineageTag: ca365ffb-b5d6-4c49-9778-245f6b4dfebb
+		summarizeBy: none
+		sourceColumn: username
+
+		annotation SummarizationSetBy = Automatic
+
+	column nickname
+		dataType: string
+		lineageTag: 5f9276e8-188e-48e2-bd28-dbd12674063c
+		summarizeBy: none
+		sourceColumn: nickname
+
+		annotation SummarizationSetBy = Automatic
+
+	column usertype
+		dataType: string
+		lineageTag: 722400e3-b337-40e2-8330-413716b4852e
+		summarizeBy: none
+		sourceColumn: usertype
+
+		annotation SummarizationSetBy = Automatic
+
+	column avatar
+		dataType: string
+		lineageTag: 0de0de80-277a-4fa6-8cbc-af75951c7e8d
+		summarizeBy: none
+		sourceColumn: avatar
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: 58e8865c-3465-426a-b377-7988f5052e62
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column emailverified
+		dataType: int64
+		formatString: 0
+		lineageTag: 5af86c18-2bf7-46f6-9b1c-3ecee7d856fa
+		summarizeBy: sum
+		sourceColumn: emailverified
+
+		annotation SummarizationSetBy = Automatic
+
+	column emailverificationtoken
+		dataType: string
+		lineageTag: d010c610-1b06-4b16-a626-f3fffb35f496
+		summarizeBy: none
+		sourceColumn: emailverificationtoken
+
+		annotation SummarizationSetBy = Automatic
+
+	column emailverificationexpiry
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1bf59f38-6271-4b6a-84e9-25b9e1a81d73
+		summarizeBy: none
+		sourceColumn: emailverificationexpiry
+
+		variation Variation
+			isDefault
+			relationship: 2325df51-3fea-4753-b2f6-ba24780fe995
+			defaultHierarchy: LocalDateTable_0b3238a1-bff4-4e5a-9c2f-7d0c490dd370.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column password
+		dataType: string
+		lineageTag: 47daf202-6d88-437b-a854-9c542f4cda93
+		summarizeBy: none
+		sourceColumn: password
+
+		annotation SummarizationSetBy = Automatic
+
+	column phonenumber
+		dataType: string
+		lineageTag: 87b81027-e038-420b-8e8c-3f39c847ddda
+		summarizeBy: none
+		sourceColumn: phonenumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column sex
+		dataType: int64
+		formatString: 0
+		lineageTag: b154f6f1-2feb-4ddc-ac59-256454efc4c9
+		summarizeBy: sum
+		sourceColumn: sex
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: int64
+		formatString: 0
+		lineageTag: f8ca4163-409b-45be-91d1-70d6791cb3e6
+		summarizeBy: sum
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column delflag
+		dataType: int64
+		formatString: 0
+		lineageTag: ff0235f5-7d36-4fc3-8f4f-c7e443774484
+		summarizeBy: sum
+		sourceColumn: delflag
+
+		annotation SummarizationSetBy = Automatic
+
+	column loginip
+		dataType: string
+		lineageTag: f4e10dfe-9067-4334-b1e6-26ee58cc77f8
+		summarizeBy: none
+		sourceColumn: loginip
+
+		annotation SummarizationSetBy = Automatic
+
+	column logindate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c31d1a15-c706-41ad-a7a4-82fb8566c314
+		summarizeBy: none
+		sourceColumn: logindate
+
+		variation Variation
+			isDefault
+			relationship: 5e4d60f1-4a11-47a5-82a7-66d5c8319ded
+			defaultHierarchy: LocalDateTable_cb7c515e-7e93-42b7-8046-42582faf8b38.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column deptid
+		dataType: int64
+		formatString: 0
+		lineageTag: f386a80a-d67f-49a5-a9a0-d600adcc0475
+		summarizeBy: sum
+		sourceColumn: deptid
+
+		annotation SummarizationSetBy = Automatic
+
+	column province
+		dataType: string
+		lineageTag: 98e683a4-cb41-4336-a26e-fe695f248171
+		summarizeBy: none
+		sourceColumn: province
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 0551c115-26f1-4d04-911c-174bfe4a7cf0
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_by
+		dataType: string
+		lineageTag: ff579ac3-28ed-45cc-9640-9f7c5ff88dc6
+		summarizeBy: none
+		sourceColumn: create_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 14e6d2ba-92be-4eab-aa7c-e13c62379e81
+		summarizeBy: none
+		sourceColumn: create_time
+
+		variation Variation
+			isDefault
+			relationship: e636b0f0-72bb-4e98-8bf2-29fabee6e5bb
+			defaultHierarchy: LocalDateTable_a7e5c63a-bc08-4f4a-89a8-eab73d3d55a5.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_by
+		dataType: string
+		lineageTag: cb7c8e87-697c-4267-b141-0c6da09f0a09
+		summarizeBy: none
+		sourceColumn: update_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c875cc30-2c09-48b6-9907-c51e88943db8
+		summarizeBy: none
+		sourceColumn: update_time
+
+		variation Variation
+			isDefault
+			relationship: 2245b9ab-e882-4c41-abe3-25d7edd36e45
+			defaultHierarchy: LocalDateTable_7c475fe3-89c4-48b2-ba51-04010a1176df.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column remark
+		dataType: string
+		lineageTag: a4597921-c2b8-460c-bfb0-f1abd0c4e272
+		summarizeBy: none
+		sourceColumn: remark
+
+		annotation SummarizationSetBy = Automatic
+
+	column companyid
+		dataType: int64
+		formatString: 0
+		lineageTag: 45474702-8edd-438e-b03f-6b860e8791b4
+		summarizeBy: sum
+		sourceColumn: companyid
+
+		annotation SummarizationSetBy = Automatic
+
+	column branchid
+		dataType: int64
+		formatString: 0
+		lineageTag: 365b759b-d10c-4426-be65-d9d784b498f9
+		summarizeBy: sum
+		sourceColumn: branchid
+
+		annotation SummarizationSetBy = Automatic
+
+	column password_reset_token
+		dataType: string
+		lineageTag: d274e962-98a8-4817-95f9-0d7d531e3f16
+		summarizeBy: none
+		sourceColumn: password_reset_token
+
+		annotation SummarizationSetBy = Automatic
+
+	column password_reset_expiry
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 639b015e-7e6a-42e8-9e8a-030729c7b887
+		summarizeBy: none
+		sourceColumn: password_reset_expiry
+
+		variation Variation
+			isDefault
+			relationship: 013b93c3-554d-4da6-bf52-1093f545e866
+			defaultHierarchy: LocalDateTable_337f1bc8-9480-489e-bccd-e9f31c6d3a76.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column invitation_token
+		dataType: string
+		lineageTag: 6bf652df-76d4-496e-9bd2-fe98beb2cfd1
+		summarizeBy: none
+		sourceColumn: invitation_token
+
+		annotation SummarizationSetBy = Automatic
+
+	column invitation_expiry
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 00457ef0-05bd-40f5-9c33-83b891b5ea64
+		summarizeBy: none
+		sourceColumn: invitation_expiry
+
+		variation Variation
+			isDefault
+			relationship: 600b95fa-c5a3-4ab2-aba4-c9c76cda6ceb
+			defaultHierarchy: LocalDateTable_fd599f00-941e-4970-95a8-7b04c741fe2d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_activated
+		dataType: int64
+		formatString: 0
+		lineageTag: c86fb323-df2d-4895-b756-6ebaaafba310
+		summarizeBy: sum
+		sourceColumn: is_activated
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public sys_user' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "MahamDB"),
+				    public_sys_user = Source{[Schema="public",Item="sys_user"]}[Data]
+				in
+				    public_sys_user
+
+	annotation PBI_ResultType = Table
+

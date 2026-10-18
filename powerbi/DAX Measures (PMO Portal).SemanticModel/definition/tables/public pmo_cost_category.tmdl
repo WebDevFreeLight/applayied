@@ -1,0 +1,109 @@
+table 'public pmo_cost_category'
+	lineageTag: 253f7c0f-3625-471a-ac91-2ec3f27cff81
+
+	column category_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 2326e66e-d54c-4d07-b0d0-bf2b3880013b
+		summarizeBy: none
+		sourceColumn: category_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column code
+		dataType: string
+		lineageTag: a751f774-0118-4303-9be3-d283169fc97a
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 788f046c-1343-4e66-8b80-21230de538af
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_by
+		dataType: string
+		lineageTag: 13a472e3-d2f4-43db-a46d-f3abad698374
+		summarizeBy: none
+		sourceColumn: create_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d9ec35a8-ba4c-4d17-8cef-c026221c45d7
+		summarizeBy: none
+		sourceColumn: create_time
+
+		variation Variation
+			isDefault
+			relationship: 397c2b89-0ca0-41e5-81db-a3e0e93e06d5
+			defaultHierarchy: LocalDateTable_b1ffffbc-9043-4c61-9ec0-ae0feeebc11d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_by
+		dataType: string
+		lineageTag: d8c652c6-1dc9-493f-9ab2-9e79d7b0e067
+		summarizeBy: none
+		sourceColumn: update_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b96b4a0e-3a16-46cb-89e1-62096cb8583d
+		summarizeBy: none
+		sourceColumn: update_time
+
+		variation Variation
+			isDefault
+			relationship: 24a12215-df52-49a2-b9ee-19eaacab18ff
+			defaultHierarchy: LocalDateTable_2045237c-b9de-453a-834e-bde6e99714d8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column remark
+		dataType: string
+		lineageTag: 61a168a8-85a4-420a-b64a-fff0b16b54be
+		summarizeBy: none
+		sourceColumn: remark
+
+		annotation SummarizationSetBy = Automatic
+
+	column companyid
+		dataType: int64
+		formatString: 0
+		lineageTag: f0aef569-0213-4a6c-8636-b0d442985b62
+		summarizeBy: sum
+		sourceColumn: companyid
+
+		annotation SummarizationSetBy = Automatic
+
+	column branchid
+		dataType: int64
+		formatString: 0
+		lineageTag: 43a147e5-76d7-456b-98a0-a6334f1eeb5a
+		summarizeBy: sum
+		sourceColumn: branchid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public pmo_cost_category' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "MahamDB"),
+				    public_pmo_cost_category = Source{[Schema="public",Item="pmo_cost_category"]}[Data]
+				in
+				    public_pmo_cost_category
+
+	annotation PBI_ResultType = Table
+

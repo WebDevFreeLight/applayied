@@ -6,15 +6,24 @@ and visuals. Build time in Power BI Desktop: ~15 minutes using the assets in thi
 
 ```
 powerbi/
-├─ README.md                 ← this file (model, connection, pages, reconciliation, build steps)
-├─ DAX_measures.md           ← 6 required + supporting DAX measures
-└─ sql/                      ← 5 validated PostgreSQL queries (all run as-is)
+├─ README.md                      ← this file (model, connection, pages, reconciliation, build steps)
+├─ DAX_measures.md                ← 6 required + supporting DAX measures
+├─ DAX Measures (PMO Portal).pbix ← working file (pmo_project loaded from PostgreSQL + 1 chart)
+├─ PMO_Portal_v1.pbix             ← the submission copy — finish the build here (Power BI Desktop)
+└─ sql/                           ← 5 validated PostgreSQL queries (all run as-is, NO trailing ;)
    ├─ 01_overdue_tasks.sql
    ├─ 02_project_financial_performance.sql
    ├─ 03_high_exposure_open_risks.sql
    ├─ 04_monthly_spend_and_forecast.sql
    └─ 05_milestone_status.sql
 ```
+
+> **Why the build is finished in Power BI Desktop:** a `.pbix` stores its data model + DAX measures
+> in a *compiled binary* part (`DataModel`) that only Power BI Desktop (or SSAS tooling) can write;
+> editing it by hand corrupts the file. `PMO_Portal_v1.pbix` is a verified copy of your working file
+> (already connected to PostgreSQL with `pmo_project` loaded). Open it and follow §1–§6 to add the
+> remaining tables, the DAX in `DAX_measures.md`, and the visuals/slicers — ~15 minutes. Everything
+> you paste (SQL) or type (DAX) is provided and pre-validated against the live database.
 
 ---
 
@@ -140,3 +149,21 @@ is *not* overdue (strict `<`), which is why overdue = 23, not 24.
 4. Add the measures from `DAX_measures.md` and the `Snapshot` parameter.
 5. Build the KPI row, 6 visuals and 4+ slicers; wire the two drill-through pages.
 6. Confirm the 5 KPIs equal the reconciliation table, then save as `PMO_Portal.pbix`.
+
+---
+
+## 7. Spec coverage — "SQL and Power BI · independent reporting track"
+
+| Requirement | Where it's delivered |
+|---|---|
+| Report connected to **relational SQL DB**, not CSVs | §1 — PostgreSQL connector to `MahamDB` using the `appsettings.json` connection (Import). No CSV source. |
+| Independent **transformation / modeling / measures / design** | Own model (§2), own measures (`DAX_measures.md`), own page (§4) — separate from the web dashboard's components. |
+| Sound **relational model**: projects, tasks, risk/issue, finance facts + **calendar/date** + relationship/filter direction | §2 — star schema (project/category/dept/user/**Calendar** dims → task/risk/milestone/cost/revision/forecast facts); **single-direction** filters (anti-fan-out) explained; role-playing Calendar (active `txn_date`, inactive `due_date`). |
+| **≥4 practical SQL queries**: overdue tasks, project financial performance, high-exposure open risks, period spend/forecast **or** milestone status | §3 — **5** validated queries in `sql/` (overdue=23, financial=8, high-risk=6, monthly spend+forecast=55, milestone status=27). |
+| **≥5 explicit DAX measures**: overdue count, task progress/completion, approved budget, actual spend, utilization **or** forecast variance | `DAX_measures.md` — **6**: Overdue Tasks, Task Completion %, Approved Budget, Actual Spend, Budget Utilization %, Forecast Variance (+EAC & supporting KPIs). |
+| **≥1 polished interactive page** with slicers, business-readable units, charts | §4 — KPI row + 6 visuals + 4+ coordinated slicers (category scoped to finance visuals) + 2 drill-through pages; AED/% units, legends, titles. |
+| **Reconcile ≥4 KPIs** across SQL / web dashboard / Power BI for identical snapshot, explain discrepancies | §5 — 5 KPIs reconciled (total 8, overdue 23, open-high-risk 6, approved 15,501,500, actual 8,095,836.53) — **all identical** @2026-09-30; discrepancy rule (filter/snapshot scope) and the due-on-cutoff=not-overdue nuance explained. |
+
+**Tables to add in step 2** (same PostgreSQL source): `pmo_project` (already loaded), `pmo_task`,
+`pmo_risk`, `pmo_milestone`, `pmo_change_request`, `pmo_cost_transaction`, `pmo_budget_revision`,
+`pmo_financial_forecast`, `pmo_cost_category`, `sys_user`, `sys_dept` + the `Calendar` DAX table.
