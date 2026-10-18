@@ -12,6 +12,19 @@ const P = {
 }
 const TYPES = [{ value: 'M', key: 'dir' }, { value: 'C', key: 'menu' }, { value: 'F', key: 'button' }]
 
+// The backend tree builder can emit a menu under several parents (duplicate menuIds);
+// keep the first occurrence so React keys stay unique.
+function dedupeTree(nodes: SysMenu[], seen = new Set<string>()): SysMenu[] {
+  const out: SysMenu[] = []
+  for (const n of nodes) {
+    const id = String(n.menuId)
+    if (seen.has(id)) continue
+    seen.add(id)
+    out.push({ ...n, children: n.children ? dedupeTree(n.children, seen) : undefined })
+  }
+  return out
+}
+
 export default function Menus() {
   const { t } = useTranslation()
   const { hasPerm, hasRole } = useAuth()
@@ -27,7 +40,7 @@ export default function Menus() {
 
   const load = () => {
     setLoading(true); setError('')
-    admin.treeMenus().then((m) => setTree(Array.isArray(m) ? m : []))
+    admin.treeMenus().then((m) => setTree(dedupeTree(Array.isArray(m) ? m : [])))
       .catch((e) => setError((e as Error).message)).finally(() => setLoading(false))
   }
   useEffect(load, [])

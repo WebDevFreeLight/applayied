@@ -155,7 +155,6 @@ namespace Infrastructure.Extensions
         public static string GetName(this HttpContext context)
         {
             var uid = context.User?.Identity?.Name;
-
             return uid;
         }
 

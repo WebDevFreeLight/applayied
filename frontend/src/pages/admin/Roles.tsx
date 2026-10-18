@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as admin from '../../api/admin'
 import type { SysRole, TreeSelect } from '../../api/admin'
@@ -8,6 +8,23 @@ import { Empty, ErrorBox, Loading, Modal, Toast } from '../../components/ui'
 const P = {
   list: 'system:role:list', add: 'system:role:add', edit: 'system:role:edit',
   authorize: 'system:role:authorize', remove: 'system:role:remove',
+}
+
+// Every id in a node's subtree (self + descendants) — drives the parent↔child cascade.
+const subtreeIds = (n: TreeSelect): string[] =>
+  [String(n.id), ...((n.children || []).flatMap(subtreeIds))]
+
+// The backend tree builder can emit the same menu under several parents (duplicate ids);
+// keep the first occurrence of each id so React keys stay unique and checkboxes behave.
+function dedupeTree(nodes: TreeSelect[], seen = new Set<string>()): TreeSelect[] {
+  const out: TreeSelect[] = []
+  for (const n of nodes) {
+    const id = String(n.id)
+    if (seen.has(id)) continue
+    seen.add(id)
+    out.push({ ...n, children: n.children ? dedupeTree(n.children, seen) : undefined })
+  }
+  return out
 }
 
 export default function Roles() {
@@ -41,15 +58,26 @@ export default function Roles() {
     try { await admin.removeRole(r.roleId); notify(t('common.saved')); load() }
     catch (e) { setError((e as Error).message) }
   }
+  const toggleStatus = async (r: SysRole) => {
+    try { await admin.changeRoleStatus(r.roleId, r.status === 0 ? 1 : 0); notify(t('common.saved')); load() }
+    catch (e) { setError((e as Error).message) }
+  }
   const openPerms = async (r: SysRole) => {
     try {
       const res = await admin.roleMenuTree(r.roleId)
-      setPerm({ role: r, tree: res.menus || [], checked: new Set((res.checkedKeys || []).map(String)) })
+      setPerm({ role: r, tree: dedupeTree(res.menus || []), checked: new Set((res.checkedKeys || []).map(String)) })
     } catch (e) { setError((e as Error).message) }
   }
+  const setMany = (ids: string[], on: boolean) => setPerm((p) => {
+    if (!p) return p
+    const next = new Set(p.checked)
+    ids.forEach((id) => (on ? next.add(id) : next.delete(id)))
+    return { ...p, checked: next }
+  })
+  const setAll = (on: boolean) => setPerm((p) => p && ({ ...p, checked: new Set(on ? p.tree.flatMap(subtreeIds) : []) }))
   const savePerms = async () => {
     if (!perm) return
-    try { await admin.authorizeRoleMenus(perm.role.roleId, [...perm.checked]); setPerm(null); notify(t('common.saved')) }
+    try { await admin.authorizeRoleMenus(perm.role.roleId, [...perm.checked]); setPerm(null); notify(t('common.saved')); load() }
     catch (e) { setError((e as Error).message) }
   }
 
@@ -76,6 +104,7 @@ export default function Roles() {
                 {canAct && <td className="row">
                   {hasPerm(P.edit) && <button className="btn sm" onClick={() => setEdit({ ...r })}>{t('common.edit')}</button>}
                   {hasPerm(P.authorize) && <button className="btn sm" onClick={() => openPerms(r)}>{t('admin.assignPerms')}</button>}
+                  {hasPerm(P.edit) && <button className="btn sm" onClick={() => toggleStatus(r)}>{r.status === 0 ? t('admin.disabled') : t('admin.active')}</button>}
                   {hasPerm(P.remove) && <button className="btn sm" onClick={() => remove(r)}>{t('common.delete')}</button>}
                 </td>}
               </tr>))}</tbody>
@@ -93,8 +122,9 @@ export default function Roles() {
             onChange={(e) => setEdit({ ...edit, roleKey: e.target.value })} /></label>
           <label className="field">{t('admin.roleSort')}<input type="number" value={edit.roleSort ?? 1}
             onChange={(e) => setEdit({ ...edit, roleSort: Number(e.target.value) })} /></label>
-          <label className="field full">{t('common.actions')}<textarea rows={2} value={edit.remark || ''}
-            onChange={(e) => setEdit({ ...edit, remark: e.target.value })} /></label>
+          <label className="field full">{t('sys.content')}
+            <textarea rows={2} value={edit.remark || ''} placeholder={t('common.none')}
+              onChange={(e) => setEdit({ ...edit, remark: e.target.value })} /></label>
         </Modal>
       )}
 
@@ -102,13 +132,15 @@ export default function Roles() {
         <Modal title={`${t('admin.assignPerms')} — ${perm.role.roleName}`} onClose={() => setPerm(null)}
           footer={<><button className="btn" onClick={() => setPerm(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={savePerms}>{t('common.save')}</button></>}>
-          <div className="full" style={{ maxHeight: '55vh', overflow: 'auto' }}>
-            <PermTree nodes={perm.tree} checked={perm.checked}
-              onToggle={(id, on) => {
-                const next = new Set(perm.checked)
-                on ? next.add(id) : next.delete(id)
-                setPerm({ ...perm, checked: next })
-              }} />
+          <div className="full">
+            <div className="row" style={{ marginBottom: 8 }}>
+              <button className="btn sm" onClick={() => setAll(true)}>⊞ {t('common.all')}</button>
+              <button className="btn sm" onClick={() => setAll(false)}>⊟ {t('common.none')}</button>
+              <span className="muted">· {perm.checked.size} {t('admin.permissions')}</span>
+            </div>
+            <div style={{ maxHeight: '52vh', overflow: 'auto', border: '1px solid var(--border)', borderRadius: 8, padding: 8 }}>
+              <PermTree nodes={perm.tree} checked={perm.checked} setMany={setMany} />
+            </div>
           </div>
         </Modal>
       )}
@@ -117,23 +149,33 @@ export default function Roles() {
   )
 }
 
-/** Recursive checkbox tree for the role's menu/permission assignment. */
-function PermTree({ nodes, checked, onToggle }:
-  { nodes: TreeSelect[]; checked: Set<string>; onToggle: (id: string, on: boolean) => void }) {
+/** Recursive checkbox tree with parent↔child cascade and indeterminate parents. */
+function PermTree({ nodes, checked, setMany }:
+  { nodes: TreeSelect[]; checked: Set<string>; setMany: (ids: string[], on: boolean) => void }) {
   return (
     <ul style={{ listStyle: 'none', paddingInlineStart: 16, margin: 0 }}>
-      {nodes.map((n) => (
-        <li key={n.id} style={{ padding: '2px 0' }}>
-          <label className="row" style={{ gap: 6 }}>
-            <input type="checkbox" checked={checked.has(String(n.id))}
-              onChange={(e) => onToggle(String(n.id), e.target.checked)} />
-            {n.label}
-          </label>
-          {n.children && n.children.length > 0 && (
-            <PermTree nodes={n.children} checked={checked} onToggle={onToggle} />
-          )}
-        </li>
-      ))}
+      {nodes.map((n) => <PermNode key={n.id} node={n} checked={checked} setMany={setMany} />)}
     </ul>
+  )
+}
+
+function PermNode({ node, checked, setMany }:
+  { node: TreeSelect; checked: Set<string>; setMany: (ids: string[], on: boolean) => void }) {
+  const ids = subtreeIds(node)
+  const checkedCount = ids.filter((id) => checked.has(id)).length
+  const all = checkedCount === ids.length
+  const some = checkedCount > 0 && !all
+  const ref = useRef<HTMLInputElement>(null)
+  if (ref.current) ref.current.indeterminate = some
+  return (
+    <li style={{ padding: '2px 0' }}>
+      <label className="row" style={{ gap: 6 }}>
+        <input ref={ref} type="checkbox" checked={all} onChange={(e) => setMany(ids, e.target.checked)} />
+        {node.label}
+      </label>
+      {node.children && node.children.length > 0 && (
+        <PermTree nodes={node.children} checked={checked} setMany={setMany} />
+      )}
+    </li>
   )
 }
