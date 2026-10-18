@@ -97,6 +97,7 @@ export default {
     menuName: 'Name', menuType: 'Type', perm: 'Permission key', icon: 'Icon', orderNum: 'Order',
     path: 'Path', newMenu: 'New menu', editMenu: 'Edit menu', syncPerms: 'Sync permissions',
     setupRbac: 'Setup RBAC', dir: 'Directory', menu: 'Menu', button: 'Button',
+    expandAll: 'Expand all', collapseAll: 'Collapse all',
     syncDone: 'Permissions synced', noAccess: 'You do not have access to this section.',
   },
   sys: {

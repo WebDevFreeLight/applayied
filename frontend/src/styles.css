@@ -124,3 +124,8 @@ tr:hover td { background: var(--panel-2); }
 .ai-foot { padding: 10px; border-top: 1px solid var(--border); display: flex; gap: 6px; }
 .ai-foot input { flex: 1; }
 .ai-quick { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 8px; }
+
+/* permission tree collapse/expand caret */
+.tree-caret { background: none; border: none; color: var(--muted); cursor: pointer; width: 18px; height: 18px;
+  padding: 0; font-size: 11px; line-height: 1; flex: 0 0 auto; border-radius: 4px; }
+.tree-caret:hover { background: var(--panel-2); color: var(--text); }

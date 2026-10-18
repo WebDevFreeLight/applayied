@@ -35,6 +35,9 @@ export default function Roles() {
   const [error, setError] = useState('')
   const [edit, setEdit] = useState<Partial<SysRole> | null>(null)
   const [perm, setPerm] = useState<{ role: SysRole; tree: TreeSelect[]; checked: Set<string> } | null>(null)
+  // Broadcast an expand/collapse-all command to every tree node (n forces the effect to re-run).
+  const [openSignal, setOpenSignal] = useState<{ v: boolean; n: number }>({ v: false, n: 0 })
+  const expandAll = (v: boolean) => setOpenSignal((s) => ({ v, n: s.n + 1 }))
   const [toast, setToast] = useState('')
   const notify = (m: string) => { setToast(m); setTimeout(() => setToast(''), 2500) }
 
@@ -136,10 +139,12 @@ export default function Roles() {
             <div className="row" style={{ marginBottom: 8 }}>
               <button className="btn sm" onClick={() => setAll(true)}>⊞ {t('common.all')}</button>
               <button className="btn sm" onClick={() => setAll(false)}>⊟ {t('common.none')}</button>
+              <button className="btn sm" onClick={() => expandAll(true)}>▾ {t('admin.expandAll')}</button>
+              <button className="btn sm" onClick={() => expandAll(false)}>▸ {t('admin.collapseAll')}</button>
               <span className="muted">· {perm.checked.size} {t('admin.permissions')}</span>
             </div>
             <div style={{ maxHeight: '52vh', overflow: 'auto', border: '1px solid var(--border)', borderRadius: 8, padding: 8 }}>
-              <PermTree nodes={perm.tree} checked={perm.checked} setMany={setMany} />
+              <PermTree nodes={perm.tree} checked={perm.checked} setMany={setMany} openSignal={openSignal} />
             </div>
           </div>
         </Modal>
@@ -149,32 +154,46 @@ export default function Roles() {
   )
 }
 
-/** Recursive checkbox tree with parent↔child cascade and indeterminate parents. */
-function PermTree({ nodes, checked, setMany }:
-  { nodes: TreeSelect[]; checked: Set<string>; setMany: (ids: string[], on: boolean) => void }) {
+type OpenSignal = { v: boolean; n: number }
+
+/** Recursive checkbox tree with parent↔child cascade, indeterminate parents, and collapse/expand. */
+function PermTree({ nodes, checked, setMany, openSignal }:
+  { nodes: TreeSelect[]; checked: Set<string>; setMany: (ids: string[], on: boolean) => void; openSignal: OpenSignal }) {
   return (
     <ul style={{ listStyle: 'none', paddingInlineStart: 16, margin: 0 }}>
-      {nodes.map((n) => <PermNode key={n.id} node={n} checked={checked} setMany={setMany} />)}
+      {nodes.map((n) => <PermNode key={n.id} node={n} checked={checked} setMany={setMany} openSignal={openSignal} />)}
     </ul>
   )
 }
 
-function PermNode({ node, checked, setMany }:
-  { node: TreeSelect; checked: Set<string>; setMany: (ids: string[], on: boolean) => void }) {
+function PermNode({ node, checked, setMany, openSignal }:
+  { node: TreeSelect; checked: Set<string>; setMany: (ids: string[], on: boolean) => void; openSignal: OpenSignal }) {
   const ids = subtreeIds(node)
   const checkedCount = ids.filter((id) => checked.has(id)).length
   const all = checkedCount === ids.length
   const some = checkedCount > 0 && !all
   const ref = useRef<HTMLInputElement>(null)
   if (ref.current) ref.current.indeterminate = some
+  const hasKids = !!(node.children && node.children.length > 0)
+  const [open, setOpen] = useState(false)
+  // Apply a global expand/collapse-all command (only to nodes that have children).
+  useEffect(() => { if (hasKids) setOpen(openSignal.v) }, [openSignal, hasKids])
+
   return (
     <li style={{ padding: '2px 0' }}>
-      <label className="row" style={{ gap: 6 }}>
-        <input ref={ref} type="checkbox" checked={all} onChange={(e) => setMany(ids, e.target.checked)} />
-        {node.label}
-      </label>
-      {node.children && node.children.length > 0 && (
-        <PermTree nodes={node.children} checked={checked} setMany={setMany} />
+      <div className="row" style={{ gap: 4, alignItems: 'center' }}>
+        {hasKids
+          ? <button type="button" className="tree-caret" aria-label={open ? 'collapse' : 'expand'}
+              onClick={() => setOpen((o) => !o)}>{open ? '▾' : '▸'}</button>
+          : <span className="tree-caret" style={{ visibility: 'hidden' }}>•</span>}
+        <label className="row" style={{ gap: 6, margin: 0 }}>
+          <input ref={ref} type="checkbox" checked={all} onChange={(e) => setMany(ids, e.target.checked)} />
+          {node.label}
+          {hasKids && <span className="muted" style={{ fontSize: 11 }}>({checkedCount}/{ids.length - 1})</span>}
+        </label>
+      </div>
+      {hasKids && open && (
+        <PermTree nodes={node.children || []} checked={checked} setMany={setMany} openSignal={openSignal} />
       )}
     </li>
   )

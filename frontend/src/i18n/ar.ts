@@ -97,6 +97,7 @@ export default {
     menuName: 'الاسم', menuType: 'النوع', perm: 'مفتاح الصلاحية', icon: 'الأيقونة', orderNum: 'الترتيب',
     path: 'المسار', newMenu: 'قائمة جديدة', editMenu: 'تعديل القائمة', syncPerms: 'مزامنة الصلاحيات',
     setupRbac: 'تهيئة الصلاحيات', dir: 'مجلد', menu: 'قائمة', button: 'زر',
+    expandAll: 'توسيع الكل', collapseAll: 'طي الكل',
     syncDone: 'تمت مزامنة الصلاحيات', noAccess: 'ليس لديك صلاحية الوصول إلى هذا القسم.',
   },
   sys: {

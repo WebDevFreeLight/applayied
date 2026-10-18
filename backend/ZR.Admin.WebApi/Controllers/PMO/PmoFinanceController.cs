@@ -82,7 +82,7 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         [HttpGet("drilldown")]
         [ActionPermissionFilter(Permission = "pmo:finance:list")]
         public IActionResult Drilldown([FromQuery] long? projectId, [FromQuery] long? categoryId,
-            [FromQuery] string period, [FromQuery] DateTime? cutoff)
+            [FromQuery] string period = null, [FromQuery] DateTime? cutoff = null)
             => SUCCESS(_finance.GetTransactionDrilldown(projectId, categoryId, period, cutoff));
     }
 }
