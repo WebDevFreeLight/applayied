@@ -13,6 +13,7 @@ namespace ZR.ServiceCore.Services
 
         SysUserMsg GetInfo(long MsgId);
         int ReadMsg(long userId, long msgId, UserMsgType msgType);
+        int ReadAll(long userId);
 
         SysUserMsg AddSysUserMsg(SysUserMsg parm);
         SysUserMsg AddSysUserMsg(long userId, string content, UserMsgType msgType);

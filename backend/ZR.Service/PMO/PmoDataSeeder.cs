@@ -64,6 +64,10 @@ namespace ZR.Service.PMO
                 // role so a new route never silently grants nothing and nothing is forgotten.
                 RegisterNewPermissions(log);
 
+                // Register the business-automation scheduled job (ZR.Tasks / Quartz) so it appears on
+                // the Scheduled Tasks page and auto-starts on boot (UseAddTaskSchedulers loads IsStart=1).
+                SeedAutomationTask(log);
+
                 // pmo_* tables in dependency order.
                 Import<PmoCostCategory>(csvDir, "cost_categories.csv", log);
                 Import<PmoProject>(csvDir, "projects.csv", log);
@@ -92,6 +96,49 @@ namespace ZR.Service.PMO
             }
 
             return log;
+        }
+
+        // ------------------------------------------------------------------ scheduled task
+
+        /// <summary>
+        /// Idempotently register the PMO automation Quartz job in sys_tasks. AssemblyName + ClassName
+        /// are reflection-loaded by the scheduler (ZR.Tasks.TaskScheduler.Job_PmoAutomation). Cron runs
+        /// every 10 minutes; IsStart=1 so UseAddTaskSchedulers schedules it automatically on boot.
+        /// </summary>
+        private void SeedAutomationTask(List<string> log)
+        {
+            try
+            {
+                const string id = "pmo_automation";
+                if (_db.Queryable<SysTasks>().Any(t => t.ID == id))
+                {
+                    log.Add("[PMO seed] Automation task already registered.");
+                    return;
+                }
+
+                _db.Insertable(new SysTasks
+                {
+                    ID = id,
+                    Name = "PMO Business Automation",
+                    JobGroup = "PMO",
+                    Cron = "0 0/10 * * * ?",          // every 10 minutes
+                    AssemblyName = "ZR.Tasks",
+                    ClassName = "TaskScheduler.Job_PmoAutomation",
+                    TriggerType = 1,                   // cron
+                    IntervalSecond = 0,
+                    IsStart = 1,                        // auto-start on boot
+                    TaskType = 1,                       // assembly job
+                    RunTimes = 0,
+                    BeginTime = DateTime.Now,
+                    Remark = "Overdue-task escalation + budget-overrun alerts → outbox + Messages + SignalR (AI-drafted)."
+                }).ExecuteCommand();
+
+                log.Add("[PMO seed] Registered automation scheduled task (every 10 min).");
+            }
+            catch (Exception ex)
+            {
+                log.Add($"[PMO seed] Could not register automation task: {ex.Message}");
+            }
         }
 
         // ------------------------------------------------------------------ schema

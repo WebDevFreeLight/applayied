@@ -6,6 +6,7 @@ using SqlSugar.IOC;
 using ZR.Model.PMO;
 using ZR.Model.System;
 using ZR.Service.PMO.IPmoService;
+using ZR.ServiceCore.Signalr;
 
 namespace ZR.Service.PMO
 {
@@ -41,15 +42,25 @@ namespace ZR.Service.PMO
         private readonly ISqlSugarClient _db;
         private readonly IPmoAiService _ai;
         private readonly bool _useAi;
+        private readonly IPmoNotifier _notifier;
 
         public const string RuleOverdue = "overdue_task_escalation";
         public const string RuleOverrun = "budget_overrun_alert";
 
-        public PmoAutomationRunner(ISqlSugarClient db = null, IPmoAiService ai = null, bool useAi = true)
+        public PmoAutomationRunner(ISqlSugarClient db = null, IPmoAiService ai = null, bool useAi = true, IPmoNotifier notifier = null)
         {
             _db = db ?? DbScoped.SugarScope.GetConnectionScope(0);
             _ai = ai;
             _useAi = useAi;
+            // Best-effort resolve from the container so the Messages + SignalR delivery works even when
+            // the runner is constructed directly (manual trigger / scheduler) rather than DI-injected.
+            _notifier = notifier ?? TryResolve();
+        }
+
+        private static IPmoNotifier TryResolve()
+        {
+            try { return (IPmoNotifier)global::Infrastructure.App.GetRequiredService(typeof(IPmoNotifier)); }
+            catch { return null; }
         }
 
         /// <summary>Run every rule. <paramref name="asOf"/> defaults to today (override for demos).</summary>
@@ -210,6 +221,8 @@ namespace ZR.Service.PMO
                     DedupeKey = dedupeKey
                 };
                 _db.Insertable(n).ExecuteCommand();
+                // Deliver into the user's Messages inbox + realtime header popup (best-effort).
+                _notifier?.Notify(targetUserId, subject, body, type);
                 return true;
             }
             catch (Exception)

@@ -28,11 +28,25 @@ namespace ZR.Admin.WebApi.Controllers.monitor
         [HttpGet("list")]
         public IActionResult Index([FromQuery] PagerInfo parm)
         {
-            var result = MessageHub.OnlineClients.Values
+            // Project the live SignalR connections into the shape the admin UI expects. tokenId is the
+            // SignalR connection id, which is what Force uses to disconnect a specific session.
+            var all = MessageHub.OnlineClients.Values
                 .OrderByDescending(f => f.LoginTime)
-                .Skip(parm.PageNum - 1).Take(parm.PageSize);
+                .Select(u => new
+                {
+                    tokenId = u.ConnnectionId,
+                    userId = u.Userid,
+                    userName = u.Name,
+                    ipaddr = u.UserIP,
+                    loginLocation = u.Location,
+                    browser = u.Browser,
+                    os = u.Platform,
+                    loginTime = u.LoginTime
+                })
+                .ToList();
 
-            return SUCCESS(new { result, totalNum = MessageHub.OnlineClients.Values.Count });
+            var result = all.Skip((parm.PageNum - 1) * parm.PageSize).Take(parm.PageSize).ToList();
+            return SUCCESS(new { result, totalNum = all.Count });
         }
 
         /// <summary>
@@ -42,16 +56,16 @@ namespace ZR.Admin.WebApi.Controllers.monitor
         [HttpDelete("force")]
         [Log(Title = "Force Logout", BusinessType = BusinessType.FORCE)]
         [ActionPermissionFilter(Permission = "monitor:online:forceLogout")]
-        public async Task<IActionResult> Force([FromBody] LockUserDto dto)
+        public async Task<IActionResult> Force([FromQuery] string tokenId)
         {
-            if (dto == null) { return ToResponse(ResultCode.PARAM_ERROR); }
-            
-            await HubContext.Clients.Client(dto.ConnnectionId)
-                .SendAsync(HubsConstant.ForceUser, new { dto.Reason, dto.Time });
-            
-            //var expirTime = DateTimeHelper.GetUnixTimeSeconds(DateTime.Now.AddMinutes(dto.Time));
-            ////PC client uses device + username method for blocking
-            //CacheService.SetLockUser(dto.ClientId + dto.Name, expirTime, dto.Time);
+            if (string.IsNullOrEmpty(tokenId)) { return ToResponse(ResultCode.PARAM_ERROR); }
+
+            // Tell that specific connection to log out, then drop it from the live registry so the
+            // Sessions list reflects the change immediately (the client also disconnects itself).
+            await HubContext.Clients.Client(tokenId)
+                .SendAsync(HubsConstant.ForceUser, new { Reason = "Your session was ended by an administrator." });
+            MessageHub.OnlineClients.TryRemove(tokenId, out _);
+
             return SUCCESS(1);
         }
 

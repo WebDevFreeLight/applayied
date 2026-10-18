@@ -92,8 +92,16 @@ namespace ZR.ServiceCore.Services
             {
                 UserId = userId,
                 Content = content,
-                MsgType = msgType
+                MsgType = msgType,
+                IsRead = 0,
+                AddTime = DateTime.Now
             });
+        }
+
+        /// <summary>Mark every message (any type) of a user as read; returns rows affected.</summary>
+        public int ReadAll(long userId)
+        {
+            return Update(f => f.UserId == userId && f.IsRead == 0, it => new SysUserMsg() { IsRead = 1 });
         }
 
         /// <summary>

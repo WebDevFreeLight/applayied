@@ -16,6 +16,12 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/api/, ''),
         },
+        // SignalR hub (WebSocket). ws:true lets the connection upgrade through the dev proxy.
+        '/msgHub': {
+          target,
+          changeOrigin: true,
+          ws: true,
+        },
       },
     },
   }

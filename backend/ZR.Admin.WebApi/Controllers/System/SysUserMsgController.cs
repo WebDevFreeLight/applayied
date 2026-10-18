@@ -141,6 +141,17 @@ namespace ZR.Admin.WebApi.Controllers.System
         }
 
         /// <summary>
+        /// Mark all of my messages as read (header "mark all read" action).
+        /// </summary>
+        [HttpPost("readAll")]
+        [ActionPermissionFilter(Permission = "common")]
+        public IActionResult ReadAll()
+        {
+            var userId = HttpContext.GetUId();
+            return SUCCESS(_SysUserMsgService.ReadAll(userId));
+        }
+
+        /// <summary>
         /// Export user system messages
         /// </summary>
         /// <returns></returns>
