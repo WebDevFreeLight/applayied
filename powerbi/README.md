@@ -33,6 +33,9 @@ In **Power BI Desktop**:
    Server for the host in the alternate `Conn` string in appsettings.json.)
 5. Either pick the base tables in the Navigator **or** paste each file in `sql/` via
    **Get Data → PostgreSQL → Advanced → SQL statement** (recommended — the queries pre-shape the data).
+   ⚠️ Power BI wraps the native query as a sub-select, so paste **without a trailing `;`** (the files
+   already have none). The leading `--` comment lines are fine; if your connector version objects,
+   delete them. One query per data source — don't paste several statements together.
 
 > Snapshot parameter: **Modeling → New parameter → Numeric/Date (What-if)** named `Snapshot`,
 > default `2026-09-30`. The SQL files hard-code `DATE '2026-09-30'` for the baseline; to make them
