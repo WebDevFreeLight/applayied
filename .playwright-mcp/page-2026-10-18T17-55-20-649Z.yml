@@ -1,0 +1,34 @@
+- generic [ref=f3e3]:
+  - complementary [ref=f3e4]:
+    - generic [ref=f3e5]:
+      - text: PMO Portal
+      - generic [ref=f3e6]: Project Portfolio & Financial Control
+    - link "Projects" [ref=f3e7] [cursor=pointer]:
+      - /url: /projects
+    - link "Tasks" [ref=f3e8] [cursor=pointer]:
+      - /url: /tasks
+    - link "Milestones" [ref=f3e9] [cursor=pointer]:
+      - /url: /milestones
+    - link "Risks & Issues" [ref=f3e10] [cursor=pointer]:
+      - /url: /risks
+    - link "Change Requests" [ref=f3e11] [cursor=pointer]:
+      - /url: /change-requests
+    - link "Cost Categories" [ref=f3e12] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f3e13]: Administration
+    - link "Messages" [ref=f3e14] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "Profile" [ref=f3e15] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f3e16]:
+    - banner [ref=f3e17]:
+      - strong [ref=f3e18]: PMO Portal
+      - generic [ref=f3e19]:
+        - button "🔔" [ref=f3e21] [cursor=pointer]
+        - button "☀️" [ref=f3e22] [cursor=pointer]
+        - button "العربية" [ref=f3e23] [cursor=pointer]
+        - generic [ref=f3e24]: Mariam (Contributor) · pmo_contributor
+        - button "Sign out" [ref=f3e25] [cursor=pointer]
+    - main [ref=f3e26]:
+      - generic [ref=f3e27]: Loading…
+  - button "✨" [ref=f3e28] [cursor=pointer]

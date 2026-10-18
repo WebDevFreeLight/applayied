@@ -9,7 +9,7 @@ import { Empty, ErrorBox, Loading, Modal, Toast } from '../components/ui'
 // (backend enforces pmo:category:list vs pmo:category:add/edit).
 export default function Categories() {
   const { t } = useTranslation()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [rows, setRows] = useState<CostCategory[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -32,7 +32,7 @@ export default function Categories() {
     } catch (e) { setError((e as Error).message) }
   }
 
-  const canEdit = hasRole('admin')
+  const canEdit = hasPerm('pmo:category:add') || hasPerm('pmo:category:edit')
   return (
     <div>
       <div className="row">

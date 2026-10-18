@@ -13,7 +13,7 @@ const BASELINE_CUTOFF = '2026-09-30'
 export default function Finance({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
   const lk = useLookups()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [projectId, setProjectId] = useState(pin || '')
   const [deptId, setDeptId] = useState('')
   const [cutoff, setCutoff] = useState(BASELINE_CUTOFF)
@@ -101,7 +101,7 @@ export default function Finance({ projectId: pin }: { projectId?: string } = {})
           <div className="row" style={{ marginTop: 18 }}>
             <h3 style={{ margin: 0 }}>{t('finance.transactions')}</h3>
             <div className="spacer" />
-            {hasRole('pm') && <button className="btn primary sm" onClick={() => setAddCost({ status: 'Draft', txnDate: cutoff })}>{t('finance.addCost')}</button>}
+            {hasPerm('pmo:finance:add') && <button className="btn primary sm" onClick={() => setAddCost({ status: 'Draft', txnDate: cutoff })}>{t('finance.addCost')}</button>}
           </div>
           <div className="table-wrap" style={{ marginTop: 8 }}>
             {txns.length === 0 ? <Empty /> : (
@@ -111,14 +111,14 @@ export default function Finance({ projectId: pin }: { projectId?: string } = {})
                 <tbody>{txns.map((x) => (
                   <tr key={x.transactionId}><td>{fmtDate(x.txnDate)}</td><td>{x.categoryName}</td>
                     <td>{fmtMoney(x.amount)}</td><td>{x.description}</td><td><Badge value={x.status} /></td>
-                    <td>{x.status === 'Draft' && hasRole('pm') && <button className="btn sm" onClick={() => post(x)}>{t('finance.post')}</button>}</td></tr>))}</tbody>
+                    <td>{x.status === 'Draft' && hasPerm('pmo:finance:post') && <button className="btn sm" onClick={() => post(x)}>{t('finance.post')}</button>}</td></tr>))}</tbody>
               </table>)}
           </div>
 
           <div className="row" style={{ marginTop: 18 }}>
             <h3 style={{ margin: 0 }}>{t('finance.revisions')}</h3>
             <div className="spacer" />
-            {hasRole('pm') && <button className="btn primary sm" onClick={() => setAddRev({ status: 'Pending' })}>{t('finance.newRevision')}</button>}
+            {hasPerm('pmo:finance:revision') && <button className="btn primary sm" onClick={() => setAddRev({ status: 'Pending' })}>{t('finance.newRevision')}</button>}
           </div>
           <div className="table-wrap" style={{ marginTop: 8 }}>
             {revs.length === 0 ? <Empty /> : (
@@ -126,7 +126,7 @@ export default function Finance({ projectId: pin }: { projectId?: string } = {})
                 <th>{t('finance.amount')}</th><th>{t('cr.reason')}</th><th>{t('finance.status')}</th><th>{t('common.actions')}</th></tr></thead>
                 <tbody>{revs.map((r) => (
                   <tr key={r.revisionId}><td>{fmtMoney(r.amount)}</td><td>{r.reason}</td><td><Badge value={r.status} /></td>
-                    <td className="row">{r.status === 'Pending' && hasRole('admin') && <>
+                    <td className="row">{r.status === 'Pending' && hasPerm('pmo:finance:approve') && <>
                       <button className="btn sm" onClick={() => decideRev(r, true)}>{t('cr.approve')}</button>
                       <button className="btn sm" onClick={() => decideRev(r, false)}>{t('cr.reject')}</button></>}</td></tr>))}</tbody>
               </table>)}

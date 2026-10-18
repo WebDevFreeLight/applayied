@@ -1,0 +1,101 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - text: PMO Portal
+      - generic [ref=e6]: Project Portfolio & Financial Control
+    - link "Dashboard" [ref=e7] [cursor=pointer]:
+      - /url: /
+    - link "Projects" [ref=e8] [cursor=pointer]:
+      - /url: /projects
+    - link "Tasks" [ref=e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "Milestones" [ref=e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "Risks & Issues" [ref=e11] [cursor=pointer]:
+      - /url: /risks
+    - link "Change Requests" [ref=e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "Finance" [ref=e13] [cursor=pointer]:
+      - /url: /finance
+    - link "Automation & Logs" [ref=e14] [cursor=pointer]:
+      - /url: /activity
+    - link "Cost Categories" [ref=e15] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=e16]: Administration
+    - link "Users" [ref=e17] [cursor=pointer]:
+      - /url: /admin/users
+    - link "Roles" [ref=e18] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "Menus & Permissions" [ref=e19] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "Departments" [ref=e20] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "Positions" [ref=e21] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "Dictionaries" [ref=e22] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "Configuration" [ref=e23] [cursor=pointer]:
+      - /url: /admin/config
+    - link "Notices" [ref=e24] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "Scheduled Tasks" [ref=e25] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "Task Logs" [ref=e26] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "Login Log" [ref=e27] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "Sessions" [ref=e28] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "Operation Log" [ref=e29] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "Online Users" [ref=e30] [cursor=pointer]:
+      - /url: /admin/online
+    - link "Server Monitor" [ref=e31] [cursor=pointer]:
+      - /url: /admin/server
+    - link "Messages" [ref=e32] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "Profile" [ref=e33] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=e34]:
+    - banner [ref=e35]:
+      - strong [ref=e36]: PMO Portal
+      - generic [ref=e37]:
+        - button "🔔" [ref=e39] [cursor=pointer]
+        - button "☀️" [ref=e40] [cursor=pointer]
+        - button "العربية" [ref=e41] [cursor=pointer]
+        - generic [ref=e42]: مدير · admin
+        - button "Sign out" [ref=e43] [cursor=pointer]
+    - main [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - heading "Executive Dashboard" [level=2] [ref=e47]
+          - button "✨ AI Insights" [disabled] [ref=e48]
+          - generic [ref=e49]:
+            - generic [ref=e51]:
+              - log [ref=e53]
+              - generic [ref=e55]:
+                - generic [ref=e56]: "Department: All"
+                - combobox [ref=e58]
+            - generic [ref=e65]:
+              - log [ref=e67]
+              - generic [ref=e69]:
+                - generic [ref=e70]: "Owner: All"
+                - combobox [ref=e72]
+            - generic [ref=e79]:
+              - log [ref=e81]
+              - generic [ref=e83]:
+                - generic [ref=e84]: "Projects: All"
+                - combobox [ref=e86]
+            - generic [ref=e93]:
+              - log [ref=e95]
+              - generic [ref=e97]:
+                - generic [ref=e98]: "Status: All"
+                - combobox [ref=e100]
+            - generic [ref=e107]:
+              - log [ref=e109]
+              - generic [ref=e111]:
+                - generic [ref=e112]: "Category: All"
+                - combobox [ref=e114]
+            - textbox "Reporting cutoff" [ref=e120]: 2026-09-30
+        - generic [ref=e121]: Loading…
+  - button "✨" [ref=e122] [cursor=pointer]

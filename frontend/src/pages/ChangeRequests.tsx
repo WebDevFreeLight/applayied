@@ -12,7 +12,7 @@ import Tasks from './Tasks'
 export default function ChangeRequests({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
   const lk = useLookups()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [rows, setRows] = useState<ChangeRequest[]>([])
   const [projectId, setProjectId] = useState(pin || '')
   const [loading, setLoading] = useState(true)
@@ -52,7 +52,7 @@ export default function ChangeRequests({ projectId: pin }: { projectId?: string 
   const openHistory = async (cr: ChangeRequest) =>
     setHistory({ cr, rows: await pmo.getChangeHistory(cr.changeRequestId) })
 
-  const canDecide = (cr: ChangeRequest) => hasRole('pm') && ['Submitted', 'UnderReview'].includes(cr.status)
+  const canDecide = (cr: ChangeRequest) => hasPerm('pmo:changerequest:decision') && ['Submitted', 'UnderReview'].includes(cr.status)
 
   return (
     <div>
