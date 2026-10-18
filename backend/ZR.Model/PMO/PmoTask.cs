@@ -52,7 +52,9 @@ namespace ZR.Model.PMO
         public int ProgressPct { get; set; }
 
         /// <summary>Optimistic-concurrency token (SqlSugar version validation).</summary>
-        [SugarColumn(ColumnName = "version", IsEnableUpdateVersionValidation = true, IsNullable = true)]
+        // Optimistic-concurrency token. Validated explicitly in PmoTaskService (provider-independent):
+        // a write whose base version != the row's current version is rejected, then the version is bumped.
+        [SugarColumn(ColumnName = "version", IsNullable = true)]
         public long? Version { get; set; }
 
         [SugarColumn(IsIgnore = true)] public string AssigneeName { get; set; }

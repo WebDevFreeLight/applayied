@@ -116,12 +116,25 @@ namespace ZR.Service.PMO
             existing.DueDate = dto.DueDate;
             existing.Weight = dto.Weight;
             existing.ProgressPct = dto.ProgressPct;
-            existing.Version = dto.Version;
+            EnsureNotStale(existing.Version, dto.Version);     // optimistic concurrency guard
+            existing.Version = (existing.Version ?? 0) + 1;    // bump so the next stale write is caught
             existing.Update_by = actor.UserName;
             existing.Update_time = DateTime.Now;
             CoupleStatusAndProgress(existing);
 
             return Update(existing, true, "Updated task");
+        }
+
+        /// <summary>
+        /// Optimistic concurrency: reject a write whose base version is older than the row's current
+        /// version (someone else saved in between). Provider-independent and explicit, so it behaves
+        /// identically on PostgreSQL and SQLite; the SqlSugar [version] attribute is a second backstop.
+        /// A null client version means "no version supplied" and skips the check (first-time callers).
+        /// </summary>
+        private static void EnsureNotStale(long? currentVersion, long? clientVersion)
+        {
+            if (clientVersion.HasValue && currentVersion.HasValue && clientVersion.Value != currentVersion.Value)
+                throw new CustomException(ResultCode.FAIL, "This task was changed by someone else — reload and retry.");
         }
 
         public int UpdateProgress(PmoTaskProgressDto dto, PmoActor actor)
@@ -141,8 +154,9 @@ namespace ZR.Service.PMO
                 task.Status = dto.Status;
             CoupleStatusAndProgress(task);
 
-            // Carry the client-supplied version for optimistic concurrency validation.
-            task.Version = dto.Version;
+            // Optimistic concurrency: reject a stale write, then bump the version for the next writer.
+            EnsureNotStale(task.Version, dto.Version);
+            task.Version = (task.Version ?? 0) + 1;
             task.Update_by = actor.UserName;
             task.Update_time = DateTime.Now;
 

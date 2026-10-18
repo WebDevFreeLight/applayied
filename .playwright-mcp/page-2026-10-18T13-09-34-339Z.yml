@@ -1,0 +1,202 @@
+- generic [ref=f22e3]:
+  - complementary [ref=f22e4]:
+    - generic [ref=f22e5]:
+      - text: PMO Portal
+      - generic [ref=f22e6]: Project Portfolio & Financial Control
+    - link "Dashboard" [ref=f22e7] [cursor=pointer]:
+      - /url: /
+    - link "Projects" [ref=f22e8] [cursor=pointer]:
+      - /url: /projects
+    - link "Tasks" [ref=f22e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "Milestones" [ref=f22e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "Risks & Issues" [ref=f22e11] [cursor=pointer]:
+      - /url: /risks
+    - link "Change Requests" [ref=f22e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "Finance" [ref=f22e13] [cursor=pointer]:
+      - /url: /finance
+    - link "Automation & Logs" [ref=f22e14] [cursor=pointer]:
+      - /url: /activity
+    - link "Cost Categories" [ref=f22e15] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f22e16]: Administration
+    - link "Users" [ref=f22e17] [cursor=pointer]:
+      - /url: /admin/users
+    - link "Roles" [ref=f22e18] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "Menus & Permissions" [ref=f22e19] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "Departments" [ref=f22e20] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "Positions" [ref=f22e21] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "Dictionaries" [ref=f22e22] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "Configuration" [ref=f22e23] [cursor=pointer]:
+      - /url: /admin/config
+    - link "Notices" [ref=f22e24] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "Scheduled Tasks" [ref=f22e25] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "Task Logs" [ref=f22e26] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "Login Log" [ref=f22e27] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "Sessions" [ref=f22e28] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "Operation Log" [ref=f22e29] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "Online Users" [ref=f22e30] [cursor=pointer]:
+      - /url: /admin/online
+    - link "Server Monitor" [ref=f22e31] [cursor=pointer]:
+      - /url: /admin/server
+    - link "Messages" [ref=f22e32] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "Profile" [ref=f22e33] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f22e34]:
+    - banner [ref=f22e35]:
+      - strong [ref=f22e36]: PMO Portal
+      - generic [ref=f22e37]:
+        - button "🔔" [ref=f22e39] [cursor=pointer]
+        - button "☀️" [ref=f22e40] [cursor=pointer]
+        - button "العربية" [ref=f22e41] [cursor=pointer]
+        - generic [ref=f22e42]: PMO Admin · pmo_admin, admin
+        - button "Sign out" [ref=f22e43] [cursor=pointer]
+    - main [ref=f22e44]:
+      - generic [ref=f22e45]:
+        - generic [ref=f22e46]:
+          - heading "Executive Dashboard" [level=2] [ref=f22e47]
+          - generic [ref=f22e48]:
+            - generic [ref=f22e50]:
+              - log [ref=f22e52]
+              - generic [ref=f22e54]:
+                - generic [ref=f22e55]: "Department: All"
+                - combobox [ref=f22e57]
+            - generic [ref=f22e64]:
+              - log [ref=f22e66]
+              - generic [ref=f22e68]:
+                - generic [ref=f22e69]: "Owner: All"
+                - combobox [ref=f22e71]
+            - generic [ref=f22e78]:
+              - log [ref=f22e80]
+              - generic [ref=f22e82]:
+                - generic [ref=f22e83]: "Projects: All"
+                - combobox [ref=f22e85]
+            - generic [ref=f22e92]:
+              - log [ref=f22e94]
+              - generic [ref=f22e96]:
+                - generic [ref=f22e97]: "Status: All"
+                - combobox [ref=f22e99]
+            - generic [ref=f22e106]:
+              - log [ref=f22e108]
+              - generic [ref=f22e110]:
+                - generic [ref=f22e111]: "Category: All"
+                - combobox [ref=f22e113]
+            - textbox "Reporting cutoff" [ref=f22e119]: 2026-09-30
+        - generic [ref=f22e122]: Delivery
+        - generic [ref=f22e123]:
+          - generic [ref=f22e124]:
+            - generic [ref=f22e125]: Total projects
+            - generic [ref=f22e126]: "8"
+          - generic [ref=f22e127]:
+            - generic [ref=f22e128]: Active projects
+            - generic [ref=f22e129]: "5"
+          - generic [ref=f22e130]:
+            - generic [ref=f22e131]: Portfolio progress
+            - generic [ref=f22e132]: 62%
+          - generic "⇲" [ref=f22e133] [cursor=pointer]:
+            - generic [ref=f22e134]: Overdue tasks
+            - generic [ref=f22e135]: "24"
+          - generic [ref=f22e136]:
+            - generic [ref=f22e137]: Milestones due (14d)
+            - generic [ref=f22e138]: "1"
+        - generic [ref=f22e139]: Risk & governance
+        - generic [ref=f22e140]:
+          - generic "⇲" [ref=f22e141] [cursor=pointer]:
+            - generic [ref=f22e142]: Open high-exposure risks
+            - generic [ref=f22e143]: "6"
+          - generic "⇲" [ref=f22e144] [cursor=pointer]:
+            - generic [ref=f22e145]: Blocked tasks
+            - generic [ref=f22e146]: "19"
+          - generic [ref=f22e147]:
+            - generic [ref=f22e148]: Pending change requests
+            - generic [ref=f22e149]: "2"
+        - generic [ref=f22e150]: Financial
+        - generic [ref=f22e151]:
+          - generic [ref=f22e152]:
+            - generic [ref=f22e153]: Approved budget
+            - generic [ref=f22e154]: AED 15,500,000
+          - generic [ref=f22e155]:
+            - generic [ref=f22e156]: Actual spend
+            - generic [ref=f22e157]: AED 8,074,096
+          - generic [ref=f22e158]:
+            - generic [ref=f22e159]: Remaining budget
+            - generic [ref=f22e160]: AED 7,425,904
+          - generic [ref=f22e161]:
+            - generic [ref=f22e162]: Utilization
+            - generic [ref=f22e163]: 5210%
+          - generic [ref=f22e164]:
+            - generic [ref=f22e165]: Forecast EAC
+            - generic [ref=f22e166]: AED 12,256,583
+          - generic [ref=f22e167]:
+            - generic [ref=f22e168]: Projected overruns
+            - generic [ref=f22e169]: "2"
+            - generic [ref=f22e170]: AED 534,094
+        - generic [ref=f22e171]:
+          - heading "Budget vs Actual vs EAC (AED)" [level=3] [ref=f22e173]
+          - heading "Monthly cost trend (AED)" [level=3] [ref=f22e178]
+          - heading "Spend by category (AED)" [level=3] [ref=f22e183]
+          - heading "Risk matrix (probability × impact)" [level=3] [ref=f22e188]
+          - heading "Project health" [level=3] [ref=f22e193]
+          - heading "Overdue tasks by owner" [level=3] [ref=f22e198]
+        - generic [ref=f22e202]:
+          - heading "Milestone roadmap" [level=3] [ref=f22e203]
+          - table [ref=f22e205]:
+            - rowgroup [ref=f22e206]:
+              - row [ref=f22e207]:
+                - columnheader "Projects" [ref=f22e208]
+                - columnheader "Name" [ref=f22e209]
+                - columnheader "Due date" [ref=f22e210]
+                - columnheader "Status" [ref=f22e211]
+            - rowgroup [ref=f22e212]:
+              - row [ref=f22e213]:
+                - cell "Network Backbone Upgrade" [ref=f22e214]
+                - cell "Cutover readiness" [ref=f22e215]
+                - cell "2026-10-07" [ref=f22e216]
+                - cell "Pending" [ref=f22e217]
+              - row [ref=f22e219]:
+                - cell "Mobile App Revamp" [ref=f22e220]
+                - cell "Kickoff" [ref=f22e221]
+                - cell "2026-10-31" [ref=f22e222]
+                - cell "Pending" [ref=f22e223]
+              - row [ref=f22e225]:
+                - cell "Mobile App Revamp" [ref=f22e226]
+                - cell "Design Complete" [ref=f22e227]
+                - cell "2026-12-30" [ref=f22e228]
+                - cell "Pending" [ref=f22e229]
+              - row [ref=f22e231]:
+                - cell "Mobile App Revamp" [ref=f22e232]
+                - cell "Build Complete" [ref=f22e233]
+                - cell "2027-02-28" [ref=f22e234]
+                - cell "Pending" [ref=f22e235]
+              - row [ref=f22e237]:
+                - cell "Mobile App Revamp" [ref=f22e238]
+                - cell "UAT Sign-off" [ref=f22e239]
+                - cell "2027-04-29" [ref=f22e240]
+                - cell "Pending" [ref=f22e241]
+  - button "✕" [active] [ref=f22e243] [cursor=pointer]
+  - generic [ref=f22e244]:
+    - generic [ref=f22e245]:
+      - strong [ref=f22e246]: AI Assistant
+      - generic [ref=f22e247]: AI not configured
+    - generic [ref=f22e248]:
+      - button "Portfolio health?" [ref=f22e249] [cursor=pointer]
+      - button "Top risks this month?" [ref=f22e250] [cursor=pointer]
+      - button "Where are we overspending?" [ref=f22e251] [cursor=pointer]
+    - generic [ref=f22e252]: Ask about projects, budgets, risks, or anything in the portfolio.
+    - generic [ref=f22e254]:
+      - textbox "Type a message…" [ref=f22e255]
+      - button "Send" [ref=f22e256] [cursor=pointer]

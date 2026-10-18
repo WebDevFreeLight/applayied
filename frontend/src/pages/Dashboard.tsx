@@ -18,6 +18,17 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [drill, setDrill] = useState<{ title: string; tasks?: Task[]; risks?: Risk[] } | null>(null)
+  const [aiOpen, setAiOpen] = useState(false)
+  const [aiText, setAiText] = useState('')
+  const [aiBusy, setAiBusy] = useState(false)
+
+  const aiInsights = async () => {
+    setAiOpen(true); setAiBusy(true); setAiText('')
+    try {
+      const r = await pmo.aiDashboardInsights({ kpis, spendByCategory: analytics?.spendByCategory, projectHealth: analytics?.projectHealth }, i18n.language)
+      setAiText(r.text)
+    } catch (e) { setAiText((e as Error).message) } finally { setAiBusy(false) }
+  }
 
   const load = () => {
     setLoading(true); setError('')
@@ -39,9 +50,16 @@ export default function Dashboard() {
     <div>
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('dash.title')}</h2>
+        <button className="btn sm" onClick={aiInsights} disabled={!kpis}>✨ {t('ai.insights')}</button>
         <div className="spacer" />
         <FilterBar filter={filter} set={set} lk={lk} />
       </div>
+
+      {aiOpen && (
+        <Modal title={t('ai.insights')} onClose={() => setAiOpen(false)} wide>
+          {aiBusy ? <Loading /> : <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>{aiText}</div>}
+        </Modal>
+      )}
 
       {error && <ErrorBox message={error} />}
       {loading && !kpis ? <Loading /> : kpis && (

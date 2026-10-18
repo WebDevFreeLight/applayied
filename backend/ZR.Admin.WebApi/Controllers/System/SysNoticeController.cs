@@ -19,11 +19,13 @@ namespace ZR.Admin.WebApi.Controllers.System
         /// </summary>
         private readonly ISysNoticeService _SysNoticeService;
         private readonly IHubContext<MessageHub> _hubContext;
+        private readonly IPmoNotifier _notifier;
 
-        public SysNoticeController(ISysNoticeService SysNoticeService, IHubContext<MessageHub> hubContext)
+        public SysNoticeController(ISysNoticeService SysNoticeService, IHubContext<MessageHub> hubContext, IPmoNotifier notifier)
         {
             _SysNoticeService = SysNoticeService;
             _hubContext = hubContext;
+            _notifier = notifier;
         }
 
         /// <summary>
@@ -110,7 +112,15 @@ namespace ZR.Admin.WebApi.Controllers.System
             var response = _SysNoticeService.GetFirst(x => x.NoticeId == NoticeId);
             if (response != null && response.Status == 0)
             {
+                // 1) realtime banner for everyone currently connected
                 _hubContext.Clients.All.SendAsync(HubsConstant.ReceiveNotice, response.NoticeTitle, response.NoticeContent);
+
+                // 2) persist into every user's Messages (SysUserMsg) + push the unified notification
+                //    event so it also appears in the header bell (dynamic popup + durable log).
+                var db = SqlSugar.IOC.DbScoped.SugarScope.GetConnectionScope(0);
+                var userIds = db.Queryable<SysUser>().Where(u => u.Status == 0).Select(u => u.UserId).ToList();
+                foreach (var uid in userIds)
+                    _notifier.Notify(uid, response.NoticeTitle, response.NoticeContent, "NOTICE");
             }
             return SUCCESS(response);
         }

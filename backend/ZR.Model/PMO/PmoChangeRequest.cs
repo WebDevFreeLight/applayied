@@ -49,7 +49,9 @@ namespace ZR.Model.PMO
         public decimal? EstimatedCostImpact { get; set; }
 
         /// <summary>Optimistic-concurrency token to prevent double-submission of decisions.</summary>
-        [SugarColumn(ColumnName = "version", IsEnableUpdateVersionValidation = true, IsNullable = true)]
+        // Optimistic-concurrency token, incremented explicitly on each decision in the service. The
+        // workflow's primary double-submission guard is the state machine (no edge out of a terminal state).
+        [SugarColumn(ColumnName = "version", IsNullable = true)]
         public long? Version { get; set; }
 
         [SugarColumn(IsIgnore = true)] public string RequestedByName { get; set; }
