@@ -83,8 +83,9 @@ namespace ZR.Admin.WebApi.Controllers.System
         [HttpGet("roleMenuTreeselect/{roleId}")]
         public IActionResult RoleMenuTreeselect(long roleId)
         {
-            long userId = HttpContext.GetUId();
-            var menus = sysMenuService.SelectMenuList(new MenuQueryDto(), userId);
+            // Role-permission assignment must show EVERY assignable menu/permission, not just the
+            // menus the current admin happens to have — so use the unscoped all-menus query.
+            var menus = sysMenuService.SelectMenuList(new MenuQueryDto());
             var checkedKeys = sysRoleService.SelectUserRoleMenus(roleId);
             return SUCCESS(new
             {

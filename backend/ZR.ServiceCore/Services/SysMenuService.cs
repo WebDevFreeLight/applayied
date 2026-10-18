@@ -300,7 +300,9 @@ namespace ZR.ServiceCore.Services
         /// Get all menus
         /// </summary>
         /// <returns></returns>
-        private List<SysMenu> SelectMenuList(MenuQueryDto menu)
+        /// <summary>All menus matching the filter, independent of any user's role assignments.
+        /// Used by role-permission assignment so an admin can grant every assignable permission.</summary>
+        public List<SysMenu> SelectMenuList(MenuQueryDto menu)
         {
             var menuExp = Expressionable.Create<SysMenu>();
             menuExp.AndIF(!string.IsNullOrEmpty(menu.MenuName), it => it.MenuName.Contains(menu.MenuName));
