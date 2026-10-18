@@ -16,7 +16,7 @@ export default function Projects() {
   const { t } = useTranslation()
   const nav = useNavigate()
   const lk = useLookups()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [rows, setRows] = useState<Project[]>([])
   const [total, setTotal] = useState(0)
   const [query, setQuery] = useState({ pageNum: 1, pageSize: 10, keyword: '', deptId: '', ownerUserId: '', status: '' })
@@ -54,7 +54,7 @@ export default function Projects() {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('project.title')}</h2>
         <div className="spacer" />
-        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ ...empty })}>{t('project.newProject')}</button>}
+        {hasPerm('pmo:project:add') && <button className="btn primary" onClick={() => setEdit({ ...empty })}>{t('project.newProject')}</button>}
       </div>
 
       <div className="row panel" style={{ marginTop: 12 }}>
@@ -89,7 +89,7 @@ export default function Projects() {
                 <td>{fmtMoney(p.initialApprovedBudget, p.currency)}</td><td>{fmtDate(p.plannedEndDate)}</td>
                 <td className="row">
                   <button className="btn sm primary" onClick={() => nav(`/projects/${p.projectId}`)}>{t('project.details')}</button>
-                  {hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...p })}>{t('common.edit')}</button>}
+                  {hasPerm('pmo:project:edit') && <button className="btn sm" onClick={() => setEdit({ ...p })}>{t('common.edit')}</button>}
                 </td>
               </tr>))}</tbody>
           </table>

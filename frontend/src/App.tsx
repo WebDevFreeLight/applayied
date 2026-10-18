@@ -32,6 +32,20 @@ import Dicts from './pages/admin/Dicts'
 import LoginLog from './pages/admin/LoginLog'
 import Sessions from './pages/admin/Sessions'
 
+// Route-level permission gate: renders the page only if the signed-in role holds `perm`,
+// otherwise a "no access" panel. Mirrors the backend ActionPermissionFilter so a role can never
+// open (even by typing the URL) a page it is not entitled to.
+function RequirePerm({ perm, children }: { perm: string; children: ReactNode }) {
+  const { hasPerm } = useAuth()
+  return hasPerm(perm) ? <>{children}</> : <NoAccess />
+}
+
+// The landing page is the executive dashboard (PM+). Contributors, who lack it, land on Projects.
+function Home() {
+  const { hasPerm } = useAuth()
+  return hasPerm('pmo:dashboard:view') ? <Dashboard /> : <Navigate to="/projects" replace />
+}
+
 export default function App() {
   const { isAuthed } = useAuth()
   return (
@@ -39,16 +53,16 @@ export default function App() {
       <Routes>
         <Route path="/login" element={isAuthed ? <Navigate to="/" replace /> : <Login />} />
         <Route element={isAuthed ? <Layout /> : <Navigate to="/login" replace />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:projectId" element={<ProjectDetail />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/milestones" element={<Milestones />} />
-          <Route path="/risks" element={<Risks />} />
-          <Route path="/change-requests" element={<ChangeRequests />} />
-          <Route path="/finance" element={<Finance />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/activity" element={<Activity />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<RequirePerm perm="pmo:project:list"><Projects /></RequirePerm>} />
+          <Route path="/projects/:projectId" element={<RequirePerm perm="pmo:project:query"><ProjectDetail /></RequirePerm>} />
+          <Route path="/tasks" element={<RequirePerm perm="pmo:task:list"><Tasks /></RequirePerm>} />
+          <Route path="/milestones" element={<RequirePerm perm="pmo:milestone:list"><Milestones /></RequirePerm>} />
+          <Route path="/risks" element={<RequirePerm perm="pmo:risk:list"><Risks /></RequirePerm>} />
+          <Route path="/change-requests" element={<RequirePerm perm="pmo:changerequest:list"><ChangeRequests /></RequirePerm>} />
+          <Route path="/finance" element={<RequirePerm perm="pmo:finance:list"><Finance /></RequirePerm>} />
+          <Route path="/categories" element={<RequirePerm perm="pmo:category:list"><Categories /></RequirePerm>} />
+          <Route path="/activity" element={<RequirePerm perm="pmo:automation:list"><Activity /></RequirePerm>} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/roles" element={<Roles />} />
           <Route path="/admin/menus" element={<Menus />} />

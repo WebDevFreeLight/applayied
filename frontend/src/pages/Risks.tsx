@@ -15,7 +15,7 @@ const KINDS = ['Risk', 'Issue']
 export default function Risks({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
   const lk = useLookups()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [rows, setRows] = useState<Risk[]>([])
   const [query, setQuery] = useState({ projectId: pin || '', status: '', highExposureOnly: false })
   const [loading, setLoading] = useState(true)
@@ -49,7 +49,7 @@ export default function Risks({ projectId: pin }: { projectId?: string } = {}) {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('risk.title')}</h2>
         <div className="spacer" />
-        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ kind: 'Risk', status: 'Open', probability: 3, impact: 3, projectId: pin || undefined })}>{t('risk.newRisk')}</button>}
+        {hasPerm('pmo:risk:add') && <button className="btn primary" onClick={() => setEdit({ kind: 'Risk', status: 'Open', probability: 3, impact: 3, projectId: pin || undefined })}>{t('risk.newRisk')}</button>}
       </div>
       <div className="row panel" style={{ marginTop: 12 }}>
         {!pin && <div style={{ minWidth: 200 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
@@ -77,7 +77,7 @@ export default function Risks({ projectId: pin }: { projectId?: string } = {}) {
                 <td><Badge value={r.status} /></td>
                 <td className="row">
                   <button className="btn sm" onClick={() => setView(r)}>{t('project.details')}</button>
-                  {hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...r })}>{t('common.edit')}</button>}
+                  {hasPerm('pmo:risk:edit') && <button className="btn sm" onClick={() => setEdit({ ...r })}>{t('common.edit')}</button>}
                 </td></tr>))}</tbody>
           </table>
         </div>

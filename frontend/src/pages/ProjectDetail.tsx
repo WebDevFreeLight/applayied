@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../auth/auth'
 import * as pmo from '../api/pmo'
 import type { Project } from '../api/types'
 import { Badge, ErrorBox, Loading, Modal, fmtDate, fmtMoney } from '../components/ui'
@@ -19,10 +20,19 @@ import ProjectForecasts from './project/ProjectForecasts'
 const TABS = ['overview', 'members', 'tasks', 'milestones', 'risks', 'change-requests', 'finance', 'forecasts', 'progress'] as const
 type Tab = typeof TABS[number]
 
+// Permission each tab needs; a tab is only shown when the role holds it (null = always visible).
+const TAB_PERM: Record<Tab, string | null> = {
+  overview: null, members: 'pmo:member:list', tasks: 'pmo:task:list',
+  milestones: 'pmo:milestone:list', risks: 'pmo:risk:list', 'change-requests': 'pmo:changerequest:list',
+  finance: 'pmo:finance:list', forecasts: 'pmo:finance:list', progress: 'pmo:snapshot:list',
+}
+
 export default function ProjectDetail() {
   const { projectId = '' } = useParams()
   const nav = useNavigate()
   const { t, i18n } = useTranslation()
+  const { hasPerm } = useAuth()
+  const visibleTabs = TABS.filter((x) => !TAB_PERM[x] || hasPerm(TAB_PERM[x] as string))
   const [project, setProject] = useState<Project | null>(null)
   const [tab, setTab] = useState<Tab>('overview')
   const [loading, setLoading] = useState(true)
@@ -72,7 +82,7 @@ export default function ProjectDetail() {
 
       {/* tab bar */}
       <div className="row" style={{ marginTop: 12, gap: 6, borderBottom: '1px solid var(--border)', paddingBottom: 8 }}>
-        {TABS.map((x) => (
+        {visibleTabs.map((x) => (
           <button key={x} className={`btn sm ${tab === x ? 'primary' : ''}`} onClick={() => setTab(x)}>{label[x]}</button>
         ))}
       </div>

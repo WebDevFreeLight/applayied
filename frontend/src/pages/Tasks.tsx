@@ -14,7 +14,7 @@ const PRIORITIES = ['Low', 'Medium', 'High', 'Critical']
 export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
   const lk = useLookups()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [rows, setRows] = useState<Task[]>([])
   const [total, setTotal] = useState(0)
   const [query, setQuery] = useState({ pageNum: 1, pageSize: 10, projectId: pin || '', status: '', assigneeUserId: '' })
@@ -59,7 +59,7 @@ export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
       <div className="row">
         <h2 style={{ margin: 0 }}>{t('task.title')}</h2>
         <div className="spacer" />
-        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ status: 'ToDo', priority: 'Medium', weight: 1, progressPct: 0, projectId: pin || undefined })}>{t('task.newTask')}</button>}
+        {hasPerm('pmo:task:add') && <button className="btn primary" onClick={() => setEdit({ status: 'ToDo', priority: 'Medium', weight: 1, progressPct: 0, projectId: pin || undefined })}>{t('task.newTask')}</button>}
       </div>
 
       <div className="row panel" style={{ marginTop: 12 }}>
@@ -91,8 +91,8 @@ export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
                 <td>{x.progressPct}%</td>
                 <td className="row">
                   <button className="btn sm" onClick={() => setView(x)}>{t('project.details')}</button>
-                  <button className="btn sm" onClick={() => setProgress({ ...x })}>{t('task.updateProgress')}</button>
-                  {hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...x })}>{t('common.edit')}</button>}
+                  {hasPerm('pmo:task:progress') && <button className="btn sm" onClick={() => setProgress({ ...x })}>{t('task.updateProgress')}</button>}
+                  {hasPerm('pmo:task:edit') && <button className="btn sm" onClick={() => setEdit({ ...x })}>{t('common.edit')}</button>}
                 </td>
               </tr>))}</tbody>
           </table>

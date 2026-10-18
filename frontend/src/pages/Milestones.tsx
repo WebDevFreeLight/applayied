@@ -14,7 +14,7 @@ const STATUSES = ['Pending', 'Achieved', 'Missed']
 export default function Milestones({ projectId: pin }: { projectId?: string } = {}) {
   const { t } = useTranslation()
   const lk = useLookups()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [rows, setRows] = useState<Milestone[]>([])
   const [projectId, setProjectId] = useState(pin || '')
   const [loading, setLoading] = useState(true)
@@ -48,7 +48,7 @@ export default function Milestones({ projectId: pin }: { projectId?: string } = 
         {!pin && <div style={{ minWidth: 220 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
           value={projectId} onChange={(v) => setProjectId(v || '')}
           placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>}
-        {hasRole('pm') && <button className="btn primary" onClick={() => setEdit({ status: 'Pending', projectId: projectId || pin || undefined })}>{t('milestone.newMilestone')}</button>}
+        {hasPerm('pmo:milestone:add') && <button className="btn primary" onClick={() => setEdit({ status: 'Pending', projectId: projectId || pin || undefined })}>{t('milestone.newMilestone')}</button>}
       </div>
       {error && <ErrorBox message={error} />}
       {loading ? <Loading /> : rows.length === 0 ? <Empty /> : (
@@ -61,7 +61,7 @@ export default function Milestones({ projectId: pin }: { projectId?: string } = 
                 <td><Badge value={m.status} /></td>
                 <td className="row">
                   <button className="btn sm" onClick={() => setView(m)}>{t('project.details')}</button>
-                  {hasRole('pm') && <button className="btn sm" onClick={() => setEdit({ ...m })}>{t('common.edit')}</button>}
+                  {hasPerm('pmo:milestone:edit') && <button className="btn sm" onClick={() => setEdit({ ...m })}>{t('common.edit')}</button>}
                 </td></tr>))}</tbody>
           </table>
         </div>
