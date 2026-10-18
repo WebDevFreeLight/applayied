@@ -59,7 +59,15 @@ export default {
   member: { title: 'Members', user: 'User', role: 'Role in project', add: 'Add member' },
   snapshot: { date: 'Date', tasksDone: 'Tasks done', openRisks: 'Open risks' },
   forecast: { period: 'Period', kind: 'Kind', amount: 'Amount', add: 'Add forecast' },
-  activity: { title: 'Automation & Logs', automation: 'Automation Runs', outbox: 'Outbox', audit: 'Audit Trail', rule: 'Rule', when: 'When', result: 'Result', detail: 'Detail', type: 'Type', subject: 'Subject', entity: 'Entity', action: 'Action', actor: 'Actor' },
+  activity: { title: 'Automation & Logs', automation: 'Automation Runs', outbox: 'Outbox', audit: 'Audit Trail', rule: 'Rule', when: 'When', result: 'Result', detail: 'Detail', type: 'Type', subject: 'Subject', entity: 'Entity', action: 'Action', actor: 'Actor', runNow: 'Run automation now', ran: 'Automation ran' },
+  notify: { title: 'Notifications', readAll: 'Mark all read', empty: 'No notifications' },
+  ai: {
+    title: 'AI Assistant', online: 'Multi-provider AI', offline: 'AI not configured',
+    hint: 'Ask about projects, budgets, risks, or anything in the portfolio.',
+    placeholder: 'Type a message…', send: 'Send', thinking: 'Thinking…',
+    summary: 'AI Summary', riskAnalysis: 'AI Risk Analysis', insights: 'AI Insights',
+    q1: 'Portfolio health?', q2: 'Top risks this month?', q3: 'Where are we overspending?',
+  },
   category: { title: 'Cost Categories', code: 'Code', name: 'Name', newCat: 'New category', editCat: 'Edit category' },
   dash: {
     title: 'Executive Dashboard', cutoff: 'Reporting cutoff',

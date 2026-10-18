@@ -128,3 +128,111 @@ Visit https://reactjs.org/link/error-boundaries to learn more about error bounda
 [ 1863107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
 [ 1863107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
 [ 1863108ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0
+[ 1889449ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1893301ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 1893332ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1893332ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1893340ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 1893340ms] [ERROR] [2026-10-18T12:53:11.298Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1893340ms] [ERROR] [2026-10-18T12:53:11.298Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1893342ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1893344ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1893344ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1893345ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1893345ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1893348ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1893350ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0
+[ 1893350ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1893350ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1893351ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1893355ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1893355ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1893355ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1893356ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0
+[ 1894984ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1897297ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1897298ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1897298ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1897298ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1897298ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/task/list?pageNum=1&pageSize=10:0
+[ 1897299ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1897303ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1897303ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1897303ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1897304ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1897304ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/task/list?pageNum=1&pageSize=10:0
+[ 1897305ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1897854ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1897855ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1897855ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1897856ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1897856ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/milestone/list?pageNum=1&pageSize=200:0
+[ 1897856ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1897860ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1897861ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1897861ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1897861ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1897861ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/milestone/list?pageNum=1&pageSize=200:0
+[ 1897862ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1899260ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/monitor/jobLog/list?pageNum=1&pageSize=100:0
+[ 1899261ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/monitor/jobLog/list?pageNum=1&pageSize=100:0
+[ 1899665ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/monitor/logininfor/list?pageNum=1&pageSize=20:0
+[ 1899668ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/monitor/logininfor/list?pageNum=1&pageSize=20:0
+[ 1900036ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/monitor/online/list?pageNum=1&pageSize=100:0
+[ 1900039ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/monitor/online/list?pageNum=1&pageSize=100:0
+[ 1900885ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1900888ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1901334ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/system/user/profile:0
+[ 1901336ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/system/user/profile:0
+[ 1901440ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5173/admin/profile:0
+[ 1901440ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5173/admin/profile:0
+[ 1901820ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1901823ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=50:0
+[ 1904416ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1904417ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1904419ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1904420ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1904420ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1904421ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/dashboard/kpis?cutoff=2026-09-30:0
+[ 1904421ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/dashboard/analytics?cutoff=2026-09-30:0
+[ 1904424ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[ 1904424ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[ 1904425ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[ 1904425ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[ 1904425ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[ 1904428ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/dashboard/kpis?cutoff=2026-09-30:0
+[ 1904428ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/dashboard/analytics?cutoff=2026-09-30:0
+[ 1904793ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/automation?pageNum=1&pageSize=200:0
+[ 1904793ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/outbox?pageNum=1&pageSize=200:0
+[ 1904795ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/audit?pageNum=1&pageSize=200:0
+[ 1904795ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/automation?pageNum=1&pageSize=200:0
+[ 1904797ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/outbox?pageNum=1&pageSize=200:0
+[ 1904798ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/audit?pageNum=1&pageSize=200:0
+[ 1923803ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 1923849ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1923849ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1923856ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 1923858ms] [ERROR] [2026-10-18T12:53:41.815Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1923858ms] [ERROR] [2026-10-18T12:53:41.815Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1923860ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1923861ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/automation?pageNum=1&pageSize=200:0
+[ 1923861ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/outbox?pageNum=1&pageSize=200:0
+[ 1923861ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/audit?pageNum=1&pageSize=200:0
+[ 1923864ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1923864ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/automation?pageNum=1&pageSize=200:0
+[ 1923865ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/outbox?pageNum=1&pageSize=200:0
+[ 1923865ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/audit?pageNum=1&pageSize=200:0
+[ 1933685ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 1933716ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1933716ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 1933725ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 1933725ms] [ERROR] [2026-10-18T12:53:51.683Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1933725ms] [ERROR] [2026-10-18T12:53:51.683Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 1933728ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1933728ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/automation?pageNum=1&pageSize=200:0
+[ 1933729ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/outbox?pageNum=1&pageSize=200:0
+[ 1933729ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/audit?pageNum=1&pageSize=200:0
+[ 1933731ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/SysUserMsg/mylist?pageNum=1&pageSize=15:0
+[ 1933732ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/automation?pageNum=1&pageSize=200:0
+[ 1933732ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/outbox?pageNum=1&pageSize=200:0
+[ 1933732ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/activity/audit?pageNum=1&pageSize=200:0

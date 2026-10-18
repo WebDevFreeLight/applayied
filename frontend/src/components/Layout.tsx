@@ -5,6 +5,7 @@ import { useAuth } from '../auth/auth'
 import { changeLanguage } from '../i18n'
 import { getTheme, toggleTheme } from '../theme'
 import NotificationBell from './NotificationBell'
+import AiAssistant from './AiAssistant'
 
 const LINKS = [
   { to: '/', key: 'dashboard', end: true },
@@ -82,6 +83,7 @@ export default function Layout() {
         </header>
         <main className="content"><Outlet /></main>
       </div>
+      <AiAssistant />
     </div>
   )
 }
