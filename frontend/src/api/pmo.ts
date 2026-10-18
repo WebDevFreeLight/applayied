@@ -87,3 +87,26 @@ export const drilldownTasks = (filter: DashboardFilter, mode: string) =>
   unwrap<Task[]>(api.get('/pmo/dashboard/drilldown/tasks', { params: { ...filter, mode } }))
 export const drilldownRisks = (filter: DashboardFilter, highExposureOnly: boolean) =>
   unwrap<Risk[]>(api.get('/pmo/dashboard/drilldown/risks', { params: { ...filter, highExposureOnly } }))
+
+// ---- project members --------------------------------------------------------
+export const listMembers = (params: Record<string, unknown>) =>
+  unwrap<import('./types').Paged<import('./types').ProjectMember>>(api.get('/pmo/project-member/list', { params }))
+export const addMember = (dto: Record<string, unknown>) => unwrap<unknown>(api.post('/pmo/project-member', dto))
+export const removeMember = (memberId: string) => unwrap<unknown>(api.delete(`/pmo/project-member/${memberId}`))
+
+// ---- progress snapshots -----------------------------------------------------
+export const listSnapshots = (params: Record<string, unknown>) =>
+  unwrap<import('./types').Paged<import('./types').ProgressSnapshot>>(api.get('/pmo/activity/snapshots', { params }))
+
+// ---- financial forecasts ----------------------------------------------------
+export const listForecasts = (projectId: string) =>
+  unwrap<import('./types').FinancialForecast[]>(api.get(`/pmo/finance/forecasts/${projectId}`))
+export const createForecast = (dto: Record<string, unknown>) => unwrap<unknown>(api.post('/pmo/finance/forecasts', dto))
+
+// ---- activity / logs --------------------------------------------------------
+export const listAutomation = (params: Record<string, unknown>) =>
+  unwrap<import('./types').Paged<import('./types').AutomationRun>>(api.get('/pmo/activity/automation', { params }))
+export const listOutbox = (params: Record<string, unknown>) =>
+  unwrap<import('./types').Paged<import('./types').OutboxNotification>>(api.get('/pmo/activity/outbox', { params }))
+export const listAudit = (params: Record<string, unknown>) =>
+  unwrap<import('./types').Paged<import('./types').AuditEvent>>(api.get('/pmo/activity/audit', { params }))

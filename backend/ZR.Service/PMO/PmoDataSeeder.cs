@@ -252,6 +252,11 @@ namespace ZR.Service.PMO
             ("pmo:dashboard:view", "PMO Dashboard", "PM"),
             ("pmo:lookup:list", "PMO Lookups", "ALL"),
             ("pmo:category:list", "PMO Category List", "ALL"), ("pmo:category:add", "PMO Category Add", "ADMIN"), ("pmo:category:edit", "PMO Category Edit", "ADMIN"),
+            ("pmo:member:list", "PMO Member List", "ALL"), ("pmo:member:add", "PMO Member Add", "PM"), ("pmo:member:remove", "PMO Member Remove", "PM"),
+            ("pmo:snapshot:list", "PMO Progress Snapshots", "ALL"),
+            ("pmo:automation:list", "PMO Automation Log", "PM"),
+            ("pmo:audit:list", "PMO Audit Log", "PM"),
+            ("pmo:ai:use", "PMO AI Assistant", "ALL"),
         };
 
         private void SeedPmoPermissions(Dictionary<string, long> roleIdByKey, List<string> log)

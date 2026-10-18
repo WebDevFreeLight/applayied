@@ -8,7 +8,10 @@ using ZR.Admin.WebApi.Filters;
 using ZR.Model.PMO;
 using ZR.Model.System;
 using ZR.Model.System.Dto;
+using System;
+using System.Globalization;
 using ZR.Service.PMO;
+using ZR.Service.PMO.IPmoService;
 using ZR.ServiceCore.Services;
 
 namespace ZR.Admin.WebApi.Controllers.PMO
@@ -81,6 +84,34 @@ namespace ZR.Admin.WebApi.Controllers.PMO
                 roleId = role.RoleId,
                 affectedUsers = affectedUserIds.Count,
                 note = "Permissions refreshed; pmo_admin members now have full access."
+            });
+        }
+
+        /// <summary>
+        /// Manually fire the business-automation rules now (same engine the background scheduler runs):
+        /// overdue-task escalation + budget-overrun alerts. Idempotent — re-running never resends a
+        /// notification already in the outbox (unique dedupe_key). Returns a per-rule summary so the
+        /// run is demonstrable. Optional ?asOf=yyyy-MM-dd overrides "today" for the demo.
+        /// </summary>
+        [HttpPost("run-automation")]
+        [ActionPermissionFilter(RolePermi = "pmo_admin")]
+        public IActionResult RunAutomation([FromServices] IPmoAiService ai, [FromQuery] string asOf = null)
+        {
+            DateTime? asOfDate = null;
+            if (!string.IsNullOrWhiteSpace(asOf) &&
+                DateTime.TryParse(asOf, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d))
+                asOfDate = d;
+
+            var useAi = _config.GetValue("PmoAutomation:UseAi", true);
+            var runner = new PmoAutomationRunner(db: null, ai: ai, useAi: useAi);
+            var results = runner.RunAll($"manual:{CurrentActor.UserName}", asOfDate);
+
+            return SUCCESS(new
+            {
+                triggeredBy = CurrentActor.UserName,
+                asOf = (asOfDate ?? DateTime.Now).ToString("yyyy-MM-dd"),
+                aiUsed = useAi && ai.IsConfigured,
+                results
             });
         }
     }

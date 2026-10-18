@@ -3,7 +3,7 @@ export default {
   app: { title: 'بوابة مكتب المشاريع', subtitle: 'محفظة المشاريع والتحكم المالي' },
   nav: {
     dashboard: 'لوحة القيادة', projects: 'المشاريع', tasks: 'المهام', milestones: 'المعالم الرئيسية',
-    risks: 'المخاطر والمشكلات', changeRequests: 'طلبات التغيير', finance: 'الشؤون المالية', categories: 'فئات التكلفة',
+    risks: 'المخاطر والمشكلات', changeRequests: 'طلبات التغيير', finance: 'الشؤون المالية', activity: 'الأتمتة والسجلات', categories: 'فئات التكلفة',
     logout: 'تسجيل الخروج', language: 'English',
   },
   auth: {
@@ -56,6 +56,10 @@ export default {
     utilization: 'نسبة الاستخدام', eac: 'التقدير عند الإنجاز', variance: 'التباين المتوقع', newRevision: 'مراجعة جديدة',
     period: 'الفترة', kind: 'النوع', forecastAmount: 'مبلغ التوقع',
   },
+  member: { title: 'الأعضاء', user: 'المستخدم', role: 'الدور في المشروع', add: 'إضافة عضو' },
+  snapshot: { date: 'التاريخ', tasksDone: 'المهام المنجزة', openRisks: 'المخاطر المفتوحة' },
+  forecast: { period: 'الفترة', kind: 'النوع', amount: 'المبلغ', add: 'إضافة توقع' },
+  activity: { title: 'الأتمتة والسجلات', automation: 'عمليات الأتمتة', outbox: 'صندوق الصادر', audit: 'سجل التدقيق', rule: 'القاعدة', when: 'التاريخ', result: 'النتيجة', detail: 'التفاصيل', type: 'النوع', subject: 'الموضوع', entity: 'الكيان', action: 'الإجراء', actor: 'المنفّذ' },
   category: { title: 'فئات التكلفة', code: 'الرمز', name: 'الاسم', newCat: 'فئة جديدة', editCat: 'تعديل الفئة' },
   dash: {
     title: 'لوحة القيادة التنفيذية', cutoff: 'تاريخ القطع',

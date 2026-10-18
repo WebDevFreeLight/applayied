@@ -3,7 +3,7 @@ export default {
   app: { title: 'PMO Portal', subtitle: 'Project Portfolio & Financial Control' },
   nav: {
     dashboard: 'Dashboard', projects: 'Projects', tasks: 'Tasks', milestones: 'Milestones',
-    risks: 'Risks & Issues', changeRequests: 'Change Requests', finance: 'Finance', categories: 'Cost Categories',
+    risks: 'Risks & Issues', changeRequests: 'Change Requests', finance: 'Finance', activity: 'Automation & Logs', categories: 'Cost Categories',
     logout: 'Sign out', language: 'العربية',
   },
   auth: {
@@ -56,6 +56,10 @@ export default {
     utilization: 'Utilization', eac: 'EAC', variance: 'Projected variance', newRevision: 'New revision',
     period: 'Period', kind: 'Kind', forecastAmount: 'Forecast amount',
   },
+  member: { title: 'Members', user: 'User', role: 'Role in project', add: 'Add member' },
+  snapshot: { date: 'Date', tasksDone: 'Tasks done', openRisks: 'Open risks' },
+  forecast: { period: 'Period', kind: 'Kind', amount: 'Amount', add: 'Add forecast' },
+  activity: { title: 'Automation & Logs', automation: 'Automation Runs', outbox: 'Outbox', audit: 'Audit Trail', rule: 'Rule', when: 'When', result: 'Result', detail: 'Detail', type: 'Type', subject: 'Subject', entity: 'Entity', action: 'Action', actor: 'Actor' },
   category: { title: 'Cost Categories', code: 'Code', name: 'Name', newCat: 'New category', editCat: 'Edit category' },
   dash: {
     title: 'Executive Dashboard', cutoff: 'Reporting cutoff',

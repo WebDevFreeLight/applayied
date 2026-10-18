@@ -11,6 +11,7 @@ import ChangeRequests from './pages/ChangeRequests'
 import Finance from './pages/Finance'
 import ProjectDetail from './pages/ProjectDetail'
 import Categories from './pages/Categories'
+import Activity from './pages/Activity'
 import Users from './pages/admin/Users'
 import Roles from './pages/admin/Roles'
 import Menus from './pages/admin/Menus'
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="/change-requests" element={<ChangeRequests />} />
           <Route path="/finance" element={<Finance />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/activity" element={<Activity />} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/roles" element={<Roles />} />
           <Route path="/admin/menus" element={<Menus />} />

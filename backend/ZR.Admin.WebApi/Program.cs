@@ -263,6 +263,12 @@ builder.Services.AddAppService();
 // This allows GLPeriodClosingService to depend on Lazy<IGLJournalService> to break the cycle
 builder.Services.AddTransient(typeof(Lazy<>), typeof(LazyResolver<>));
 
+// PMO multi-provider AI gateway (ordered fallback chain configured under "AI:Providers").
+// Registered with a typed HttpClient so it gets a pooled, DI-managed client.
+builder.Services.AddHttpClient<ZR.Service.PMO.IPmoService.IPmoAiService, ZR.Service.PMO.PmoAiService>();
+// PMO business-automation background worker (overdue escalation + budget-overrun alerts).
+builder.Services.AddHostedService<ZR.Admin.WebApi.Framework.PmoAutomationWorker>();
+
 // ✅ Initialize database - MUST be BEFORE builder.Build()
 builder.Services.AddDb(builder.Environment, builder.Configuration);
 

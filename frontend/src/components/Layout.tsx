@@ -13,6 +13,7 @@ const LINKS = [
   { to: '/risks', key: 'risks' },
   { to: '/change-requests', key: 'changeRequests' },
   { to: '/finance', key: 'finance' },
+  { to: '/activity', key: 'activity' },
   { to: '/categories', key: 'categories' },
 ]
 // Admin links appear only when the user holds the matching list permission.

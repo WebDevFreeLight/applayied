@@ -92,3 +92,11 @@ export interface DashboardFilter {
   deptId?: string; projectId?: string; managerId?: string; status?: string
   categoryId?: string; cutoff?: string
 }
+
+// ---- design modules: members, snapshots, forecasts, activity/logs -----------
+export interface ProjectMember { memberId: string; projectId: string; userId: string; roleInProject?: string; userName?: string }
+export interface ProgressSnapshot { snapshotId: string; projectId: string; snapshotDate: string; progressPct: number; tasksTotal: number; tasksDone: number; openRiskCount: number }
+export interface FinancialForecast { forecastId: string; projectId: string; periodMonth: string; forecastAmount: number; kind: string }
+export interface AutomationRun { runId: string; ruleKey: string; triggeredAt: string; status: string; detail?: string; dedupeKey?: string }
+export interface OutboxNotification { notificationId: string; type: string; subject?: string; body?: string; targetUserId?: string; createdAt: string; sentAt?: string; status: string }
+export interface AuditEvent { auditId: string; entityType: string; entityId: string; action: string; actorUserId: string; detail?: string; actedAt: string; actorName?: string }

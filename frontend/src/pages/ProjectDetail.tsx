@@ -9,11 +9,14 @@ import Milestones from './Milestones'
 import Risks from './Risks'
 import ChangeRequests from './ChangeRequests'
 import Finance from './Finance'
+import ProjectMembers from './project/ProjectMembers'
+import ProjectSnapshots from './project/ProjectSnapshots'
+import ProjectForecasts from './project/ProjectForecasts'
 
 // Project workspace: header + tabbed, project-scoped modules. Creating a task / milestone / risk /
 // change request / cost from here is automatically tied to this project (the module components are
 // rendered with the projectId pinned, so their project selector is hidden and new items pre-fill it).
-const TABS = ['overview', 'tasks', 'milestones', 'risks', 'change-requests', 'finance'] as const
+const TABS = ['overview', 'members', 'tasks', 'milestones', 'risks', 'change-requests', 'finance', 'forecasts', 'progress'] as const
 type Tab = typeof TABS[number]
 
 export default function ProjectDetail() {
@@ -31,8 +34,9 @@ export default function ProjectDetail() {
   }, [projectId])
 
   const label: Record<Tab, string> = {
-    overview: t('project.overview'), tasks: t('nav.tasks'), milestones: t('nav.milestones'),
-    risks: t('nav.risks'), 'change-requests': t('nav.changeRequests'), finance: t('nav.finance'),
+    overview: t('project.overview'), members: t('member.title'), tasks: t('nav.tasks'),
+    milestones: t('nav.milestones'), risks: t('nav.risks'), 'change-requests': t('nav.changeRequests'),
+    finance: t('nav.finance'), forecasts: t('finance.forecasts'), progress: t('project.progress'),
   }
 
   if (loading) return <Loading />
@@ -78,11 +82,14 @@ export default function ProjectDetail() {
             </div>
           </div>
         )}
+        {tab === 'members' && <ProjectMembers projectId={projectId} />}
         {tab === 'tasks' && <Tasks projectId={projectId} />}
         {tab === 'milestones' && <Milestones projectId={projectId} />}
         {tab === 'risks' && <Risks projectId={projectId} />}
         {tab === 'change-requests' && <ChangeRequests projectId={projectId} />}
         {tab === 'finance' && <Finance projectId={projectId} />}
+        {tab === 'forecasts' && <ProjectForecasts projectId={projectId} />}
+        {tab === 'progress' && <ProjectSnapshots projectId={projectId} />}
       </div>
     </div>
   )
