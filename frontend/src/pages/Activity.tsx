@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
 import type { AutomationRun, OutboxNotification, AuditEvent } from '../api/types'
 import { useAuth } from '../auth/auth'
-import { Badge, Empty, ErrorBox, Loading, fmtDate } from '../components/ui'
+import { Badge, Empty, ErrorBox, Loading, Toast, fmtDate } from '../components/ui'
 
 type Tab = 'automation' | 'outbox' | 'audit'
 
@@ -18,8 +18,10 @@ export default function Activity() {
   const [audit, setAudit] = useState<AuditEvent[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [toast, setToast] = useState('')
+  const [running, setRunning] = useState(false)
 
-  useEffect(() => {
+  const load = () => {
     setLoading(true); setError('')
     const p = { pageNum: 1, pageSize: 200 }
     Promise.allSettled([pmo.listAutomation(p), pmo.listOutbox(p), pmo.listAudit(p)]).then(([a, o, u]) => {
@@ -29,7 +31,20 @@ export default function Activity() {
       const err = [a, o, u].find((r) => r.status === 'rejected') as PromiseRejectedResult | undefined
       if (err) setError(String(err.reason?.message || err.reason))
     }).finally(() => setLoading(false))
-  }, [])
+  }
+  useEffect(load, [])
+
+  const runNow = async () => {
+    setRunning(true); setError('')
+    try {
+      const r = await pmo.runAutomation()
+      const created = r.results.reduce((s, x) => s + x.created, 0)
+      const skipped = r.results.reduce((s, x) => s + x.skipped, 0)
+      setToast(`${t('activity.ran')} — +${created} / ${skipped} deduped`)
+      setTimeout(() => setToast(''), 4000)
+      load()
+    } catch (e) { setError((e as Error).message) } finally { setRunning(false) }
+  }
 
   if (!hasPerm('pmo:automation:list') && !hasPerm('pmo:audit:list')) return <div className="panel">{t('admin.noAccess')}</div>
   const TABS: Tab[] = ['automation', 'outbox', 'audit']
@@ -37,7 +52,15 @@ export default function Activity() {
 
   return (
     <div>
-      <h2 style={{ margin: 0 }}>{t('activity.title')}</h2>
+      {toast && <Toast message={toast} />}
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <h2 style={{ margin: 0 }}>{t('activity.title')}</h2>
+        {hasPerm('pmo:automation:list') && (
+          <button className="btn sm primary" onClick={runNow} disabled={running}>
+            {running ? t('ai.thinking') : t('activity.runNow')}
+          </button>
+        )}
+      </div>
       <div className="row" style={{ marginTop: 12, gap: 6, borderBottom: '1px solid var(--border)', paddingBottom: 8 }}>
         {TABS.map((x) => <button key={x} className={`btn sm ${tab === x ? 'primary' : ''}`} onClick={() => setTab(x)}>{label[x]}</button>)}
       </div>

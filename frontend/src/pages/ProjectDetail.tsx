@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
 import type { Project } from '../api/types'
-import { Badge, ErrorBox, Loading, fmtDate, fmtMoney } from '../components/ui'
+import { Badge, ErrorBox, Loading, Modal, fmtDate, fmtMoney } from '../components/ui'
 import Tasks from './Tasks'
 import Milestones from './Milestones'
 import Risks from './Risks'
@@ -22,11 +22,23 @@ type Tab = typeof TABS[number]
 export default function ProjectDetail() {
   const { projectId = '' } = useParams()
   const nav = useNavigate()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [project, setProject] = useState<Project | null>(null)
   const [tab, setTab] = useState<Tab>('overview')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [aiOpen, setAiOpen] = useState(false)
+  const [aiText, setAiText] = useState('')
+  const [aiBusy, setAiBusy] = useState(false)
+
+  const aiSummary = async () => {
+    if (!project) return
+    setAiOpen(true); setAiBusy(true); setAiText('')
+    try {
+      const r = await pmo.aiProjectSummary(project, i18n.language)
+      setAiText(r.text)
+    } catch (e) { setAiText((e as Error).message) } finally { setAiBusy(false) }
+  }
 
   useEffect(() => {
     setLoading(true); setError('')
@@ -49,7 +61,14 @@ export default function ProjectDetail() {
         <button className="btn sm" onClick={() => nav('/projects')}>{t('project.back')}</button>
         <h2 style={{ margin: 0 }}>{project.code} · {project.name}</h2>
         <Badge value={project.status} /><Badge value={project.priority} />
+        <button className="btn sm" style={{ marginInlineStart: 'auto' }} onClick={aiSummary}>✨ {t('ai.summary')}</button>
       </div>
+
+      {aiOpen && (
+        <Modal title={`${t('ai.summary')} — ${project.code}`} onClose={() => setAiOpen(false)} wide>
+          {aiBusy ? <Loading /> : <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>{aiText}</div>}
+        </Modal>
+      )}
 
       {/* tab bar */}
       <div className="row" style={{ marginTop: 12, gap: 6, borderBottom: '1px solid var(--border)', paddingBottom: 8 }}>
