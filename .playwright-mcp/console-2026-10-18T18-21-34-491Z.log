@@ -1,0 +1,125 @@
+[      79ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[     126ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[     126ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  194135ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[  194167ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  194167ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  198582ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost:5173/login:0
+[  202041ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792346330497:86:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+[  202043ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792346330497:86:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+[  202047ms] [ERROR] The above error occurred in the <App> component:
+
+    at App (http://localhost:5173/src/App.tsx?t=1792346330497:86:24)
+    at AuthProvider (http://localhost:5173/src/auth/auth.tsx?t=1792347896466:41:32)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries. @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14031
+[  202045ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792346330497:86:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19753:22)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19116:15)
+    at recoverFromConcurrentError (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:18736:28)
+    at performSyncWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:18879:28)
+[  202724ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[  202758ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  202758ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  202854ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost:5173/login:0
+[  247447ms] [ERROR] Failed to load resource: the server responded with a status of 429 (Too Many Requests) @ http://localhost:5173/api/captchaImage:0
+[  252693ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[  252710ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  252710ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  252819ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost:5173/login:0
+[  262400ms] [WARNING] [2026-10-18T18:25:56.890Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[  265308ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[  265349ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  265349ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  265403ms] [WARNING] [2026-10-18T18:25:59.894Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[  270918ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[  270947ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  270947ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  270982ms] [WARNING] [2026-10-18T18:26:05.473Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[  277531ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[  277553ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  277553ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  277588ms] [WARNING] [2026-10-18T18:26:12.079Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[  285050ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[  285074ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  285074ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[  285113ms] [WARNING] [2026-10-18T18:26:19.603Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[  295004ms] [ERROR] [2026-10-18T18:26:29.494Z] Error: Connection disconnected with error 'Error: WebSocket closed with status code: 1006 (no reason given).'. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  295010ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[  295010ms] [ERROR] [2026-10-18T18:26:29.501Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  295011ms] [ERROR] [2026-10-18T18:26:29.501Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  296690ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[  296694ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[  296695ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[  296695ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[  296696ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[  296696ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0
+[  296700ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[  296700ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[  296701ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[  296701ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[  296702ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[  296703ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/project/list?pageNum=1&pageSize=10:0
+[  297019ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[  297019ms] [ERROR] [2026-10-18T18:26:31.510Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  297020ms] [ERROR] [2026-10-18T18:26:31.510Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  298013ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[  298014ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[  298014ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[  298014ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[  298014ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[  298015ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/task/list?pageNum=1&pageSize=10:0
+[  298018ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[  298018ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[  298018ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[  298018ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[  298020ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[  298020ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/task/list?pageNum=1&pageSize=10:0
+[  298916ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[  298917ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[  298917ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[  298917ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[  298917ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[  298918ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/milestone/list?pageNum=1&pageSize=200:0
+[  298921ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/departments:0
+[  298922ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/users:0
+[  298922ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/managers:0
+[  298923ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/projects:0
+[  298923ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/lookup/categories:0
+[  298923ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/pmo/milestone/list?pageNum=1&pageSize=200:0
+[  302028ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[  302028ms] [ERROR] [2026-10-18T18:26:36.519Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  302029ms] [ERROR] [2026-10-18T18:26:36.519Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  312042ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[  312042ms] [ERROR] [2026-10-18T18:26:46.533Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  312043ms] [ERROR] [2026-10-18T18:26:46.533Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  332058ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[  332059ms] [ERROR] [2026-10-18T18:27:06.549Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[  332059ms] [ERROR] [2026-10-18T18:27:06.549Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292

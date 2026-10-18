@@ -67,6 +67,7 @@ namespace ZR.Service.PMO
                 // Register the business-automation scheduled job (ZR.Tasks / Quartz) so it appears on
                 // the Scheduled Tasks page and auto-starts on boot (UseAddTaskSchedulers loads IsStart=1).
                 SeedAutomationTask(log);
+                SeedEmployees(log);
 
                 // pmo_* tables in dependency order.
                 Import<PmoCostCategory>(csvDir, "cost_categories.csv", log);
@@ -141,6 +142,47 @@ namespace ZR.Service.PMO
             }
         }
 
+        // ------------------------------------------------------------------ employees
+
+        /// <summary>
+        /// Seed a small employee directory in hr_employee_core, each linked to a demo user, so the
+        /// Employees page has data and the login user→employee lookup resolves. Idempotent by code.
+        /// </summary>
+        private void SeedEmployees(List<string> log)
+        {
+            try
+            {
+                // (code, userId, hireDate)
+                var rows = new (string Code, long UserId, string Hire)[]
+                {
+                    ("EMP-0001", 1001, "2021-01-10"),
+                    ("EMP-0002", 1003, "2022-03-15"),
+                    ("EMP-0003", 1008, "2023-06-01"),
+                };
+                int added = 0;
+                foreach (var (code, uid, hire) in rows)
+                {
+                    if (_db.Queryable<ZR.Model.HR.EmployeeCore.HrEmployeeCore>().Any(e => e.EmployeeCode == code)) continue;
+                    _db.Insertable(new ZR.Model.HR.EmployeeCore.HrEmployeeCore
+                    {
+                        PersonId = uid,
+                        UserId = uid,
+                        EmployeeCode = code,
+                        HireDate = DateTime.Parse(hire, CultureInfo.InvariantCulture),
+                        IsActive = true,
+                        Create_by = "seed",
+                        Create_time = DateTime.Now
+                    }).ExecuteCommand();
+                    added++;
+                }
+                log.Add($"[PMO seed] employees ensured ({added} new).");
+            }
+            catch (Exception ex)
+            {
+                log.Add($"[PMO seed] SeedEmployees warning: {ex.Message}");
+            }
+        }
+
         // ------------------------------------------------------------------ schema
 
         /// <summary>Create any missing pmo_* tables (non-destructive CodeFirst).</summary>
@@ -161,7 +203,13 @@ namespace ZR.Service.PMO
                     typeof(PmoBudgetRevision), typeof(PmoCostTransaction),
                     typeof(PmoFinancialForecast), typeof(PmoProgressSnapshot),
                     typeof(PmoAutomationRun), typeof(PmoOutboxNotification), typeof(PmoAuditEvent));
-                log.Add("[PMO seed] ensured pmo_* tables exist");
+
+                // Create the optional HR employee table so the login-time employee lookup (user→employee)
+                // has a real relation to query — avoids the "relation hr_employee_core does not exist" error
+                // on a PMO-only deployment. Empty is fine: no linked employee simply means employeeId=null.
+                _db.CodeFirst.InitTables(typeof(ZR.Model.HR.EmployeeCore.HrEmployeeCore));
+
+                log.Add("[PMO seed] ensured pmo_* + hr_employee_core tables exist");
             }
             catch (Exception ex)
             {
@@ -304,6 +352,8 @@ namespace ZR.Service.PMO
             ("pmo:automation:list", "PMO Automation Log", "PM"),
             ("pmo:audit:list", "PMO Audit Log", "PM"),
             ("pmo:ai:use", "PMO AI Assistant", "ALL"),
+            ("pmo:employee:list", "PMO Employee Directory", "PM"),
+            ("pmo:employee:add", "PMO Employee Add", "ADMIN"), ("pmo:employee:edit", "PMO Employee Edit", "ADMIN"), ("pmo:employee:remove", "PMO Employee Remove", "ADMIN"),
         };
 
         private void SeedPmoPermissions(Dictionary<string, long> roleIdByKey, List<string> log)

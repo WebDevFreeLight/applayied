@@ -11,7 +11,7 @@ import Select from '../../components/Select'
 export default function ProjectMembers({ projectId }: { projectId: string }) {
   const { t } = useTranslation()
   const lk = useLookups()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [rows, setRows] = useState<ProjectMember[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -37,7 +37,7 @@ export default function ProjectMembers({ projectId }: { projectId: string }) {
 
   return (
     <div>
-      {hasRole('pm') && (
+      {hasPerm('pmo:member:add') && (
         <div className="row panel" style={{ marginBottom: 12 }}>
           <div style={{ minWidth: 220 }}><Select options={lk.users.map((u) => ({ value: u.id, label: u.name }))}
             value={add.userId} onChange={(v) => setAdd((a) => ({ ...a, userId: v || '' }))} placeholder={t('member.user')} /></div>
@@ -48,10 +48,10 @@ export default function ProjectMembers({ projectId }: { projectId: string }) {
       {error && <ErrorBox message={error} />}
       {loading ? <Loading /> : rows.length === 0 ? <Empty /> : (
         <div className="table-wrap">
-          <table><thead><tr><th>{t('member.user')}</th><th>{t('member.role')}</th>{hasRole('pm') && <th>{t('common.actions')}</th>}</tr></thead>
+          <table><thead><tr><th>{t('member.user')}</th><th>{t('member.role')}</th>{hasPerm('pmo:member:remove') && <th>{t('common.actions')}</th>}</tr></thead>
             <tbody>{rows.map((m) => (
               <tr key={m.memberId}><td>{m.userName}</td><td>{m.roleInProject}</td>
-                {hasRole('pm') && <td><button className="btn sm" onClick={() => remove(m)}>{t('common.delete')}</button></td>}</tr>))}</tbody>
+                {hasPerm('pmo:member:remove') && <td><button className="btn sm" onClick={() => remove(m)}>{t('common.delete')}</button></td>}</tr>))}</tbody>
           </table>
         </div>
       )}

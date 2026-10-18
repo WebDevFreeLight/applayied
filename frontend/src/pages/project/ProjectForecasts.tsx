@@ -11,7 +11,7 @@ const KINDS = ['ForecastToComplete', 'MonthlyEstimate']
 // Financial forecasts (pmo_financial_forecast) — drives EAC = actual + Σ forecast-to-complete.
 export default function ProjectForecasts({ projectId }: { projectId: string }) {
   const { t } = useTranslation()
-  const { hasRole } = useAuth()
+  const { hasPerm } = useAuth()
   const [rows, setRows] = useState<FinancialForecast[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -33,7 +33,7 @@ export default function ProjectForecasts({ projectId }: { projectId: string }) {
 
   return (
     <div>
-      {hasRole('pm') && (
+      {hasPerm('pmo:finance:forecast') && (
         <div className="row" style={{ marginBottom: 12 }}>
           <div className="spacer" />
           <button className="btn primary" onClick={() => setAdd({ periodMonth: '2026-10-01', forecastAmount: 0, kind: 'ForecastToComplete' })}>{t('forecast.add')}</button>

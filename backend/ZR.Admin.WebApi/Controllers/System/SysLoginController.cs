@@ -6,6 +6,7 @@ using ZR.Model.System;
 using ZR.Model.System.Dto;
 using ZR.ServiceCore.Model.Dto;
 using ZR.Service.HR.IService;
+using SqlSugar.IOC;
 
 namespace ZR.Admin.WebApi.Controllers.System
 {
@@ -47,6 +48,40 @@ namespace ZR.Admin.WebApi.Controllers.System
             this.smsCodeLogService = smsCodeLogService;
             this._employeeCoreService = employeeCoreService;
             roleService = sysRoleService;
+        }
+
+        // Cached once per process: does the optional HR module's table exist in this database?
+        // The PMO deployment ships without the HR schema, so the employee-by-user lookup during login
+        // would otherwise fire a failing query (relation "hr_employee_core" does not exist) and log
+        // noise on every sign-in. null = not checked yet, true/false = known.
+        private static bool? _hrEmployeeTableExists;
+
+        /// <summary>
+        /// Resolve the HR employee id linked to a user, but only if the HR module is installed.
+        /// Returns (null, null) when the table is absent or the lookup fails — never throws.
+        /// </summary>
+        private async Task<(long? employeeId, string employeeName)> TryResolveEmployee(long userId, SysUserDto userDto)
+        {
+            try
+            {
+                if (_hrEmployeeTableExists == null)
+                {
+                    var db = DbScoped.SugarScope.GetConnectionScope(0);
+                    _hrEmployeeTableExists = db.DbMaintenance.IsAnyTable("hr_employee_core", false);
+                }
+                if (_hrEmployeeTableExists != true) return (null, null);   // HR module not installed — skip
+
+                var employees = await _employeeCoreService.GetListAsync(e => e.UserId.HasValue && e.UserId.Value == userId);
+                var employee = employees.FirstOrDefault();
+                return employee != null ? (employee.EmployeeId, userDto.NickName ?? userDto.UserName) : (null, null);
+            }
+            catch (Exception ex)
+            {
+                // Missing relation or any other lookup failure: remember so we stop retrying, and continue login.
+                _hrEmployeeTableExists = false;
+                Console.WriteLine($"Employee lookup skipped for user {userId}: {ex.Message}");
+                return (null, null);
+            }
         }
 
         /// <summary>
@@ -120,24 +155,8 @@ namespace ZR.Admin.WebApi.Controllers.System
                 Console.WriteLine($"Permission cache failed for user {user.UserId}: {ex.Message}");
             }
 
-            // Get employee ID linked to this user (if exists)
-            long? employeeId = null;
-            string employeeName = null;
-            try
-            {
-                long userId = user.UserId;
-                var employees = await _employeeCoreService.GetListAsync(e => e.UserId.HasValue && e.UserId.Value == userId);
-                var employee = employees.FirstOrDefault();
-                if (employee != null)
-                {
-                    employeeId = employee.EmployeeId;
-                    employeeName = userDto.NickName ?? userDto.UserName;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Employee lookup failed for user {user.UserId}: {ex.Message}");
-            }
+            // Get employee ID linked to this user (only if the optional HR module is installed).
+            var (employeeId, employeeName) = await TryResolveEmployee(user.UserId, userDto);
 
             // Return complete authentication data in one response
             return SUCCESS(new {
@@ -519,24 +538,8 @@ namespace ZR.Admin.WebApi.Controllers.System
                 Console.WriteLine($"Permission cache failed for user {user.UserId}: {ex.Message}");
             }
 
-            // Get employee ID linked to this user (if exists)
-            long? employeeId = null;
-            string employeeName = null;
-            try
-            {
-                long userId = user.UserId;
-                var employees = await _employeeCoreService.GetListAsync(e => e.UserId.HasValue && e.UserId.Value == userId);
-                var employee = employees.FirstOrDefault();
-                if (employee != null)
-                {
-                    employeeId = employee.EmployeeId;
-                    employeeName = userDto.NickName ?? userDto.UserName;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Employee lookup failed for user {user.UserId}: {ex.Message}");
-            }
+            // Get employee ID linked to this user (only if the optional HR module is installed).
+            var (employeeId, employeeName) = await TryResolveEmployee(user.UserId, userDto);
 
             // Return complete authentication data in one response
             return SUCCESS(new {

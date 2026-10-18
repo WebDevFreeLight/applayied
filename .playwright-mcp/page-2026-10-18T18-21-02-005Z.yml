@@ -1,0 +1,101 @@
+- generic [ref=f8e3]:
+  - complementary [ref=f8e4]:
+    - generic [ref=f8e5]:
+      - text: PMO Portal
+      - generic [ref=f8e6]: Project Portfolio & Financial Control
+    - link "Dashboard" [ref=f8e7] [cursor=pointer]:
+      - /url: /
+    - link "Projects" [ref=f8e8] [cursor=pointer]:
+      - /url: /projects
+    - link "Tasks" [ref=f8e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "Milestones" [ref=f8e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "Risks & Issues" [ref=f8e11] [cursor=pointer]:
+      - /url: /risks
+    - link "Change Requests" [ref=f8e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "Finance" [ref=f8e13] [cursor=pointer]:
+      - /url: /finance
+    - link "Automation & Logs" [ref=f8e14] [cursor=pointer]:
+      - /url: /activity
+    - link "Cost Categories" [ref=f8e15] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f8e16]: Administration
+    - link "Users" [ref=f8e17] [cursor=pointer]:
+      - /url: /admin/users
+    - link "Roles" [ref=f8e18] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "Menus & Permissions" [ref=f8e19] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "Departments" [ref=f8e20] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "Positions" [ref=f8e21] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "Dictionaries" [ref=f8e22] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "Configuration" [ref=f8e23] [cursor=pointer]:
+      - /url: /admin/config
+    - link "Notices" [ref=f8e24] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "Scheduled Tasks" [ref=f8e25] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "Task Logs" [ref=f8e26] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "Login Log" [ref=f8e27] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "Sessions" [ref=f8e28] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "Operation Log" [ref=f8e29] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "Online Users" [ref=f8e30] [cursor=pointer]:
+      - /url: /admin/online
+    - link "Server Monitor" [ref=f8e31] [cursor=pointer]:
+      - /url: /admin/server
+    - link "Messages" [ref=f8e32] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "Profile" [ref=f8e33] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f8e34]:
+    - banner [ref=f8e35]:
+      - strong [ref=f8e36]: PMO Portal
+      - generic [ref=f8e37]:
+        - button "🔔" [ref=f8e39] [cursor=pointer]
+        - button "☀️" [ref=f8e40] [cursor=pointer]
+        - button "العربية" [ref=f8e41] [cursor=pointer]
+        - generic [ref=f8e42]: مدير · admin
+        - button "Sign out" [ref=f8e43] [cursor=pointer]
+    - main [ref=f8e44]:
+      - generic [ref=f8e45]:
+        - generic [ref=f8e46]:
+          - heading "Executive Dashboard" [level=2] [ref=f8e47]
+          - button "✨ AI Insights" [disabled] [ref=f8e48]
+          - generic [ref=f8e49]:
+            - generic [ref=f8e51]:
+              - log [ref=f8e53]
+              - generic [ref=f8e55]:
+                - generic [ref=f8e56]: "Department: All"
+                - combobox [ref=f8e58]
+            - generic [ref=f8e65]:
+              - log [ref=f8e67]
+              - generic [ref=f8e69]:
+                - generic [ref=f8e70]: "Owner: All"
+                - combobox [ref=f8e72]
+            - generic [ref=f8e79]:
+              - log [ref=f8e81]
+              - generic [ref=f8e83]:
+                - generic [ref=f8e84]: "Projects: All"
+                - combobox [ref=f8e86]
+            - generic [ref=f8e93]:
+              - log [ref=f8e95]
+              - generic [ref=f8e97]:
+                - generic [ref=f8e98]: "Status: All"
+                - combobox [ref=f8e100]
+            - generic [ref=f8e107]:
+              - log [ref=f8e109]
+              - generic [ref=f8e111]:
+                - generic [ref=f8e112]: "Category: All"
+                - combobox [ref=f8e114]
+            - textbox "Reporting cutoff" [ref=f8e120]: 2026-09-30
+        - generic [ref=f8e121]: Loading…
+  - button "✨" [ref=f8e122] [cursor=pointer]

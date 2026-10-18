@@ -14,6 +14,7 @@ import Finance from './pages/Finance'
 import ProjectDetail from './pages/ProjectDetail'
 import Categories from './pages/Categories'
 import Activity from './pages/Activity'
+import Employees from './pages/Employees'
 import Users from './pages/admin/Users'
 import Roles from './pages/admin/Roles'
 import Menus from './pages/admin/Menus'
@@ -63,6 +64,7 @@ export default function App() {
           <Route path="/finance" element={<RequirePerm perm="pmo:finance:list"><Finance /></RequirePerm>} />
           <Route path="/categories" element={<RequirePerm perm="pmo:category:list"><Categories /></RequirePerm>} />
           <Route path="/activity" element={<RequirePerm perm="pmo:automation:list"><Activity /></RequirePerm>} />
+          <Route path="/employees" element={<RequirePerm perm="pmo:employee:list"><Employees /></RequirePerm>} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/roles" element={<Roles />} />
           <Route path="/admin/menus" element={<Menus />} />

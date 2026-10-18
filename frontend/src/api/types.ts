@@ -100,3 +100,14 @@ export interface FinancialForecast { forecastId: string; projectId: string; peri
 export interface AutomationRun { runId: string; ruleKey: string; triggeredAt: string; status: string; detail?: string; dedupeKey?: string }
 export interface OutboxNotification { notificationId: string; type: string; subject?: string; body?: string; targetUserId?: string; createdAt: string; sentAt?: string; status: string }
 export interface AuditEvent { auditId: string; entityType: string; entityId: string; action: string; actorUserId: string; detail?: string; actedAt: string; actorName?: string }
+
+// PMO employee directory (over hr_employee_core)
+export interface Employee {
+  employeeId: string
+  userId?: string
+  userName?: string
+  employeeCode: string
+  hireDate?: string
+  terminationDate?: string
+  isActive: boolean
+}

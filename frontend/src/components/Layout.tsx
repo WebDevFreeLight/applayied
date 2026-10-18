@@ -18,6 +18,7 @@ const LINKS: { to: string; key: string; end?: boolean; perm?: string }[] = [
   { to: '/change-requests', key: 'changeRequests', perm: 'pmo:changerequest:list' },
   { to: '/finance', key: 'finance', perm: 'pmo:finance:list' },
   { to: '/activity', key: 'activity', perm: 'pmo:automation:list' },
+  { to: '/employees', key: 'employees', perm: 'pmo:employee:list' },
   { to: '/categories', key: 'categories', perm: 'pmo:category:list' },
 ]
 // Admin links appear only when the user holds the matching list permission.
@@ -86,7 +87,7 @@ export default function Layout() {
         </header>
         <main className="content"><Outlet /></main>
       </div>
-      <AiAssistant />
+      {hasPerm('pmo:ai:use') && <AiAssistant />}
     </div>
   )
 }

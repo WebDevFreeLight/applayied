@@ -62,7 +62,7 @@ export default function ChangeRequests({ projectId: pin }: { projectId?: string 
         {!pin && <div style={{ minWidth: 220 }}><Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
           value={projectId} onChange={(v) => setProjectId(v || '')}
           placeholder={`${t('project.title')}: ${t('common.all')}`} /></div>}
-        <button className="btn primary" onClick={() => setEdit({ projectId: pin || undefined })}>{t('cr.newCr')}</button>
+        {hasPerm('pmo:changerequest:add') && <button className="btn primary" onClick={() => setEdit({ projectId: pin || undefined })}>{t('cr.newCr')}</button>}
       </div>
       {error && <ErrorBox message={error} />}
       {loading ? <Loading /> : rows.length === 0 ? <Empty /> : (
@@ -77,7 +77,7 @@ export default function ChangeRequests({ projectId: pin }: { projectId?: string 
                 <td className="row">
                   <button className="btn sm" onClick={() => setView(c)}>{t('project.details')}</button>
                   <button className="btn sm" onClick={() => openHistory(c)}>{t('cr.history')}</button>
-                  {c.status === 'Draft' && <button className="btn sm" onClick={() => submit(c)}>{t('cr.submit')}</button>}
+                  {c.status === 'Draft' && hasPerm('pmo:changerequest:submit') && <button className="btn sm" onClick={() => submit(c)}>{t('cr.submit')}</button>}
                   {canDecide(c) && <>
                     <button className="btn sm" onClick={() => setDecide({ cr: c, action: 'Approve', reason: '' })}>{t('cr.approve')}</button>
                     <button className="btn sm" onClick={() => setDecide({ cr: c, action: 'Reject', reason: '' })}>{t('cr.reject')}</button>

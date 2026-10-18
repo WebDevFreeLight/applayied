@@ -129,3 +129,12 @@ export const aiDashboardInsights = (facts: unknown, lang = 'en') =>
 export const runAutomation = (asOf?: string) =>
   unwrap<{ triggeredBy: string; asOf: string; aiUsed: boolean; results: { ruleKey: string; status: string; candidates: number; created: number; skipped: number; detail: string }[] }>(
     api.post('/pmo/admin/run-automation', null, { params: asOf ? { asOf } : {} }))
+
+// ---- employees (PMO directory) ----------------------------------------------
+export const listEmployees = (params: Record<string, unknown>) =>
+  unwrap<import('./types').Paged<import('./types').Employee>>(api.get('/pmo/employee/list', { params }))
+export const addEmployee = (dto: Record<string, unknown>) => unwrap<string>(api.post('/pmo/employee', dto))
+export const updateEmployee = (dto: Record<string, unknown>) => unwrap<number>(api.put('/pmo/employee', dto))
+export const removeEmployee = (employeeId: string) => unwrap<number>(api.delete(`/pmo/employee/${employeeId}`))
+export const unlinkedUsers = (search?: string) =>
+  unwrap<{ id: string; name: string }[]>(api.get('/pmo/employee/unlinked-users', { params: search ? { search } : {} }))

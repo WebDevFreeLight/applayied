@@ -1,9 +1,14 @@
+using System.Linq;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using MiniExcelLibs;
 using SqlSugar;
 using ZR.Model;
 using ZR.Model.System;
 using ZR.Model.System.Dto;
+using ZR.ServiceCore.Services;
+using ZR.ServiceCore.Signalr;
 
 namespace ZR.Admin.WebApi.Controllers.System
 {
@@ -18,17 +23,20 @@ namespace ZR.Admin.WebApi.Controllers.System
         private readonly ISysRoleService RoleService;
         private readonly ISysPostService PostService;
         private readonly ISysUserPostService UserPostService;
+        private readonly IHubContext<MessageHub> HubContext;
 
         public SysUserController(
             ISysUserService userService,
             ISysRoleService roleService,
             ISysPostService postService,
-            ISysUserPostService userPostService)
+            ISysUserPostService userPostService,
+            IHubContext<MessageHub> hubContext)
         {
             UserService = userService;
             RoleService = roleService;
             PostService = postService;
             UserPostService = userPostService;
+            HubContext = hubContext;
         }
 
         /// <summary>
@@ -133,6 +141,23 @@ namespace ZR.Admin.WebApi.Controllers.System
             if (user == null) { return ToResponse(ApiResult.Error(101, "Request parameters are invalid")); }
 
             int result = UserService.ChangeUserStatus(user);
+
+            // If the account was just DISABLED (status != 0), kick any live session immediately:
+            // push the forceUser event to every SignalR connection of that user (the client signs
+            // itself out), drop those connections from the online registry, and clear the cached
+            // permission set so a stale token can't keep resolving permissions.
+            if (result > 0 && user.Status != 0)
+            {
+                var connections = MessageHub.OnlineClients.Values
+                    .Where(u => u.Userid == user.UserId)
+                    .Select(u => u.ConnnectionId).ToList();
+                if (connections.Count > 0)
+                    HubContext.Clients.Clients(connections)
+                        .SendAsync(HubsConstant.ForceUser, new { Reason = "Your account has been disabled by an administrator." });
+                foreach (var c in connections) MessageHub.OnlineClients.TryRemove(c, out _);
+                CacheService.RemoveUserPerms(GlobalConstant.UserPermKEY + user.UserId);
+            }
+
             return ToResponse(result);
         }
 
