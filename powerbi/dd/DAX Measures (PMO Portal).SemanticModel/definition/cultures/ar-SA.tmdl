@@ -1,0 +1,186 @@
+cultureInfo ar-SA
+	translations
+		model Model
+			table 'Q2 Overdue incomplete tasks (delivery)'
+				caption: س2 المهام غير المكتملة المتأخرة
+			table 'Q1 Project financial performance (finance fact, one row per project)'
+				caption: س1 الأداء المالي للمشاريع
+			table 'Q3 High-exposure OPEN risks (risk & governance)'
+				caption: س3 المخاطر المفتوحة عالية التعرض
+			table 'Q4 Period spend & forecast (finance, monthly series for a cost-trend visual)'
+				caption: س4 الإنفاق والتوقعات الشهرية
+			table 'Q5Milestone status & roadmap (delivery)'
+				caption: س5 حالة المراحل الرئيسية
+			table 'public pmo_project'
+				caption: المشاريع
+				column code
+					caption: رمز المشروع
+				column name
+					caption: اسم المشروع
+				column status
+					caption: حالة المشروع
+				column priority
+					caption: الأولوية
+				column start_date
+					caption: تاريخ البدء
+				column planned_end_date
+					caption: تاريخ الانتهاء المخطط
+				column initial_approved_budget
+					caption: الميزانية المعتمدة الأولية
+				column status_ar
+					caption: حالة المشروع (عربي)
+			table 'public pmo_task'
+				caption: المهام
+				column title
+					caption: عنوان المهمة
+				column status
+					caption: حالة المهمة
+				column priority
+					caption: الأولوية
+				column due_date
+					caption: تاريخ الاستحقاق
+				column weight
+					caption: الوزن
+				column progress_pct
+					caption: نسبة الإنجاز
+				column status_ar
+					caption: حالة المهمة (عربي)
+			table 'public pmo_risk'
+				caption: المخاطر والمشكلات
+				column kind
+					caption: النوع
+				column title
+					caption: عنوان الخطر
+				column probability
+					caption: الاحتمالية
+				column impact
+					caption: الأثر
+				column score
+					caption: درجة التعرض
+				column status
+					caption: الحالة
+			table 'public pmo_milestone'
+				caption: المراحل الرئيسية
+				column due_date
+					caption: تاريخ الاستحقاق
+				column status
+					caption: الحالة
+			table 'public pmo_change_request'
+				caption: طلبات التغيير
+			table 'public pmo_cost_transaction'
+				caption: حركات التكلفة
+				column amount
+					caption: المبلغ
+				column txn_date
+					caption: تاريخ الحركة
+				column status
+					caption: الحالة
+			table 'public pmo_budget_revision'
+				caption: تعديلات الميزانية
+				column amount
+					caption: المبلغ
+				column status
+					caption: الحالة
+			table 'public pmo_financial_forecast'
+				caption: التوقعات المالية
+				column period_month
+					caption: شهر الفترة
+				column forecast_amount
+					caption: المبلغ المتوقع
+			table 'public pmo_cost_category'
+				caption: فئات التكلفة
+			table 'public sys_user'
+				caption: المستخدمون
+			table 'public sys_dept'
+				caption: الإدارات
+				column deptname
+					caption: اسم الإدارة
+			table Calendar
+				caption: التقويم
+				column Date
+					caption: التاريخ
+				column Year
+					caption: السنة
+				column Month
+					caption: الشهر (رقمي)
+				column MonthName
+					caption: اسم الشهر
+				column Quarter
+					caption: الربع
+				column MonthNameAr
+					caption: اسم الشهر (عربي)
+			table Snapshot
+				caption: تاريخ اللقطة
+				column Snapshot
+					caption: تاريخ اللقطة
+			table _Measures
+				caption: المقاييس
+				measure 'Snapshot Date'
+					caption: تاريخ اللقطة
+				measure 'Overdue Tasks'
+					caption: المهام المتأخرة
+				measure 'Task Completion %'
+					caption: نسبة إنجاز المهام
+				measure 'Approved Budget'
+					caption: الميزانية المعتمدة
+				measure 'Actual Spend'
+					caption: الإنفاق الفعلي
+				measure 'Budget Utilization %'
+					caption: نسبة استخدام الميزانية
+				measure 'Remaining Budget'
+					caption: الميزانية المتبقية
+				measure 'Forecast To Complete'
+					caption: التكلفة المتوقعة حتى الإنجاز
+				measure EAC
+					caption: التكلفة التقديرية عند الإنجاز
+				measure 'Projected Variance'
+					caption: الانحراف المتوقع
+				measure 'Projected Overruns'
+					caption: المشاريع المتوقع تجاوزها
+				measure 'Total Projects'
+					caption: إجمالي المشاريع
+				measure 'Active Projects'
+					caption: المشاريع النشطة
+				measure 'Open High Risks'
+					caption: المخاطر المفتوحة العالية
+				measure 'Total Tasks'
+					caption: إجمالي المهام
+				measure 'Open Tasks'
+					caption: المهام المفتوحة
+				measure 'Overdue Rate %'
+					caption: نسبة التأخر
+				measure 'Tasks Done %'
+					caption: نسبة المهام المنجزة
+				measure 'Overdue Milestones'
+					caption: المراحل الرئيسية المتأخرة
+				measure 'Milestones Achieved %'
+					caption: نسبة المراحل المحققة
+				measure 'Spend vs Forecast (Period)'
+					caption: الإنفاق مقابل التوقع (الفترة)
+				measure 'Approved Budget (as at snapshot)'
+					caption: الميزانية المعتمدة (حتى تاريخ اللقطة)
+				measure 'Open High Risks incl. Mitigating'
+					caption: المخاطر العالية غير المغلقة
+				measure 'Snapshot Label'
+					caption: وصف اللقطة
+				measure 'SQL Overdue Tasks'
+					caption: SQL المهام المتأخرة
+				measure 'SQL Approved Budget'
+					caption: SQL الميزانية المعتمدة
+				measure 'SQL Actual Spend'
+					caption: SQL الإنفاق الفعلي
+				measure 'SQL Budget Utilization %'
+					caption: SQL نسبة استخدام الميزانية
+				measure 'SQL Projected Variance'
+					caption: SQL الانحراف المتوقع
+				measure 'SQL Open High Risks'
+					caption: SQL المخاطر المفتوحة العالية
+				measure 'SQL Overdue Milestones'
+					caption: SQL المراحل الرئيسية المتأخرة
+				measure 'SQL Forecast To Complete'
+					caption: SQL التكلفة المتوقعة حتى الإنجاز
+			table Language
+				caption: اللغة
+				column Language
+					caption: اللغة
+

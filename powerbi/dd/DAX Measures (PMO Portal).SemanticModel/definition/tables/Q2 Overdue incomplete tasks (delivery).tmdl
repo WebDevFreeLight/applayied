@@ -108,7 +108,5 @@ table 'Q2 Overdue incomplete tasks (delivery)'
 				in
 				    Source
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

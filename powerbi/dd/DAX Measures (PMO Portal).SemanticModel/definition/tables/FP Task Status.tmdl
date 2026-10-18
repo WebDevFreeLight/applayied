@@ -1,0 +1,51 @@
+/// Language-aware field parameter: rows are filtered to the selected language through the relationship to Language[LangCode].
+table 'FP Task Status'
+	lineageTag: 2b7216c4-aa39-449e-9275-acc668e14fb7
+
+	column 'FP Task Status Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 47cb7e44-b541-421c-b745-a7d014f52877
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+	column 'FP Task Status Fields'
+		dataType: string
+		isHidden
+		lineageTag: c6173cea-2e6f-4af2-b0b4-be8df41f388d
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'FP Task Status Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	column 'FP Task Status'
+		dataType: string
+		lineageTag: fe42119a-ef33-44be-9289-eb2946f1b0be
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'FP Task Status Order'
+
+		relatedColumnDetails
+			groupByColumn: 'FP Task Status Fields'
+
+	column 'FP Task Status Lang'
+		dataType: string
+		isHidden
+		lineageTag: e3c02ee8-e61f-48cb-a932-138da0ad24f8
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+	partition 'FP Task Status' = calculated
+		mode: import
+		source =
+				{
+				    ("Task status", NAMEOF('public pmo_task'[status]), 0, "en"),
+				    ("حالة المهمة", NAMEOF('public pmo_task'[status_ar]), 1, "ar")
+				}
+

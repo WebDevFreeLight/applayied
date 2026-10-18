@@ -51,7 +51,5 @@ table 'Q4 Period spend & forecast (finance, monthly series for a cost-trend visu
 				in
 				    Source
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

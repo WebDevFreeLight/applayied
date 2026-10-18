@@ -131,7 +131,5 @@ table 'Q1 Project financial performance (finance fact, one row per project)'
 				in
 				    Source
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

@@ -1,0 +1,67 @@
+/// Language-aware field parameter: rows are filtered to the selected language through the relationship to Language[LangCode].
+table 'FP Scorecard'
+	lineageTag: 1ca11427-191a-4400-a612-03ac2a44506a
+
+	column 'FP Scorecard Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d1a15d25-8201-4a78-aac3-703fdb0b3490
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+	column 'FP Scorecard Fields'
+		dataType: string
+		isHidden
+		lineageTag: cd128ed0-c673-4e1d-b8e3-8f73b6d83beb
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'FP Scorecard Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	column 'FP Scorecard'
+		dataType: string
+		lineageTag: 16b187b1-06f6-4d45-8431-86b97ced067d
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'FP Scorecard Order'
+
+		relatedColumnDetails
+			groupByColumn: 'FP Scorecard Fields'
+
+	column 'FP Scorecard Lang'
+		dataType: string
+		isHidden
+		lineageTag: d47e82c7-dc59-48e5-9fd8-fafa216bbb14
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+	partition 'FP Scorecard' = calculated
+		mode: import
+		source =
+				{
+				    ("Project", NAMEOF('public pmo_project'[name]), 0, "en"),
+				    ("Status", NAMEOF('public pmo_project'[status]), 1, "en"),
+				    ("Approved budget", NAMEOF('_Measures'[Approved Budget]), 2, "en"),
+				    ("Actual spend", NAMEOF('_Measures'[Actual Spend]), 3, "en"),
+				    ("Utilization", NAMEOF('_Measures'[Budget Utilization %]), 4, "en"),
+				    ("Projected variance", NAMEOF('_Measures'[Projected Variance]), 5, "en"),
+				    ("Task completion", NAMEOF('_Measures'[Task Completion %]), 6, "en"),
+				    ("Overdue tasks", NAMEOF('_Measures'[Overdue Tasks]), 7, "en"),
+				    ("High risks", NAMEOF('_Measures'[Open High Risks]), 8, "en"),
+				    ("المشروع", NAMEOF('public pmo_project'[name]), 9, "ar"),
+				    ("الحالة", NAMEOF('public pmo_project'[status_ar]), 10, "ar"),
+				    ("الميزانية المعتمدة", NAMEOF('_Measures'[Approved Budget]), 11, "ar"),
+				    ("الإنفاق الفعلي", NAMEOF('_Measures'[Actual Spend]), 12, "ar"),
+				    ("نسبة الاستخدام", NAMEOF('_Measures'[Budget Utilization %]), 13, "ar"),
+				    ("الانحراف المتوقع", NAMEOF('_Measures'[Projected Variance]), 14, "ar"),
+				    ("نسبة إنجاز المهام", NAMEOF('_Measures'[Task Completion %]), 15, "ar"),
+				    ("المهام المتأخرة", NAMEOF('_Measures'[Overdue Tasks]), 16, "ar"),
+				    ("المخاطر العالية", NAMEOF('_Measures'[Open High Risks]), 17, "ar")
+				}
+

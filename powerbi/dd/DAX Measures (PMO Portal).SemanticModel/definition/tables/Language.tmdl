@@ -1,0 +1,29 @@
+/// Report language switch (English / العربية). Single-select slicer; drives the label measures and the language field parameters.
+table Language
+	lineageTag: ad2661c5-d38d-4ec2-94b2-b7b6d4daf5fb
+
+	column LangCode
+		dataType: string
+		lineageTag: b90bee01-ed66-48aa-b65a-e4684a68152d
+		summarizeBy: none
+		sourceColumn: [LangCode]
+
+	column Language
+		dataType: string
+		lineageTag: 11a8a480-e99c-47bc-8be0-3d8fbdae16a1
+		summarizeBy: none
+		sourceColumn: [Language]
+		sortByColumn: LangSort
+
+	column LangSort
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 18f7f247-b8eb-4b57-9d76-63ef01eac09b
+		summarizeBy: none
+		sourceColumn: [LangSort]
+
+	partition Language = calculated
+		mode: import
+		source = DATATABLE ( "LangCode", STRING, "Language", STRING, "LangSort", INTEGER, { { "en", "English", 1 }, { "ar", "العربية", 2 } } )
+

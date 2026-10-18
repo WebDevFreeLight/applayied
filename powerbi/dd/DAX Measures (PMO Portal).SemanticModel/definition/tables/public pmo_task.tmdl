@@ -178,6 +178,12 @@ table 'public pmo_task'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Task status in Arabic (for the Arabic report language).
+	column status_ar = SWITCH ( 'public pmo_task'[status], "Done", "منجزة", "InProgress", "قيد التنفيذ", "ToDo", "لم تبدأ", "Blocked", "متوقفة", 'public pmo_task'[status] )
+		dataType: string
+		lineageTag: 10b6e263-8ca2-41bb-8240-818a634e295c
+		summarizeBy: none
+
 	partition 'public pmo_task' = m
 		mode: import
 		source =

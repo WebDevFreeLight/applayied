@@ -1,0 +1,51 @@
+/// Language-aware field parameter: rows are filtered to the selected language through the relationship to Language[LangCode].
+table 'FP Month'
+	lineageTag: caf287fd-7717-4a95-adac-926e687bcd13
+
+	column 'FP Month Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e229c8d7-4ba4-4e52-bd15-2d94e416ec47
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+	column 'FP Month Fields'
+		dataType: string
+		isHidden
+		lineageTag: e35b8338-dfec-4cfb-b13c-87a7a98efee4
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'FP Month Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	column 'FP Month'
+		dataType: string
+		lineageTag: c0a9c52e-8197-464a-a0e2-9b6acb5b5d1c
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'FP Month Order'
+
+		relatedColumnDetails
+			groupByColumn: 'FP Month Fields'
+
+	column 'FP Month Lang'
+		dataType: string
+		isHidden
+		lineageTag: 849241f3-3520-4b6b-abba-37bbf59b5fec
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+	partition 'FP Month' = calculated
+		mode: import
+		source =
+				{
+				    ("Month", NAMEOF('Calendar'[MonthName]), 0, "en"),
+				    ("الشهر", NAMEOF('Calendar'[MonthNameAr]), 1, "ar")
+				}
+

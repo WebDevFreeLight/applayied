@@ -11,7 +11,7 @@
         {
           "location": {
             "x": 620.84129543726806,
-            "y": 137.37418044737274
+            "y": 162.37418044737274
           },
           "nodeIndex": "public pmo_budget_revision",
           "nodeLineageTag": "600bf6eb-9019-4e73-a179-16d3630acc67",
@@ -24,7 +24,7 @@
         {
           "location": {
             "x": 628.09647012360131,
-            "y": 755.49351380862731
+            "y": 780.49351380862731
           },
           "nodeIndex": "public pmo_change_request",
           "nodeLineageTag": "e524eee5-53bc-4756-add4-0ae724b192a8",
@@ -37,7 +37,7 @@
         {
           "location": {
             "x": 336.43620832509237,
-            "y": 174.80907220780841
+            "y": 199.80907220780841
           },
           "nodeIndex": "public pmo_cost_category",
           "nodeLineageTag": "253f7c0f-3625-471a-ac91-2ec3f27cff81",
@@ -50,7 +50,7 @@
         {
           "location": {
             "x": 50,
-            "y": 405.3039530114122
+            "y": 430.3039530114122
           },
           "nodeIndex": "public pmo_cost_transaction",
           "nodeLineageTag": "65a3b8c2-4c44-41ca-9e2f-a1c17be90572",
@@ -63,7 +63,7 @@
         {
           "location": {
             "x": 1366.5633308915412,
-            "y": 459.89640332690851
+            "y": 484.89640332690851
           },
           "nodeIndex": "public pmo_financial_forecast",
           "nodeLineageTag": "c9312bf4-7736-47ce-988d-b8ae713f45a1",
@@ -76,7 +76,7 @@
         {
           "location": {
             "x": 1194.0575592327446,
-            "y": 106.22793733359231
+            "y": 131.22793733359231
           },
           "nodeIndex": "public pmo_milestone",
           "nodeLineageTag": "e215081d-6e0c-403e-ad57-f55984a3d87a",
@@ -89,7 +89,7 @@
         {
           "location": {
             "x": 907.02134275713911,
-            "y": 401.77852108532238
+            "y": 426.77852108532238
           },
           "nodeIndex": "public pmo_project",
           "nodeLineageTag": "a8cfba50-c3c5-49fd-aa43-2b3062eef617",
@@ -102,7 +102,7 @@
         {
           "location": {
             "x": 1253.6199987612897,
-            "y": 813.59409754226817
+            "y": 838.59409754226817
           },
           "nodeIndex": "public pmo_risk",
           "nodeLineageTag": "4da1528b-b180-4aad-bff2-63282fd1c29c",
@@ -115,7 +115,7 @@
         {
           "location": {
             "x": 962.3000599499203,
-            "y": 755.55660706403023
+            "y": 780.55660706403023
           },
           "nodeIndex": "public pmo_task",
           "nodeLineageTag": "9530df5c-a38a-4d23-b4c2-b2f74b64803c",
@@ -128,7 +128,7 @@
         {
           "location": {
             "x": 910.69627849235155,
-            "y": 0
+            "y": 25
           },
           "nodeIndex": "public sys_dept",
           "nodeLineageTag": "70c57705-1270-47ca-b32d-a40e698b5358",
@@ -141,7 +141,7 @@
         {
           "location": {
             "x": 1682.3046534313969,
-            "y": 803.86099964220193
+            "y": 828.86099964220193
           },
           "nodeIndex": "public sys_user",
           "nodeLineageTag": "f87395fb-7e74-4ac5-a81b-5469767ad084",
@@ -154,7 +154,7 @@
         {
           "location": {
             "x": 2653.1814029107,
-            "y": 437.34104988770076
+            "y": 462.34104988770076
           },
           "nodeIndex": "Q5Milestone status & roadmap (delivery)",
           "size": {
@@ -166,7 +166,7 @@
         {
           "location": {
             "x": 2387.7847036768958,
-            "y": 761.0541113775048
+            "y": 786.0541113775048
           },
           "nodeIndex": "Q4 Period spend & forecast (finance, monthly series for a cost-trend visual)",
           "size": {
@@ -178,7 +178,7 @@
         {
           "location": {
             "x": 2402.5633308915412,
-            "y": 431.79704877113409
+            "y": 456.79704877113409
           },
           "nodeIndex": "Q3 High-exposure OPEN risks (risk & governance)",
           "size": {
@@ -190,7 +190,7 @@
         {
           "location": {
             "x": 2112.2019608976034,
-            "y": 741.8503411636907
+            "y": 766.8503411636907
           },
           "nodeIndex": "Q2 Overdue incomplete tasks (delivery)",
           "size": {
@@ -202,7 +202,7 @@
         {
           "location": {
             "x": 2118.5633308915412,
-            "y": 431.79704877113409
+            "y": 456.79704877113409
           },
           "nodeIndex": "Q1 Project financial performance (finance fact, one row per project)",
           "size": {
@@ -214,7 +214,7 @@
         {
           "location": {
             "x": 2887.1814029107,
-            "y": 456.79704877113409
+            "y": 481.79704877113409
           },
           "nodeIndex": "Calendar",
           "size": {
@@ -226,7 +226,7 @@
         {
           "location": {
             "x": 3121.1814029107,
-            "y": 456.79704877113409
+            "y": 481.79704877113409
           },
           "nodeIndex": "_Measures",
           "nodeLineageTag": "dfd035b5-176b-4018-94bc-f8ba669997dc",
@@ -239,12 +239,103 @@
         {
           "location": {
             "x": 3405.1814029107,
-            "y": 456.79704877113409
+            "y": 481.79704877113409
           },
           "nodeIndex": "Snapshot",
           "nodeLineageTag": "5ccec389-9d26-488d-a491-1808855084a1",
           "size": {
             "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4008.050526556588,
+            "y": 97.53449739900168
+          },
+          "nodeIndex": "FP Budget Series",
+          "nodeLineageTag": "dff87de1-a599-42e1-8c0b-f8d5658060ad",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4292.8032734133922,
+            "y": 325.65830526931609
+          },
+          "nodeIndex": "FP Month",
+          "nodeLineageTag": "caf287fd-7717-4a95-adac-926e687bcd13",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4269.0258140621108,
+            "y": 669.741420291861
+          },
+          "nodeIndex": "FP Scorecard",
+          "nodeLineageTag": "1ca11427-191a-4400-a612-03ac2a44506a",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3718.5637497887938,
+            "y": 232.82048424157472
+          },
+          "nodeIndex": "FP Spend Series",
+          "nodeLineageTag": "50b2716d-5391-4a32-9b2a-569215b32d28",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3979.0917304302225,
+            "y": 790.05960014326649
+          },
+          "nodeIndex": "FP Task Status",
+          "nodeLineageTag": "2b7216c4-aa39-449e-9275-acc668e14fb7",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3689.1814029107,
+            "y": 580.870826897903
+          },
+          "nodeIndex": "FP Tasks Value",
+          "nodeLineageTag": "0e3892b7-b006-416a-a168-df6cdc8c95d1",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3985.868417002041,
+            "y": 463.290787668785
+          },
+          "nodeIndex": "Language",
+          "nodeLineageTag": "ad2661c5-d38d-4ec2-94b2-b7b6d4daf5fb",
+          "size": {
+            "height": 152,
             "width": 234
           },
           "zIndex": 0

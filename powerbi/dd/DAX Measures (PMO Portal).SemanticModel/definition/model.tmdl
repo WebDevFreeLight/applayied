@@ -71,6 +71,14 @@ ref table LocalDateTable_4c72c45a-8fea-4b20-925a-54707220baa6
 ref table Calendar
 ref table Snapshot
 ref table _Measures
+ref table Language
+ref table 'FP Month'
+ref table 'FP Spend Series'
+ref table 'FP Budget Series'
+ref table 'FP Task Status'
+ref table 'FP Tasks Value'
+ref table 'FP Scorecard'
 
 ref cultureInfo en-US
+ref cultureInfo ar-SA
 

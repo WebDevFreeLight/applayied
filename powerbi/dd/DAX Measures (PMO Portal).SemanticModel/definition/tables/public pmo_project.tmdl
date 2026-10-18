@@ -198,6 +198,12 @@ table 'public pmo_project'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Project status in Arabic.
+	column status_ar = SWITCH ( 'public pmo_project'[status], "Active", "نشط", "OnHold", "معلّق", "Planning", "تخطيط", "Completed", "مكتمل", 'public pmo_project'[status] )
+		dataType: string
+		lineageTag: ee13c091-c91c-4c9a-9952-c4f7acd35715
+		summarizeBy: none
+
 	partition 'public pmo_project' = m
 		mode: import
 		source =

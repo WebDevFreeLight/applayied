@@ -251,3 +251,27 @@ relationship 'public pmo_task_assignee_user_id_public sys_user_userid'
 	fromColumn: 'public pmo_task'.assignee_user_id
 	toColumn: 'public sys_user'.userid
 
+relationship 'FP Month_FP Month Lang_Language_LangCode'
+	fromColumn: 'FP Month'.'FP Month Lang'
+	toColumn: Language.LangCode
+
+relationship 'FP Spend Series_FP Spend Series Lang_Language_LangCode'
+	fromColumn: 'FP Spend Series'.'FP Spend Series Lang'
+	toColumn: Language.LangCode
+
+relationship 'FP Budget Series_FP Budget Series Lang_Language_LangCode'
+	fromColumn: 'FP Budget Series'.'FP Budget Series Lang'
+	toColumn: Language.LangCode
+
+relationship 'FP Task Status_FP Task Status Lang_Language_LangCode'
+	fromColumn: 'FP Task Status'.'FP Task Status Lang'
+	toColumn: Language.LangCode
+
+relationship 'FP Tasks Value_FP Tasks Value Lang_Language_LangCode'
+	fromColumn: 'FP Tasks Value'.'FP Tasks Value Lang'
+	toColumn: Language.LangCode
+
+relationship 'FP Scorecard_FP Scorecard Lang_Language_LangCode'
+	fromColumn: 'FP Scorecard'.'FP Scorecard Lang'
+	toColumn: Language.LangCode
+

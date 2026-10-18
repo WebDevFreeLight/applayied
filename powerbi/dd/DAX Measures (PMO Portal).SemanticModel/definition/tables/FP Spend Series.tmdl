@@ -1,0 +1,53 @@
+/// Language-aware field parameter: rows are filtered to the selected language through the relationship to Language[LangCode].
+table 'FP Spend Series'
+	lineageTag: 50b2716d-5391-4a32-9b2a-569215b32d28
+
+	column 'FP Spend Series Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: abaeb1b3-1797-4aa2-9327-61f7f89af9d1
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+	column 'FP Spend Series Fields'
+		dataType: string
+		isHidden
+		lineageTag: 788a7d56-3cbc-4302-abf5-d9209f324fb8
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'FP Spend Series Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	column 'FP Spend Series'
+		dataType: string
+		lineageTag: b437cf8c-66e4-43a0-a069-59d85cf2d158
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'FP Spend Series Order'
+
+		relatedColumnDetails
+			groupByColumn: 'FP Spend Series Fields'
+
+	column 'FP Spend Series Lang'
+		dataType: string
+		isHidden
+		lineageTag: 8354328d-a3d6-43a6-b4b9-510322355cff
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+	partition 'FP Spend Series' = calculated
+		mode: import
+		source =
+				{
+				    ("Actual spend", NAMEOF('_Measures'[Actual Spend]), 0, "en"),
+				    ("Forecast to complete", NAMEOF('_Measures'[Forecast To Complete]), 1, "en"),
+				    ("الإنفاق الفعلي", NAMEOF('_Measures'[Actual Spend]), 2, "ar"),
+				    ("التكلفة المتوقعة حتى الإنجاز", NAMEOF('_Measures'[Forecast To Complete]), 3, "ar")
+				}
+

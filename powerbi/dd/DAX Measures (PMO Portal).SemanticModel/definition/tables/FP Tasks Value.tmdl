@@ -1,0 +1,51 @@
+/// Language-aware field parameter: rows are filtered to the selected language through the relationship to Language[LangCode].
+table 'FP Tasks Value'
+	lineageTag: 0e3892b7-b006-416a-a168-df6cdc8c95d1
+
+	column 'FP Tasks Value Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e41ae602-b28f-4fc3-acb9-69c781098d11
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+	column 'FP Tasks Value Fields'
+		dataType: string
+		isHidden
+		lineageTag: 947dd053-3244-4ab3-8333-396f294826d2
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'FP Tasks Value Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	column 'FP Tasks Value'
+		dataType: string
+		lineageTag: f3077cd1-aabd-4e50-9912-01d67bec942f
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'FP Tasks Value Order'
+
+		relatedColumnDetails
+			groupByColumn: 'FP Tasks Value Fields'
+
+	column 'FP Tasks Value Lang'
+		dataType: string
+		isHidden
+		lineageTag: 76dc9b7c-33c7-47fa-90a8-d20b14df677f
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+	partition 'FP Tasks Value' = calculated
+		mode: import
+		source =
+				{
+				    ("Tasks", NAMEOF('_Measures'[Total Tasks]), 0, "en"),
+				    ("عدد المهام", NAMEOF('_Measures'[Total Tasks]), 1, "ar")
+				}
+

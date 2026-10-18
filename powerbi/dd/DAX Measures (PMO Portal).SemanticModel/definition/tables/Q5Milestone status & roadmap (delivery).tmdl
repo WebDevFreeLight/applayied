@@ -85,7 +85,5 @@ table 'Q5Milestone status & roadmap (delivery)'
 				in
 				    Source
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

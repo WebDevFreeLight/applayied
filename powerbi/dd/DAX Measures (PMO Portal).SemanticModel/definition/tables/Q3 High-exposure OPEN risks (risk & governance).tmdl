@@ -115,7 +115,5 @@ table 'Q3 High-exposure OPEN risks (risk & governance)'
 				in
 				    Source
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

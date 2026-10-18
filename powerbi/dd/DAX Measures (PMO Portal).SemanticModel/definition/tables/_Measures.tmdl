@@ -195,7 +195,7 @@ table _Measures
 		lineageTag: df6fbdd2-159d-406f-bb72-7555abc1d231
 
 	/// Header text for the dashboard.
-	measure 'Snapshot Label' = "Snapshot: " & FORMAT ( [Snapshot Date], "dd MMM yyyy" ) & "  |  amounts in AED"
+	measure 'Snapshot Label' = IF ( [Lang] = "ar", "تاريخ اللقطة: " & FORMAT ( [Snapshot Date], "yyyy-mm-dd" ) & "  |  المبالغ بالدرهم الإماراتي", "Snapshot: " & FORMAT ( [Snapshot Date], "dd MMM yyyy" ) & "  |  amounts in AED" )
 		displayFolder: 0 Parameters
 		lineageTag: 915ec520-c332-40bf-98cc-12b308f3c685
 
@@ -246,6 +246,206 @@ table _Measures
 		formatString: "AED "#,0
 		displayFolder: 5 Reconciliation
 		lineageTag: 3255699b-f6a7-42ed-bd66-ffdee8fce1a6
+
+	/// Current report language code (en / ar). Defaults to English when nothing is selected.
+	measure Lang = SELECTEDVALUE ( 'Language'[LangCode], "en" )
+		displayFolder: 6 Language
+		lineageTag: f0f9af2a-b635-45d6-80ee-72dc296dd935
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Overview Header' = IF ( [Lang] = "ar", "محفظة مكتب إدارة المشاريع  |  نظرة عامة للإدارة", "PMO Portfolio  |  Management Overview" )
+		displayFolder: 6 Language
+		lineageTag: 8c5cf9e6-ff73-4d9b-8560-7f66b7e7f808
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Recon Header' = IF ( [Lang] = "ar", "مطابقة مؤشرات الأداء  |  Power BI (DAX) مقابل استعلامات SQL", "KPI Reconciliation  |  Power BI (DAX) vs SQL queries" )
+		displayFolder: 6 Language
+		lineageTag: 17b29fcf-64af-4b64-83ee-b6b2f566faf5
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Recon Note' = IF ( [Lang] = "ar", "يعرض كل مؤشر قيمة مقياس DAX (يسار) بجانب نتيجة استعلام SQL الأصلي (يمين). اترك تاريخ اللقطة 30 سبتمبر 2026 دون عوامل تصفية أخرى لمقارنة متطابقة.", "Each KPI shows the DAX measure (left) next to the native SQL query result (right). Keep Snapshot = 30 Sep 2026 and no other filters for a like-for-like comparison." )
+		displayFolder: 6 Language
+		lineageTag: 63dce27a-90ef-4d05-87d1-d2d77f1915dd
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Language' = IF ( [Lang] = "ar", "اللغة / Language", "Language / اللغة" )
+		displayFolder: 6 Language
+		lineageTag: a310106d-f34b-4b13-96a1-15164b8bc46d
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Snapshot Date' = IF ( [Lang] = "ar", "تاريخ اللقطة", "Snapshot date" )
+		displayFolder: 6 Language
+		lineageTag: ac9af959-57c0-4e26-a672-4c29a77e20fc
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Department' = IF ( [Lang] = "ar", "الإدارة", "Department" )
+		displayFolder: 6 Language
+		lineageTag: bcaff2f5-168f-4790-a244-f0c3edc52003
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Project Status' = IF ( [Lang] = "ar", "حالة المشروع", "Project status" )
+		displayFolder: 6 Language
+		lineageTag: d71a3bfc-e67f-46bb-aaa4-4b32ec844200
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Project' = IF ( [Lang] = "ar", "المشروع", "Project" )
+		displayFolder: 6 Language
+		lineageTag: 34b7c3a4-1d9d-40e8-8b09-8ebcdb43836e
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Spend Year' = IF ( [Lang] = "ar", "سنة الإنفاق", "Spend year" )
+		displayFolder: 6 Language
+		lineageTag: 6de48520-bfd8-4ace-a479-07afafcb6cae
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Approved Budget' = IF ( [Lang] = "ar", "الميزانية المعتمدة", "Approved budget" )
+		displayFolder: 6 Language
+		lineageTag: 7332706e-cc89-485f-a819-5695e9e85fbb
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Actual Spend' = IF ( [Lang] = "ar", "الإنفاق الفعلي", "Actual spend" )
+		displayFolder: 6 Language
+		lineageTag: 97b7c07d-103a-4bf9-9f5d-891176ac0c75
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Budget Utilization' = IF ( [Lang] = "ar", "نسبة استخدام الميزانية", "Budget utilization" )
+		displayFolder: 6 Language
+		lineageTag: c2e02a29-4296-43ea-8e79-840c5536860b
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Projected Variance' = IF ( [Lang] = "ar", "الانحراف المتوقع", "Projected variance" )
+		displayFolder: 6 Language
+		lineageTag: 36127200-b183-4eaf-869a-5947368e654c
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Overdue Tasks' = IF ( [Lang] = "ar", "المهام المتأخرة", "Overdue tasks" )
+		displayFolder: 6 Language
+		lineageTag: b9eaaa36-33e7-4e10-ab31-5a8df21324c9
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Open High Risks' = IF ( [Lang] = "ar", "المخاطر المفتوحة العالية (الدرجة ≥ 12)", "Open high risks (score ≥ 12)" )
+		displayFolder: 6 Language
+		lineageTag: cf6004d0-0669-4ea3-94ed-612e28b9d604
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Overdue Milestones' = IF ( [Lang] = "ar", "المراحل الرئيسية المتأخرة", "Overdue milestones" )
+		displayFolder: 6 Language
+		lineageTag: 707bd652-6af0-4647-bedc-7f436e05163f
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Forecast To Complete' = IF ( [Lang] = "ar", "التكلفة المتوقعة حتى الإنجاز", "Forecast to complete" )
+		displayFolder: 6 Language
+		lineageTag: b8afa8ad-9098-4c8b-b2ab-724af2690002
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Chart Spend' = IF ( [Lang] = "ar", "الإنفاق الفعلي الشهري مقابل التكلفة المتوقعة حتى الإنجاز (درهم)", "Monthly actual spend vs forecast to complete (AED)" )
+		displayFolder: 6 Language
+		lineageTag: 54c2f2db-84b5-45ce-94d9-bff278041adc
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Chart Budget EAC' = IF ( [Lang] = "ar", "الميزانية المعتمدة مقابل التكلفة التقديرية عند الإنجاز حسب المشروع (درهم)", "Approved budget vs estimate at completion by project (AED)" )
+		displayFolder: 6 Language
+		lineageTag: 84ee6cb6-a6c5-41a0-86df-4a730803745b
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Chart Tasks' = IF ( [Lang] = "ar", "المهام حسب الحالة", "Tasks by status" )
+		displayFolder: 6 Language
+		lineageTag: 610cd7e5-cace-491d-b420-0abdf9f06a7a
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Scorecard' = IF ( [Lang] = "ar", "بطاقة أداء المشاريع", "Project scorecard" )
+		displayFolder: 6 Language
+		lineageTag: 4fa2e004-54e0-4265-b32a-97059be1551c
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Source PBI' = IF ( [Lang] = "ar", "Power BI (DAX)", "Power BI (DAX)" )
+		displayFolder: 6 Language
+		lineageTag: 7b50a526-ef91-450a-86af-2a97da93313c
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl Source SQL' = IF ( [Lang] = "ar", "استعلام SQL", "SQL query" )
+		displayFolder: 6 Language
+		lineageTag: 7d63fdb6-aac2-47d6-8705-b52a5f42ecd9
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Overdue Tasks PBI' = [Lbl Overdue Tasks] & "  ·  " & [Lbl Source PBI]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: 93c79bf9-0283-4fbc-981a-f48cc0416733
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Overdue Tasks SQL' = [Lbl Overdue Tasks] & "  ·  " & [Lbl Source SQL]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: a70c319f-800f-43dd-a4e5-3c810c402fb8
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Approved Budget PBI' = [Lbl Approved Budget] & "  ·  " & [Lbl Source PBI]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: cd7ce1aa-313f-4aa8-bb11-ce5609dd0af4
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Approved Budget SQL' = [Lbl Approved Budget] & "  ·  " & [Lbl Source SQL]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: 3b6b42b6-586b-4d39-bbc7-d32da3b55cbd
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Actual Spend PBI' = [Lbl Actual Spend] & "  ·  " & [Lbl Source PBI]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: 1f58a3eb-4e09-427b-8476-bf2d5f847f5e
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Actual Spend SQL' = [Lbl Actual Spend] & "  ·  " & [Lbl Source SQL]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: a0ab0747-85ad-4e2f-8469-f64f365617f0
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Budget Utilization PBI' = [Lbl Budget Utilization] & "  ·  " & [Lbl Source PBI]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: fe545475-3113-4db1-859a-98c79e3eab59
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Budget Utilization SQL' = [Lbl Budget Utilization] & "  ·  " & [Lbl Source SQL]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: f6631e58-2c4e-4c41-a8b0-076a9fe49c88
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Projected Variance PBI' = [Lbl Projected Variance] & "  ·  " & [Lbl Source PBI]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: f4f8b811-ae15-42b3-81c4-39009116fa1a
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Projected Variance SQL' = [Lbl Projected Variance] & "  ·  " & [Lbl Source SQL]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: 6f08fa00-6e16-4cc3-a865-b99dec097695
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Open High Risks PBI' = [Lbl Open High Risks] & "  ·  " & [Lbl Source PBI]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: 10d86f39-7d1d-483a-98e1-ac0789fda073
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Open High Risks SQL' = [Lbl Open High Risks] & "  ·  " & [Lbl Source SQL]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: bcd9d4ce-f176-46ca-901e-16d078e8820b
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Overdue Milestones PBI' = [Lbl Overdue Milestones] & "  ·  " & [Lbl Source PBI]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: a161d98f-4fe0-489e-9184-deb0f328d174
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Overdue Milestones SQL' = [Lbl Overdue Milestones] & "  ·  " & [Lbl Source SQL]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: b154587e-7ebe-4cb7-9e65-92f1087012ec
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Forecast To Complete PBI' = [Lbl Forecast To Complete] & "  ·  " & [Lbl Source PBI]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: 800c9a20-f7c9-4557-87b5-5057fb328631
+
+	/// Bilingual label (English / Arabic) driven by the Language slicer.
+	measure 'Lbl R Forecast To Complete SQL' = [Lbl Forecast To Complete] & "  ·  " & [Lbl Source SQL]
+		displayFolder: 6 Language\Reconciliation
+		lineageTag: f5405989-ed67-4655-a658-6dfa60978cf5
 
 	column _
 		isHidden

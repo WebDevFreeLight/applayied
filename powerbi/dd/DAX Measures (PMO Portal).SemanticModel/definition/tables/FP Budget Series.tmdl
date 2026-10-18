@@ -1,0 +1,53 @@
+/// Language-aware field parameter: rows are filtered to the selected language through the relationship to Language[LangCode].
+table 'FP Budget Series'
+	lineageTag: dff87de1-a599-42e1-8c0b-f8d5658060ad
+
+	column 'FP Budget Series Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: cdbb7c97-e306-4db2-a010-2fe1b50513c0
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+	column 'FP Budget Series Fields'
+		dataType: string
+		isHidden
+		lineageTag: 22cb5ca0-66ce-4692-9fe2-8276d2dff78c
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'FP Budget Series Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	column 'FP Budget Series'
+		dataType: string
+		lineageTag: f887738a-82dd-4706-a9d3-f1fa8911d316
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'FP Budget Series Order'
+
+		relatedColumnDetails
+			groupByColumn: 'FP Budget Series Fields'
+
+	column 'FP Budget Series Lang'
+		dataType: string
+		isHidden
+		lineageTag: 8748f1bc-572c-4b7e-b6d1-af4138e469e7
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+	partition 'FP Budget Series' = calculated
+		mode: import
+		source =
+				{
+				    ("Approved budget", NAMEOF('_Measures'[Approved Budget]), 0, "en"),
+				    ("Estimate at completion", NAMEOF('_Measures'[EAC]), 1, "en"),
+				    ("الميزانية المعتمدة", NAMEOF('_Measures'[Approved Budget]), 2, "ar"),
+				    ("التكلفة التقديرية عند الإنجاز", NAMEOF('_Measures'[EAC]), 3, "ar")
+				}
+

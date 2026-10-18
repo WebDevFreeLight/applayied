@@ -1,0 +1,91 @@
+/// Status relative to the snapshot: Achieved, or Overdue (pending & past due), or Upcoming.
+table 'Q5Milestone status & roadmap (delivery)'
+	lineageTag: ba9bb34f-5bc2-412f-9455-1dfef336c555
+
+	column milestone_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b08b776b-94b1-4798-a8a2-a9db273ce746
+		summarizeBy: sum
+		sourceColumn: milestone_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column milestone_name
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 5cbbdc17-eec0-4221-8cc9-4b97e9984e7a
+		summarizeBy: none
+		sourceColumn: milestone_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_code
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 14c06337-0f0e-4675-9273-01b35c67ebc7
+		summarizeBy: none
+		sourceColumn: project_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_name
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 35bc34f5-ca2d-4414-ad23-26e6b480a7cd
+		summarizeBy: none
+		sourceColumn: project_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column dept_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 50361d2d-9f44-49fe-9c73-d77270edc194
+		summarizeBy: sum
+		sourceColumn: dept_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column due_date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 420381bf-53de-45f6-a8bd-9e7033e3b2e6
+		summarizeBy: none
+		sourceColumn: due_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: 440cec3b-4106-44e6-8a6c-4674286f8946
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column roadmap_bucket
+		dataType: string
+		sourceProviderType: nvarchar(-1)
+		lineageTag: ded43d1c-a689-46ee-8a5b-2ea134751ffa
+		summarizeBy: none
+		sourceColumn: roadmap_bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Q5Milestone status & roadmap (delivery)' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("localhost", "MahamDB"), "-- Q5 — Milestone status & roadmap (delivery)#(lf)-- Status relative to the snapshot: Achieved, or Overdue (pending & past due), or Upcoming.#(lf)SELECT  m.milestone_id,#(lf)        m.name              AS milestone_name,#(lf)        p.code              AS project_code,#(lf)        p.name              AS project_name,#(lf)        p.dept_id,#(lf)        m.due_date,#(lf)        m.status,#(lf)        CASE#(lf)            WHEN m.status = 'Achieved'                               THEN 'Achieved'#(lf)            WHEN m.due_date < DATE '2026-09-30' AND m.status <> 'Achieved' THEN 'Overdue'#(lf)            ELSE 'Upcoming'#(lf)        END                 AS roadmap_bucket#(lf)FROM    pmo_milestone m#(lf)JOIN    pmo_project p ON p.project_id = m.project_id#(lf)ORDER BY m.due_date#(lf)", null, [EnableFolding=true])
+				in
+				    Source
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+
