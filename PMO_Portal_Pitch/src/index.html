@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PMO Portal · Investment Proposal</title>
+<!-- Inline background so there is never a white flash before the stylesheet loads. -->
+<style>html,body{background:#05080f;margin:0;height:100%;overflow:hidden}</style>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Loader: hidden once fonts are ready (see controller.js boot()) -->
+<div id="loader" aria-live="polite"><div class="loader-ring"></div><div class="loader-text">Preparing the briefing…</div></div>
+
+<div id="viewport">
+<div id="stage" role="application" aria-label="Interactive executive presentation">
+
+  <canvas id="constellation" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- ===================== 01 · OPENING ===================== -->
+  <section class="scene" id="s-open" data-title="Opening">
+    <div class="open-left">
+      <div class="eyebrow" data-anim="fade">Sahel Holding Group · Investment Committee · October 2026</div>
+      <div class="brand" data-anim="fade"><span class="brand-mark"></span>PMO Portal <span class="brand-sub">Project Portfolio &amp; Financial Control</span></div>
+      <h1 class="kinetic display" data-text="Every dirham. Every milestone. *One* source of *truth.*"></h1>
+      <p class="lede" data-anim="rise">A proposal to run the group's transformation portfolio — delivery, risk, change and money — from one live platform with automation and AI built in.</p>
+      <div class="open-cta" data-anim="rise">
+        <button class="btn primary big" data-action="next">Begin the briefing <span aria-hidden="true">→</span></button>
+        <button class="btn ghost big" id="resume-btn" hidden>Resume at scene <span id="resume-n"></span></button>
+      </div>
+      <div class="open-meta" data-anim="fade">
+        <span><kbd>←</kbd><kbd>→</kbd> navigate</span><span><kbd>F</kbd> full screen</span><span><kbd>P</kbd> pause motion</span><span><kbd>?</kbd> help</span>
+      </div>
+    </div>
+    <div class="open-orbit-label" data-anim="fade"><span class="dot"></span>8 live projects in the pilot portfolio</div>
+    <div class="disclaimer">Fictional organisation. All financial figures are illustrative assumptions.</div>
+  </section>
+
+  <!-- ===================== 02 · PROBLEM ===================== -->
+  <section class="scene" id="s-problem" data-title="The problem">
+    <div class="scene-head">
+      <div class="kicker">02 · The problem</div>
+      <h2 class="kinetic" data-text="The portfolio is run on *spreadsheets,* status emails and memory."></h2>
+    </div>
+    <div class="problem-grid">
+      <div class="stat-card alarm" data-anim="rise"><div class="stat-num" data-count="hit" data-fmt="pct">0</div><div class="stat-label">of decided milestones were <b>missed</b></div><div class="stat-foot" id="pb-hit-foot"></div></div>
+      <div class="stat-card warn" data-anim="rise"><div class="stat-num" data-count="overdue">0</div><div class="stat-label">open tasks already <b>overdue</b></div><div class="stat-foot" id="pb-od-foot"></div></div>
+      <div class="stat-card alarm" data-anim="rise"><div class="stat-num" data-count="overruns">0</div><div class="stat-label">of 8 projects heading <b>over budget</b></div><div class="stat-foot">Visible only at quarter-end today</div></div>
+      <div class="stat-card warn" data-anim="rise"><div class="stat-num" data-count="lag">0</div><div class="stat-label">days from overrun to <b>executive visibility</b></div><div class="stat-foot">Illustrative · manual monthly cycle</div></div>
+    </div>
+    <div class="chaos" aria-hidden="true">
+      <div class="artefact" style="--x:56%;--y:27%;--r:-6deg">📄 Status_Report_v7_FINAL(2).xlsx</div>
+      <div class="artefact" style="--x:72%;--y:38%;--r:4deg">✉ RE: RE: FW: budget for Q3??</div>
+      <div class="artefact" style="--x:58%;--y:50%;--r:-3deg">💬 "Was the vendor switch approved?"</div>
+      <div class="artefact" style="--x:75%;--y:62%;--r:7deg">📊 Exec_pack_Oct — 3 days to build</div>
+      <div class="artefact" style="--x:55%;--y:73%;--r:-8deg">📄 Risk_log_old_DO_NOT_USE.xlsx</div>
+      <div class="artefact" style="--x:71%;--y:84%;--r:2deg">✉ "Who owns the data-quality risk?"</div>
+    </div>
+    <div class="problem-foot" data-anim="fade">Delivery figures from the PMO Portal pilot dataset · overspend & lag are illustrative assumptions</div>
+  </section>
+
+  <!-- ===================== 03 · OPPORTUNITY ===================== -->
+  <section class="scene" id="s-value" data-title="The opportunity">
+    <div class="scene-head center">
+      <div class="kicker">03 · The opportunity</div>
+      <h2 class="kinetic" data-text="One live portfolio, *five* audiences, *one* version of the truth."></h2>
+    </div>
+    <svg class="value-map" viewBox="0 0 1920 1080" aria-hidden="false">
+      <defs>
+        <radialGradient id="hubGlow"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".35"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>
+      </defs>
+      <circle cx="820" cy="600" r="190" fill="url(#hubGlow)"/>
+      <g id="value-spokes"></g>
+      <g class="hub"><circle cx="820" cy="600" r="92" class="hub-core"/><text x="820" y="593" class="hub-t1">PMO</text><text x="820" y="625" class="hub-t2">Portal</text></g>
+      <g id="value-personas"></g>
+    </svg>
+    <div class="persona-panel" id="persona-panel" aria-live="polite"></div>
+    <div class="value-hint" data-anim="fade">Select an audience to see what changes for them</div>
+  </section>
+
+  <!-- ===================== 04 · SOLUTION ===================== -->
+  <section class="scene" id="s-solution" data-title="The solution">
+    <div class="scene-head">
+      <div class="kicker">04 · Solution overview</div>
+      <h2 class="kinetic" data-text="Nine modules. *One* data model. Built and running today."></h2>
+    </div>
+    <div class="solution-wrap">
+      <div class="module-orbit" id="module-orbit">
+        <div class="core-disc"><div class="core-in"><b>PMO Portal</b><span>React · ASP.NET Core · SQL Server</span></div></div>
+      </div>
+      <aside class="module-detail" id="module-detail" aria-live="polite"></aside>
+    </div>
+    <div class="chip-row" data-anim="fade">
+      <span class="chip">Role-based access · permission keys</span><span class="chip">English / العربية (RTL)</span><span class="chip">Light &amp; dark themes</span><span class="chip">Real-time notifications</span><span class="chip">Full audit trail</span>
+    </div>
+  </section>
+
+  <!-- ===================== 05 · ARCHITECTURE ===================== -->
+  <section class="scene" id="s-arch" data-title="Architecture">
+    <div class="scene-head">
+      <div class="kicker">05 · Architecture</div>
+      <h2 class="kinetic" data-text="A layered system you can *trace* end to end."></h2>
+    </div>
+    <div class="arch-wrap">
+      <svg class="arch" id="arch-svg" viewBox="0 0 1240 720"></svg>
+      <aside class="arch-side">
+        <div class="side-label">Trace a live request</div>
+        <div class="trace-buttons" id="trace-buttons">
+          <button class="btn trace" data-trace="dashboard">Open the executive dashboard</button>
+          <button class="btn trace" data-trace="cr">Approve a change request</button>
+          <button class="btn trace" data-trace="ai">Ask the AI assistant</button>
+        </div>
+        <ol class="trace-steps" id="trace-steps"></ol>
+        <div class="arch-detail" id="arch-detail"><div class="muted">Select any layer or component to inspect it.</div></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================== 06 · USE CASE ===================== -->
+  <section class="scene" id="s-usecase" data-title="A real use case">
+    <div class="scene-head">
+      <div class="kicker">06 · A real use case</div>
+      <h2 class="kinetic" data-text="A vendor switch, from *one line* of text to a governed decision."></h2>
+    </div>
+    <div class="journey">
+      <svg class="journey-rail" viewBox="0 0 1700 160" id="journey-rail"></svg>
+      <div class="journey-stage">
+        <div class="journey-card" id="journey-card" aria-live="polite"></div>
+        <div class="project-card">
+          <div class="pc-head"><span class="mono">PRJ-HRP</span> HR Self-Service Portal</div>
+          <div class="pc-row"><span>Approved budget</span><b id="pc-budget">AED 800,000</b></div>
+          <div class="pc-row"><span>Forecast at completion (EAC)</span><b id="pc-eac">AED 930,000</b></div>
+          <div class="pc-bar"><div class="pc-fill" id="pc-fill"></div><div class="pc-mark" id="pc-mark"></div></div>
+          <div class="pc-row"><span>Open high-exposure risks</span><b id="pc-risk">1</b></div>
+          <div class="pc-row"><span>Change request status</span><b id="pc-status" class="pill">—</b></div>
+          <div class="pc-log" id="pc-log"></div>
+        </div>
+      </div>
+      <div class="journey-controls">
+        <button class="btn ghost" id="j-prev">← Previous step</button>
+        <div class="decision" id="j-decision" hidden>
+          <span class="side-label">Committee decision:</span>
+          <button class="btn approve" data-branch="Approved">Approve</button>
+          <button class="btn return" data-branch="Returned">Return</button>
+          <button class="btn reject" data-branch="Rejected">Reject</button>
+        </div>
+        <button class="btn primary" id="j-next">Next step →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 07 · WEB INTELLIGENCE (DASHBOARD) ===================== -->
+  <section class="scene" id="s-dash" data-title="Web intelligence">
+    <div class="dash-top">
+      <div>
+        <div class="kicker">07 · Web intelligence</div>
+        <h2 class="dash-title">Executive Dashboard <span class="live-dot">live</span></h2>
+      </div>
+      <div class="tabs" role="tablist" id="dash-tabs">
+        <button role="tab" class="tab" data-tab="delivery" aria-selected="true">Delivery</button>
+        <button role="tab" class="tab" data-tab="risk">Risk &amp; governance</button>
+        <button role="tab" class="tab" data-tab="finance">Financial</button>
+      </div>
+    </div>
+    <div class="slicer" id="slicer"><span class="side-label">Projects</span></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="dash-body" id="dash-body">
+      <div class="panel p-a"><div class="panel-t" id="pa-t"></div><div class="viz" id="viz-a"></div></div>
+      <div class="panel p-b"><div class="panel-t" id="pb-t"></div><div class="viz" id="viz-b"></div></div>
+      <div class="panel p-c"><div class="panel-t" id="pc-t"></div><div class="viz" id="viz-c"></div></div>
+    </div>
+    <div class="insight" id="insight"><span class="ai-badge">✨ AI insight</span><span id="insight-text"></span></div>
+  </section>
+
+  <!-- ===================== 08 · SIMULATOR / BUSINESS CASE ===================== -->
+  <section class="scene" id="s-sim" data-title="Business case simulator">
+    <div class="scene-head">
+      <div class="kicker">08 · The business case — you set the inputs</div>
+      <h2 class="kinetic" data-text="Move the levers. Watch the *payback* respond."></h2>
+    </div>
+    <div class="sim">
+      <div class="sim-inputs">
+        <label class="ctl"><span>Annual portfolio under management</span><b id="v-portfolio"></b>
+          <input type="range" id="in-portfolio" min="10" max="150" step="5" value="60" aria-label="Portfolio value in AED millions"></label>
+        <label class="ctl"><span>Projects onboarded</span><b id="v-projects"></b>
+          <input type="range" id="in-projects" min="5" max="80" step="1" value="40" aria-label="Number of projects"></label>
+        <label class="ctl"><span>Overrun avoided by earlier visibility</span><b id="v-reduction"></b>
+          <input type="range" id="in-reduction" min="0" max="40" step="1" value="25" aria-label="Overrun reduction percent"></label>
+        <div class="ctl"><span>Rollout strategy</span>
+          <div class="seg" id="in-rollout" role="radiogroup">
+            <button role="radio" data-v="phased" aria-checked="true">Phased (6-month ramp)</button>
+            <button role="radio" data-v="bigbang" aria-checked="false">Big bang (2-month ramp)</button>
+          </div>
+        </div>
+        <button class="btn ghost small" id="sim-reset">Reset to base case</button>
+        <details class="assump" id="assump"><summary>Show model assumptions</summary><div id="assump-list"></div></details>
+      </div>
+      <div class="sim-out">
+        <div class="sim-kpis">
+          <div class="kpi big"><div class="kpi-l">Annual benefit</div><div class="kpi-v" id="o-benefit"></div><div class="kpi-s" id="o-benefit-s"></div></div>
+          <div class="kpi big"><div class="kpi-l">One-off investment</div><div class="kpi-v" id="o-invest"></div><div class="kpi-s" id="o-invest-s"></div></div>
+          <div class="kpi big accent"><div class="kpi-l">Payback</div><div class="kpi-v" id="o-payback"></div><div class="kpi-s">months from go-live</div></div>
+          <div class="kpi big"><div class="kpi-l">3-year net value</div><div class="kpi-v" id="o-net"></div><div class="kpi-s" id="o-roi"></div></div>
+        </div>
+        <div class="panel sim-chart"><div class="panel-t">Cumulative net cash position (AED M) · 36 months</div><div class="viz" id="sim-viz"></div><div class="payback-flag" id="payback-flag">Payback</div></div>
+        <div class="benefit-split"><div class="split-bar"><div id="split-overrun"></div><div id="split-labour"></div></div>
+          <div class="split-legend"><span><i class="sw teal"></i>Overrun avoided <b id="o-overrun"></b></span><span><i class="sw violet"></i>PMO hours released <b id="o-labour"></b></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 09 · AUTOMATION & AI ===================== -->
+  <section class="scene" id="s-auto" data-title="Automation & AI">
+    <div class="scene-head">
+      <div class="kicker">09 · Automation &amp; AI approach</div>
+      <h2 class="kinetic" data-text="Machines do the *chasing.* People make the *decisions.*"></h2>
+    </div>
+    <div class="auto">
+      <div class="auto-left panel">
+        <div class="auto-head">
+          <div class="panel-t">The weekly PMO cycle</div>
+          <div class="seg" id="auto-toggle" role="radiogroup">
+            <button role="radio" data-v="manual" aria-checked="true">Today (manual)</button>
+            <button role="radio" data-v="auto" aria-checked="false">With PMO Portal</button>
+          </div>
+        </div>
+        <div class="cycle" id="cycle"></div>
+        <div class="cycle-total"><span>Hours per week, per PMO analyst</span><b id="cycle-total">0</b></div>
+      </div>
+      <div class="auto-right panel">
+        <div class="auto-head">
+          <div class="panel-t">AI gateway · 12 providers, ordered failover</div>
+          <label class="switch"><input type="checkbox" id="outage"><span></span>Simulate provider outage</label>
+        </div>
+        <svg class="gateway" id="gateway" viewBox="0 0 760 330"></svg>
+        <div class="gw-status" id="gw-status" aria-live="polite"></div>
+        <div class="ai-caps">
+          <div class="cap"><b>Portfolio chat</b><span>scoped to one, all, or compared projects</span></div>
+          <div class="cap"><b>AI Summary</b><span>one-click project brief</span></div>
+          <div class="cap"><b>Risk analysis</b><span>reads the register, suggests mitigations</span></div>
+          <div class="cap"><b>Dashboard insights</b><span>narrates what changed</span></div>
+          <div class="cap"><b>AI fill</b><span>one sentence → a complete form</span></div>
+          <div class="cap guard"><b>Guardrails</b><span>role-scoped data · humans approve · every call audited</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 10 · ROADMAP & DECISION ===================== -->
+  <section class="scene" id="s-roadmap" data-title="Roadmap & decision">
+    <div class="scene-head">
+      <div class="kicker">10 · Testing, delivery &amp; the decision</div>
+      <h2 class="kinetic" data-text="Proven in pilot. Ready to *scale.*"></h2>
+    </div>
+    <div class="road">
+      <svg class="road-svg" id="road-svg" viewBox="0 0 1720 210"></svg>
+      <div class="road-bottom">
+        <div class="phase-detail panel" id="phase-detail" aria-live="polite"></div>
+        <div class="quality panel">
+          <div class="panel-t">Quality gates on every release</div>
+          <ul class="gates" id="gates"></ul>
+        </div>
+        <div class="ask panel">
+          <div class="panel-t">The decision requested today</div>
+          <ol class="ask-list">
+            <li>Approve <b id="ask-amount">—</b> for Phases 1–2</li>
+            <li>Nominate an executive sponsor &amp; PMO product owner</li>
+            <li>Mandate the portal as the single source for portfolio reporting from <b>Q2 2027</b></li>
+          </ol>
+          <div class="ask-case" id="ask-case"></div>
+          <button class="btn ghost small" data-action="home">↺ Return to opening</button>
+        </div>
+      </div>
+    </div>
+    <div class="closing kinetic display-sm" id="closing" data-text="Decide once. *See everything.*"></div>
+  </section>
+
+  <!-- ===================== PRESENTER CHROME ===================== -->
+  <nav class="hud" id="hud" aria-label="Presentation controls">
+    <button class="hud-btn" data-action="home" title="Back to opening (Home)" aria-label="Back to opening">⌂</button>
+    <button class="hud-btn" data-action="prev" title="Previous (←)" aria-label="Previous scene">‹</button>
+    <div class="hud-progress" id="hud-progress"></div>
+    <div class="hud-label" id="hud-label"></div>
+    <button class="hud-btn" data-action="next" title="Next (→)" aria-label="Next scene">›</button>
+    <span class="hud-sep"></span>
+    <button class="hud-btn" data-action="pause" id="btn-pause" title="Pause looping motion (P)" aria-label="Pause motion">❚❚</button>
+    <button class="hud-btn" data-action="reduce" id="btn-reduce" title="Reduced motion (M)" aria-label="Toggle reduced motion">◐</button>
+    <button class="hud-btn" data-action="fullscreen" title="Full screen (F)" aria-label="Full screen">⛶</button>
+    <button class="hud-btn" data-action="help" title="Shortcuts (?)" aria-label="Help">?</button>
+  </nav>
+
+  <div class="help" id="help" hidden>
+    <div class="help-card">
+      <h3>Presenter shortcuts</h3>
+      <dl>
+        <dt>→ · Space · PgDn</dt><dd>Next scene</dd>
+        <dt>← · PgUp</dt><dd>Previous scene</dd>
+        <dt>1 – 9, 0</dt><dd>Jump to scene 1–10</dd>
+        <dt>Home / End</dt><dd>Opening / final scene</dd>
+        <dt>F</dt><dd>Full screen on / off</dd>
+        <dt>P</dt><dd>Pause / resume looping motion</dd>
+        <dt>M</dt><dd>Reduced motion on / off</dd>
+        <dt>Esc</dt><dd>Close this panel</dd>
+      </dl>
+      <p class="muted">The current scene and simulator inputs are remembered, so you can close the browser and resume later.</p>
+      <button class="btn primary" data-action="help">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Classic scripts (not ES modules) so everything works from file:// -->
+<script src="js/data.js"></script>
+<script src="js/models.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/constellation.js"></script>
+<script src="js/scenes.js"></script>
+<script src="js/controller.js"></script>
+</body>
+</html>

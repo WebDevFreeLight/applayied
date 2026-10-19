@@ -266,6 +266,8 @@ builder.Services.AddTransient(typeof(Lazy<>), typeof(LazyResolver<>));
 // PMO multi-provider AI gateway (ordered fallback chain configured under "AI:Providers").
 // Registered with a typed HttpClient so it gets a pooled, DI-managed client.
 builder.Services.AddHttpClient<ZR.Service.PMO.IPmoService.IPmoAiService, ZR.Service.PMO.PmoAiService>();
+// PMO Power BI embed-token service (Azure AD service principal -> embed for your organization).
+builder.Services.AddHttpClient<ZR.Service.PMO.IPmoService.IPmoPowerBiService, ZR.Service.PMO.PmoPowerBiService>();
 // PMO business-automation background worker (overdue escalation + budget-overrun alerts).
 builder.Services.AddHostedService<ZR.Admin.WebApi.Framework.PmoAutomationWorker>();
 
