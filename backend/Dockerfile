@@ -12,6 +12,9 @@ RUN dotnet publish backend/ZR.Admin.WebApi/ZR.Admin.WebApi.csproj -c Release -o 
 
 # ---- runtime ----
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+# SkiaSharp (Lazy.Captcha.Core) needs fontconfig/freetype to render the login captcha on Linux;
+# without it /captchaImage 500s and login is blocked.
+RUN apt-get update && apt-get install -y --no-install-recommends libfontconfig1 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=build /app/publish ./
 # Synthetic PMO seed package (CSV) imported on first boot when PmoSeed=true.
