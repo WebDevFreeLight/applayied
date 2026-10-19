@@ -1,0 +1,184 @@
+[      94ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[     133ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[     133ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[     263ms] [WARNING] [2026-10-18T23:12:45.832Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[ 2632210ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792365142029:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+[ 2632214ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792365142029:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+[ 2632216ms] [ERROR] The above error occurred in the <App> component:
+
+    at App (http://localhost:5173/src/App.tsx?t=1792365142029:87:24)
+    at AuthProvider (http://localhost:5173/src/auth/auth.tsx?t=1792367797625:41:32)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries. @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14031
+[ 2632218ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792365142029:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19753:22)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19116:15)
+    at recoverFromConcurrentError (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:18736:28)
+    at performSyncWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:18879:28)
+[ 2633109ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 2633159ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 2633159ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 2635281ms] [WARNING] [2026-10-18T23:56:40.851Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[ 2642439ms] [ERROR] [2026-10-18T23:56:48.008Z] Error: Connection disconnected with error 'Error: WebSocket closed with status code: 1006 (no reason given).'. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2642451ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 2642452ms] [ERROR] [2026-10-18T23:56:48.022Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2642452ms] [ERROR] [2026-10-18T23:56:48.022Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2644463ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 2644464ms] [ERROR] [2026-10-18T23:56:50.033Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2644464ms] [ERROR] [2026-10-18T23:56:50.034Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2649482ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 2649483ms] [ERROR] [2026-10-18T23:56:55.052Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2649483ms] [ERROR] [2026-10-18T23:56:55.052Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2659500ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 2659501ms] [ERROR] [2026-10-18T23:57:05.071Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2659501ms] [ERROR] [2026-10-18T23:57:05.071Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2679522ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 2679523ms] [ERROR] [2026-10-18T23:57:25.092Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 2679523ms] [ERROR] [2026-10-18T23:57:25.092Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3202831ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792367797625:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+[ 3202832ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792367797625:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+[ 3202832ms] [ERROR] The above error occurred in the <App> component:
+
+    at App (http://localhost:5173/src/App.tsx?t=1792367797625:87:24)
+    at AuthProvider (http://localhost:5173/src/auth/auth.tsx?t=1792368368190:41:32)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries. @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14031
+[ 3202835ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792367797625:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19753:22)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19116:15)
+    at recoverFromConcurrentError (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:18736:28)
+    at performSyncWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:18879:28)
+[ 3203922ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 3203979ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3203980ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3204076ms] [WARNING] [2026-10-19T00:06:09.645Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[ 3716503ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 3716547ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3716547ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3716594ms] [WARNING] [2026-10-19T00:14:42.164Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[ 3721654ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 3721695ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3721695ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3721781ms] [WARNING] [2026-10-19T00:14:47.351Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[ 3799514ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792368887028:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+[ 3799515ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792368887028:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3699:24)
+    at invokeGuardedCallback (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:3733:39)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19765:15)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+[ 3799516ms] [ERROR] The above error occurred in the <App> component:
+
+    at App (http://localhost:5173/src/App.tsx?t=1792368887028:87:24)
+    at AuthProvider (http://localhost:5173/src/auth/auth.tsx?t=1792368964969:41:32)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries. @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14031
+[ 3799518ms] TypeError: Cannot destructure property 'isAuthed' of 'useAuth(...)' as it is null.
+    at App (http://localhost:5173/src/App.tsx?t=1792368887028:87:11)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:11548:26)
+    at mountIndeterminateComponent (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:14926:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:15914:22)
+    at beginWork$1 (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19753:22)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19198:20)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19137:13)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:19116:15)
+    at recoverFromConcurrentError (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:18736:28)
+    at performSyncWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:18879:28)
+[ 3800096ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 3800144ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3800144ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3800219ms] [WARNING] [2026-10-19T00:16:05.788Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[ 3824154ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 3824191ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3824191ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3824255ms] [WARNING] [2026-10-19T00:16:29.824Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[ 3830392ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-EJTTOCY5.js?v=07e58982:21550
+[ 3830457ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3830457ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=07e58982:4416
+[ 3830519ms] [WARNING] [2026-10-19T00:16:36.089Z] Warning: No client method with the name 'morenotice' found. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:295
+[ 3937845ms] [ERROR] [2026-10-19T00:18:23.415Z] Error: Connection disconnected with error 'Error: WebSocket closed with status code: 1006 (no reason given).'. @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3937854ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 3937854ms] [ERROR] [2026-10-19T00:18:23.424Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3937855ms] [ERROR] [2026-10-19T00:18:23.424Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3939869ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 3939870ms] [ERROR] [2026-10-19T00:18:25.439Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3939870ms] [ERROR] [2026-10-19T00:18:25.439Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3944890ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 3944890ms] [ERROR] [2026-10-19T00:18:30.460Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3944890ms] [ERROR] [2026-10-19T00:18:30.460Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3954907ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 3954908ms] [ERROR] [2026-10-19T00:18:40.477Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3954908ms] [ERROR] [2026-10-19T00:18:40.478Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3974929ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/msgHub/negotiate?negotiateVersion=1:0
+[ 3974930ms] [ERROR] [2026-10-19T00:19:00.499Z] Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292
+[ 3974930ms] [ERROR] [2026-10-19T00:19:00.499Z] Error: Failed to start the connection: Error: Failed to complete negotiation with the server: Error: Internal Server Error: Status code '500' @ http://localhost:5173/node_modules/.vite/deps/@microsoft_signalr.js?v=07e58982:292

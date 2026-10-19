@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
+import AiFill from '../components/AiFill'
 import type { Risk } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
@@ -86,6 +87,7 @@ export default function Risks({ projectId: pin }: { projectId?: string } = {}) {
         <Modal title={edit.riskId ? t('risk.editRisk') : t('risk.newRisk')} onClose={() => setEdit(null)}
           footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
+          <AiFill kind="project risk or issue" fields="title, mitigation, kind(Risk|Issue)" onApply={(o) => setEdit({ ...edit, ...o })} />
           <label className="field">{t('risk.kind')}
             <Select isClearable={false} options={KINDS.map((s) => ({ value: s, label: t(`status.${s}`) }))}
               value={edit.kind} onChange={(v) => setEdit({ ...edit, kind: v || 'Risk' })} /></label>

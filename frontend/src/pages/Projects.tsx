@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
+import AiFill from '../components/AiFill'
 import type { Project } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
@@ -108,6 +109,7 @@ export default function Projects() {
             <button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={save}>{t('common.save')}</button>
           </>}>
+          <AiFill kind="project" fields="code, name, description, priority(Low|Medium|High|Critical)" onApply={(o) => setEdit({ ...edit, ...o })} />
           <label className="field">{t('project.code')}<input value={edit.code || ''} onChange={(e) => setEdit({ ...edit, code: e.target.value })} /></label>
           <label className="field">{t('project.name')}<input value={edit.name || ''} onChange={(e) => setEdit({ ...edit, name: e.target.value })} /></label>
           <label className="field">{t('project.department')}

@@ -124,11 +124,14 @@ export const aiRiskAnalysis = (facts: unknown, lang = 'en') =>
   unwrap<AiReply>(api.post('/pmo/ai/risk-analysis', { facts, lang }))
 export const aiDashboardInsights = (facts: unknown, lang = 'en') =>
   unwrap<AiReply>(api.post('/pmo/ai/dashboard-insights', { facts, lang }))
+export const aiAutofill = (kind: string, fields: string, message: string, lang = 'en') =>
+  unwrap<AiReply>(api.post('/pmo/ai/autofill', { kind, fields, message, lang }))
 
 // ---- automation manual trigger (admin) --------------------------------------
 export const runAutomation = (asOf?: string) =>
   unwrap<{ triggeredBy: string; asOf: string; aiUsed: boolean; results: { ruleKey: string; status: string; candidates: number; created: number; skipped: number; detail: string }[] }>(
-    api.post('/pmo/admin/run-automation', null, { params: asOf ? { asOf } : {} }))
+    // AI drafts bodies for the first few new alerts, so a run can take longer than the default 20s.
+    api.post('/pmo/admin/run-automation', null, { params: asOf ? { asOf } : {}, timeout: 60000 }))
 
 // ---- employees (PMO directory) ----------------------------------------------
 export const listEmployees = (params: Record<string, unknown>) =>

@@ -13,6 +13,8 @@ namespace ZR.ServiceCore.Services
         /// <summary>All menus (no user scoping) — for role-permission assignment trees.</summary>
         List<SysMenu> SelectMenuList(MenuQueryDto menu);
         List<SysMenu> SelectTreeMenuList(MenuQueryDto menu, long userId);
+        /// <summary>Full menu tree (no user scoping) — for the menu-management admin page.</summary>
+        List<SysMenu> SelectTreeMenuList(MenuQueryDto menu);
 
         SysMenu GetMenuByMenuId(long menuId);
         List<SysMenu> GetMenusByMenuId(long menuId, long userId);

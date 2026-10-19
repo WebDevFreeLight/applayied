@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
+import AiFill from '../components/AiFill'
 import type { Task } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
@@ -12,7 +13,7 @@ const STATUSES = ['ToDo', 'InProgress', 'Blocked', 'Done']
 const PRIORITIES = ['Low', 'Medium', 'High', 'Critical']
 
 export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const lk = useLookups()
   const { hasPerm } = useAuth()
   const [rows, setRows] = useState<Task[]>([])
@@ -22,8 +23,20 @@ export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
   const [error, setError] = useState('')
   const [edit, setEdit] = useState<Partial<Task> | null>(null)
   const [progress, setProgress] = useState<Task | null>(null)
+  const [aiTip, setAiTip] = useState<{ busy: boolean; text: string }>({ busy: false, text: '' })
   const [view, setView] = useState<Task | null>(null)
   const [toast, setToast] = useState('')
+  const [members, setMembers] = useState<{ value: string; label: string }[]>([])
+
+  // Inside a project workspace, the assignee list is restricted to that project's members.
+  useEffect(() => {
+    if (!pin) { setMembers([]); return }
+    pmo.listMembers({ projectId: pin, pageNum: 1, pageSize: 200 })
+      .then((p) => setMembers((p.result || []).map((m) => ({ value: String(m.userId), label: m.userName || String(m.userId) }))))
+      .catch(() => setMembers([]))
+  }, [pin])
+  // Assignee options: project members when pinned to a project, otherwise all users.
+  const assigneeOptions = pin ? members : lk.users.map((u) => ({ value: u.id, label: u.name }))
 
   const load = () => {
     setLoading(true); setError('')
@@ -52,6 +65,16 @@ export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
       setProgress(null); notify(t('common.saved')); load()
     } catch (e) { setError((e as Error).message) }
   }
+  // AI advice for the current task: next status + a one-line progress note + any risk.
+  const aiProgressTip = async () => {
+    if (!progress) return
+    setAiTip({ busy: true, text: '' })
+    try {
+      const facts = `Task "${progress.title}", assignee ${progress.assigneeName || 'unassigned'}, currently ${progress.progressPct}% complete, status ${progress.status}, due ${progress.dueDate || 'n/a'}.`
+      const r = await pmo.aiChat(`${facts}\nSuggest the next status, a one-line progress note, and flag any risk of missing the due date. Be concise.`, undefined, i18n.language)
+      setAiTip({ busy: false, text: r.text })
+    } catch (e) { setAiTip({ busy: false, text: (e as Error).message }) }
+  }
 
   const pages = Math.max(1, Math.ceil(total / query.pageSize))
   return (
@@ -69,7 +92,7 @@ export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
         <div style={{ minWidth: 170 }}><Select options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
           value={query.status} onChange={(v) => setQuery((q) => ({ ...q, status: v || '', pageNum: 1 }))}
           placeholder={`${t('task.status')}: ${t('common.all')}`} /></div>
-        <div style={{ minWidth: 190 }}><Select options={lk.users.map((u) => ({ value: u.id, label: u.name }))}
+        <div style={{ minWidth: 190 }}><Select options={assigneeOptions}
           value={query.assigneeUserId} onChange={(v) => setQuery((q) => ({ ...q, assigneeUserId: v || '', pageNum: 1 }))}
           placeholder={`${t('task.assignee')}: ${t('common.all')}`} /></div>
       </div>
@@ -91,7 +114,7 @@ export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
                 <td>{x.progressPct}%</td>
                 <td className="row">
                   <button className="btn sm" onClick={() => setView(x)}>{t('project.details')}</button>
-                  {hasPerm('pmo:task:progress') && <button className="btn sm" onClick={() => setProgress({ ...x })}>{t('task.updateProgress')}</button>}
+                  {hasPerm('pmo:task:progress') && <button className="btn sm" onClick={() => { setAiTip({ busy: false, text: '' }); setProgress({ ...x }) }}>{t('task.updateProgress')}</button>}
                   {hasPerm('pmo:task:edit') && <button className="btn sm" onClick={() => setEdit({ ...x })}>{t('common.edit')}</button>}
                 </td>
               </tr>))}</tbody>
@@ -116,6 +139,10 @@ export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
           <label className="field full">{t('task.status')}
             <Select isClearable={false} options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
               value={progress.status} onChange={(v) => setProgress({ ...progress, status: v || 'ToDo' })} /></label>
+          <div className="full">
+            <button className="btn sm" onClick={aiProgressTip} disabled={aiTip.busy}>✨ {aiTip.busy ? t('ai.thinking') : t('ai.summary')}</button>
+            {aiTip.text && <div className="ai-msg bot" style={{ marginTop: 8, whiteSpace: 'pre-wrap' }}>{aiTip.text}</div>}
+          </div>
         </Modal>
       )}
 
@@ -123,12 +150,13 @@ export default function Tasks({ projectId: pin }: { projectId?: string } = {}) {
         <Modal title={edit.taskId ? t('task.editTask') : t('task.newTask')} onClose={() => setEdit(null)}
           footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
+          <AiFill kind="project task" fields="title, priority(Low|Medium|High|Critical)" onApply={(o) => setEdit({ ...edit, ...o })} />
           <label className="field full">{t('task.taskTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
           {!pin && <label className="field">{t('project.title')}
             <Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
               value={edit.projectId || null} onChange={(v) => setEdit({ ...edit, projectId: v || undefined })} /></label>}
           <label className="field">{t('task.assignee')}
-            <Select options={lk.users.map((u) => ({ value: u.id, label: u.name }))}
+            <Select options={assigneeOptions}
               value={edit.assigneeUserId || null} onChange={(v) => setEdit({ ...edit, assigneeUserId: v || undefined })}
               placeholder={t('task.unassigned')} /></label>
           <label className="field">{t('task.status')}

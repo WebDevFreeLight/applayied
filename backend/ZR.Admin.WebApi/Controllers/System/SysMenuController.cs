@@ -33,8 +33,9 @@ namespace ZR.Admin.WebApi.Controllers.System
         [HttpGet("treelist")]
         public IActionResult TreeMenuList([FromQuery] MenuQueryDto menu)
         {
-            long userId = HttpContext.GetUId();
-            return SUCCESS(sysMenuService.SelectTreeMenuList(menu, userId), "yyyy-MM-dd HH:mm:ss");
+            // Menu management must list EVERY menu, not just those the current admin's roles are
+            // granted — otherwise an admin whose role-menu table is empty sees an empty tree.
+            return SUCCESS(sysMenuService.SelectTreeMenuList(menu), "yyyy-MM-dd HH:mm:ss");
         }
 
         /// <summary>

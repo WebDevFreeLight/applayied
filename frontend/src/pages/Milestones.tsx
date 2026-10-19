@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
+import AiFill from '../components/AiFill'
 import type { Milestone } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
@@ -70,6 +71,7 @@ export default function Milestones({ projectId: pin }: { projectId?: string } = 
         <Modal title={edit.milestoneId ? t('milestone.editMilestone') : t('milestone.newMilestone')} onClose={() => setEdit(null)}
           footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
+          <AiFill kind="project milestone" fields="name" onApply={(o) => setEdit({ ...edit, ...o })} />
           <label className="field full">{t('milestone.name')}<input value={edit.name || ''} onChange={(e) => setEdit({ ...edit, name: e.target.value })} /></label>
           {!pin && <label className="field">{t('project.title')}
             <Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}

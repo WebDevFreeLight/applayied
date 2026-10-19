@@ -356,6 +356,25 @@ namespace ZR.Service.PMO
             ("pmo:employee:add", "PMO Employee Add", "ADMIN"), ("pmo:employee:edit", "PMO Employee Edit", "ADMIN"), ("pmo:employee:remove", "PMO Employee Remove", "ADMIN"),
         };
 
+        /// <summary>
+        /// Find/create the parent menu that PMO permission buttons hang under. BuildMenuTree (used by
+        /// the role-permission tree) drops orphan F-type nodes, so the permissions must have a real
+        /// C/M parent to be visible and assignable. Idempotent — identified by a sentinel perms value.
+        /// </summary>
+        private long EnsurePmoMenuParent()
+        {
+            const string sentinel = "pmo:root";
+            var parent = _db.Queryable<SysMenu>().First(m => m.Perms == sentinel);
+            if (parent != null) return parent.MenuId;
+            var m = new SysMenu
+            {
+                MenuName = "PMO", Perms = sentinel, MenuType = "M", ParentId = 0, OrderNum = 50,
+                Path = "pmo", Component = "", Icon = "project", Visible = "1", Status = "0",
+                Create_by = "seed", Create_time = DateTime.Now
+            };
+            return _db.Insertable(m).ExecuteReturnSnowflakeId();
+        }
+
         private void SeedPmoPermissions(Dictionary<string, long> roleIdByKey, List<string> log)
         {
             if (!roleIdByKey.TryGetValue(PmoRoleKeys.Contributor, out var cId)
@@ -367,7 +386,8 @@ namespace ZR.Service.PMO
             }
             long[] Tier(string t) => t == "ALL" ? new[] { cId, pId, aId } : t == "PM" ? new[] { pId, aId } : new[] { aId };
 
-            int menus = 0, links = 0;
+            long pmoParentId = EnsurePmoMenuParent();
+            int menus = 0, links = 0, reparented = 0;
             foreach (var (perm, name, tier) in PmoPermissionCatalog)
             {
                 var existing = _db.Queryable<SysMenu>().First(m => m.Perms == perm);
@@ -376,14 +396,24 @@ namespace ZR.Service.PMO
                 {
                     var m = new SysMenu
                     {
-                        MenuName = name, Perms = perm, MenuType = "F", ParentId = 0, OrderNum = 1,
+                        MenuName = name, Perms = perm, MenuType = "F", ParentId = pmoParentId, OrderNum = 1,
                         Path = "", Component = "", Icon = "", Visible = "1", Status = "0",
                         Create_by = "seed", Create_time = DateTime.Now
                     };
                     menuId = _db.Insertable(m).ExecuteReturnSnowflakeId();
                     menus++;
                 }
-                else menuId = existing.MenuId;
+                else
+                {
+                    menuId = existing.MenuId;
+                    // Repair legacy rows seeded as orphan buttons (parent_id = 0) so they show in the tree.
+                    if (existing.ParentId != pmoParentId)
+                    {
+                        _db.Updateable<SysMenu>().SetColumns(x => x.ParentId == pmoParentId)
+                           .Where(x => x.MenuId == menuId).ExecuteCommand();
+                        reparented++;
+                    }
+                }
 
                 foreach (var rid in Tier(tier))
                 {
@@ -394,7 +424,7 @@ namespace ZR.Service.PMO
                     }
                 }
             }
-            log.Add($"[PMO seed] pmo permissions: {menus} menus created, {links} role grants added");
+            log.Add($"[PMO seed] pmo permissions: {menus} menus created, {reparented} re-parented, {links} role grants added");
         }
 
         /// <summary>The fallback role that holds any newly-detected, not-yet-assigned permission.</summary>

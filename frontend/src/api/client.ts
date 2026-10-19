@@ -4,7 +4,9 @@ import i18n from '../i18n'
 // Single axios instance. Base path defaults to the Vite dev proxy (/api -> backend).
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE || '/api',
-  timeout: 20000,
+  // 60s default so AI-backed calls (chat, summaries, insights, automation) have headroom;
+  // ordinary CRUD/list calls still return in well under a second.
+  timeout: 60000,
 })
 
 // Attach the JWT and the request language on every call. The backend reads Accept-Language

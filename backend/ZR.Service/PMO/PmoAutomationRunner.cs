@@ -43,6 +43,10 @@ namespace ZR.Service.PMO
         private readonly IPmoAiService _ai;
         private readonly bool _useAi;
         private readonly IPmoNotifier _notifier;
+        // AI drafts a nicer body for the first few new notifications, then falls back to the template.
+        // This bounds a run's wall-clock (each AI call can take seconds) so it never trips the client
+        // timeout when many alerts are new; dedup means subsequent runs create 0 and make no AI calls.
+        private int _aiBudget = 5;
 
         public const string RuleOverdue = "overdue_task_escalation";
         public const string RuleOverrun = "budget_overrun_alert";
@@ -236,6 +240,8 @@ namespace ZR.Service.PMO
         private string Draft(string ruleKey, string factsJson)
         {
             if (!_useAi || _ai == null || !_ai.IsConfigured) return null;
+            if (_aiBudget <= 0) return null;            // budget spent → template body for the rest
+            _aiBudget--;
             try
             {
                 var text = _ai.DraftNotificationAsync(ruleKey, factsJson).GetAwaiter().GetResult();

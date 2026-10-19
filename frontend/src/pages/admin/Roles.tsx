@@ -14,6 +14,19 @@ const P = {
 const subtreeIds = (n: TreeSelect): string[] =>
   [String(n.id), ...((n.children || []).flatMap(subtreeIds))]
 
+// Prune the tree to branches that match the query: a node is kept if its own label matches OR any
+// descendant matches. A matching node keeps all its children (so you can tick the whole subtree).
+function filterTree(nodes: TreeSelect[], q: string): TreeSelect[] {
+  const out: TreeSelect[] = []
+  for (const n of nodes) {
+    const selfMatch = String(n.label ?? '').toLowerCase().includes(q)
+    const kids = n.children ? filterTree(n.children, q) : []
+    if (selfMatch) out.push(n)                              // keep full subtree on a direct hit
+    else if (kids.length) out.push({ ...n, children: kids }) // keep path to matching descendants
+  }
+  return out
+}
+
 // The backend tree builder can emit the same menu under several parents (duplicate ids);
 // keep the first occurrence of each id so React keys stay unique and checkboxes behave.
 function dedupeTree(nodes: TreeSelect[], seen = new Set<string>()): TreeSelect[] {
@@ -38,6 +51,7 @@ export default function Roles() {
   // Broadcast an expand/collapse-all command to every tree node (n forces the effect to re-run).
   const [openSignal, setOpenSignal] = useState<{ v: boolean; n: number }>({ v: false, n: 0 })
   const expandAll = (v: boolean) => setOpenSignal((s) => ({ v, n: s.n + 1 }))
+  const [permSearch, setPermSearch] = useState('')
   const [toast, setToast] = useState('')
   const notify = (m: string) => { setToast(m); setTimeout(() => setToast(''), 2500) }
 
@@ -68,6 +82,7 @@ export default function Roles() {
   const openPerms = async (r: SysRole) => {
     try {
       const res = await admin.roleMenuTree(r.roleId)
+      setPermSearch('')
       setPerm({ role: r, tree: dedupeTree(res.menus || []), checked: new Set((res.checkedKeys || []).map(String)) })
     } catch (e) { setError((e as Error).message) }
   }
@@ -136,16 +151,27 @@ export default function Roles() {
           footer={<><button className="btn" onClick={() => setPerm(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={savePerms}>{t('common.save')}</button></>}>
           <div className="full">
-            <div className="row" style={{ marginBottom: 8 }}>
+            <div className="row" style={{ marginBottom: 8, flexWrap: 'wrap' }}>
+              <input style={{ minWidth: 220, flex: 1 }} value={permSearch}
+                placeholder={`${t('common.search')}… (${t('admin.perm')})`}
+                onChange={(e) => { setPermSearch(e.target.value); if (e.target.value.trim()) expandAll(true) }} />
               <button className="btn sm" onClick={() => setAll(true)}>⊞ {t('common.all')}</button>
               <button className="btn sm" onClick={() => setAll(false)}>⊟ {t('common.none')}</button>
               <button className="btn sm" onClick={() => expandAll(true)}>▾ {t('admin.expandAll')}</button>
               <button className="btn sm" onClick={() => expandAll(false)}>▸ {t('admin.collapseAll')}</button>
               <span className="muted">· {perm.checked.size} {t('admin.permissions')}</span>
             </div>
-            <div style={{ maxHeight: '52vh', overflow: 'auto', border: '1px solid var(--border)', borderRadius: 8, padding: 8 }}>
-              <PermTree nodes={perm.tree} checked={perm.checked} setMany={setMany} openSignal={openSignal} />
-            </div>
+            {(() => {
+              const q = permSearch.trim().toLowerCase()
+              const shown = q ? filterTree(perm.tree, q) : perm.tree
+              return (
+                <div style={{ maxHeight: '52vh', overflow: 'auto', border: '1px solid var(--border)', borderRadius: 8, padding: 8 }}>
+                  {shown.length === 0
+                    ? <div className="muted" style={{ padding: 16, textAlign: 'center' }}>{t('common.empty')}</div>
+                    : <PermTree nodes={shown} checked={perm.checked} setMany={setMany} openSignal={openSignal} />}
+                </div>
+              )
+            })()}
           </div>
         </Modal>
       )}

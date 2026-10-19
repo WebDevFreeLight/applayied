@@ -23,13 +23,13 @@
                       "Entity": "public pmo_task"
                     }
                   },
-                  "Property": "status"
+                  "Property": "status_ar"
                 }
               },
-              "queryRef": "public pmo_task.status",
-              "nativeQueryRef": "Task status",
+              "queryRef": "public pmo_task.status_ar",
+              "nativeQueryRef": "حالة المهمة",
               "active": true,
-              "displayName": "Task status"
+              "displayName": "حالة المهمة"
             }
           ],
           "fieldParameters": [
@@ -63,8 +63,8 @@
                 }
               },
               "queryRef": "_Measures.Total Tasks",
-              "nativeQueryRef": "Tasks",
-              "displayName": "Tasks"
+              "nativeQueryRef": "عدد المهام",
+              "displayName": "عدد المهام"
             }
           ],
           "fieldParameters": [

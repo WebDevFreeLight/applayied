@@ -46,8 +46,8 @@
                 }
               },
               "queryRef": "_Measures.Approved Budget",
-              "nativeQueryRef": "Approved budget",
-              "displayName": "Approved budget"
+              "nativeQueryRef": "الميزانية المعتمدة",
+              "displayName": "الميزانية المعتمدة"
             },
             {
               "field": {
@@ -61,8 +61,8 @@
                 }
               },
               "queryRef": "_Measures.EAC",
-              "nativeQueryRef": "Estimate at completion",
-              "displayName": "Estimate at completion"
+              "nativeQueryRef": "التكلفة التقديرية عند الإنجاز",
+              "displayName": "التكلفة التقديرية عند الإنجاز"
             }
           ],
           "fieldParameters": [

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
+import AiFill from '../components/AiFill'
 import type { CostCategory } from '../api/types'
 import { useAuth } from '../auth/auth'
 import { Empty, ErrorBox, Loading, Modal, Toast } from '../components/ui'
@@ -57,6 +58,7 @@ export default function Categories() {
         <Modal title={edit.categoryId ? t('category.editCat') : t('category.newCat')} onClose={() => setEdit(null)}
           footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={save}>{t('common.save')}</button></>}>
+          <AiFill kind="cost category" fields="code, name" onApply={(o) => setEdit({ ...edit, ...o })} />
           <label className="field">{t('category.code')}<input value={edit.code || ''} onChange={(e) => setEdit({ ...edit, code: e.target.value })} /></label>
           <label className="field">{t('category.name')}<input value={edit.name || ''} onChange={(e) => setEdit({ ...edit, name: e.target.value })} /></label>
         </Modal>

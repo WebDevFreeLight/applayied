@@ -35,5 +35,8 @@ namespace ZR.Service.PMO.IPmoService
 
         /// <summary>Draft the body of an automation notification (used by the scheduler).</summary>
         Task<string> DraftNotificationAsync(string ruleKey, string factsJson, string lang = "en");
+
+        /// <summary>Autofill a form: return ONLY a JSON object with the requested fields from a prompt.</summary>
+        Task<string> AutofillAsync(string kind, string fields, string prompt, string lang = "en");
     }
 }

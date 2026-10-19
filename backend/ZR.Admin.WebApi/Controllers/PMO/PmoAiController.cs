@@ -47,6 +47,12 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         public async Task<IActionResult> DashboardInsights([FromBody] PmoAiRequestDto dto)
             => Reply(await _ai.DashboardInsightsAsync(dto.FactsJson(), dto.Lang));
 
+        /// <summary>Autofill a form from a short description — returns a JSON object of field values.</summary>
+        [HttpPost("autofill")]
+        [ActionPermissionFilter(Permission = "pmo:ai:use")]
+        public async Task<IActionResult> Autofill([FromBody] PmoAiRequestDto dto)
+            => Reply(await _ai.AutofillAsync(dto.Kind, dto.Fields, dto.Message, dto.Lang));
+
         // All providers failed / none configured -> 200 with a clear message so the UI can show it.
         private IActionResult Reply(string text) => SUCCESS(new
         {

@@ -21,6 +21,12 @@ namespace ZR.Model.PMO.Dto
         /// <summary>Response language: "en" (default) or "ar".</summary>
         public string Lang { get; set; } = "en";
 
+        /// <summary>Autofill: the kind of form (e.g. "project", "risk", "change request").</summary>
+        public string Kind { get; set; }
+
+        /// <summary>Autofill: comma-separated field spec, e.g. "name, description, priority(Low|Medium|High)".</summary>
+        public string Fields { get; set; }
+
         /// <summary>Serialize <see cref="Facts"/> to a compact JSON string for the prompt.</summary>
         public string FactsJson() =>
             Facts.ValueKind == JsonValueKind.Undefined || Facts.ValueKind == JsonValueKind.Null

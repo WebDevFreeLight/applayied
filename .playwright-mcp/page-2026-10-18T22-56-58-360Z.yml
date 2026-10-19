@@ -1,0 +1,72 @@
+- generic [ref=f28e3]:
+  - complementary [ref=f28e4]:
+    - generic [ref=f28e5]:
+      - text: PMO Portal
+      - generic [ref=f28e6]: Project Portfolio & Financial Control
+    - link "Dashboard" [ref=f28e7] [cursor=pointer]:
+      - /url: /
+    - link "Projects" [ref=f28e8] [cursor=pointer]:
+      - /url: /projects
+    - link "Tasks" [ref=f28e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "Milestones" [ref=f28e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "Risks & Issues" [ref=f28e11] [cursor=pointer]:
+      - /url: /risks
+    - link "Change Requests" [ref=f28e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "Finance" [ref=f28e13] [cursor=pointer]:
+      - /url: /finance
+    - link "Automation & Logs" [ref=f28e14] [cursor=pointer]:
+      - /url: /activity
+    - link "Employees" [ref=f28e15] [cursor=pointer]:
+      - /url: /employees
+    - link "Cost Categories" [ref=f28e16] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f28e17]: Administration
+    - link "Users" [ref=f28e18] [cursor=pointer]:
+      - /url: /admin/users
+    - link "Roles" [ref=f28e19] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "Menus & Permissions" [ref=f28e20] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "Departments" [ref=f28e21] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "Positions" [ref=f28e22] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "Dictionaries" [ref=f28e23] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "Configuration" [ref=f28e24] [cursor=pointer]:
+      - /url: /admin/config
+    - link "Notices" [ref=f28e25] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "Scheduled Tasks" [ref=f28e26] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "Task Logs" [ref=f28e27] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "Login Log" [ref=f28e28] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "Sessions" [ref=f28e29] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "Operation Log" [ref=f28e30] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "Online Users" [ref=f28e31] [cursor=pointer]:
+      - /url: /admin/online
+    - link "Server Monitor" [ref=f28e32] [cursor=pointer]:
+      - /url: /admin/server
+    - link "Messages" [ref=f28e33] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "Profile" [ref=f28e34] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f28e35]:
+    - banner [ref=f28e36]:
+      - strong [ref=f28e37]: PMO Portal
+      - generic [ref=f28e38]:
+        - button "🔔" [ref=f28e40] [cursor=pointer]
+        - button "☀️" [ref=f28e41] [cursor=pointer]
+        - button "العربية" [ref=f28e42] [cursor=pointer]
+        - generic [ref=f28e43]: مدير · admin
+        - button "Sign out" [ref=f28e44] [cursor=pointer]
+    - main [ref=f28e45]:
+      - generic [ref=f28e46]: Loading…
+  - button "✨" [ref=f28e47] [cursor=pointer]

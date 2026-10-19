@@ -112,6 +112,28 @@ namespace ZR.Service.PMO
             return CallAIWithFallback(sys, factsJson);
         }
 
+        public async Task<string> AutofillAsync(string kind, string fields, string prompt, string lang = "en")
+        {
+            var sys = Sys(lang,
+                $"You fill in a PMO \"{kind}\" form. Given the user's short description, return ONLY a compact JSON object " +
+                $"whose keys are exactly these fields: {fields}. Use realistic, professional, concise values. For a field " +
+                "written as name(A|B|C), the value MUST be one of the listed options. Output JSON only — no markdown, no code fences, no commentary.",
+                $"تملأ نموذج \"{kind}\" في نظام إدارة المشاريع. من وصف المستخدم المختصر، أعِد فقط كائن JSON مضغوط " +
+                $"مفاتيحه هي هذه الحقول بالضبط: {fields}. استخدم قيمًا واقعية ومهنية وموجزة. الحقل المكتوب name(A|B|C) " +
+                "يجب أن تكون قيمته إحدى الخيارات المذكورة. أعِد JSON فقط — بدون أي تنسيق أو تعليقات.");
+            var raw = await CallAIWithFallback(sys, prompt);
+            return CleanJson(raw);
+        }
+
+        /// <summary>Strip markdown fences / surrounding prose so only the JSON object remains.</summary>
+        private static string CleanJson(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return s;
+            var start = s.IndexOf('{');
+            var end = s.LastIndexOf('}');
+            return (start >= 0 && end > start) ? s.Substring(start, end - start + 1) : s;
+        }
+
         public Task<string> CompleteAsync(string systemPrompt, string userPrompt)
             => CallAIWithFallback(systemPrompt, userPrompt);
 

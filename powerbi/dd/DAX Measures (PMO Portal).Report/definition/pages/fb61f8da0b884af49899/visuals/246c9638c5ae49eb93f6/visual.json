@@ -23,13 +23,13 @@
                       "Entity": "Calendar"
                     }
                   },
-                  "Property": "MonthName"
+                  "Property": "MonthNameAr"
                 }
               },
-              "queryRef": "Calendar.MonthName",
-              "nativeQueryRef": "Month",
+              "queryRef": "Calendar.MonthNameAr",
+              "nativeQueryRef": "الشهر",
               "active": true,
-              "displayName": "Month"
+              "displayName": "الشهر"
             }
           ],
           "fieldParameters": [
@@ -63,8 +63,8 @@
                 }
               },
               "queryRef": "_Measures.Actual Spend",
-              "nativeQueryRef": "Actual spend",
-              "displayName": "Actual spend"
+              "nativeQueryRef": "الإنفاق الفعلي",
+              "displayName": "الإنفاق الفعلي"
             },
             {
               "field": {
@@ -78,8 +78,8 @@
                 }
               },
               "queryRef": "_Measures.Forecast To Complete",
-              "nativeQueryRef": "Forecast to complete",
-              "displayName": "Forecast to complete"
+              "nativeQueryRef": "التكلفة المتوقعة حتى الإنجاز",
+              "displayName": "التكلفة المتوقعة حتى الإنجاز"
             }
           ],
           "fieldParameters": [

@@ -27,8 +27,8 @@
                 }
               },
               "queryRef": "public pmo_project.name",
-              "nativeQueryRef": "Project",
-              "displayName": "Project"
+              "nativeQueryRef": "المشروع",
+              "displayName": "المشروع"
             },
             {
               "field": {
@@ -38,12 +38,12 @@
                       "Entity": "public pmo_project"
                     }
                   },
-                  "Property": "status"
+                  "Property": "status_ar"
                 }
               },
-              "queryRef": "public pmo_project.status",
-              "nativeQueryRef": "Status",
-              "displayName": "Status"
+              "queryRef": "public pmo_project.status_ar",
+              "nativeQueryRef": "الحالة",
+              "displayName": "الحالة"
             },
             {
               "field": {
@@ -57,8 +57,8 @@
                 }
               },
               "queryRef": "_Measures.Approved Budget",
-              "nativeQueryRef": "Approved budget",
-              "displayName": "Approved budget"
+              "nativeQueryRef": "الميزانية المعتمدة",
+              "displayName": "الميزانية المعتمدة"
             },
             {
               "field": {
@@ -72,8 +72,8 @@
                 }
               },
               "queryRef": "_Measures.Actual Spend",
-              "nativeQueryRef": "Actual spend",
-              "displayName": "Actual spend"
+              "nativeQueryRef": "الإنفاق الفعلي",
+              "displayName": "الإنفاق الفعلي"
             },
             {
               "field": {
@@ -87,8 +87,8 @@
                 }
               },
               "queryRef": "_Measures.Budget Utilization %",
-              "nativeQueryRef": "Utilization",
-              "displayName": "Utilization"
+              "nativeQueryRef": "نسبة الاستخدام",
+              "displayName": "نسبة الاستخدام"
             },
             {
               "field": {
@@ -102,8 +102,8 @@
                 }
               },
               "queryRef": "_Measures.Projected Variance",
-              "nativeQueryRef": "Projected variance",
-              "displayName": "Projected variance"
+              "nativeQueryRef": "الانحراف المتوقع",
+              "displayName": "الانحراف المتوقع"
             },
             {
               "field": {
@@ -117,8 +117,8 @@
                 }
               },
               "queryRef": "_Measures.Task Completion %",
-              "nativeQueryRef": "Task completion",
-              "displayName": "Task completion"
+              "nativeQueryRef": "نسبة إنجاز المهام",
+              "displayName": "نسبة إنجاز المهام"
             },
             {
               "field": {
@@ -132,8 +132,8 @@
                 }
               },
               "queryRef": "_Measures.Overdue Tasks",
-              "nativeQueryRef": "Overdue tasks",
-              "displayName": "Overdue tasks"
+              "nativeQueryRef": "المهام المتأخرة",
+              "displayName": "المهام المتأخرة"
             },
             {
               "field": {
@@ -147,8 +147,8 @@
                 }
               },
               "queryRef": "_Measures.Open High Risks",
-              "nativeQueryRef": "High risks",
-              "displayName": "High risks"
+              "nativeQueryRef": "المخاطر العالية",
+              "displayName": "المخاطر العالية"
             }
           ],
           "fieldParameters": [

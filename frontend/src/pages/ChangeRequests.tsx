@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as pmo from '../api/pmo'
+import AiFill from '../components/AiFill'
 import type { ChangeRequest, ChangeHistory } from '../api/types'
 import { useLookups } from '../hooks/useLookups'
 import { useAuth } from '../auth/auth'
@@ -93,6 +94,7 @@ export default function ChangeRequests({ projectId: pin }: { projectId?: string 
         <Modal title={t('cr.newCr')} onClose={() => setEdit(null)}
           footer={<><button className="btn" onClick={() => setEdit(null)}>{t('common.cancel')}</button>
             <button className="btn primary" onClick={create}>{t('common.save')}</button></>}>
+          <AiFill kind="change request" fields="title, description" onApply={(o) => setEdit({ ...edit, ...o })} />
           <label className="field full">{t('cr.crTitle')}<input value={edit.title || ''} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></label>
           {!pin && <label className="field">{t('project.title')}
             <Select options={lk.projects.map((p) => ({ value: p.id, label: p.name }))}
