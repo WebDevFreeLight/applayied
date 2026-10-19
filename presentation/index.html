@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PMO Portal — Management Presentation</title>
+<style>
+/* ===== PMO Portal · management deck · 8 slides · offline, vanilla ===== */
+:root{
+  --bg:#0f141c; --panel:#161d28; --panel2:#1d2635; --ink:#eef2f8; --muted:#9aa7bd; --line:#293444;
+  --brand:#e30613; --brand2:#ff3b47; --cyan:#35c6d8; --green:#36d39a; --gold:#ffcf6b;
+  --radius:14px; --maxw:1180px; --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(1000px 600px at 80% -10%,#1a2332,#0f141c 60%);color:var(--ink);
+  font-family:"Segoe UI",system-ui,Arial,sans-serif;overflow:hidden}
+.deck{position:fixed;inset:0}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:60px 56px;
+  opacity:0;visibility:hidden;transition:opacity .5s var(--ease);z-index:1}
+.slide.active{opacity:1;visibility:visible;z-index:2}
+.wrap{width:100%;max-width:var(--maxw)}
+.kick{letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--brand2);font-weight:700}
+h1{font-size:clamp(34px,6vw,76px);line-height:1;font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.6vw,44px);font-weight:800;letter-spacing:-.01em}
+h3{font-size:18px;margin-bottom:6px}
+p,li{color:var(--muted);line-height:1.55}
+.lead{font-size:clamp(15px,1.7vw,20px);max-width:64ch}
+.accent{color:var(--brand2)}.cyan{color:var(--cyan)}.green{color:var(--green)}.gold{color:var(--gold)}
+.rise{opacity:0;transform:translateY(18px)}
+.slide.active .rise{animation:rise .7s var(--ease) forwards}
+.slide.active .rise.d1{animation-delay:.05s}.slide.active .rise.d2{animation-delay:.14s}.slide.active .rise.d3{animation-delay:.24s}
+.slide.active .rise.d4{animation-delay:.34s}.slide.active .rise.d5{animation-delay:.44s}.slide.active .rise.d6{animation-delay:.54s}
+@keyframes rise{to{opacity:1;transform:none}}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.card.l{border-left:3px solid var(--brand)}
+.stat{font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-.02em}
+.statlbl{color:var(--muted);font-size:13px;margin-top:2px}
+.pill{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+ul.clean{list-style:none}ul.clean li{padding:7px 0 7px 26px;position:relative;color:var(--ink)}
+ul.clean li::before{content:"";position:absolute;left:0;top:14px;width:9px;height:9px;border-radius:2px;background:var(--brand)}
+ul.clean li small{color:var(--muted);display:block}
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.flow .node{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;position:relative;margin:6px}
+.flow .node b{color:var(--cyan)}
+.bars{display:flex;gap:14px;align-items:flex-end;height:200px;margin-top:10px}
+.bars .bar{flex:1;border-radius:8px 8px 0 0;position:relative;transition:height .9s var(--ease);min-height:6px;background:linear-gradient(0deg,#9aa7bd33,var(--cyan))}
+.bars .bar.b2{background:linear-gradient(0deg,#9aa7bd33,var(--green))}.bars .bar.b3{background:linear-gradient(0deg,#9aa7bd33,var(--gold))}
+.bars .bar span{position:absolute;top:-22px;left:0;right:0;text-align:center;font-size:13px;font-weight:700}
+.bars .bar em{position:absolute;bottom:-24px;left:0;right:0;text-align:center;font-style:normal;color:var(--muted);font-size:12px}
+.hud{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:14px;padding:14px 24px;background:linear-gradient(0deg,rgba(15,20,28,.92),transparent)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800}.brand .d{width:11px;height:11px;border-radius:3px;background:var(--brand)}
+.btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 14px;cursor:pointer;font-size:14px}
+.btn:hover{border-color:var(--brand2)}.btn.primary{background:linear-gradient(90deg,var(--brand),var(--brand2));border:none;font-weight:700}
+.dots{display:flex;gap:7px;margin-left:auto}.dots b{width:9px;height:9px;border-radius:50%;background:#2a3545;cursor:pointer;transition:.3s}.dots b.on{background:var(--brand2);transform:scale(1.25)}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--brand),var(--gold));z-index:40;transition:width .4s var(--ease)}
+.sn{min-width:180px;text-align:center;color:var(--muted);font-size:12px}
+.foot{position:fixed;top:18px;right:26px;color:var(--muted);font-size:12px;z-index:30}
+.logo{display:inline-flex;align-items:center;gap:12px}.logo .mk{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;font-weight:800;font-size:22px;color:#fff}
+@media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}.slide{padding:48px 24px}}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<div class="foot">PMO Portal · Management Brief · <span id="pageno">1 / 8</span></div>
+<div class="deck" id="deck">
+
+  <!-- 1 TITLE -->
+  <section class="slide" data-name="Overview">
+    <div class="wrap">
+      <div class="logo rise d1"><span class="mk">P</span><div><div class="kick">Project Portfolio &amp; Financial Control</div><h1 style="font-size:clamp(30px,5vw,60px)">PMO Portal</h1></div></div>
+      <p class="lead rise d2" style="margin-top:22px">A full-stack portfolio &amp; financial-control platform — React + .NET + PostgreSQL — giving executives one live, permissioned, bilingual view of delivery, risk and money, with automation and AI built in.</p>
+      <div class="grid g4 rise d3" style="margin-top:30px">
+        <div class="card l"><div class="stat accent">8</div><div class="statlbl">projects · 84 tasks</div></div>
+        <div class="card l"><div class="stat accent">3</div><div class="statlbl">RBAC roles, enforced</div></div>
+        <div class="card l"><div class="stat accent">30</div><div class="statlbl">automated tests green</div></div>
+        <div class="card l"><div class="stat accent">EN/AR</div><div class="statlbl">bilingual + RTL</div></div>
+      </div>
+      <div class="pill rise d4" style="margin-top:22px">Use ← → or Space to navigate · press ? for help</div>
+    </div>
+  </section>
+
+  <!-- 2 BUSINESS VALUE -->
+  <section class="slide" data-name="Business value">
+    <div class="wrap">
+      <div class="kick rise d1">Business value</div>
+      <h2 class="rise d2" style="margin:8px 0 18px">From scattered spreadsheets to one <span class="accent">governed source of truth</span>.</h2>
+      <div class="grid g3">
+        <div class="card rise d2"><h3 class="cyan">Visibility</h3><p>Live executive dashboard recomputed from SQL — delivery, risk and finance in one scope-aware view.</p></div>
+        <div class="card rise d3"><h3 class="cyan">Control</h3><p>Defensible budgets, posted-cost discipline, change-request workflow and a durable audit trail.</p></div>
+        <div class="card rise d4"><h3 class="cyan">Efficiency</h3><p>Scheduled automation escalates overdue work and budget overruns — and AI assists every form.</p></div>
+      </div>
+      <div class="grid g4 rise d5" style="margin-top:18px">
+        <div class="card"><div class="stat green" data-count="55.9" data-suffix="%" data-dec="1">0</div><div class="statlbl">portfolio budget utilization</div></div>
+        <div class="card"><div class="stat green" data-count="100" data-suffix="%">0</div><div class="statlbl">mutations permission-checked</div></div>
+        <div class="card"><div class="stat green" data-count="0" data-prefix="" data-suffix="">0</div><div class="statlbl">client-side KPI patching</div></div>
+        <div class="card"><div class="stat green" data-count="12">0</div><div class="statlbl">AI providers (auto-failover)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 SOLUTION OVERVIEW -->
+  <section class="slide" data-name="Solution overview">
+    <div class="wrap">
+      <div class="kick rise d1">Solution overview</div>
+      <h2 class="rise d2" style="margin:8px 0 18px">Eight modules, one portal.</h2>
+      <div class="grid g4">
+        <div class="card rise d2 l"><h3>Projects</h3><p>Portfolio, owners, budgets, health.</p></div>
+        <div class="card rise d2 l"><h3>Tasks</h3><p>Assign, weight, progress, overdue.</p></div>
+        <div class="card rise d3 l"><h3>Milestones</h3><p>Roadmap &amp; status.</p></div>
+        <div class="card rise d3 l"><h3>Risks &amp; Issues</h3><p>Probability × impact exposure.</p></div>
+        <div class="card rise d4 l"><h3>Change Requests</h3><p>Workflow + decision + history.</p></div>
+        <div class="card rise d4 l"><h3>Finance</h3><p>Budgets, costs, forecasts, EAC.</p></div>
+        <div class="card rise d5 l"><h3>Automation &amp; Logs</h3><p>Runs, outbox, audit trail.</p></div>
+        <div class="card rise d5 l"><h3>Employees &amp; Admin</h3><p>Users, roles, menus, RBAC.</p></div>
+      </div>
+      <p class="lead rise d6" style="margin-top:18px">Each module is permission-gated end-to-end and available in English &amp; Arabic (RTL).</p>
+    </div>
+  </section>
+
+  <!-- 4 ARCHITECTURE -->
+  <section class="slide" data-name="Architecture">
+    <div class="wrap">
+      <div class="kick rise d1">Architecture</div>
+      <h2 class="rise d2" style="margin:8px 0 18px">A clean, layered full stack.</h2>
+      <div class="flow rise d3">
+        <div class="node"><b>React + Vite + TS</b><p>SPA, i18n (EN/AR), ECharts, SignalR client, permission-aware UI.</p></div>
+        <div class="node"><b>.NET 8 Web API</b><p>Controllers + ActionPermissionFilter (RBAC), bilingual errors, SignalR hub.</p></div>
+        <div class="node"><b>Services (SqlSugar)</b><p>Business rules, transactions, optimistic concurrency, automation engine.</p></div>
+        <div class="node"><b>PostgreSQL</b><p>Relational model; all KPIs computed in SQL — no spreadsheet models.</p></div>
+      </div>
+      <div class="grid g3 rise d4" style="margin-top:20px">
+        <div class="card"><h3 class="cyan">Security</h3><p>JWT auth, per-route permissions, forced-logout on disable, no silent deletes.</p></div>
+        <div class="card"><h3 class="cyan">Realtime</h3><p>SignalR pushes notifications, notices and live session tracking.</p></div>
+        <div class="card"><h3 class="cyan">Scheduler</h3><p>ZR.Tasks / Quartz job runs the business automation on a cron.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 FINANCIAL MANAGEMENT -->
+  <section class="slide" data-name="Financial management">
+    <div class="wrap">
+      <div class="kick rise d1">Financial management</div>
+      <h2 class="rise d2" style="margin:8px 0 14px">Operational records &amp; <span class="accent">defensible calculations</span>.</h2>
+      <div class="grid g2" style="align-items:center">
+        <ul class="clean rise d3">
+          <li>Current approved budget<small>initial + approved revisions (pending/rejected excluded)</small></li>
+          <li>Actual spend<small>posted cost transactions ≤ reporting cutoff; drafts excluded</small></li>
+          <li>EAC &amp; variance<small>actual + forecast-to-complete; variance = budget − EAC</small></li>
+          <li>Controls<small>RBAC on mutations · actor/time captured · posted costs immutable</small></li>
+        </ul>
+        <div class="rise d4">
+          <div class="bars">
+            <div class="bar" style="height:0" data-h="78"><span>$15.5M</span><em>Approved</em></div>
+            <div class="bar b2" style="height:0" data-h="41"><span>$8.1M</span><em>Actual</em></div>
+            <div class="bar b3" style="height:0" data-h="62"><span>$12.3M</span><em>EAC</em></div>
+          </div>
+          <p class="statlbl" style="margin-top:34px">Portfolio @ 2026-09-30 · illustrative fictional data · reconciles exactly across SQL, web dashboard &amp; Power BI.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 WEB INTELLIGENCE -->
+  <section class="slide" data-name="Web intelligence">
+    <div class="wrap">
+      <div class="kick rise d1">Web intelligence</div>
+      <h2 class="rise d2" style="margin:8px 0 16px">A live executive dashboard — and an independent Power BI track.</h2>
+      <div class="grid g2">
+        <div class="card rise d3"><h3 class="cyan">Custom web dashboard</h3>
+          <ul class="clean"><li>KPI cards: delivery · risk &amp; governance · financial</li><li>6 interactive visuals (budget vs actual vs EAC, trend, categories, risk matrix, health, overdue by owner)</li><li>6 coordinated filters — dept, manager, project, status, cutoff, category</li><li>Drill-downs: finance KPI → transactions · delivery KPI → tasks/risks</li><li>Recomputes from SQL after a task update or posted expense</li></ul></div>
+        <div class="card rise d4"><h3 class="cyan">Power BI (separate deliverable)</h3>
+          <ul class="clean"><li>Connected to the same PostgreSQL database — not CSVs</li><li>Star-schema model + calendar, single-direction filters</li><li>4+ SQL queries · 6 DAX measures · management page</li><li>KPIs reconcile SQL = web = Power BI for the identical snapshot</li></ul></div>
+      </div>
+      <div class="pill rise d5" style="margin-top:16px">Total · Overdue · Open high-risk · Approved budget · Actual spend — identical across all three layers</div>
+    </div>
+  </section>
+
+  <!-- 7 AUTOMATION + AI -->
+  <section class="slide" data-name="Automation &amp; AI">
+    <div class="wrap">
+      <div class="kick rise d1">Automation &amp; AI approach</div>
+      <h2 class="rise d2" style="margin:8px 0 16px">It watches the portfolio — and helps you act.</h2>
+      <div class="grid g2">
+        <div class="card rise d3"><h3 class="green">Scheduled automation</h3>
+          <ul class="clean"><li>Overdue-task escalation &amp; budget-overrun alerts</li><li>Runs via ZR.Tasks/Quartz (cron) or on demand</li><li>Idempotent — unique dedupe key, safe retry (no double-send)</li><li>Delivers to Messages + realtime SignalR + persistent run log</li></ul></div>
+        <div class="card rise d4"><h3 class="green">AI, woven in</h3>
+          <ul class="clean"><li>Multi-provider fallback chain (Groq → … 12 providers)</li><li>Assistant on every page — scoped to a project / all / compare</li><li>Dashboard insights · project summary · task-progress advice</li><li>AI autofill on create forms · AI-drafted alert bodies</li></ul></div>
+      </div>
+      <div class="flow rise d5" style="margin-top:14px">
+        <div class="node"><b>Trigger</b><p>cron / manual</p></div>
+        <div class="node"><b>Rules</b><p>overdue · overrun</p></div>
+        <div class="node"><b>Dedupe</b><p>unique key</p></div>
+        <div class="node"><b>Deliver</b><p>Messages · SignalR</p></div>
+        <div class="node"><b>Log</b><p>run + outbox + audit</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 TESTING + DELIVERY -->
+  <section class="slide" data-name="Testing &amp; delivery">
+    <div class="wrap">
+      <div class="kick rise d1">Testing &amp; delivery</div>
+      <h2 class="rise d2" style="margin:8px 0 16px">Proven, reconciled, ready.</h2>
+      <div class="grid g4 rise d3">
+        <div class="card"><div class="stat cyan" data-count="30">0</div><div class="statlbl">automated checks green</div></div>
+        <div class="card"><div class="stat cyan" data-count="5">0</div><div class="statlbl">finance calc tests</div></div>
+        <div class="card"><div class="stat cyan" data-count="3">0</div><div class="statlbl">concurrency / double-submit</div></div>
+        <div class="card"><div class="stat cyan" data-count="15">0</div><div class="statlbl">manual E2E scenarios (A–O)</div></div>
+      </div>
+      <div class="grid g3 rise d4" style="margin-top:16px">
+        <div class="card"><h3>Correctness</h3><p>RBAC floor, finance definitions, workflow state machine, optimistic concurrency.</p></div>
+        <div class="card"><h3>Integrity</h3><p>Reporting cutoff 2026-09-30; reproducible seeded data; KPIs reconcile across layers.</p></div>
+        <div class="card"><h3>Delivery</h3><p>Reproducible generator + CSVs + schema; documented setup; bilingual throughout.</p></div>
+      </div>
+      <div class="card rise d5 l" style="margin-top:18px;text-align:center">
+        <h2 style="margin-bottom:6px">Ready for review.</h2>
+        <p class="lead" style="margin:0 auto">Backend, web portal, dashboard, automation, AI, Power BI pack and reproducible data — delivered.</p>
+        <div style="margin-top:14px"><button class="btn primary" id="restart">↺ Restart</button></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="hud">
+  <div class="brand"><span class="d"></span> PMO Portal</div>
+  <button class="btn" id="prev">‹</button>
+  <span class="sn" id="sn">Overview</span>
+  <button class="btn primary" id="next">Next ›</button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),i=0,seen={};
+  var dotsEl=document.getElementById('dots'),prog=document.getElementById('prog'),sn=document.getElementById('sn'),pageno=document.getElementById('pageno');
+  slides.forEach(function(s,idx){var b=document.createElement('b');b.title=s.dataset.name;b.onclick=function(){go(idx)};dotsEl.appendChild(b);});
+  var dots=[].slice.call(dotsEl.children);
+  function esc(t){return t.replace('&amp;','&');}
+  function go(n){n=Math.max(0,Math.min(slides.length-1,n));slides[i].classList.remove('active');i=n;slides[i].classList.add('active');
+    dots.forEach(function(d,k){d.classList.toggle('on',k===i)});prog.style.width=(i/(slides.length-1)*100)+'%';
+    sn.textContent=esc(slides[i].dataset.name);pageno.textContent=(i+1)+' / '+slides.length;
+    if(!seen[i]){seen[i]=true;enter(i);}}
+  function enter(n){
+    slides[n].querySelectorAll('[data-count]').forEach(function(el){
+      var tgt=parseFloat(el.dataset.count),dec=parseInt(el.dataset.dec||'0'),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'',t0=null;
+      function st(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/1200),e=1-Math.pow(1-p,3);el.textContent=pre+(tgt*e).toFixed(dec)+suf;if(p<1)requestAnimationFrame(st);}requestAnimationFrame(st);
+    });
+    slides[n].querySelectorAll('.bars .bar').forEach(function(b){setTimeout(function(){b.style.height=b.dataset.h+'%';},80);});
+  }
+  function next(){if(i<slides.length-1)go(i+1)}function prev(){if(i>0)go(i-1)}
+  document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;document.getElementById('restart').onclick=function(){go(0)};
+  document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='?'){alert('PMO Portal deck\\n\\n→ / Space : next\\n← : previous\\nHome/End : first/last\\nClick dots to jump\\n\\nOffline — open index.html directly.');}});
+  go(0);
+})();
+</script>
+</body>
+</html>

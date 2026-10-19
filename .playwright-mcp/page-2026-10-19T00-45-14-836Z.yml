@@ -1,0 +1,37 @@
+- generic [active] [ref=f39e1]:
+  - generic [ref=f39e4]:
+    - text: AeroBridge
+    - generic [ref=f39e6]: Investor Brief
+  - generic [ref=f39e7]:
+    - button "◐ Motion" [ref=f39e8] [cursor=pointer]
+    - button "?" [ref=f39e9] [cursor=pointer]
+  - generic [ref=f39e12]:
+    - generic [ref=f39e13]: A regional autonomous lifeline network
+    - heading "Lifelines, airborne." [level=1] [ref=f39e14]: Lifelines,airborne.
+    - paragraph [ref=f39e15]: AeroBridge moves essential medicine and urgent supplies between city hubs, regional clinics and remote communities — autonomously, in minutes, not days.
+    - generic [ref=f39e16]:
+      - generic [ref=f39e17]:
+        - text: 1 min
+        - generic [ref=f39e18]: median hub → clinic
+      - generic [ref=f39e19]:
+        - text: 3%
+        - generic [ref=f39e20]: on-time critical deliveries
+      - generic [ref=f39e21]:
+        - text: 1+
+        - generic [ref=f39e22]: communities in reach
+    - generic [ref=f39e23]: Illustrative figures — fictional scenario for investment discussion
+  - generic [ref=f39e24]:
+    - generic [ref=f39e25]: AeroBridge
+    - button "‹" [ref=f39e27] [cursor=pointer]
+    - generic [ref=f39e28]: Opening
+    - button "Next ›" [ref=f39e29] [cursor=pointer]
+    - generic [ref=f39e30]:
+      - generic "Opening" [ref=f39e31] [cursor=pointer]
+      - generic "The problem" [ref=f39e32] [cursor=pointer]
+      - generic "The opportunity" [ref=f39e33] [cursor=pointer]
+      - generic "The system" [ref=f39e34] [cursor=pointer]
+      - generic "A real use case" [ref=f39e35] [cursor=pointer]
+      - generic "Capability" [ref=f39e36] [cursor=pointer]
+      - generic "Simulator" [ref=f39e37] [cursor=pointer]
+      - generic "Business case" [ref=f39e38] [cursor=pointer]
+      - generic "Roadmap & the ask" [ref=f39e39] [cursor=pointer]

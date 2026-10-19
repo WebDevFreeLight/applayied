@@ -1,0 +1,37 @@
+- generic [active] [ref=f41e1]:
+  - generic [ref=f41e2]: PMO Portal · Management Brief · 1 / 8
+  - generic [ref=f41e5]:
+    - generic [ref=f41e6]:
+      - generic [ref=f41e7]: P
+      - generic [ref=f41e8]:
+        - generic [ref=f41e9]: Project Portfolio & Financial Control
+        - heading "PMO Portal" [level=1] [ref=f41e10]
+    - paragraph [ref=f41e11]: A full-stack portfolio & financial-control platform — React + .NET + PostgreSQL — giving executives one live, permissioned, bilingual view of delivery, risk and money, with automation and AI built in.
+    - generic [ref=f41e12]:
+      - generic [ref=f41e13]:
+        - generic [ref=f41e14]: "8"
+        - generic [ref=f41e15]: projects · 84 tasks
+      - generic [ref=f41e16]:
+        - generic [ref=f41e17]: "3"
+        - generic [ref=f41e18]: RBAC roles, enforced
+      - generic [ref=f41e19]:
+        - generic [ref=f41e20]: "30"
+        - generic [ref=f41e21]: automated tests green
+      - generic [ref=f41e22]:
+        - generic [ref=f41e23]: EN/AR
+        - generic [ref=f41e24]: bilingual + RTL
+    - generic [ref=f41e25]: Use ← → or Space to navigate · press ? for help
+  - generic [ref=f41e26]:
+    - generic [ref=f41e27]: PMO Portal
+    - button "‹" [ref=f41e29] [cursor=pointer]
+    - generic [ref=f41e30]: Overview
+    - button "Next ›" [ref=f41e31] [cursor=pointer]
+    - generic [ref=f41e32]:
+      - generic "Overview" [ref=f41e33] [cursor=pointer]
+      - generic "Business value" [ref=f41e34] [cursor=pointer]
+      - generic "Solution overview" [ref=f41e35] [cursor=pointer]
+      - generic "Architecture" [ref=f41e36] [cursor=pointer]
+      - generic "Financial management" [ref=f41e37] [cursor=pointer]
+      - generic "Web intelligence" [ref=f41e38] [cursor=pointer]
+      - generic "Automation & AI" [ref=f41e39] [cursor=pointer]
+      - generic "Testing & delivery" [ref=f41e40] [cursor=pointer]

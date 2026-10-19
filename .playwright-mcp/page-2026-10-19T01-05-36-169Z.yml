@@ -1,0 +1,43 @@
+- generic [active] [ref=f54e1]:
+  - generic [ref=f54e2]: PMO Portal · Product Showcase · 3 / 13
+  - generic [ref=f54e45]:
+    - generic [ref=f54e46]:
+      - generic [ref=f54e47]: PMO Portal · Dashboard
+      - img "Executive dashboard" [ref=f54e53]
+    - generic [ref=f54e54]:
+      - generic [ref=f54e55]: Executive dashboard
+      - heading "Decisions at a glance." [level=2] [ref=f54e56]
+      - list [ref=f54e57]:
+        - listitem [ref=f54e58]:
+          - text: KPI cards
+          - generic [ref=f54e59]: delivery · risk & governance · financial
+        - listitem [ref=f54e60]:
+          - text: 6 interactive visuals
+          - generic [ref=f54e61]: budget vs actual vs EAC, trends, risk matrix, health
+        - listitem [ref=f54e62]:
+          - text: 6 coordinated filters + drill-downs
+          - generic [ref=f54e63]: dept · manager · project · status · cutoff · category
+        - listitem [ref=f54e64]:
+          - text: Recomputes from SQL
+          - generic [ref=f54e65]: after a task update or a posted expense — no client patching
+  - generic [ref=f54e22]:
+    - generic [ref=f54e23]:
+      - generic [ref=f54e24]: P
+      - text: PMO Portal
+    - button "‹" [ref=f54e25] [cursor=pointer]
+    - generic [ref=f54e26]: Executive Dashboard
+    - button "Next ›" [ref=f54e27] [cursor=pointer]
+    - generic [ref=f54e28]:
+      - generic "Welcome" [ref=f54e29] [cursor=pointer]
+      - generic "Why PMO Portal" [ref=f54e30] [cursor=pointer]
+      - generic "Executive Dashboard" [ref=f54e31] [cursor=pointer]
+      - generic "Portfolio" [ref=f54e32] [cursor=pointer]
+      - generic "Project workspace" [ref=f54e33] [cursor=pointer]
+      - generic "Financial control" [ref=f54e34] [cursor=pointer]
+      - generic "Risk & change" [ref=f54e35] [cursor=pointer]
+      - generic "Change Requests" [ref=f54e36] [cursor=pointer]
+      - generic "Automation" [ref=f54e37] [cursor=pointer]
+      - generic "AI built in" [ref=f54e38] [cursor=pointer]
+      - generic "Security & RBAC" [ref=f54e39] [cursor=pointer]
+      - generic "People" [ref=f54e40] [cursor=pointer]
+      - generic "Let's talk" [ref=f54e41] [cursor=pointer]

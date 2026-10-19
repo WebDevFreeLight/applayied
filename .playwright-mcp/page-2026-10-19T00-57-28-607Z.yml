@@ -1,0 +1,103 @@
+- generic [ref=f43e3]:
+  - complementary [ref=f43e4]:
+    - generic [ref=f43e5]:
+      - text: PMO Portal
+      - generic [ref=f43e6]: Project Portfolio & Financial Control
+    - link "Dashboard" [ref=f43e7] [cursor=pointer]:
+      - /url: /
+    - link "Projects" [ref=f43e8] [cursor=pointer]:
+      - /url: /projects
+    - link "Tasks" [ref=f43e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "Milestones" [ref=f43e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "Risks & Issues" [ref=f43e11] [cursor=pointer]:
+      - /url: /risks
+    - link "Change Requests" [ref=f43e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "Finance" [ref=f43e13] [cursor=pointer]:
+      - /url: /finance
+    - link "Automation & Logs" [ref=f43e14] [cursor=pointer]:
+      - /url: /activity
+    - link "Employees" [ref=f43e15] [cursor=pointer]:
+      - /url: /employees
+    - link "Cost Categories" [ref=f43e16] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f43e17]: Administration
+    - link "Users" [ref=f43e18] [cursor=pointer]:
+      - /url: /admin/users
+    - link "Roles" [ref=f43e19] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "Menus & Permissions" [ref=f43e20] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "Departments" [ref=f43e21] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "Positions" [ref=f43e22] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "Dictionaries" [ref=f43e23] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "Configuration" [ref=f43e24] [cursor=pointer]:
+      - /url: /admin/config
+    - link "Notices" [ref=f43e25] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "Scheduled Tasks" [ref=f43e26] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "Task Logs" [ref=f43e27] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "Login Log" [ref=f43e28] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "Sessions" [ref=f43e29] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "Operation Log" [ref=f43e30] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "Online Users" [ref=f43e31] [cursor=pointer]:
+      - /url: /admin/online
+    - link "Server Monitor" [ref=f43e32] [cursor=pointer]:
+      - /url: /admin/server
+    - link "Messages" [ref=f43e33] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "Profile" [ref=f43e34] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f43e35]:
+    - banner [ref=f43e36]:
+      - strong [ref=f43e37]: PMO Portal
+      - generic [ref=f43e38]:
+        - button "🔔" [ref=f43e40] [cursor=pointer]
+        - button "☀️" [ref=f43e41] [cursor=pointer]
+        - button "العربية" [ref=f43e42] [cursor=pointer]
+        - generic [ref=f43e43]: مدير · admin
+        - button "Sign out" [ref=f43e44] [cursor=pointer]
+    - main [ref=f43e45]:
+      - generic [ref=f43e46]:
+        - generic [ref=f43e47]:
+          - heading "Executive Dashboard" [level=2] [ref=f43e48]
+          - button "✨ AI Insights" [disabled] [ref=f43e49]
+          - generic [ref=f43e50]:
+            - generic [ref=f43e52]:
+              - log [ref=f43e54]
+              - generic [ref=f43e56]:
+                - generic [ref=f43e57]: "Department: All"
+                - combobox [ref=f43e59]
+            - generic [ref=f43e66]:
+              - log [ref=f43e68]
+              - generic [ref=f43e70]:
+                - generic [ref=f43e71]: "Owner: All"
+                - combobox [ref=f43e73]
+            - generic [ref=f43e80]:
+              - log [ref=f43e82]
+              - generic [ref=f43e84]:
+                - generic [ref=f43e85]: "Projects: All"
+                - combobox [ref=f43e87]
+            - generic [ref=f43e94]:
+              - log [ref=f43e96]
+              - generic [ref=f43e98]:
+                - generic [ref=f43e99]: "Status: All"
+                - combobox [ref=f43e101]
+            - generic [ref=f43e108]:
+              - log [ref=f43e110]
+              - generic [ref=f43e112]:
+                - generic [ref=f43e113]: "Category: All"
+                - combobox [ref=f43e115]
+            - textbox "Reporting cutoff" [ref=f43e121]: 2026-09-30
+        - generic [ref=f43e122]: Loading…
+  - button "✨" [ref=f43e123] [cursor=pointer]

@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AeroBridge — Lifelines, Airborne</title>
+<style>
+/* ============ AeroBridge · cinematic investor pitch · 100% offline, vanilla ============ */
+:root{
+  --bg:#060b16; --bg2:#0a1526; --ink:#eaf2ff; --muted:#8aa0c2; --line:rgba(120,160,220,.16);
+  --cyan:#35e0d8; --cyan2:#13b7c9; --signal:#ff6b5e; --gold:#ffcf6b; --panel:rgba(16,28,48,.72);
+  --glow:0 0 40px rgba(53,224,216,.35); --radius:16px; --maxw:1180px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(1200px 700px at 70% -10%,#12233f 0,var(--bg) 55%);
+  color:var(--ink);font-family:"Segoe UI",system-ui,Arial,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+.app{position:fixed;inset:0}
+canvas#stars{position:fixed;inset:0;z-index:0;opacity:.6}
+/* scenes */
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:64px 40px;opacity:0;visibility:hidden;transition:opacity .7s var(--ease);z-index:1}
+.scene.active{opacity:1;visibility:visible;z-index:2}
+.scene .wrap{width:100%;max-width:var(--maxw);position:relative}
+.kicker{letter-spacing:.32em;text-transform:uppercase;font-size:12px;color:var(--cyan);font-weight:700}
+h1{font-size:clamp(40px,8vw,104px);line-height:.98;font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(28px,4.4vw,52px);line-height:1.05;font-weight:800;letter-spacing:-.01em}
+p.lead{font-size:clamp(16px,1.9vw,22px);color:var(--muted);max-width:60ch;line-height:1.55}
+.accent{color:var(--cyan)}.sig{color:var(--signal)}.gold{color:var(--gold)}
+.illus{display:inline-block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:4px 10px;margin-top:10px}
+/* entrance choreography */
+.rise{opacity:0;transform:translateY(26px);filter:blur(6px)}
+.scene.active .rise{animation:rise .9s var(--ease) forwards}
+.scene.active .rise.d1{animation-delay:.08s}.scene.active .rise.d2{animation-delay:.2s}
+.scene.active .rise.d3{animation-delay:.34s}.scene.active .rise.d4{animation-delay:.5s}.scene.active .rise.d5{animation-delay:.66s}
+@keyframes rise{to{opacity:1;transform:none;filter:none}}
+.wipe{clip-path:inset(0 100% 0 0)}.scene.active .wipe{animation:wipe 1s var(--ease) .2s forwards}
+@keyframes wipe{to{clip-path:inset(0 0 0 0)}}
+/* grid + cards */
+.grid{display:grid;gap:18px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;backdrop-filter:blur(8px)}
+.card h3{font-size:17px;margin-bottom:6px}.card p{color:var(--muted);font-size:14px;line-height:1.5}
+.stat{font-size:clamp(34px,5vw,60px);font-weight:800;letter-spacing:-.02em}
+.stat.cyan{color:var(--cyan)}.stat.sig{color:var(--signal)}.stat.gold{color:var(--gold)}
+.statlbl{color:var(--muted);font-size:13px;margin-top:2px}
+/* hud / nav */
+.hud{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:14px;
+  padding:14px 22px;background:linear-gradient(0deg,rgba(6,11,22,.9),transparent)}
+.brandmark{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.02em}
+.brandmark .dot{width:11px;height:11px;border-radius:50%;background:var(--cyan);box-shadow:var(--glow)}
+.dots{display:flex;gap:7px;margin-left:auto}
+.dots b{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:.3s}
+.dots b.on{background:var(--cyan);transform:scale(1.25);box-shadow:var(--glow)}
+.btn{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:10px;
+  padding:9px 14px;font-size:14px;cursor:pointer;transition:.2s}
+.btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn.primary{background:linear-gradient(90deg,var(--cyan2),var(--cyan));color:#04121a;border:none;font-weight:700}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--signal));z-index:40;transition:width .5s var(--ease)}
+.topleft{position:fixed;top:16px;left:22px;z-index:30}
+.topright{position:fixed;top:14px;right:22px;z-index:30;display:flex;gap:8px}
+kbd{font:inherit;font-size:11px;background:#0d1b30;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--muted)}
+/* reduced motion */
+body.rm *{animation-duration:.001s!important;transition-duration:.08s!important}
+body.rm .scene.active .rise{opacity:1;transform:none;filter:none}
+/* map / svg */
+.mapwrap{position:relative;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:
+  radial-gradient(900px 500px at 30% 20%,#0e2039,#081020)}
+svg .route{fill:none;stroke:var(--cyan);stroke-width:2.2;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(53,224,216,.6))}
+svg .route.dim{stroke:rgba(120,160,220,.3);filter:none}
+svg .hub{fill:#0a1526;stroke:var(--cyan);stroke-width:2;cursor:pointer;transition:.25s}
+svg .hub:hover,svg .hub.sel{fill:var(--cyan);r:11}
+svg .hublbl{fill:var(--ink);font-size:12px;font-weight:600}
+svg .clinic{fill:var(--signal)}
+.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.scene.active .draw{animation:draw 2.1s var(--ease) .3s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.pulse{transform-box:fill-box;transform-origin:center}
+@keyframes ping{0%{r:4;opacity:1}100%{r:20;opacity:0}}
+/* drone that persists across scenes (cross-scene continuity) */
+#drone{position:fixed;z-index:25;width:46px;height:46px;pointer-events:none;transition:all 1.1s var(--ease);opacity:0;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+/* simulator */
+.sim{display:grid;grid-template-columns:320px 1fr;gap:26px;align-items:center}
+.ctrl{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.ctrl label{display:block;font-size:13px;color:var(--muted);margin:16px 0 6px}
+.ctrl label b{color:var(--ink);float:right;font-size:16px}
+input[type=range]{width:100%;accent-color:var(--cyan);height:6px}
+.bars{display:flex;gap:10px;align-items:flex-end;height:230px}
+.bar{flex:1;background:linear-gradient(0deg,var(--cyan2),var(--cyan));border-radius:8px 8px 0 0;position:relative;transition:height .6s var(--ease);min-height:6px}
+.bar span{position:absolute;top:-22px;left:0;right:0;text-align:center;font-weight:700;font-size:14px}
+.bar em{position:absolute;bottom:-26px;left:0;right:0;text-align:center;color:var(--muted);font-style:normal;font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:38px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .v{font-size:30px;font-weight:800}.kpi .l{color:var(--muted);font-size:12px}
+/* timeline */
+.tl{position:relative;margin-top:30px;padding-left:4px}
+.tl .line{position:absolute;left:0;top:18px;height:3px;background:var(--line);width:100%}
+.tl .line i{position:absolute;left:0;top:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--signal))}
+.scene.active .tl .line i{animation:grow 2s var(--ease) .4s forwards;width:0}
+@keyframes grow{to{width:100%}}
+.tl .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative}
+.tl .step{padding-top:40px}
+.tl .step::before{content:"";position:absolute;top:12px;width:15px;height:15px;border-radius:50%;background:var(--bg2);border:2px solid var(--cyan)}
+.waves::before{content:"";position:absolute;inset:0;background:
+  repeating-linear-gradient(90deg,transparent 0 38px,rgba(53,224,216,.05) 38px 39px);pointer-events:none}
+.fin{display:flex;gap:16px;align-items:flex-end;height:220px;margin-top:10px}
+.fin .col{flex:1;text-align:center}
+.fin .col .b{border-radius:8px 8px 0 0;transition:height 1s var(--ease);min-height:4px}
+small.note{color:var(--muted);font-size:12px}
+.hero-sub{display:flex;gap:26px;flex-wrap:wrap;margin-top:26px}
+.hero-sub div{border-left:2px solid var(--cyan);padding-left:12px}
+.hero-sub b{font-size:22px}.hero-sub span{display:block;color:var(--muted);font-size:12px}
+@media(max-width:820px){.g3,.g2,.g4,.sim,.tl .steps,.kpis{grid-template-columns:1fr}.sim{display:block}.topleft .kicker{display:none}}
+/* RTL / Arabic */
+[dir=rtl] body{font-family:"Segoe UI","Tahoma",system-ui,Arial,sans-serif}
+[dir=rtl] .hero-sub div{border-left:none;border-right:2px solid var(--cyan);padding-left:0;padding-right:12px}
+[dir=rtl] .dots{margin-left:0;margin-right:auto}
+[dir=rtl] .bar em,[dir=rtl] .bar span{direction:rtl}
+[dir=rtl] h1,[dir=rtl] h2,[dir=rtl] p.lead{letter-spacing:0}
+[dir=rtl] .kicker{letter-spacing:.12em}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="progress" id="prog"></div>
+<div class="topleft"><div class="brandmark"><span class="dot"></span>AeroBridge <span class="kicker" style="margin-left:8px">Investor Brief</span></div></div>
+<div class="topright">
+  <button class="btn" id="lang" title="العربية / English">ع</button>
+  <button class="btn" id="mo" title="Toggle motion">◐ Motion</button>
+  <button class="btn" id="help" title="Shortcuts">?</button>
+</div>
+<svg id="drone" viewBox="0 0 48 48"><g fill="none" stroke="#35e0d8" stroke-width="2.4" stroke-linecap="round"><circle cx="24" cy="24" r="6" fill="#04121a"/><path d="M24 18V8M24 30v10M18 24H8M30 24h10"/><circle cx="8" cy="8" r="3.5"/><circle cx="40" cy="8" r="3.5"/><circle cx="8" cy="40" r="3.5"/><circle cx="40" cy="40" r="3.5"/></g></svg>
+
+<div class="app" id="app">
+
+  <!-- 01 OPENING -->
+  <section class="scene" data-scene="Opening">
+    <div class="wrap" style="text-align:center">
+      <div class="kicker rise d1">A regional autonomous lifeline network</div>
+      <h1 class="rise d2" style="margin-top:14px">Lifelines,<br><span class="accent">airborne.</span></h1>
+      <p class="lead rise d3" style="margin:22px auto 0">AeroBridge moves essential medicine and urgent supplies between city hubs, regional clinics and remote communities — autonomously, in minutes, not days.</p>
+      <div class="hero-sub rise d4" style="justify-content:center">
+        <div><b class="accent" data-count="19" data-suffix=" min">0</b><span>median hub → clinic</span></div>
+        <div><b class="accent" data-count="92" data-suffix="%">0</b><span>on-time critical deliveries</span></div>
+        <div><b class="accent" data-count="40" data-suffix="+">0</b><span>communities in reach</span></div>
+      </div>
+      <div class="illus rise d5">Illustrative figures — fictional scenario for investment discussion</div>
+    </div>
+  </section>
+
+  <!-- 02 PROBLEM -->
+  <section class="scene" data-scene="The problem">
+    <div class="wrap">
+      <div class="kicker rise d1">The problem</div>
+      <h2 class="rise d2" style="margin:10px 0 8px">When a delivery takes a day,<br>a <span class="sig">shortage</span> becomes an emergency.</h2>
+      <p class="lead rise d3">Ground logistics to dispersed clinics are slow, costly and fragile. Roads wash out, cold-chain breaks, and critical stock arrives late — or not at all.</p>
+      <div class="grid g4" style="margin-top:28px">
+        <div class="card rise d2"><div class="stat sig" data-count="31" data-suffix="%">0</div><div class="statlbl">clinic stock-outs of critical items / year</div></div>
+        <div class="card rise d3"><div class="stat sig" data-count="27" data-suffix=" hrs">0</div><div class="statlbl">avg. emergency resupply time</div></div>
+        <div class="card rise d4"><div class="stat sig" data-count="18" data-prefix="$" data-suffix="M">0</div><div class="statlbl">annual spoilage & expedited freight</div></div>
+        <div class="card rise d5"><div class="stat sig" data-count="6" data-suffix=" of 10">0</div><div class="statlbl">remote sites underserved</div></div>
+      </div>
+      <div class="illus rise d5">Illustrative assumptions</div>
+    </div>
+  </section>
+
+  <!-- 03 OPPORTUNITY -->
+  <section class="scene" data-scene="The opportunity">
+    <div class="wrap">
+      <div class="kicker rise d1">The opportunity</div>
+      <h2 class="rise d2" style="margin:10px 0 18px">A dedicated sky corridor for<br>what <span class="accent">cannot wait</span>.</h2>
+      <div class="grid g3">
+        <div class="card rise d2"><h3>Health networks</h3><p>Guaranteed replenishment windows for vaccines, blood and essentials — measured in minutes.</p></div>
+        <div class="card rise d3"><h3>Remote communities</h3><p>Equitable access regardless of terrain, season or road condition.</p></div>
+        <div class="card rise d4"><h3>Operators</h3><p>Lower cost-per-delivery and a resilient, observable supply line with full audit.</p></div>
+      </div>
+      <div class="grid g4" style="margin-top:18px">
+        <div class="card rise d2"><div class="stat cyan" data-count="70" data-suffix="%">0</div><div class="statlbl">faster critical resupply</div></div>
+        <div class="card rise d3"><div class="stat cyan" data-count="45" data-suffix="%">0</div><div class="statlbl">lower cost / delivery</div></div>
+        <div class="card rise d4"><div class="stat cyan" data-count="99.2" data-suffix="%" data-dec="1">0</div><div class="statlbl">chain-of-custody integrity</div></div>
+        <div class="card rise d5"><div class="stat cyan" data-count="24" data-suffix="/7">0</div><div class="statlbl">autonomous availability</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 SYSTEM -->
+  <section class="scene" data-scene="The system">
+    <div class="wrap">
+      <div class="kicker rise d1">The system</div>
+      <h2 class="rise d2" style="margin:10px 0 14px">Four layers, one <span class="accent">lifeline</span>.</h2>
+      <div class="grid g2" style="align-items:center">
+        <div class="mapwrap rise d3" style="aspect-ratio:16/11">
+          <svg viewBox="0 0 560 390" width="100%" height="100%" id="sysSvg">
+            <defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#35e0d8"/><stop offset="1" stop-color="#ff6b5e"/></linearGradient></defs>
+            <!-- links -->
+            <g stroke="url(#lg)" stroke-width="1.6" opacity=".5" fill="none">
+              <path class="draw" style="--len:300" d="M110 300 L280 210"/>
+              <path class="draw" style="--len:320" d="M280 210 L450 120"/>
+              <path class="draw" style="--len:260" d="M280 210 L430 300"/>
+              <path class="draw" style="--len:240" d="M280 210 L150 120"/>
+            </g>
+            <!-- nodes -->
+            <g class="layer" data-k="Control tower"><circle class="hub" cx="280" cy="210" r="9"/><text class="hublbl" x="294" y="214">Control Tower</text></g>
+            <g class="layer" data-k="Vertiport hubs"><circle class="hub" cx="110" cy="300" r="8"/><circle class="hub" cx="450" cy="120" r="8"/><text class="hublbl" x="124" y="304">Hub A</text><text class="hublbl" x="464" y="124">Hub B</text></g>
+            <g class="layer" data-k="Autonomous fleet"><circle class="hub" cx="150" cy="120" r="8"/><text class="hublbl" x="164" y="124">Fleet</text></g>
+            <g class="layer" data-k="Clinic endpoints"><circle class="clinic" cx="430" cy="300" r="7"/><text class="hublbl" x="444" y="304">Clinic</text></g>
+          </svg>
+        </div>
+        <div>
+          <div class="card rise d2" data-layer="Control tower"><h3>① Control Tower</h3><p>Autonomy stack: airspace deconfliction, routing, weather-aware dispatch and live telemetry.</p></div>
+          <div class="card rise d3" data-layer="Vertiport hubs" style="margin-top:12px"><h3>② Vertiport Hubs</h3><p>Automated loading, cold-chain staging and battery swap. Click a node to highlight.</p></div>
+          <div class="card rise d4" data-layer="Autonomous fleet" style="margin-top:12px"><h3>③ Autonomous Fleet</h3><p>Redundant eVTOL craft with sealed, monitored medical payload pods.</p></div>
+          <div class="card rise d5" data-layer="Clinic endpoints" style="margin-top:12px"><h3>④ Clinic Endpoints</h3><p>Precision drop, signature-free custody handoff and automatic inventory sync.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 USE CASE -->
+  <section class="scene" data-scene="A real use case">
+    <div class="wrap">
+      <div class="kicker rise d1">A real use case</div>
+      <h2 class="rise d2" style="margin:10px 0 16px">From alert to <span class="accent">arrival</span> — step through it.</h2>
+      <div class="grid g5 rise d3" id="ucStages" style="grid-template-columns:repeat(5,1fr);gap:10px">
+        <div class="card uc on"><h3>1 · Trigger</h3><p>Clinic inventory for O‑neg blood drops below the safety line.</p></div>
+        <div class="card uc"><h3>2 · Dispatch</h3><p>Control Tower assigns the nearest ready craft & cold pod.</p></div>
+        <div class="card uc"><h3>3 · Flight</h3><p>Deconflicted corridor; live telemetry & temperature logged.</p></div>
+        <div class="card uc"><h3>4 · Drop</h3><p>Precision delivery; custody transferred, chain intact.</p></div>
+        <div class="card uc"><h3>5 · Outcome</h3><p>Restocked in <b class="accent">19 min</b>; patient treated on time.</p></div>
+      </div>
+      <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
+        <button class="btn" id="ucPrev">‹ Prev</button><button class="btn primary" id="ucNext">Advance ›</button>
+        <span class="note" id="ucMsg">Stage 1 of 5 — the trigger.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 CAPABILITY (animated route map) -->
+  <section class="scene" data-scene="Capability">
+    <div class="wrap">
+      <div class="kicker rise d1">Capability showcase</div>
+      <h2 class="rise d2" style="margin:10px 0 14px">A living network that <span class="accent">draws itself</span>.</h2>
+      <div class="mapwrap waves rise d3" style="aspect-ratio:16/8">
+        <svg viewBox="0 0 980 420" width="100%" height="100%" id="netSvg">
+          <g class="routes"></g><g class="nodes"></g>
+        </svg>
+      </div>
+      <div class="grid g3" style="margin-top:14px">
+        <div class="card rise d2"><h3>SVG path flight</h3><p>Routes animate stroke-by-stroke; craft ride the live path.</p></div>
+        <div class="card rise d3"><h3>Weather-aware</h3><p>Corridors re-route around no-fly cells automatically.</p></div>
+        <div class="card rise d4"><h3>Fully observable</h3><p>Every pod, every minute — audit-grade telemetry.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 SIMULATOR -->
+  <section class="scene" data-scene="Simulator">
+    <div class="wrap">
+      <div class="kicker rise d1">Interactive simulator</div>
+      <h2 class="rise d2" style="margin:10px 0 16px">Move a lever. Watch the <span class="accent">network respond</span>.</h2>
+      <div class="sim">
+        <div class="ctrl rise d3">
+          <label>Fleet size <b id="vFleet">12</b></label><input id="sFleet" type="range" min="4" max="40" value="12">
+          <label>Active hubs <b id="vHubs">3</b></label><input id="sHubs" type="range" min="1" max="8" value="3">
+          <label>Avg distance (km) <b id="vDist">38</b></label><input id="sDist" type="range" min="10" max="90" value="38">
+          <div class="note" style="margin-top:16px">Live-computed from your inputs — not a recording.</div>
+        </div>
+        <div class="rise d4">
+          <div class="bars">
+            <div class="bar" id="bDeliv"><span>0</span><em>Deliveries/day</em></div>
+            <div class="bar" id="bCover"><span>0</span><em>Coverage %</em></div>
+            <div class="bar" id="bTime"><span>0</span><em>Avg min</em></div>
+            <div class="bar" id="bCost"><span>0</span><em>$/delivery</em></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="v accent" id="kDeliv">0</div><div class="l">daily critical deliveries</div></div>
+            <div class="kpi"><div class="v accent" id="kCover">0</div><div class="l">communities in service radius</div></div>
+            <div class="kpi"><div class="v gold" id="kCost">$0</div><div class="l">cost per delivery</div></div>
+            <div class="kpi"><div class="v sig" id="kCo2">0</div><div class="l">tonnes CO₂ avoided / yr vs. road</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="illus rise d5">Model is illustrative; coefficients are fictional planning assumptions</div>
+    </div>
+  </section>
+
+  <!-- 08 BUSINESS CASE -->
+  <section class="scene" data-scene="Business case">
+    <div class="wrap">
+      <div class="kicker rise d1">The business case</div>
+      <h2 class="rise d2" style="margin:10px 0 14px">A <span class="gold">3‑year</span> path to positive return.</h2>
+      <div class="grid g2" style="align-items:center">
+        <div class="rise d3">
+          <div class="fin" id="finChart">
+            <div class="col"><div class="b" style="background:var(--signal)" data-h="180"></div><div class="statlbl">Yr 1 · invest</div></div>
+            <div class="col"><div class="b" style="background:#c98b4a" data-h="96"></div><div class="statlbl">Yr 2 · ramp</div></div>
+            <div class="col"><div class="b" style="background:var(--cyan)" data-h="130"></div><div class="statlbl">Yr 3 · return</div></div>
+            <div class="col"><div class="b" style="background:var(--cyan)" data-h="210"></div><div class="statlbl">Yr 4 · scale</div></div>
+          </div>
+        </div>
+        <div class="grid g2">
+          <div class="card rise d2"><div class="stat gold" data-count="24" data-prefix="$" data-suffix="M">0</div><div class="statlbl">Series‑A ask (3 yrs)</div></div>
+          <div class="card rise d3"><div class="stat cyan" data-count="41" data-prefix="$" data-suffix="M">0</div><div class="statlbl">cumulative value created</div></div>
+          <div class="card rise d4"><div class="stat cyan" data-count="2.3" data-suffix="×" data-dec="1">0</div><div class="statlbl">indicative ROI by Yr 4</div></div>
+          <div class="card rise d5"><div class="stat gold" data-count="28" data-suffix=" mo">0</div><div class="statlbl">payback period</div></div>
+        </div>
+      </div>
+      <div class="illus rise d5">All figures illustrative — fictional model for discussion</div>
+    </div>
+  </section>
+
+  <!-- 09 ROADMAP + ASK -->
+  <section class="scene" data-scene="Roadmap &amp; the ask">
+    <div class="wrap">
+      <div class="kicker rise d1">Roadmap &amp; decision</div>
+      <h2 class="rise d2" style="margin:10px 0 6px">Phase it. Prove it. <span class="accent">Scale it.</span></h2>
+      <div class="tl rise d3">
+        <div class="line"><i></i></div>
+        <div class="steps">
+          <div class="step"><h3>Phase 1 · Pilot</h3><p class="note">2 hubs, 1 corridor, 5 clinics. Safety case & regulator sandbox.</p></div>
+          <div class="step"><h3>Phase 2 · Prove</h3><p class="note">6 hubs, cold-chain certified, 24/7 autonomous ops.</p></div>
+          <div class="step"><h3>Phase 3 · Expand</h3><p class="note">Regional mesh, 40+ communities, partner integrations.</p></div>
+          <div class="step"><h3>Phase 4 · Scale</h3><p class="note">Multi-region platform, disaster-response reserve capacity.</p></div>
+        </div>
+      </div>
+      <div class="card rise d4" style="margin-top:34px;border-color:var(--cyan);text-align:center">
+        <div class="kicker">The ask</div>
+        <h2 style="margin:6px 0 8px">Fund the <span class="gold">$24M</span> pilot-to-prove program.</h2>
+        <p class="lead" style="margin:0 auto">Approve Phase 1 funding to stand up the first live corridor within 9 months and a decision-ready safety case.</p>
+        <div style="margin-top:16px"><button class="btn primary" id="restart">↺ Replay the story</button></div>
+      </div>
+      <div class="illus rise d5">Fictional proposal — created for an interview assignment</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="hud">
+  <div class="brandmark"><span class="dot"></span> AeroBridge</div>
+  <button class="btn" id="prev">‹</button>
+  <span class="note" id="sceneName" style="min-width:160px;text-align:center">Opening</span>
+  <button class="btn primary" id="next">Next ›</button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var scenes = Array.prototype.slice.call(document.querySelectorAll('.scene'));
+  var i = 0, animated = {};
+  var dotsEl = document.getElementById('dots');
+  var prog = document.getElementById('prog');
+  var nameEl = document.getElementById('sceneName');
+
+  scenes.forEach(function(s,idx){
+    var b=document.createElement('b'); b.title=s.dataset.scene;
+    b.onclick=function(){go(idx)}; dotsEl.appendChild(b);
+  });
+  var dots = Array.prototype.slice.call(dotsEl.children);
+
+  function go(n){
+    n=Math.max(0,Math.min(scenes.length-1,n));
+    scenes[i].classList.remove('active');
+    i=n;
+    scenes[i].classList.add('active');
+    dots.forEach(function(d,k){d.classList.toggle('on',k===i)});
+    prog.style.width=((i)/(scenes.length-1)*100)+'%';
+    nameEl.textContent=scenes[i].dataset.scene.replace('&amp;','&');
+    moveDrone();
+    if(!animated[i]){ animated[i]=true; onEnter(i); }
+  }
+  function next(){ if(i<scenes.length-1) go(i+1); }
+  function prev(){ if(i>0) go(i-1); }
+  document.getElementById('next').onclick=next;
+  document.getElementById('prev').onclick=prev;
+  document.getElementById('restart').onclick=function(){go(0)};
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+    else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(scenes.length-1);}
+  });
+  // wheel (debounced) — paced, no auto-advance
+  var wlock=false;
+  window.addEventListener('wheel',function(e){
+    if(wlock)return; if(Math.abs(e.deltaY)<30)return;
+    wlock=true; setTimeout(function(){wlock=false},700);
+    e.deltaY>0?next():prev();
+  },{passive:true});
+
+  /* ---- count-up numbers ---- */
+  function countUp(el){
+    var target=parseFloat(el.dataset.count), dec=parseInt(el.dataset.dec||'0'),
+        pre=el.dataset.prefix||'', suf=el.dataset.suffix||'', t0=null, dur=1400;
+    if(document.body.classList.contains('rm')){el.textContent=pre+target.toFixed(dec)+suf;return;}
+    function step(t){ if(!t0)t0=t; var p=Math.min(1,(t-t0)/dur); var e=1-Math.pow(1-p,3);
+      el.textContent=pre+(target*e).toFixed(dec)+suf; if(p<1)requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  function onEnter(n){
+    scenes[n].querySelectorAll('[data-count]').forEach(countUp);
+    if(scenes[n].dataset.scene==='Capability') buildNet();
+    if(scenes[n].dataset.scene==='Business case') scenes[n].querySelectorAll('.fin .b').forEach(function(b){setTimeout(function(){b.style.height=b.dataset.h+'px'},60);});
+  }
+
+  /* ---- drone cross-scene continuity: parks near a focal point per scene ---- */
+  var drone=document.getElementById('drone');
+  var spots=[[72,32],[78,60],[30,34],[50,66],[70,40],[50,55],[30,50],[78,30],[50,30]]; // vw/vh %
+  function moveDrone(){
+    var s=spots[i]||[50,50];
+    drone.style.opacity=i===0?'0':'.95';
+    drone.style.left=(s[0])+'vw'; drone.style.top=(s[1])+'vh';
+    drone.style.transform='rotate('+((i%2)?8:-8)+'deg) scale('+(i===5?1.3:1)+')';
+  }
+
+  /* ---- system node highlight ---- */
+  var sys=document.getElementById('sysSvg');
+  if(sys){
+    document.querySelectorAll('[data-layer]').forEach(function(card){
+      card.addEventListener('mouseenter',function(){highlight(card.dataset.layer)});
+      card.addEventListener('mouseleave',function(){highlight(null)});
+    });
+    sys.querySelectorAll('.layer').forEach(function(g){
+      g.addEventListener('click',function(){highlight(g.dataset.k);});
+    });
+  }
+  function highlight(k){
+    document.querySelectorAll('#sysSvg .hub,#sysSvg .clinic').forEach(function(n){n.style.opacity=k?'.25':'1';n.classList.remove('sel');});
+    document.querySelectorAll('[data-layer]').forEach(function(c){c.style.borderColor='';});
+    if(k){ var g=document.querySelector('#sysSvg .layer[data-k="'+k+'"]');
+      if(g){g.querySelectorAll('.hub,.clinic').forEach(function(n){n.style.opacity='1';n.classList.add('sel');});}
+      var c=document.querySelector('[data-layer="'+k+'"]'); if(c)c.style.borderColor='var(--cyan)';
+    }
+  }
+
+  /* ---- use-case stepper (scenario state changes) ---- */
+  var ucStage=0, ucCards=document.querySelectorAll('#ucStages .uc');
+  function uc(n){ ucStage=Math.max(0,Math.min(ucCards.length-1,n));
+    ucCards.forEach(function(c,k){c.classList.toggle('on',k<=ucStage); c.style.transform=k===ucStage?'translateY(-8px)':'';});
+    var msgs=['the trigger.','dispatch assigned.','in flight — telemetry live.','precision drop, custody intact.','restocked in 19 min — outcome delivered.'];
+    document.getElementById('ucMsg').textContent='Stage '+(ucStage+1)+' of 5 — '+msgs[ucStage];
+  }
+  document.getElementById('ucNext').onclick=function(){uc(ucStage+1)};
+  document.getElementById('ucPrev').onclick=function(){uc(ucStage-1)};
+
+  /* ---- capability network (procedural SVG) ---- */
+  function buildNet(){
+    var g=document.querySelector('#netSvg .routes'), nd=document.querySelector('#netSvg .nodes');
+    if(!g||g.dataset.done)return; g.dataset.done='1';
+    var hubs=[[150,210],[500,110],[500,320],[820,210],[330,330]];
+    var center=[500,210];
+    hubs.forEach(function(h,idx){
+      var d='M'+center[0]+' '+center[1]+' Q '+((center[0]+h[0])/2)+' '+(Math.min(center[1],h[1])-70)+' '+h[0]+' '+h[1];
+      var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('d',d); p.setAttribute('class','route'); var len=700;
+      p.style.strokeDasharray=len; p.style.strokeDashoffset=len;
+      g.appendChild(p);
+      setTimeout(function(){ p.style.transition='stroke-dashoffset 1.6s cubic-bezier(.22,.61,.36,1)'; p.style.strokeDashoffset='0';
+        if(!document.body.classList.contains('rm')) flyAlong(p);
+      }, 200+idx*180);
+      circle(nd,h[0],h[1],8,'hub');
+    });
+    circle(nd,center[0],center[1],11,'hub');
+  }
+  function circle(parent,x,y,r,cls){var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',r);c.setAttribute('class',cls);parent.appendChild(c);
+    var ping=document.createElementNS('http://www.w3.org/2000/svg','circle');ping.setAttribute('cx',x);ping.setAttribute('cy',y);
+    ping.setAttribute('r',4);ping.setAttribute('fill','none');ping.setAttribute('stroke','#35e0d8');
+    ping.style.animation='ping 2.4s ease-out infinite';parent.appendChild(ping);
+  }
+  function flyAlong(path){
+    var dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('r',4.5);dot.setAttribute('fill','#ffcf6b');dot.style.filter='drop-shadow(0 0 6px #ffcf6b)';
+    path.parentNode.parentNode.querySelector('.nodes').appendChild(dot);
+    var L=path.getTotalLength(),t=0;
+    (function run(){ t=(t+0.004)%1; var pt=path.getPointAtLength(t*L);
+      dot.setAttribute('cx',pt.x);dot.setAttribute('cy',pt.y); requestAnimationFrame(run); })();
+  }
+
+  /* ---- simulator ---- */
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  function sim(){
+    var fleet=+document.getElementById('sFleet').value,
+        hubs=+document.getElementById('sHubs').value,
+        dist=+document.getElementById('sDist').value;
+    document.getElementById('vFleet').textContent=fleet;
+    document.getElementById('vHubs').textContent=hubs;
+    document.getElementById('vDist').textContent=dist;
+    var cyclesPerDay = 14*60 / (dist/70*60 + 8);         // flights per craft/day (speed 70km/h + 8min turnaround)
+    var deliveries = Math.round(fleet*cyclesPerDay);
+    var coverage = clamp(Math.round(100*(1-Math.exp(-hubs*0.45))* (1 - dist/260)),10,99);
+    var avgTime = Math.round(dist/70*60 + 7);
+    var cost = Math.max(14, Math.round(120 - fleet*1.4 - hubs*3 + dist*0.4));
+    var co2 = Math.round(deliveries*365*dist*0.00021);
+    setBar('bDeliv',deliveries,520); setBar('bCover',coverage,100);
+    setBar('bTime',avgTime,90); setBar('bCost',cost,120);
+    document.getElementById('kDeliv').textContent=deliveries;
+    document.getElementById('kCover').textContent=Math.round(coverage/100*48)+' / 48';
+    document.getElementById('kCost').textContent='$'+cost;
+    document.getElementById('kCo2').textContent=co2+' t';
+  }
+  function setBar(id,val,max){var b=document.getElementById(id);b.style.height=clamp(val/max*100,3,100)+'%';b.querySelector('span').textContent=val;}
+  ['sFleet','sHubs','sDist'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',sim);});
+  sim();
+
+  /* ---- starfield canvas (particle system) ---- */
+  var cv=document.getElementById('stars'),cx=cv.getContext('2d'),W,H,stars=[],raf;
+  function rz(){W=cv.width=innerWidth;H=cv.height=innerHeight;stars=[];for(var k=0;k<120;k++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*2+.3,s:Math.random()*1.4+.3});}
+  function tick(){cx.clearRect(0,0,W,H);for(var k=0;k<stars.length;k++){var s=stars[k];s.x-=s.z*.25;if(s.x<0){s.x=W;s.y=Math.random()*H;}cx.fillStyle='rgba(150,200,255,'+(s.z/2.3)+')';cx.fillRect(s.x,s.y,s.s,s.s);}raf=requestAnimationFrame(tick);}
+  rz();addEventListener('resize',rz);tick();
+
+  /* ---- parallax ---- */
+  addEventListener('mousemove',function(e){
+    if(document.body.classList.contains('rm'))return;
+    var dx=(e.clientX/innerWidth-.5),dy=(e.clientY/innerHeight-.5);
+    drone.style.marginLeft=(dx*18)+'px';drone.style.marginTop=(dy*18)+'px';
+    cv.style.transform='translate('+(dx*12)+'px,'+(dy*12)+'px)';
+  });
+
+  /* ---- motion toggle + help ---- */
+  document.getElementById('mo').onclick=function(){
+    document.body.classList.toggle('rm');
+    if(document.body.classList.contains('rm')){cancelAnimationFrame(raf);cx.clearRect(0,0,W,H);this.textContent='○ Motion off';}
+    else{this.textContent='◐ Motion';tick();}
+  };
+  document.getElementById('help').onclick=function(){
+    alert('AeroBridge — controls\\n\\n→ / Space : next scene\\n← : previous\\nHome / End : first / last\\nClick dots to jump\\nMotion button : reduced-motion / pause loops\\nع / EN : Arabic / English (RTL)\\n\\nFully offline — no server or internet needed.');
+  };
+
+  go(0);
+})();
+
+/* ================= EN / AR bilingual + RTL (text-node translator) ================= */
+(function(){
+  "use strict";
+  var AR = {
+    "AeroBridge":"إيرو‌بريدج","Investor Brief":"ملخص للمستثمرين","Opening":"الافتتاحية","Next ›":"التالي ›","‹":"›",
+    "◐ Motion":"◐ الحركة","?":"؟",
+    "A regional autonomous lifeline network":"شبكة إنقاذ إقليمية ذاتية القيادة",
+    "Lifelines,":"خطوط الإنقاذ،","airborne.":"محمولة جوًا.",
+    "AeroBridge moves essential medicine and urgent supplies between city hubs, regional clinics and remote communities — autonomously, in minutes, not days.":"تنقل إيروبريدج الأدوية الأساسية والإمدادات العاجلة بين مراكز المدن والعيادات الإقليمية والمجتمعات النائية — ذاتيًا، خلال دقائق لا أيام.",
+    "median hub → clinic":"الوسيط من المركز إلى العيادة","on-time critical deliveries":"تسليمات حرجة في وقتها","communities in reach":"مجتمعات ضمن النطاق",
+    "Illustrative figures — fictional scenario for investment discussion":"أرقام توضيحية — سيناريو افتراضي لمناقشة الاستثمار",
+    "Illustrative assumptions":"افتراضات توضيحية",
+    "The problem":"المشكلة","When a delivery takes a day,":"عندما يستغرق التسليم يومًا،","shortage":"النقص","becomes an emergency.":"يصبح حالة طارئة.","a":"",
+    "Ground logistics to dispersed clinics are slow, costly and fragile. Roads wash out, cold-chain breaks, and critical stock arrives late — or not at all.":"الإمداد البري للعيادات المتناثرة بطيء ومكلّف وهش. الطرق تنقطع، وتنكسر سلسلة التبريد، وتصل الأدوية الحرجة متأخرة — أو لا تصل.",
+    "clinic stock-outs of critical items / year":"نفاد مخزون العيادات من المواد الحرجة / سنويًا","avg. emergency resupply time":"متوسط زمن إعادة الإمداد الطارئ","annual spoilage & expedited freight":"التلف والشحن المستعجل سنويًا","remote sites underserved":"مواقع نائية ناقصة الخدمة",
+    "The opportunity":"الفرصة","A dedicated sky corridor for":"ممر جوي مخصص لما","cannot wait":"لا يحتمل الانتظار",
+    "Health networks":"الشبكات الصحية","Guaranteed replenishment windows for vaccines, blood and essentials — measured in minutes.":"نوافذ إعادة تزويد مضمونة للقاحات والدم والأساسيات — تُقاس بالدقائق.",
+    "Remote communities":"المجتمعات النائية","Equitable access regardless of terrain, season or road condition.":"وصول عادل بغض النظر عن التضاريس أو الموسم أو حالة الطريق.",
+    "Operators":"المشغّلون","Lower cost-per-delivery and a resilient, observable supply line with full audit.":"تكلفة أقل لكل تسليم وخط إمداد مرن وقابل للمراقبة مع تدقيق كامل.",
+    "faster critical resupply":"إعادة إمداد حرجة أسرع","lower cost / delivery":"تكلفة أقل / تسليم","chain-of-custody integrity":"سلامة سلسلة العهدة","autonomous availability":"توافر ذاتي",
+    "The system":"المنظومة","Four layers, one":"أربع طبقات، شريان","lifeline":"إنقاذ واحد",
+    "Control Tower":"برج التحكّم","Hub A":"المركز أ","Hub B":"المركز ب","Fleet":"الأسطول","Clinic":"العيادة",
+    "① Control Tower":"① برج التحكّم","Autonomy stack: airspace deconfliction, routing, weather-aware dispatch and live telemetry.":"منظومة القيادة الذاتية: فضّ تعارض المجال الجوي، والتوجيه، والإرسال الواعي بالطقس، والقياس اللحظي.",
+    "② Vertiport Hubs":"② مراكز الإقلاع","Automated loading, cold-chain staging and battery swap. Click a node to highlight.":"تحميل آلي، وتجهيز سلسلة تبريد، وتبديل بطاريات. انقر عقدة لإبرازها.",
+    "③ Autonomous Fleet":"③ الأسطول الذاتي","Redundant eVTOL craft with sealed, monitored medical payload pods.":"مركبات إقلاع عمودي كهربائي زائدة مع حجيرات حمولة طبية محكمة ومراقَبة.",
+    "④ Clinic Endpoints":"④ نقاط العيادات","Precision drop, signature-free custody handoff and automatic inventory sync.":"إنزال دقيق، وتسليم عهدة بلا توقيع، ومزامنة مخزون تلقائية.",
+    "A real use case":"حالة استخدام حقيقية","From alert to":"من التنبيه إلى","arrival":"الوصول","— step through it.":"— تنقّل عبرها.",
+    "1 · Trigger":"1 · المُحفّز","Clinic inventory for O‑neg blood drops below the safety line.":"ينخفض مخزون العيادة من دم O السالب تحت خط الأمان.",
+    "2 · Dispatch":"2 · الإرسال","Control Tower assigns the nearest ready craft & cold pod.":"يخصّص برج التحكّم أقرب مركبة جاهزة وحجيرة تبريد.",
+    "3 · Flight":"3 · الطيران","Deconflicted corridor; live telemetry & temperature logged.":"ممر خالٍ من التعارض؛ تسجيل القياس ودرجة الحرارة لحظيًا.",
+    "4 · Drop":"4 · الإنزال","Precision delivery; custody transferred, chain intact.":"تسليم دقيق؛ نُقلت العهدة والسلسلة سليمة.",
+    "5 · Outcome":"5 · النتيجة","Restocked in":"أُعيد التزويد خلال","; patient treated on time.":"؛ عولج المريض في وقته.",
+    "‹ Prev":"‹ السابق","Advance ›":"تقدّم ›","Stage 1 of 5 — the trigger.":"المرحلة 1 من 5 — المُحفّز.",
+    "Capability showcase":"عرض القدرات","A living network that":"شبكة حيّة","draws itself":"ترسم نفسها","SVG path flight":"طيران على مسار SVG","Routes animate stroke-by-stroke; craft ride the live path.":"المسارات تُرسم خطوة بخطوة؛ والمركبات تسير على المسار الحي.",
+    "Weather-aware":"واعٍ بالطقس","Corridors re-route around no-fly cells automatically.":"تُعاد توجيه الممرات حول مناطق حظر الطيران تلقائيًا.",
+    "Fully observable":"قابل للمراقبة بالكامل","Every pod, every minute — audit-grade telemetry.":"كل حجيرة، كل دقيقة — قياس بمستوى التدقيق.",
+    "Interactive simulator":"محاكٍ تفاعلي","Move a lever. Watch the":"حرّك مؤشرًا. وراقب","network respond":"استجابة الشبكة",
+    "Fleet size":"حجم الأسطول","Active hubs":"المراكز النشطة","Avg distance (km)":"متوسط المسافة (كم)","Live-computed from your inputs — not a recording.":"محسوب لحظيًا من مدخلاتك — وليس تسجيلًا.",
+    "Deliveries/day":"تسليمات/يوم","Coverage %":"التغطية %","Avg min":"متوسط الدقائق","$/delivery":"$/تسليم",
+    "daily critical deliveries":"تسليمات حرجة يومية","communities in service radius":"مجتمعات ضمن نطاق الخدمة","cost per delivery":"التكلفة لكل تسليم","tonnes CO₂ avoided / yr vs. road":"أطنان CO₂ مُتجنّبة / سنويًا مقابل الطرق",
+    "Model is illustrative; coefficients are fictional planning assumptions":"النموذج توضيحي؛ والمعاملات افتراضات تخطيط خيالية",
+    "The business case":"الجدوى التجارية","A":"مسار","3‑year":"3 سنوات","path to positive return.":"نحو عائد إيجابي.",
+    "Yr 1 · invest":"سنة 1 · استثمار","Yr 2 · ramp":"سنة 2 · تصاعد","Yr 3 · return":"سنة 3 · عائد","Yr 4 · scale":"سنة 4 · توسّع",
+    "Series‑A ask (3 yrs)":"طلب الجولة أ (3 سنوات)","cumulative value created":"القيمة التراكمية المُنشأة","indicative ROI by Yr 4":"عائد إرشادي بحلول السنة 4","payback period":"فترة الاسترداد",
+    "All figures illustrative — fictional model for discussion":"كل الأرقام توضيحية — نموذج افتراضي للنقاش",
+    "Roadmap & decision":"خارطة الطريق والقرار","Phase it. Prove it.":"مرحِلْها. أثبِتْها.","Scale it.":"وسِّعْها.",
+    "Phase 1 · Pilot":"المرحلة 1 · تجريبي","2 hubs, 1 corridor, 5 clinics. Safety case & regulator sandbox.":"مركزان، ممر واحد، 5 عيادات. ملف السلامة وبيئة اختبار تنظيمية.",
+    "Phase 2 · Prove":"المرحلة 2 · إثبات","6 hubs, cold-chain certified, 24/7 autonomous ops.":"6 مراكز، سلسلة تبريد معتمدة، تشغيل ذاتي 24/7.",
+    "Phase 3 · Expand":"المرحلة 3 · توسّع","Regional mesh, 40+ communities, partner integrations.":"شبكة إقليمية، أكثر من 40 مجتمعًا، تكاملات مع الشركاء.",
+    "Phase 4 · Scale":"المرحلة 4 · توسّع واسع","Multi-region platform, disaster-response reserve capacity.":"منصة متعددة المناطق، وسعة احتياطية للاستجابة للكوارث.",
+    "The ask":"الطلب","Fund the":"مَوِّل برنامج","pilot-to-prove program.":"من التجريب إلى الإثبات.",
+    "Approve Phase 1 funding to stand up the first live corridor within 9 months and a decision-ready safety case.":"اعتمد تمويل المرحلة 1 لإطلاق أول ممر حي خلال 9 أشهر وملف سلامة جاهز للقرار.",
+    "↺ Replay the story":"↺ إعادة تشغيل القصة","Fictional proposal — created for an interview assignment":"مقترح افتراضي — أُنشئ لمهمة مقابلة"
+  };
+  // scene names shown in the HUD
+  var SCENES_AR={"Opening":"الافتتاحية","The problem":"المشكلة","The opportunity":"الفرصة","The system":"المنظومة","A real use case":"حالة استخدام","Capability":"القدرات","Simulator":"المحاكي","Business case":"الجدوى","Roadmap & the ask":"خارطة الطريق"};
+  var lang="en", mo=null;
+  function translateNode(n){
+    if(n.nodeType!==3) return;
+    var raw=n.nodeValue, key=raw.trim();
+    if(!key) return;
+    if(lang==="ar"){
+      if(n.__en===undefined) n.__en=raw;
+      if(AR[key]!==undefined) n.nodeValue=raw.replace(key,AR[key]);
+    } else if(n.__en!==undefined){ n.nodeValue=n.__en; }
+  }
+  function walkAll(){
+    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null);
+    var node; while((node=w.nextNode())) translateNode(node);
+  }
+  function setLang(l){
+    lang=l;
+    document.documentElement.lang=l;
+    document.documentElement.dir=(l==="ar")?"rtl":"ltr";
+    document.getElementById('lang').textContent=(l==="ar")?"EN":"ع";
+    walkAll();
+    if(mo){mo.disconnect();} startObs();
+  }
+  function startObs(){
+    if(lang!=="ar"){return;}
+    mo=new MutationObserver(function(muts){
+      for(var i=0;i<muts.length;i++){var m=muts[i];
+        if(m.type==="characterData") translateNode(m.target);
+        else m.addedNodes && m.addedNodes.forEach(function(nn){
+          if(nn.nodeType===3) translateNode(nn);
+          else if(nn.nodeType===1){var w=document.createTreeWalker(nn,NodeFilter.SHOW_TEXT,null),x;while((x=w.nextNode()))translateNode(x);}
+        });
+      }
+    });
+    mo.observe(document.body,{subtree:true,childList:true,characterData:true});
+  }
+  document.getElementById('lang').onclick=function(){ setLang(lang==="en"?"ar":"en"); };
+})();
+</script>
+</body>
+</html>

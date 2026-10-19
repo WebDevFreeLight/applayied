@@ -1,0 +1,44 @@
+- generic [active] [ref=f54e1]:
+  - generic [ref=f54e2]: PMO Portal · Product Showcase · 1 / 13
+  - generic [ref=f54e5]:
+    - generic [ref=f54e6]:
+      - generic [ref=f54e7]: P
+      - generic [ref=f54e8]:
+        - generic [ref=f54e9]: Project Portfolio & Financial Control
+        - heading "PMO Portal" [level=1] [ref=f54e10]
+    - paragraph [ref=f54e11]: One live, permissioned, bilingual view of delivery, risk and money — with automation and AI built in. Every screen on the following slides is a real capture from the running product.
+    - generic [ref=f54e12]:
+      - generic [ref=f54e13]:
+        - generic [ref=f54e14]: "8"
+        - text: projects · 84 tasks
+      - generic [ref=f54e15]:
+        - generic [ref=f54e16]: SQL-live
+        - text: no spreadsheet models
+      - generic [ref=f54e17]:
+        - generic [ref=f54e18]: EN / AR
+        - text: bilingual + RTL
+      - generic [ref=f54e19]:
+        - generic [ref=f54e20]: AI + Auto
+        - text: built in
+    - generic [ref=f54e21]: Use → / ← or Space · click dots to jump · press ? for help
+  - generic [ref=f54e22]:
+    - generic [ref=f54e23]:
+      - generic [ref=f54e24]: P
+      - text: PMO Portal
+    - button "‹" [ref=f54e25] [cursor=pointer]
+    - generic [ref=f54e26]: Welcome
+    - button "Next ›" [ref=f54e27] [cursor=pointer]
+    - generic [ref=f54e28]:
+      - generic "Welcome" [ref=f54e29] [cursor=pointer]
+      - generic "Why PMO Portal" [ref=f54e30] [cursor=pointer]
+      - generic "Executive Dashboard" [ref=f54e31] [cursor=pointer]
+      - generic "Portfolio" [ref=f54e32] [cursor=pointer]
+      - generic "Project workspace" [ref=f54e33] [cursor=pointer]
+      - generic "Financial control" [ref=f54e34] [cursor=pointer]
+      - generic "Risk & change" [ref=f54e35] [cursor=pointer]
+      - generic "Change Requests" [ref=f54e36] [cursor=pointer]
+      - generic "Automation" [ref=f54e37] [cursor=pointer]
+      - generic "AI built in" [ref=f54e38] [cursor=pointer]
+      - generic "Security & RBAC" [ref=f54e39] [cursor=pointer]
+      - generic "People" [ref=f54e40] [cursor=pointer]
+      - generic "Let's talk" [ref=f54e41] [cursor=pointer]

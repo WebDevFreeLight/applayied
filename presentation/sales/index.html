@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PMO Portal — Product Showcase</title>
+<style>
+/* ===== PMO Portal · sales showcase (real live screenshots) · offline ===== */
+:root{
+  --bg:#0c111a; --panel:#141c28; --panel2:#1b2432; --ink:#eef3fa; --muted:#93a1b8; --line:#283445;
+  --brand:#e30613; --brand2:#ff3b47; --cyan:#35c6d8; --green:#36d39a; --gold:#ffcf6b;
+  --radius:14px; --maxw:1220px; --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(1100px 650px at 82% -10%,#1b2636,#0c111a 60%);color:var(--ink);
+  font-family:"Segoe UI",system-ui,Arial,sans-serif;overflow:hidden}
+.deck{position:fixed;inset:0}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:52px 48px 86px;
+  opacity:0;visibility:hidden;transition:opacity .5s var(--ease);z-index:1}
+.slide.active{opacity:1;visibility:visible;z-index:2}
+.wrap{width:100%;max-width:var(--maxw)}
+.kick{letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--brand2);font-weight:700}
+h1{font-size:clamp(34px,6vw,74px);line-height:1;font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(24px,3.4vw,40px);font-weight:800;letter-spacing:-.01em;line-height:1.05}
+p,li{color:var(--muted);line-height:1.55}
+.lead{font-size:clamp(15px,1.7vw,20px);max-width:62ch}
+.accent{color:var(--brand2)}.cyan{color:var(--cyan)}.green{color:var(--green)}.gold{color:var(--gold)}
+.rise{opacity:0;transform:translateY(16px)}.slide.active .rise{animation:rise .6s var(--ease) forwards}
+.slide.active .rise.d1{animation-delay:.05s}.slide.active .rise.d2{animation-delay:.14s}.slide.active .rise.d3{animation-delay:.24s}.slide.active .rise.d4{animation-delay:.34s}
+@keyframes rise{to{opacity:1;transform:none}}
+.split{display:grid;grid-template-columns:1.35fr 1fr;gap:34px;align-items:center}
+.split.rev{grid-template-columns:1fr 1.35fr}
+.copy ul{list-style:none;margin-top:14px}
+.copy li{padding:8px 0 8px 26px;position:relative;color:var(--ink)}
+.copy li::before{content:"";position:absolute;left:0;top:14px;width:9px;height:9px;border-radius:2px;background:var(--brand)}
+.copy li small{display:block;color:var(--muted);font-weight:400}
+.shotframe{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5);transform:perspective(1600px) rotateY(0deg)}
+.shotframe .bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#0f1724;border-bottom:1px solid var(--line)}
+.shotframe .bar i{width:11px;height:11px;border-radius:50%;background:#2a3545}
+.shotframe .bar i:nth-child(1){background:#ff5f57}.shotframe .bar i:nth-child(2){background:#ffbd2e}.shotframe .bar i:nth-child(3){background:#28c840}
+.shotframe .bar span{margin-left:10px;color:var(--muted);font-size:12px}
+.shotframe .view{height:min(62vh,560px);overflow:hidden;background:#0c111a}
+.shotframe .view img{width:100%;display:block;transition:transform 6s linear}
+.slide.active .shotframe .view img.pan{transform:translateY(calc(-1 * (var(--ph,0px))))}
+.stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:24px}
+.stats div{border-left:3px solid var(--brand);padding-left:12px}
+.stats b{font-size:26px;font-weight:800;display:block}.stats span{color:var(--muted);font-size:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.card h3{font-size:16px;margin-bottom:6px}.card p{font-size:13px}
+.tag{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin-top:8px}
+.hud{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:14px;padding:14px 24px;background:linear-gradient(0deg,rgba(12,17,26,.94),transparent)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800}.brand .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:#fff;font-weight:800}
+.btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 14px;cursor:pointer;font-size:14px}
+.btn:hover{border-color:var(--brand2)}.btn.primary{background:linear-gradient(90deg,var(--brand),var(--brand2));border:none;font-weight:700}
+.dots{display:flex;gap:7px;margin-left:auto;flex-wrap:wrap}.dots b{width:9px;height:9px;border-radius:50%;background:#2a3545;cursor:pointer;transition:.3s}.dots b.on{background:var(--brand2);transform:scale(1.25)}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--brand),var(--gold));z-index:40;transition:width .4s var(--ease)}
+.sn{min-width:150px;text-align:center;color:var(--muted);font-size:12px}
+.foot{position:fixed;top:16px;right:24px;color:var(--muted);font-size:12px;z-index:30}
+.logo{display:flex;align-items:center;gap:14px}.logo .mk{width:52px;height:52px;border-radius:13px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:26px}
+@media(max-width:900px){.split,.split.rev{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.shotframe .view{height:40vh}}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<div class="foot">PMO Portal · Product Showcase · <span id="pageno">1 / 12</span></div>
+<div class="deck" id="deck">
+
+  <!-- 1 TITLE -->
+  <section class="slide" data-name="Welcome">
+    <div class="wrap" style="text-align:center">
+      <div class="logo rise d1" style="justify-content:center"><span class="mk">P</span>
+        <div style="text-align:left"><div class="kick">Project Portfolio &amp; Financial Control</div><h1>PMO Portal</h1></div></div>
+      <p class="lead rise d2" style="margin:22px auto 0">One live, permissioned, bilingual view of <b class="accent">delivery, risk and money</b> — with automation and AI built in. Every screen on the following slides is a real capture from the running product.</p>
+      <div class="stats rise d3" style="justify-content:center">
+        <div><b class="accent">8</b><span>projects · 84 tasks</span></div>
+        <div><b class="accent">SQL-live</b><span>no spreadsheet models</span></div>
+        <div><b class="accent">EN / AR</b><span>bilingual + RTL</span></div>
+        <div><b class="accent">AI + Auto</b><span>built in</span></div>
+      </div>
+      <div class="tag rise d4">Use → / ← or Space · click dots to jump · press ? for help</div>
+    </div>
+  </section>
+
+  <!-- 2 WHY -->
+  <section class="slide" data-name="Why PMO Portal">
+    <div class="wrap">
+      <div class="kick rise d1">Why PMO Portal</div>
+      <h2 class="rise d2" style="margin:8px 0 6px">Replace scattered spreadsheets with a <span class="accent">governed source of truth</span>.</h2>
+      <div class="grid4">
+        <div class="card rise d1"><h3 class="cyan">See</h3><p>A live executive dashboard across delivery, risk and finance — scope-aware, recomputed from SQL.</p></div>
+        <div class="card rise d2"><h3 class="cyan">Control</h3><p>Defensible budgets, posted-cost discipline, change workflow and a durable audit trail.</p></div>
+        <div class="card rise d3"><h3 class="cyan">Automate</h3><p>Scheduled rules escalate overdue work &amp; budget overruns — into Messages and real-time alerts.</p></div>
+        <div class="card rise d4"><h3 class="cyan">Assist</h3><p>AI woven into every page: summaries, insights, form autofill and a scoped assistant.</p></div>
+      </div>
+      <p class="lead rise d4" style="margin-top:22px">Built on a modern stack — <b>React + .NET 8 + PostgreSQL</b> — secure, bilingual and ready to deploy.</p>
+    </div>
+  </section>
+
+  <!-- feature slides (image + copy) injected pattern -->
+  <section class="slide" data-name="Executive Dashboard">
+    <div class="wrap"><div class="split">
+      <div class="shotframe rise d1"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Dashboard</span></div><div class="view"><img data-src="shots/01-dashboard.png" alt="Executive dashboard"></div></div>
+      <div class="copy rise d2"><div class="kick">Executive dashboard</div><h2>Decisions at a glance.</h2>
+        <ul><li>KPI cards <small>delivery · risk &amp; governance · financial</small></li>
+        <li>6 interactive visuals <small>budget vs actual vs EAC, trends, risk matrix, health</small></li>
+        <li>6 coordinated filters + drill-downs <small>dept · manager · project · status · cutoff · category</small></li>
+        <li>Recomputes from SQL <small>after a task update or a posted expense — no client patching</small></li></ul></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="Portfolio">
+    <div class="wrap"><div class="split rev">
+      <div class="copy rise d1"><div class="kick">Projects &amp; workspace</div><h2>The whole portfolio, one workspace.</h2>
+        <ul><li>Every project with owner, budget, status &amp; health</li>
+        <li>Open a project → tabbed workspace <small>members · tasks · milestones · risks · change requests · finance · forecasts · progress</small></li>
+        <li>Create in context <small>new task/milestone/CR is tied to the project automatically</small></li>
+        <li>✨ One-click AI project summary</li></ul></div>
+      <div class="shotframe rise d2"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Projects</span></div><div class="view"><img data-src="shots/02-projects.png" alt="Projects"></div></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="Project workspace">
+    <div class="wrap"><div class="split">
+      <div class="shotframe rise d1"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Project detail</span></div><div class="view"><img data-src="shots/03-project-detail.png" alt="Project detail"></div></div>
+      <div class="copy rise d2"><div class="kick">Inside a project</div><h2>Everything about a project, together.</h2>
+        <ul><li>Overview, team, delivery and money on one screen</li>
+        <li>Progress trend &amp; forecasts per project</li>
+        <li>Permission-aware tabs <small>finance hidden from contributors automatically</small></li></ul></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="Financial control">
+    <div class="wrap"><div class="split rev">
+      <div class="copy rise d1"><div class="kick">Financial management</div><h2>Operational records, <span class="accent">defensible numbers</span>.</h2>
+        <ul><li>Approved budget = initial + approved revisions</li>
+        <li>Actual spend = posted costs ≤ cutoff <small>drafts excluded · posted costs immutable</small></li>
+        <li>EAC, variance, utilization, spend-by-category &amp; trend — all from SQL</li>
+        <li>Project comparison &amp; drill-down to transactions</li></ul></div>
+      <div class="shotframe rise d2"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Finance</span></div><div class="view"><img data-src="shots/04-finance.png" alt="Finance"></div></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="Risk & change">
+    <div class="wrap"><div class="split">
+      <div class="shotframe rise d1"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Risks &amp; Issues</span></div><div class="view"><img data-src="shots/05-risks.png" alt="Risks"></div></div>
+      <div class="copy rise d2"><div class="kick">Risk &amp; governance</div><h2>Govern risk and change.</h2>
+        <ul><li>Risk register with probability × impact exposure</li>
+        <li>Change requests with a workflow state machine</li>
+        <li>Atomic decisions + full history <small>no self-approval · reason required</small></li>
+        <li>Durable audit trail of every decision</li></ul></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="Change Requests">
+    <div class="wrap"><div class="split rev">
+      <div class="copy rise d1"><div class="kick">Change workflow</div><h2>Controlled change, fully audited.</h2>
+        <ul><li>Submit → review → approve / reject / return</li>
+        <li>Decision captured with actor, time &amp; reason</li>
+        <li>Cost impact linked explicitly — never auto-posted</li></ul></div>
+      <div class="shotframe rise d2"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Change Requests</span></div><div class="view"><img data-src="shots/06-change-requests.png" alt="Change requests"></div></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="Automation">
+    <div class="wrap"><div class="split">
+      <div class="shotframe rise d1"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Automation &amp; Logs</span></div><div class="view"><img data-src="shots/07-automation.png" alt="Automation"></div></div>
+      <div class="copy rise d2"><div class="kick">Automation</div><h2>It watches the portfolio for you.</h2>
+        <ul><li>Scheduled rules <small>overdue-task escalation · budget-overrun alerts</small></li>
+        <li>Idempotent &amp; safe to retry <small>unique dedupe key — never double-sends</small></li>
+        <li>Delivers to Messages + real-time SignalR + a persistent run log</li>
+        <li>Run on a cron or on demand</li></ul></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="AI built in">
+    <div class="wrap"><div class="split rev">
+      <div class="copy rise d1"><div class="kick">AI, woven in</div><h2>Ask. Summarize. Autofill.</h2>
+        <ul><li>Assistant on every page <small>scope to one project, all, or compare</small></li>
+        <li>Dashboard insights · project summaries · task-progress advice</li>
+        <li>AI autofill on create forms</li>
+        <li>Multi-provider fallback chain <small>12 providers — resilient, no single dependency</small></li></ul></div>
+      <div class="shotframe rise d2"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · AI Assistant</span></div><div class="view"><img data-src="shots/11-ai-assistant.png" alt="AI assistant"></div></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="Security & RBAC">
+    <div class="wrap"><div class="split">
+      <div class="shotframe rise d1"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Roles &amp; Permissions</span></div><div class="view"><img data-src="shots/10-permission-tree.png" alt="Permission tree"></div></div>
+      <div class="copy rise d2"><div class="kick">Enterprise security</div><h2>Fine-grained, enforced RBAC.</h2>
+        <ul><li>Every route &amp; button permission-checked — front and back</li>
+        <li>Role permission tree with search, cascade &amp; expand/collapse</li>
+        <li>Disable a user → they're signed out in real time</li>
+        <li>Three roles out of the box <small>Contributor · Project Manager · Administrator</small></li></ul></div>
+    </div></div>
+  </section>
+
+  <section class="slide" data-name="People">
+    <div class="wrap"><div class="split rev">
+      <div class="copy rise d1"><div class="kick">People &amp; access</div><h2>Employees linked to access.</h2>
+        <ul><li>Employee directory linked to portal users</li>
+        <li>Roles &amp; menus fully managed in-app</li>
+        <li>Bilingual EN/AR with full RTL throughout</li></ul></div>
+      <div class="shotframe rise d2"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Employees</span></div><div class="view"><img data-src="shots/08-employees.png" alt="Employees"></div></div>
+    </div></div>
+  </section>
+
+  <!-- CLOSE -->
+  <section class="slide" data-name="Let's talk">
+    <div class="wrap" style="text-align:center">
+      <div class="kick rise d1">Ready to deploy</div>
+      <h1 class="rise d2" style="font-size:clamp(30px,5vw,60px);margin:8px 0">One portal. <span class="accent">Total control.</span></h1>
+      <p class="lead rise d3" style="margin:0 auto">Live dashboards, defensible finance, governed change, automation and AI — secure, bilingual, and proven with 30 automated checks. Every slide here was a real screen from the running system.</p>
+      <div class="stats rise d4" style="justify-content:center">
+        <div><b class="green">30</b><span>automated checks green</span></div>
+        <div><b class="green">100%</b><span>mutations permission-checked</span></div>
+        <div><b class="green">12</b><span>AI providers, auto-failover</span></div>
+        <div><b class="green">EN/AR</b><span>bilingual + RTL</span></div>
+      </div>
+      <div style="margin-top:22px" class="rise d4"><button class="btn primary" id="restart">↺ Restart showcase</button></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="hud">
+  <div class="brand"><span class="mk">P</span> PMO Portal</div>
+  <button class="btn" id="prev">‹</button>
+  <span class="sn" id="sn">Welcome</span>
+  <button class="btn primary" id="next">Next ›</button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),i=0,seen={};
+  var dotsEl=document.getElementById('dots'),prog=document.getElementById('prog'),sn=document.getElementById('sn'),pageno=document.getElementById('pageno');
+  slides.forEach(function(s,idx){var b=document.createElement('b');b.title=s.dataset.name;b.onclick=function(){go(idx)};dotsEl.appendChild(b);});
+  var dots=[].slice.call(dotsEl.children);
+  function go(n){n=Math.max(0,Math.min(slides.length-1,n));slides[i].classList.remove('active');i=n;slides[i].classList.add('active');
+    dots.forEach(function(d,k){d.classList.toggle('on',k===i)});prog.style.width=(i/(slides.length-1)*100)+'%';
+    sn.textContent=slides[i].dataset.name;pageno.textContent=(i+1)+' / '+slides.length;
+    if(!seen[i]){seen[i]=true;enter(i);}}
+  function enter(n){
+    // lazy-load images, then slow "pan" down tall screenshots for a living feel
+    slides[n].querySelectorAll('img[data-src]').forEach(function(img){
+      img.src=img.getAttribute('data-src');img.removeAttribute('data-src');
+      img.onload=function(){
+        var view=img.parentNode, extra=img.offsetHeight-view.clientHeight;
+        if(extra>20){ img.style.setProperty('--ph',extra+'px'); setTimeout(function(){img.classList.add('pan');},600);
+          // ping-pong the pan
+          img.addEventListener('transitionend',function(){img.classList.toggle('pan');});
+        }
+      };
+    });
+  }
+  function next(){if(i<slides.length-1)go(i+1)}function prev(){if(i>0)go(i-1)}
+  document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;document.getElementById('restart').onclick=function(){go(0)};
+  document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='?'){alert('PMO Portal — product showcase\\n\\n→ / Space : next\\n← : previous\\nHome/End : first/last\\nClick dots to jump\\n\\nReal screenshots from the live system. Open index.html directly — fully offline.');}});
+  var wlock=false;window.addEventListener('wheel',function(e){if(wlock||Math.abs(e.deltaY)<30)return;wlock=true;setTimeout(function(){wlock=false},700);e.deltaY>0?next():prev();},{passive:true});
+  go(0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+- generic [ref=f45e3]:
+  - complementary [ref=f45e4]:
+    - generic [ref=f45e5]:
+      - text: PMO Portal
+      - generic [ref=f45e6]: Project Portfolio & Financial Control
+    - link "Dashboard" [ref=f45e7] [cursor=pointer]:
+      - /url: /
+    - link "Projects" [ref=f45e8] [cursor=pointer]:
+      - /url: /projects
+    - link "Tasks" [ref=f45e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "Milestones" [ref=f45e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "Risks & Issues" [ref=f45e11] [cursor=pointer]:
+      - /url: /risks
+    - link "Change Requests" [ref=f45e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "Finance" [ref=f45e13] [cursor=pointer]:
+      - /url: /finance
+    - link "Automation & Logs" [ref=f45e14] [cursor=pointer]:
+      - /url: /activity
+    - link "Employees" [ref=f45e15] [cursor=pointer]:
+      - /url: /employees
+    - link "Cost Categories" [ref=f45e16] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f45e17]: Administration
+    - link "Users" [ref=f45e18] [cursor=pointer]:
+      - /url: /admin/users
+    - link "Roles" [ref=f45e19] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "Menus & Permissions" [ref=f45e20] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "Departments" [ref=f45e21] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "Positions" [ref=f45e22] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "Dictionaries" [ref=f45e23] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "Configuration" [ref=f45e24] [cursor=pointer]:
+      - /url: /admin/config
+    - link "Notices" [ref=f45e25] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "Scheduled Tasks" [ref=f45e26] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "Task Logs" [ref=f45e27] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "Login Log" [ref=f45e28] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "Sessions" [ref=f45e29] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "Operation Log" [ref=f45e30] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "Online Users" [ref=f45e31] [cursor=pointer]:
+      - /url: /admin/online
+    - link "Server Monitor" [ref=f45e32] [cursor=pointer]:
+      - /url: /admin/server
+    - link "Messages" [ref=f45e33] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "Profile" [ref=f45e34] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f45e35]:
+    - banner [ref=f45e36]:
+      - strong [ref=f45e37]: PMO Portal
+      - generic [ref=f45e38]:
+        - button "🔔" [ref=f45e40] [cursor=pointer]
+        - button "☀️" [ref=f45e41] [cursor=pointer]
+        - button "العربية" [ref=f45e42] [cursor=pointer]
+        - generic [ref=f45e43]: PMO Admin · pmo_admin, admin
+        - button "Sign out" [ref=f45e44] [cursor=pointer]
+    - main [ref=f45e45]:
+      - generic [ref=f45e46]:
+        - generic [ref=f45e47]:
+          - heading "Projects" [level=2] [ref=f45e48]
+          - button "New project" [ref=f45e49] [cursor=pointer]
+        - generic [ref=f45e50]:
+          - textbox "Code or name" [ref=f45e51]
+          - generic [ref=f45e53]:
+            - log [ref=f45e55]
+            - generic [ref=f45e57]:
+              - generic [ref=f45e58]: "Department: All"
+              - combobox [ref=f45e60]
+          - generic [ref=f45e67]:
+            - log [ref=f45e69]
+            - generic [ref=f45e71]:
+              - generic [ref=f45e72]: "Owner: All"
+              - combobox [ref=f45e74]
+          - generic [ref=f45e81]:
+            - log [ref=f45e83]
+            - generic [ref=f45e85]:
+              - generic [ref=f45e86]: "Status: All"
+              - combobox [ref=f45e88]
+          - button "Apply" [ref=f45e94] [cursor=pointer]
+          - button "Reset" [ref=f45e95] [cursor=pointer]
+        - generic [ref=f45e96]: Loading…
+        - generic [ref=f45e97]:
+          - generic [ref=f45e98]: 0 of · Page 1/1
+          - button "‹" [disabled] [ref=f45e99]
+          - button "›" [disabled] [ref=f45e100]
+  - button "✨" [ref=f45e101] [cursor=pointer]
