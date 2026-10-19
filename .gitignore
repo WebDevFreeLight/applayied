@@ -1,2 +1,4 @@
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
+# Playwright MCP session logs
+.playwright-mcp/
