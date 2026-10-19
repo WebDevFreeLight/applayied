@@ -12,17 +12,13 @@
 		<NoWarn>1701;1702;1591,8603,8602,8604,8600,8618</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Controllers\ERP\Cash_Bank\**" />
-	  <Compile Remove="Controllers\ERP\FixedAssets\**" />
+	  <Compile Remove="Controllers\ERP\**" />
 	  <Compile Remove="Controllers\Partners\**" />
-	  <Content Remove="Controllers\ERP\Cash_Bank\**" />
-	  <Content Remove="Controllers\ERP\FixedAssets\**" />
+	  <Content Remove="Controllers\ERP\**" />
 	  <Content Remove="Controllers\Partners\**" />
-	  <EmbeddedResource Remove="Controllers\ERP\Cash_Bank\**" />
-	  <EmbeddedResource Remove="Controllers\ERP\FixedAssets\**" />
+	  <EmbeddedResource Remove="Controllers\ERP\**" />
 	  <EmbeddedResource Remove="Controllers\Partners\**" />
-	  <None Remove="Controllers\ERP\Cash_Bank\**" />
-	  <None Remove="Controllers\ERP\FixedAssets\**" />
+	  <None Remove="Controllers\ERP\**" />
 	  <None Remove="Controllers\Partners\**" />
 	</ItemGroup>
 
@@ -49,9 +45,6 @@
 
 	<ItemGroup>
 		<Folder Include="Controllers\Finance\Budget\" />
-		<Folder Include="Controllers\ERP\ProjectManagement\" />
-		<Folder Include="Controllers\ERP\Purchase\" />
-		<Folder Include="Controllers\ERP\Reports\" />
 		<Folder Include="Controllers\HR\Attendance\" />
 		<Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
