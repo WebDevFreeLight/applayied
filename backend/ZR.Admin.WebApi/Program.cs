@@ -52,10 +52,11 @@ using static QRCoder.PayloadGenerator;
 using HrShift = ZR.Model.HR.Attendance.Shifts_Scheduling.HrShift;
 //using SQLitePCL;
 
-// On a cloud/free host (PORT provided) force a neutral "Cloud" environment at builder creation, so
-// the hard-coded appsettings.Production.json (Kestrel HTTPS on :8887 with a cert, a remote DB host)
-// never loads. Only base appsettings.json applies, plus the DATABASE_URL/PORT overrides below.
-var builder = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("PORT"))
+// On a cloud/free host (PORT, RENDER or DATABASE_URL provided) force a neutral "Cloud" environment at
+// builder creation, so the hard-coded appsettings.Production.json (Kestrel HTTPS on :8887 with a cert,
+// a remote DB host) never loads. Only base appsettings.json applies, plus the DATABASE_URL/PORT overrides below.
+var builder = new[] { "PORT", "RENDER", "DATABASE_URL", "DB_CONN" }
+        .Any(k => !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(k)))
     ? WebApplication.CreateBuilder(new WebApplicationOptions { Args = args, EnvironmentName = "Cloud" })
     : WebApplication.CreateBuilder(args);
 
