@@ -1,0 +1,23 @@
+# Keep the Docker build context small & fast. The image only needs backend/ and data/.
+**/bin
+**/obj
+**/node_modules
+frontend/dist
+frontend/.vite
+backend/publish
+.git
+.vs
+.vscode
+.idea
+.playwright-mcp
+presentation
+assignment2
+PMO_Portal_Pitch
+PMO_Portal_Pitch.zip
+powerbi/DAX_measures/_backup_2221
+powerbi/DAX_measures/_to_delete
+**/*.pbix
+**/*.pbip
+state
+docs
+**/*.log

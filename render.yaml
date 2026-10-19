@@ -1,0 +1,42 @@
+# Render Blueprint — free-tier deploy of the PMO Portal DATABASE + API in one click.
+# In Render: New ＋ ▸ Blueprint ▸ connect this repo. The frontend goes to Netlify/Vercel/Cloudflare
+# (see DEPLOY.md) or can be added here as a static site.
+#
+# After the first deploy, set the one cross-URL secret the UI can't know up front:
+#   pmo-api ▸ Environment ▸ corsUrls__0 = https://<your-frontend-host>   (exact origin, no trailing /)
+#
+# Free-tier notes: the web service sleeps after ~15 min idle (first request wakes it, ~30–60s);
+# Render's free Postgres is time-limited — for a longer-lived free DB use Neon and set DATABASE_URL
+# on pmo-api manually instead of the fromDatabase block below.
+
+databases:
+  - name: pmo-db
+    databaseName: mahamdb
+    user: pmo
+    plan: free
+
+services:
+  # ---- .NET 8 API (Docker, context = repo root so data/csv seeds on first boot) ----
+  - type: web
+    name: pmo-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pmo-db
+          property: connectionString
+      - key: UseHttps
+        value: "false"
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      # The frontend origin for CORS (set after the frontend host exists). Exact, no trailing slash.
+      - key: corsUrls__0
+        sync: false
+      # Optional AI + Power BI secrets (leave unset to disable those features).
+      - key: AI__Providers__0__ApiKey
+        sync: false
+      - key: PowerBI__ClientSecret
+        sync: false

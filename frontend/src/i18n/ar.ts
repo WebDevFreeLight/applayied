@@ -3,7 +3,7 @@ export default {
   app: { title: 'بوابة مكتب المشاريع', subtitle: 'محفظة المشاريع والتحكم المالي' },
   nav: {
     dashboard: 'لوحة القيادة', projects: 'المشاريع', tasks: 'المهام', milestones: 'المعالم الرئيسية',
-    risks: 'المخاطر والمشكلات', changeRequests: 'طلبات التغيير', finance: 'الشؤون المالية', activity: 'الأتمتة والسجلات', employees: 'الموظفون', categories: 'فئات التكلفة',
+    risks: 'المخاطر والمشكلات', changeRequests: 'طلبات التغيير', finance: 'الشؤون المالية', activity: 'الأتمتة والسجلات', employees: 'الموظفون', reports: 'Power BI', categories: 'فئات التكلفة',
     logout: 'تسجيل الخروج', language: 'English',
   },
   auth: {
@@ -61,6 +61,14 @@ export default {
   forecast: { period: 'الفترة', kind: 'النوع', amount: 'المبلغ', add: 'إضافة توقع' },
   activity: { title: 'الأتمتة والسجلات', automation: 'عمليات الأتمتة', outbox: 'صندوق الصادر', audit: 'سجل التدقيق', rule: 'القاعدة', when: 'التاريخ', result: 'النتيجة', detail: 'التفاصيل', type: 'النوع', subject: 'الموضوع', entity: 'الكيان', action: 'الإجراء', actor: 'المنفّذ', runNow: 'تشغيل الأتمتة الآن', ran: 'تم تشغيل الأتمتة' },
   notify: { title: 'الإشعارات', readAll: 'تعليم الكل كمقروء', empty: 'لا توجد إشعارات' },
+  reports: {
+    title: 'تقارير Power BI', subtitle: 'تحليلات جاهزة للإدارة على نفس قاعدة PostgreSQL (MahamDB).',
+    loading: 'يتم تحميل التقرير المضمّن…', refresh: 'تحديث',
+    notConfiguredTitle: 'لم يتم إعداد تضمين Power BI بعد',
+    notConfiguredBody: 'أضِف مُعرِّف خدمة Azure AD في إعدادات PowerBI بالخلفية لعرض التقرير الحي هنا. وحتى ذلك الحين، هذه معاينة للتقرير المنشور.',
+    steps: 'عيّن PowerBI:TenantId وClientId وClientSecret وWorkspaceId وReportId في appsettings.Development.json، ثم امنح مُعرِّف الخدمة صلاحية الوصول إلى مساحة عمل Power BI.',
+    error: 'تعذّر تحميل التقرير المضمّن', previewNote: 'معاينة تقرير PMO على Power BI (ثنائي اللغة).',
+  },
   ai: {
     title: 'المساعد الذكي', online: 'ذكاء اصطناعي متعدد المزودين', offline: 'الذكاء الاصطناعي غير مُهيأ',
     hint: 'اسأل عن المشاريع أو الميزانيات أو المخاطر أو أي شيء في المحفظة.',

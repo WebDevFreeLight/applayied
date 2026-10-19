@@ -33,8 +33,11 @@ export function connectRealtime(): void {
   const token = localStorage.getItem('pmo.token')
   if (!token) return
 
+  // In dev the hub is same-origin (Vite proxies /msgHub). In production the frontend is a static
+  // site on a different host, so target the API directly via VITE_API_BASE (same var axios uses).
+  const apiBase = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '')
   connection = new signalR.HubConnectionBuilder()
-    .withUrl('/msgHub', {
+    .withUrl(`${apiBase}/msgHub`, {
       accessTokenFactory: () => localStorage.getItem('pmo.token') || '',
     })
     .withAutomaticReconnect([0, 2000, 5000, 10000, 20000])

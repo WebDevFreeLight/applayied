@@ -54,6 +54,40 @@ using HrShift = ZR.Model.HR.Attendance.Shifts_Scheduling.HrShift;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ---- Free-host / cloud deploy wiring (Render, Neon, Railway, Fly, …) --------------------------
+// A single DATABASE_URL (postgres://user:pass@host:port/db) or a ready DB_CONN overrides the
+// PostgreSQL connection for every DbConfig, and PORT drives the listen URL — so no secrets live in
+// the repo and the same image runs anywhere. Local dev is untouched (neither env var is set).
+{
+    var dbConn = Environment.GetEnvironmentVariable("DB_CONN");
+    var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    if (string.IsNullOrWhiteSpace(dbConn) && !string.IsNullOrWhiteSpace(dbUrl))
+    {
+        try
+        {
+            var u = new Uri(dbUrl);
+            var ui = u.UserInfo.Split(':');
+            var user = Uri.UnescapeDataString(ui[0]);
+            var pass = ui.Length > 1 ? Uri.UnescapeDataString(ui[1]) : "";
+            var db = u.AbsolutePath.Trim('/');
+            var dbPort = u.Port > 0 ? u.Port : 5432;
+            dbConn = $"Host={u.Host};Port={dbPort};Database={db};Username={user};Password={pass};SSL Mode=Require;Trust Server Certificate=true;Pooling=true;Maximum Pool Size=100;Connection Idle Lifetime=300;";
+        }
+        catch (Exception ex) { Console.WriteLine($"⚠️  Could not parse DATABASE_URL: {ex.Message}"); }
+    }
+    var overrides = new System.Collections.Generic.Dictionary<string, string?>();
+    if (!string.IsNullOrWhiteSpace(dbConn))
+    {
+        overrides["DbConfigs:0:Conn"] = dbConn;
+        overrides["DbConfigs:1:Conn"] = dbConn;
+        overrides["CodeGenDbConfig:Conn"] = dbConn;
+    }
+    var webPort = Environment.GetEnvironmentVariable("PORT");
+    if (!string.IsNullOrWhiteSpace(webPort) && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")))
+        overrides["ASPNETCORE_URLS"] = $"http://0.0.0.0:{webPort}";
+    if (overrides.Count > 0) builder.Configuration.AddInMemoryCollection(overrides);
+}
+
 // Configure Kestrel to handle HTTPS properly with SSL certificates chnages 50 088
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {

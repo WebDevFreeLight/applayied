@@ -3,7 +3,7 @@ export default {
   app: { title: 'PMO Portal', subtitle: 'Project Portfolio & Financial Control' },
   nav: {
     dashboard: 'Dashboard', projects: 'Projects', tasks: 'Tasks', milestones: 'Milestones',
-    risks: 'Risks & Issues', changeRequests: 'Change Requests', finance: 'Finance', activity: 'Automation & Logs', employees: 'Employees', categories: 'Cost Categories',
+    risks: 'Risks & Issues', changeRequests: 'Change Requests', finance: 'Finance', activity: 'Automation & Logs', employees: 'Employees', reports: 'Power BI', categories: 'Cost Categories',
     logout: 'Sign out', language: 'العربية',
   },
   auth: {
@@ -61,6 +61,14 @@ export default {
   forecast: { period: 'Period', kind: 'Kind', amount: 'Amount', add: 'Add forecast' },
   activity: { title: 'Automation & Logs', automation: 'Automation Runs', outbox: 'Outbox', audit: 'Audit Trail', rule: 'Rule', when: 'When', result: 'Result', detail: 'Detail', type: 'Type', subject: 'Subject', entity: 'Entity', action: 'Action', actor: 'Actor', runNow: 'Run automation now', ran: 'Automation ran' },
   notify: { title: 'Notifications', readAll: 'Mark all read', empty: 'No notifications' },
+  reports: {
+    title: 'Power BI Reporting', subtitle: 'Board-ready analytics on the same PostgreSQL (MahamDB).',
+    loading: 'Loading the embedded report…', refresh: 'Refresh',
+    notConfiguredTitle: 'Power BI embedding is not configured yet',
+    notConfiguredBody: 'Add an Azure AD service principal under the backend PowerBI settings to render the live report here. Until then, this is the published report preview.',
+    steps: 'Set PowerBI:TenantId, ClientId, ClientSecret, WorkspaceId and ReportId in appsettings.Development.json, then grant the service principal access to the Power BI workspace.',
+    error: 'Could not load the embedded report', previewNote: 'Preview of the PMO Power BI report (bilingual).',
+  },
   ai: {
     title: 'AI Assistant', online: 'Multi-provider AI', offline: 'AI not configured',
     hint: 'Ask about projects, budgets, risks, or anything in the portfolio.',

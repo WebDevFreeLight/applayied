@@ -1,0 +1,20 @@
+# Netlify config for the PMO Portal frontend (static React/Vite build).
+# Deploy: Netlify ▸ Add new site ▸ import this repo. Set base = frontend (below) and, crucially,
+# set the env var VITE_API_BASE to your API's FULL url (e.g. https://pmo-api.onrender.com) in
+# Site settings ▸ Environment variables, then trigger a deploy (Vite inlines it at build time).
+
+[build]
+  base = "frontend"
+  command = "npm ci && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # You can hard-code the API URL here instead of the UI:
+  # VITE_API_BASE = "https://pmo-api.onrender.com"
+
+# SPA fallback so client-side routes (/projects, /finance, /reports, …) resolve on refresh.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -23,6 +23,13 @@ export const getCategories = () => unwrap<CostCategory[]>(api.get('/pmo/cost-cat
 export const createCategory = (dto: Partial<CostCategory>) => unwrap<unknown>(api.post('/pmo/cost-category', dto))
 export const updateCategory = (dto: Partial<CostCategory>) => unwrap<unknown>(api.put('/pmo/cost-category', dto))
 
+// ---- power bi ---------------------------------------------------------------
+// Embed config for the browser Power BI SDK. `configured` is false until a service principal
+// (PowerBI section in appsettings) is supplied — the Reports page then shows a setup panel.
+export interface PowerBiEmbed { configured: boolean; embedUrl: string; reportId: string; token: string; expiry: string; error?: string }
+export const powerBiStatus = () => unwrap<{ configured: boolean }>(api.get('/pmo/powerbi/status'))
+export const powerBiEmbed = () => unwrap<PowerBiEmbed>(api.get('/pmo/powerbi/embed'))
+
 // ---- projects ---------------------------------------------------------------
 export const listProjects = (params: Record<string, unknown>) =>
   unwrap<Paged<Project>>(api.get('/pmo/project/list', { params }))
