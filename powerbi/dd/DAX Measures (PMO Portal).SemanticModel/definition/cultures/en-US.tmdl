@@ -2,197 +2,446 @@ cultureInfo en-US
 
 	linguisticMetadata =
 			{
-			  "Version": "1.0.0",
+			  "Version": "2.0.0",
 			  "Language": "en-US",
 			  "Entities": {
 			    "table_measures.approved_budget": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Approved Budget"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Approved Budget"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "الميزانية المعتمدة": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.snapshot_label": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Snapshot Label"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Snapshot Label"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.actual_spend": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Actual Spend"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Actual Spend"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "الإنفاق الفعلي": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.overdue_tasks": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Overdue Tasks"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Overdue Tasks"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "المهام المتأخرة": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.total_tasks": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Total Tasks"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Total Tasks"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "عدد المهام": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.budget_utilization_": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Budget Utilization %"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Budget Utilization %"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "نسبة الاستخدام": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.projected_variance": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Projected Variance"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Projected Variance"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "الانحراف المتوقع": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.task_completion_": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Task Completion %"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Task Completion %"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "نسبة إنجاز المهام": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.open_high_risks": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Open High Risks"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Open High Risks"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "المخاطر العالية": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.eac": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "EAC"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "EAC"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "التكلفة التقديرية عند الإنجاز": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.forecast_to_complete": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Forecast To Complete"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Forecast To Complete"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "التكلفة المتوقعة حتى الإنجاز": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "table_measures.sql_approved_budget": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "SQL Approved Budget"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "SQL Approved Budget"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.sql_overdue_milestones": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "SQL Overdue Milestones"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "SQL Overdue Milestones"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.sql_budget_utilization_": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "SQL Budget Utilization %"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "SQL Budget Utilization %"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.sql_open_high_risks": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "SQL Open High Risks"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "SQL Open High Risks"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.overdue_milestones": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Overdue Milestones"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Overdue Milestones"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.sql_overdue_tasks": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "SQL Overdue Tasks"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "SQL Overdue Tasks"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.sql_actual_spend": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "SQL Actual Spend"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "SQL Actual Spend"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.sql_forecast_to_complete": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "SQL Forecast To Complete"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "SQL Forecast To Complete"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.sql_projected_variance": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "SQL Projected Variance"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "SQL Projected Variance"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "public_pmo_project.name": {
-			      "Binding": {
-			        "ConceptualEntity": "public pmo_project",
-			        "ConceptualProperty": "name"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "public pmo_project",
+			          "ConceptualProperty": "name"
+			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "المشروع": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    },
 			    "public_pmo_project.status": {
-			      "Binding": {
-			        "ConceptualEntity": "public pmo_project",
-			        "ConceptualProperty": "status"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "public pmo_project",
+			          "ConceptualProperty": "status"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "public_pmo_task.status": {
-			      "Binding": {
-			        "ConceptualEntity": "public pmo_task",
-			        "ConceptualProperty": "status"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "public pmo_task",
+			          "ConceptualProperty": "status"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "snapshot.snapshot": {
-			      "Binding": {
-			        "ConceptualEntity": "Snapshot",
-			        "ConceptualProperty": "Snapshot"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Snapshot"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "public_sys_dept.deptname": {
-			      "Binding": {
-			        "ConceptualEntity": "public sys_dept",
-			        "ConceptualProperty": "deptname"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "public sys_dept",
+			          "ConceptualProperty": "deptname"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "calendar.monthname": {
-			      "Binding": {
-			        "ConceptualEntity": "Calendar",
-			        "ConceptualProperty": "MonthName"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Calendar",
+			          "ConceptualProperty": "MonthName"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "calendar.year": {
-			      "Binding": {
-			        "ConceptualEntity": "Calendar",
-			        "ConceptualProperty": "Year"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Calendar",
+			          "ConceptualProperty": "Year"
+			        }
 			      },
 			      "State": "Generated"
+			    },
+			    "calendar.monthnamear": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Calendar",
+			          "ConceptualProperty": "MonthNameAr"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "الشهر": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "public_pmo_task.status_ar": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "public pmo_task",
+			          "ConceptualProperty": "status_ar"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "حالة المهمة": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "public_pmo_project.status_ar": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "public pmo_project",
+			          "ConceptualProperty": "status_ar"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "الحالة": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  }
 			}
