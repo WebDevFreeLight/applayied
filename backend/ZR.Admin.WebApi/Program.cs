@@ -61,6 +61,27 @@ var builder = WebApplication.CreateBuilder(args);
 {
     var dbConn = Environment.GetEnvironmentVariable("DB_CONN");
     var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    var webPort = Environment.GetEnvironmentVariable("PORT");
+    var onCloud = !string.IsNullOrWhiteSpace(webPort) || !string.IsNullOrWhiteSpace(dbUrl) || !string.IsNullOrWhiteSpace(dbConn);
+
+    // On a cloud/free host, drop the environment-specific appsettings.{Environment}.json layer
+    // (Production/Staging/Docker) — those hard-code a remote/localhost DB host, port 8887 and HTTPS
+    // certificates that don't exist here and crash the container. Keep only base appsettings.json
+    // plus the DATABASE_URL / PORT overrides below.
+    if (onCloud)
+    {
+        for (int si = builder.Configuration.Sources.Count - 1; si >= 0; si--)
+        {
+            if (builder.Configuration.Sources[si] is Microsoft.Extensions.Configuration.Json.JsonConfigurationSource js
+                && !string.IsNullOrEmpty(js.Path)
+                && js.Path.StartsWith("appsettings.", StringComparison.OrdinalIgnoreCase)
+                && !js.Path.Equals("appsettings.json", StringComparison.OrdinalIgnoreCase))
+            {
+                builder.Configuration.Sources.RemoveAt(si);
+            }
+        }
+    }
+
     if (string.IsNullOrWhiteSpace(dbConn) && !string.IsNullOrWhiteSpace(dbUrl))
     {
         try
@@ -82,9 +103,13 @@ var builder = WebApplication.CreateBuilder(args);
         overrides["DbConfigs:1:Conn"] = dbConn;
         overrides["CodeGenDbConfig:Conn"] = dbConn;
     }
-    var webPort = Environment.GetEnvironmentVariable("PORT");
-    if (!string.IsNullOrWhiteSpace(webPort) && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")))
-        overrides["ASPNETCORE_URLS"] = $"http://0.0.0.0:{webPort}";
+    if (!string.IsNullOrWhiteSpace(webPort))
+    {
+        var listen = $"http://0.0.0.0:{webPort}";
+        overrides["urls"] = listen;
+        overrides["ASPNETCORE_URLS"] = listen;
+        overrides["UseHttps"] = "false";
+    }
     if (overrides.Count > 0) builder.Configuration.AddInMemoryCollection(overrides);
 }
 
@@ -384,7 +409,14 @@ if (initDb)
 {
     Console.WriteLine("InitDb is enabled - creating missing tables...");
     // Use InitMissingTables to only create tables that don't exist (safe for restarts)
-    ZR.ServiceCore.SqlSugar.InitTable.InitMissingTables();
+    try
+    {
+        ZR.ServiceCore.SqlSugar.InitTable.InitMissingTables();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"⚠️ InitMissingTables skipped: {ex.Message}");
+    }
 
     // Seed initial data after table creation
     try
@@ -879,18 +911,25 @@ catch (Exception ex)
 //);
 
 //ActionPermissionFilterInfo.PrintAllFiltersWithPermissions(); 
-builder.Environment.InitDbWithTypes(
- forceRecreate: true,
-  typeof(OpsPermit),
-  typeof(OpsPermitType),
-  typeof(OpsPermitVerification),
-  typeof(OpsCustomerWorker),
-  typeof(OpsGeoTemporalRule),
-  typeof(OpsWorkType),
-  typeof(OpsWorkCategory),
-  typeof(OpsSafetyPrecaution),
-  typeof(OpsPermitWorker),
-  typeof(OpsPermitSafetyCheck));
+try
+{
+    builder.Environment.InitDbWithTypes(
+     forceRecreate: true,
+      typeof(OpsPermit),
+      typeof(OpsPermitType),
+      typeof(OpsPermitVerification),
+      typeof(OpsCustomerWorker),
+      typeof(OpsGeoTemporalRule),
+      typeof(OpsWorkType),
+      typeof(OpsWorkCategory),
+      typeof(OpsSafetyPrecaution),
+      typeof(OpsPermitWorker),
+      typeof(OpsPermitSafetyCheck));
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"⚠️ Ops permit table init skipped: {ex.Message}");
+}
 //   typeof(HrAttendanceLog),
 
 //   // Attendance Processing
