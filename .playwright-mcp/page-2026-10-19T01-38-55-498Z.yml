@@ -1,0 +1,47 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]: PMO Portal · Product Showcase · 1 / 16
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]: P
+      - generic [ref=e8]:
+        - generic [ref=e9]: Project Portfolio & Financial Control
+        - heading "PMO Portal" [level=1] [ref=e10]
+    - paragraph [ref=e11]: One live, permissioned, bilingual view of delivery, risk and money — with automation and AI built in. Every screen on the following slides is a real capture from the running product.
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]: "8"
+        - text: projects · 84 tasks
+      - generic [ref=e15]:
+        - generic [ref=e16]: SQL-live
+        - text: no spreadsheet models
+      - generic [ref=e17]:
+        - generic [ref=e18]: EN / AR
+        - text: bilingual + RTL
+      - generic [ref=e19]:
+        - generic [ref=e20]: AI + Auto
+        - text: built in
+    - generic [ref=e21]: Use → / ← or Space · click dots to jump · press ? for help
+  - generic [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e24]: P
+      - text: PMO Portal
+    - button "‹" [ref=e25] [cursor=pointer]
+    - generic [ref=e26]: Welcome
+    - button "Next ›" [ref=e27] [cursor=pointer]
+    - generic [ref=e28]:
+      - generic "Welcome" [ref=e29] [cursor=pointer]
+      - generic "Why PMO Portal" [ref=e30] [cursor=pointer]
+      - generic "Executive Dashboard" [ref=e31] [cursor=pointer]
+      - generic "Portfolio" [ref=e32] [cursor=pointer]
+      - generic "Project workspace" [ref=e33] [cursor=pointer]
+      - generic "Financial control" [ref=e34] [cursor=pointer]
+      - generic "Risk & change" [ref=e35] [cursor=pointer]
+      - generic "Change Requests" [ref=e36] [cursor=pointer]
+      - generic "Automation" [ref=e37] [cursor=pointer]
+      - generic "AI built in" [ref=e38] [cursor=pointer]
+      - generic "Security & RBAC" [ref=e39] [cursor=pointer]
+      - generic "People" [ref=e40] [cursor=pointer]
+      - generic "Bilingual · Arabic" [ref=e41] [cursor=pointer]
+      - generic "Power BI reporting" [ref=e42] [cursor=pointer]
+      - generic "Your ROI" [ref=e43] [cursor=pointer]
+      - generic "Let's talk" [ref=e44] [cursor=pointer]

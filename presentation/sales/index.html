@@ -41,7 +41,7 @@ p,li{color:var(--muted);line-height:1.55}
 .shotframe .bar i:nth-child(1){background:#ff5f57}.shotframe .bar i:nth-child(2){background:#ffbd2e}.shotframe .bar i:nth-child(3){background:#28c840}
 .shotframe .bar span{margin-left:10px;color:var(--muted);font-size:12px}
 .shotframe .view{height:min(62vh,560px);overflow:hidden;background:#0c111a}
-.shotframe .view img{width:100%;display:block;transition:transform 6s linear}
+.shotframe .view img{width:100%;display:block;transition:transform .4s var(--ease)}
 .slide.active .shotframe .view img.pan{transform:translateY(calc(-1 * (var(--ph,0px))))}
 .stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:24px}
 .stats div{border-left:3px solid var(--brand);padding-left:12px}
@@ -84,9 +84,44 @@ p,li{color:var(--muted);line-height:1.55}
 .measures div{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;border-bottom:1px dashed var(--line);padding-bottom:7px}
 .measures div span:first-child{color:var(--ink);font-weight:600}.measures div span:last-child{color:var(--cyan);font-family:ui-monospace,Consolas,monospace}
 @media(max-width:900px){.pbi-kpis{grid-template-columns:1fr 1fr 1fr}.pbi-grid{grid-template-columns:1fr}}
+/* ===== interactivity ===== */
+#spot{position:fixed;inset:0;z-index:0;pointer-events:none;transition:background .15s}
+.shotframe{cursor:zoom-in;transition:transform .2s var(--ease),box-shadow .3s;transform-style:preserve-3d}
+.shotframe::after{content:"⤢ hover to explore · click to zoom";position:absolute;top:9px;right:12px;z-index:4;font-size:10px;letter-spacing:.06em;color:var(--ink);background:rgba(10,16,22,.78);border:1px solid var(--line);border-radius:999px;padding:3px 9px;opacity:0;transition:.25s;pointer-events:none}
+.shotframe:hover::after{opacity:1}
+.shotframe:hover{box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 0 1px var(--brand)}
+.card{transition:transform .2s var(--ease),border-color .25s,box-shadow .25s}
+.card:hover{border-color:var(--brand2);box-shadow:0 18px 40px rgba(0,0,0,.4)}
+.filmstrip figure{cursor:zoom-in;transition:transform .2s var(--ease),border-color .25s}
+.filmstrip figure:hover{transform:translateY(-4px);border-color:var(--brand2)}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(5,8,13,.94);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:28px;cursor:zoom-out}
+.lb.open{display:flex}
+.lb .lbwrap{max-width:1140px;width:100%}
+.lb img{width:100%;display:block;border:1px solid var(--line);border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.65)}
+.lbx{position:fixed;top:16px;right:20px;z-index:101;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:9px;width:40px;height:40px;font-size:16px;cursor:pointer}
+.lbx:hover{border-color:var(--brand2)}
+/* ROI calculator */
+.calc{display:grid;grid-template-columns:330px 1fr;gap:26px;margin-top:22px;align-items:center}
+.cctrl{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.cctrl label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
+.cctrl label:first-child{margin-top:0}
+.cctrl label b{float:right;color:var(--ink);font-size:15px;font-weight:800}
+.cctrl input[type=range]{width:100%;accent-color:var(--brand);height:6px;cursor:pointer}
+.cbars{display:flex;gap:16px;align-items:flex-end;height:180px;padding:0 6px}
+.cbar{flex:1;background:linear-gradient(0deg,var(--brand),var(--brand2));border-radius:8px 8px 0 0;position:relative;transition:height .55s var(--ease);min-height:6px}
+.cbar span{position:absolute;top:-24px;left:-10px;right:-10px;text-align:center;font-weight:800;font-size:13px}
+.cbar em{position:absolute;bottom:-32px;left:-10px;right:-10px;text-align:center;color:var(--muted);font-style:normal;font-size:11px}
+.ckpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:50px}
+.ckpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.ckpi .v{font-size:23px;font-weight:800;letter-spacing:-.02em}.ckpi .l{color:var(--muted);font-size:11px;margin-top:2px}
+.note{color:var(--muted);font-size:12px}
+@media(max-width:900px){.calc{grid-template-columns:1fr}.ckpis{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){.cbar{transition:none}}
 </style>
 </head>
 <body>
+<div id="spot"></div>
 <div class="progress" id="prog"></div>
 <div class="foot">PMO Portal · Product Showcase · <span id="pageno">1 / 12</span></div>
 <div class="deck" id="deck">
@@ -272,6 +307,36 @@ p,li{color:var(--muted);line-height:1.55}
     </div></div>
   </section>
 
+  <!-- ROI CALCULATOR (interactive) -->
+  <section class="slide" data-name="Your ROI">
+    <div class="wrap">
+      <div class="kick rise d1">Make it concrete</div>
+      <h2 class="rise d2" style="margin:8px 0 2px">What PMO Portal is worth to <span class="accent">your</span> portfolio.</h2>
+      <div class="calc rise d2">
+        <div class="cctrl">
+          <label>Projects in portfolio <b id="vP">40</b></label><input id="sP" type="range" min="5" max="200" value="40">
+          <label>Avg budget / project (AED, 000) <b id="vB">800</b></label><input id="sB" type="range" min="100" max="5000" step="50" value="800">
+          <label>Budget at risk without control <b id="vR">8%</b></label><input id="sR" type="range" min="2" max="20" value="8">
+          <label>PMO hours saved / week <b id="vH">40</b></label><input id="sH" type="range" min="5" max="150" value="40">
+          <div class="note" style="margin-top:16px">Illustrative model — drag the sliders to match your organisation.</div>
+        </div>
+        <div>
+          <div class="cbars">
+            <div class="cbar" id="cb1"><span>0</span><em>Overruns avoided</em></div>
+            <div class="cbar" id="cb2"><span>0</span><em>Time-saving value</em></div>
+            <div class="cbar" id="cb3"><span>0</span><em>Total annual value</em></div>
+          </div>
+          <div class="ckpis">
+            <div class="ckpi"><div class="v accent" id="kVal">AED 0</div><div class="l">estimated annual value</div></div>
+            <div class="ckpi"><div class="v green" id="kPay">0 mo</div><div class="l">payback period</div></div>
+            <div class="ckpi"><div class="v gold" id="kRoi">0×</div><div class="l">first-year ROI</div></div>
+            <div class="ckpi"><div class="v cyan" id="kPort">AED 0</div><div class="l">portfolio under control</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CLOSE -->
   <section class="slide" data-name="Let's talk">
     <div class="wrap" style="text-align:center">
@@ -290,6 +355,8 @@ p,li{color:var(--muted);line-height:1.55}
 
 </div>
 
+<div class="lb" id="lb"><button class="lbx" id="lbx" aria-label="Close">✕</button><div class="lbwrap"><img id="lbImg" alt="Zoomed screenshot"></div></div>
+
 <div class="hud">
   <div class="brand"><span class="mk">P</span> PMO Portal</div>
   <button class="btn" id="prev">‹</button>
@@ -300,33 +367,72 @@ p,li{color:var(--muted);line-height:1.55}
 
 <script>
 (function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var slides=[].slice.call(document.querySelectorAll('.slide')),i=0,seen={};
   var dotsEl=document.getElementById('dots'),prog=document.getElementById('prog'),sn=document.getElementById('sn'),pageno=document.getElementById('pageno');
+  function $(id){return document.getElementById(id);}
   slides.forEach(function(s,idx){var b=document.createElement('b');b.title=s.dataset.name;b.onclick=function(){go(idx)};dotsEl.appendChild(b);});
   var dots=[].slice.call(dotsEl.children);
   function go(n){n=Math.max(0,Math.min(slides.length-1,n));slides[i].classList.remove('active');i=n;slides[i].classList.add('active');
     dots.forEach(function(d,k){d.classList.toggle('on',k===i)});prog.style.width=(i/(slides.length-1)*100)+'%';
     sn.textContent=slides[i].dataset.name;pageno.textContent=(i+1)+' / '+slides.length;
-    if(!seen[i]){seen[i]=true;enter(i);}}
+    if(!seen[i]){seen[i]=true;enter(i);} else refresh(i);}
   function enter(n){
-    // lazy-load images, then slow "pan" down tall screenshots for a living feel
-    slides[n].querySelectorAll('img[data-src]').forEach(function(img){
-      img.src=img.getAttribute('data-src');img.removeAttribute('data-src');
-      img.onload=function(){
-        var view=img.parentNode, extra=img.offsetHeight-view.clientHeight;
-        if(extra>20){ img.style.setProperty('--ph',extra+'px'); setTimeout(function(){img.classList.add('pan');},600);
-          // ping-pong the pan
-          img.addEventListener('transitionend',function(){img.classList.toggle('pan');});
-        }
-      };
-    });
+    slides[n].querySelectorAll('img[data-src]').forEach(function(img){img.src=img.getAttribute('data-src');img.removeAttribute('data-src');});
+    refresh(n);
+  }
+  function refresh(n){
+    if(slides[n].dataset.name==='Your ROI'){ ['cb1','cb2','cb3'].forEach(function(id){$(id).style.height='4%';}); requestAnimationFrame(function(){calc();}); }
   }
   function next(){if(i<slides.length-1)go(i+1)}function prev(){if(i>0)go(i-1)}
-  document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;document.getElementById('restart').onclick=function(){go(0)};
-  document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next();}
+  $('next').onclick=next;$('prev').onclick=prev;$('restart').onclick=function(){go(0)};
+  document.addEventListener('keydown',function(e){
+    if($('lb').classList.contains('open')){ if(e.key==='Escape')closeLb(); return; }
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next();}
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
-    else if(e.key==='?'){alert('PMO Portal — product showcase\\n\\n→ / Space : next\\n← : previous\\nHome/End : first/last\\nClick dots to jump\\n\\nReal screenshots from the live system. Open index.html directly — fully offline.');}});
-  var wlock=false;window.addEventListener('wheel',function(e){if(wlock||Math.abs(e.deltaY)<30)return;wlock=true;setTimeout(function(){wlock=false},700);e.deltaY>0?next():prev();},{passive:true});
+    else if(e.key==='?'){alert('PMO Portal — interactive showcase\\n\\n→ / Space : next   ← : previous   Home/End : ends\\nClick dots to jump\\n\\nMOUSE: hover a screenshot to scrub it · click to zoom full-size · tilt cards & frames · drag the ROI sliders.\\n\\nReal screens from the live system. Fully offline.');}});
+  var wlock=false;window.addEventListener('wheel',function(e){if($('lb').classList.contains('open'))return;if(wlock||Math.abs(e.deltaY)<30)return;wlock=true;setTimeout(function(){wlock=false},700);e.deltaY>0?next():prev();},{passive:true});
+
+  /* ---------- mouse interactions ---------- */
+  // cursor-follow background glow
+  var spot=$('spot');
+  window.addEventListener('pointermove',function(e){spot.style.background='radial-gradient(460px 460px at '+e.clientX+'px '+e.clientY+'px, rgba(227,6,19,.10), transparent 62%)';},{passive:true});
+  // 3D tilt
+  function tilt(elm,max){ if(reduce)return;
+    elm.addEventListener('pointermove',function(e){var r=elm.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      elm.style.transform='perspective(1200px) rotateX('+(-y*max).toFixed(2)+'deg) rotateY('+(x*max).toFixed(2)+'deg)';});
+    elm.addEventListener('pointerleave',function(){elm.style.transform='perspective(1200px) rotateX(0deg) rotateY(0deg)';});
+  }
+  // hover-scrub tall screenshots
+  function scrub(view){var img=view.querySelector('img');if(!img)return;
+    view.addEventListener('pointermove',function(e){var ex=img.offsetHeight-view.clientHeight;if(ex<8){img.style.transform='';return;}
+      var r=view.getBoundingClientRect();var p=Math.min(1,Math.max(0,(e.clientY-r.top)/r.height));
+      img.style.transition='transform .06s linear';img.style.transform='translateY('+(-p*ex).toFixed(1)+'px)';});
+    view.addEventListener('pointerleave',function(){img.style.transition='transform .55s var(--ease)';img.style.transform='translateY(0)';});
+  }
+  document.querySelectorAll('.shotframe').forEach(function(f){tilt(f,4);var v=f.querySelector('.view');if(v)scrub(v);
+    f.addEventListener('click',function(){var im=f.querySelector('img');if(im&&im.getAttribute('src'))openLb(im.src);});});
+  document.querySelectorAll('.card').forEach(function(c){tilt(c,6);});
+  document.querySelectorAll('.filmstrip figure').forEach(function(fg){fg.addEventListener('click',function(){var im=fg.querySelector('img');if(im&&im.getAttribute('src'))openLb(im.src);});});
+  // lightbox
+  var lb=$('lb'),lbImg=$('lbImg');
+  function openLb(src){lbImg.src=src;lb.classList.add('open');}
+  function closeLb(){lb.classList.remove('open');}
+  lb.addEventListener('click',closeLb);$('lbx').addEventListener('click',function(e){e.stopPropagation();closeLb();});
+
+  /* ---------- ROI calculator ---------- */
+  function money(n){n=Math.round(n);if(n>=1e6)return 'AED '+(n/1e6).toFixed(1)+'M';if(n>=1e3)return 'AED '+Math.round(n/1e3)+'k';return 'AED '+n;}
+  function setb(id,v,max){var b=$(id);b.style.height=Math.max(4,v/max*100)+'%';b.querySelector('span').textContent=money(v);}
+  function calc(){ if(!$('sP'))return;
+    var P=+$('sP').value,Bk=+$('sB').value,R=+$('sR').value/100,H=+$('sH').value;
+    var portfolio=P*Bk*1000, overrun=portfolio*R*0.6, labor=H*52*180, total=overrun+labor, platform=240000;
+    var payback=Math.max(1,Math.round(platform/(total/12))), roi=total/platform;
+    $('vP').textContent=P;$('vB').textContent=Bk;$('vR').textContent=$('sR').value+'%';$('vH').textContent=H;
+    setb('cb1',overrun,total);setb('cb2',labor,total);setb('cb3',total,total);
+    $('kVal').textContent=money(total);$('kPay').textContent=payback+' mo';$('kRoi').textContent=roi.toFixed(1)+'×';$('kPort').textContent=money(portfolio);
+  }
+  ['sP','sB','sR','sH'].forEach(function(id){var e=$(id);if(e)e.addEventListener('input',calc);});
+
   go(0);
 })();
 </script>

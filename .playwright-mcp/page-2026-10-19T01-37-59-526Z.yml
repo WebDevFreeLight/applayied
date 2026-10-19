@@ -1,0 +1,66 @@
+- generic [active] [ref=f3e1]:
+  - generic [ref=f3e2]: PMO Portal · Product Showcase · 14 / 16
+  - generic [ref=f3e48]:
+    - generic [ref=f3e49]:
+      - generic [ref=f3e50]: Power BI · محفظة مكتب إدارة المشاريع
+      - img "Power BI report (Arabic)" [ref=f3e56]
+      - text: ⤢ hover to explore · click to zoom
+    - generic [ref=f3e57]:
+      - generic [ref=f3e58]: Analytics & reporting
+      - heading "Board-ready Power BI, live from PostgreSQL." [level=2] [ref=f3e59]
+      - list [ref=f3e60]:
+        - listitem [ref=f3e61]:
+          - text: Connects to the same PMO Postgres
+          - generic [ref=f3e62]: no exports — star schema, bilingual pages
+        - listitem [ref=f3e63]: Validated to the penny against the app
+      - generic [ref=f3e64]:
+        - heading "Core measures (DAX)" [level=4] [ref=f3e65]
+        - generic [ref=f3e66]:
+          - generic [ref=f3e67]:
+            - generic [ref=f3e68]: Approved Budget
+            - generic [ref=f3e69]: AED 16.11M
+          - generic [ref=f3e70]:
+            - generic [ref=f3e71]: Actual Spend (posted)
+            - generic [ref=f3e72]: AED 8.22M
+          - generic [ref=f3e73]:
+            - generic [ref=f3e74]: Budget Utilization
+            - generic [ref=f3e75]: 51.0%
+          - generic [ref=f3e76]:
+            - generic [ref=f3e77]: Estimate at Completion
+            - generic [ref=f3e78]: AED 11.87M
+          - generic [ref=f3e79]:
+            - generic [ref=f3e80]: Forecast Variance
+            - generic [ref=f3e81]: AED 4.25M
+          - generic [ref=f3e82]:
+            - generic [ref=f3e83]: Overdue · High-risk
+            - generic [ref=f3e84]: 22 · 6
+      - generic [ref=f3e85]:
+        - generic [ref=f3e86]: SQL overdue_tasks
+        - generic [ref=f3e87]: SQL financial_summary
+        - generic [ref=f3e88]: SQL high_risk
+        - generic [ref=f3e89]: SQL monthly_spend
+        - generic [ref=f3e90]: SQL milestones
+  - generic [ref=f3e22]:
+    - generic [ref=f3e23]:
+      - generic [ref=f3e24]: P
+      - text: PMO Portal
+    - button "‹" [ref=f3e25] [cursor=pointer]
+    - generic [ref=f3e26]: Power BI reporting
+    - button "Next ›" [ref=f3e27] [cursor=pointer]
+    - generic [ref=f3e28]:
+      - generic "Welcome" [ref=f3e29] [cursor=pointer]
+      - generic "Why PMO Portal" [ref=f3e30] [cursor=pointer]
+      - generic "Executive Dashboard" [ref=f3e31] [cursor=pointer]
+      - generic "Portfolio" [ref=f3e32] [cursor=pointer]
+      - generic "Project workspace" [ref=f3e33] [cursor=pointer]
+      - generic "Financial control" [ref=f3e34] [cursor=pointer]
+      - generic "Risk & change" [ref=f3e35] [cursor=pointer]
+      - generic "Change Requests" [ref=f3e36] [cursor=pointer]
+      - generic "Automation" [ref=f3e37] [cursor=pointer]
+      - generic "AI built in" [ref=f3e38] [cursor=pointer]
+      - generic "Security & RBAC" [ref=f3e39] [cursor=pointer]
+      - generic "People" [ref=f3e40] [cursor=pointer]
+      - generic "Bilingual · Arabic" [ref=f3e41] [cursor=pointer]
+      - generic "Power BI reporting" [ref=f3e42] [cursor=pointer]
+      - generic "Your ROI" [ref=f3e43] [cursor=pointer]
+      - generic "Let's talk" [ref=f3e44] [cursor=pointer]
