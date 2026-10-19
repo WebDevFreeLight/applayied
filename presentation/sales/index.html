@@ -60,6 +60,30 @@ p,li{color:var(--muted);line-height:1.55}
 .foot{position:fixed;top:16px;right:24px;color:var(--muted);font-size:12px;z-index:30}
 .logo{display:flex;align-items:center;gap:14px}.logo .mk{width:52px;height:52px;border-radius:13px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:26px}
 @media(max-width:900px){.split,.split.rev{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.shotframe .view{height:40vh}}
+/* bilingual filmstrip */
+.filmstrip{display:flex;gap:10px;margin-top:18px}
+.filmstrip figure{flex:1;margin:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#0c111a}
+.filmstrip .cap{font-size:11px;color:var(--muted);text-align:center;padding:5px 2px;border-top:1px solid var(--line)}
+.filmstrip .ph{height:92px;overflow:hidden}.filmstrip .ph img{width:100%;display:block}
+.rtlframe[dir=rtl]{direction:rtl}
+/* Power BI report canvas */
+.pbi{background:linear-gradient(180deg,#10182400,#0f1724);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.pbi-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.pbi-top .f{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#F2C811,#E6A817);display:grid;place-items:center;color:#1a1a1a;font-weight:900;font-size:15px}
+.pbi-top b{font-weight:800}.pbi-top span{color:var(--muted);font-size:12px;margin-left:auto}
+.pbi-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.pbi-kpi{background:#131c29;border:1px solid var(--line);border-radius:10px;padding:12px 10px}
+.pbi-kpi b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em}.pbi-kpi small{color:var(--muted);font-size:11px}
+.pbi-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;margin-top:14px}
+.pbi-box{background:#101722;border:1px solid var(--line);border-radius:10px;padding:14px}
+.pbi-box h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand2);margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips b{font-weight:600;font-size:12px;color:var(--ink);background:#182230;border:1px solid var(--line);border-radius:7px;padding:5px 9px}
+.chips b i{color:var(--muted);font-style:normal}
+.measures{display:flex;flex-direction:column;gap:9px}
+.measures div{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;border-bottom:1px dashed var(--line);padding-bottom:7px}
+.measures div span:first-child{color:var(--ink);font-weight:600}.measures div span:last-child{color:var(--cyan);font-family:ui-monospace,Consolas,monospace}
+@media(max-width:900px){.pbi-kpis{grid-template-columns:1fr 1fr 1fr}.pbi-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -203,6 +227,49 @@ p,li{color:var(--muted);line-height:1.55}
         <li>Roles &amp; menus fully managed in-app</li>
         <li>Bilingual EN/AR with full RTL throughout</li></ul></div>
       <div class="shotframe rise d2"><div class="bar"><i></i><i></i><i></i><span>PMO Portal · Employees</span></div><div class="view"><img data-src="shots/08-employees.png" alt="Employees"></div></div>
+    </div></div>
+  </section>
+
+  <!-- BILINGUAL -->
+  <section class="slide" data-name="Bilingual · Arabic">
+    <div class="wrap"><div class="split rev">
+      <div class="copy rise d1"><div class="kick">Bilingual by design</div><h2>Arabic &amp; English. <span class="accent">Full RTL.</span></h2>
+        <ul><li>Every screen localized EN ⇄ AR <small>one click, no reload</small></li>
+        <li>Layout mirrors right-to-left <small>navigation, cards, tables &amp; charts</small></li>
+        <li>Numbers, dates &amp; currency stay correct</li>
+        <li>Same bilingual treatment in Power BI →</li></ul>
+        <div class="filmstrip">
+          <figure><div class="ph"><img data-src="shots/ar/ar-02-projects.png" alt="Projects (Arabic)"></div><div class="cap" dir="rtl">المشاريع</div></figure>
+          <figure><div class="ph"><img data-src="shots/ar/ar-03-finance.png" alt="Finance (Arabic)"></div><div class="cap" dir="rtl">الشؤون المالية</div></figure>
+          <figure><div class="ph"><img data-src="shots/ar/ar-04-risks.png" alt="Risks (Arabic)"></div><div class="cap" dir="rtl">المخاطر</div></figure>
+        </div>
+      </div>
+      <div class="shotframe rise d2" dir="rtl"><div class="bar"><i></i><i></i><i></i><span>بوابة مكتب المشاريع · لوحة القيادة</span></div><div class="view"><img data-src="shots/ar/ar-01-dashboard.png" alt="Arabic dashboard"></div></div>
+    </div></div>
+  </section>
+
+  <!-- POWER BI -->
+  <section class="slide" data-name="Power BI reporting">
+    <div class="wrap"><div class="split">
+      <div class="shotframe rise d1" dir="rtl"><div class="bar"><i></i><i></i><i></i><span>Power BI · محفظة مكتب إدارة المشاريع</span></div><div class="view" style="height:auto"><img data-src="shots/pbi-ar.png" alt="Power BI report (Arabic)"></div></div>
+      <div class="copy rise d2"><div class="kick">Analytics &amp; reporting</div><h2>Board-ready <span class="accent">Power BI</span>, straight from PostgreSQL.</h2>
+        <ul><li>Connects to the same PMO Postgres <small>no exports, no spreadsheet copies</small></li>
+        <li>Star schema <small>finance fact × project · category · date · risk</small></li>
+        <li>Bilingual report pages — Arabic &amp; English</li></ul>
+        <div class="pbi-box" style="margin-top:14px"><h4>Core measures (DAX)</h4>
+          <div class="measures">
+            <div><span>Approved Budget</span><span>AED 16.11M</span></div>
+            <div><span>Actual Spend (posted)</span><span>AED 8.22M</span></div>
+            <div><span>Budget Utilization</span><span>51.0%</span></div>
+            <div><span>Estimate at Completion</span><span>AED 11.87M</span></div>
+            <div><span>Forecast Variance</span><span>AED 4.25M</span></div>
+            <div><span>Overdue · High-risk</span><span>22 · 6</span></div>
+          </div>
+        </div>
+        <div class="chips" style="margin-top:12px">
+          <b>SQL <i>overdue_tasks</i></b><b>SQL <i>financial_summary</i></b><b>SQL <i>high_risk</i></b><b>SQL <i>monthly_spend</i></b><b>SQL <i>milestones</i></b>
+        </div>
+      </div>
     </div></div>
   </section>
 

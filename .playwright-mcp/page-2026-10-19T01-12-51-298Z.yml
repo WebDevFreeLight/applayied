@@ -1,0 +1,380 @@
+- generic [ref=f59e3]:
+  - complementary [ref=f59e4]:
+    - generic [ref=f59e5]:
+      - text: بوابة مكتب المشاريع
+      - generic [ref=f59e6]: محفظة المشاريع والتحكم المالي
+    - link "لوحة القيادة" [ref=f59e7] [cursor=pointer]:
+      - /url: /
+    - link "المشاريع" [ref=f59e8] [cursor=pointer]:
+      - /url: /projects
+    - link "المهام" [ref=f59e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "المعالم الرئيسية" [ref=f59e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "المخاطر والمشكلات" [ref=f59e11] [cursor=pointer]:
+      - /url: /risks
+    - link "طلبات التغيير" [ref=f59e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "الشؤون المالية" [ref=f59e13] [cursor=pointer]:
+      - /url: /finance
+    - link "الأتمتة والسجلات" [ref=f59e14] [cursor=pointer]:
+      - /url: /activity
+    - link "الموظفون" [ref=f59e15] [cursor=pointer]:
+      - /url: /employees
+    - link "فئات التكلفة" [ref=f59e16] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f59e17]: الإدارة
+    - link "المستخدمون" [ref=f59e18] [cursor=pointer]:
+      - /url: /admin/users
+    - link "الأدوار" [ref=f59e19] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "القوائم والصلاحيات" [ref=f59e20] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "الإدارات" [ref=f59e21] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "المناصب" [ref=f59e22] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "القواميس" [ref=f59e23] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "الإعدادات" [ref=f59e24] [cursor=pointer]:
+      - /url: /admin/config
+    - link "الإشعارات" [ref=f59e25] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "المهام المجدولة" [ref=f59e26] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "سجلات المهام" [ref=f59e27] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "سجل الدخول" [ref=f59e28] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "الجلسات" [ref=f59e29] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "سجل العمليات" [ref=f59e30] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "المستخدمون المتصلون" [ref=f59e31] [cursor=pointer]:
+      - /url: /admin/online
+    - link "مراقبة الخادم" [ref=f59e32] [cursor=pointer]:
+      - /url: /admin/server
+    - link "الرسائل" [ref=f59e33] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "الملف الشخصي" [ref=f59e34] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f59e35]:
+    - banner [ref=f59e36]:
+      - strong [ref=f59e37]: بوابة مكتب المشاريع
+      - generic [ref=f59e38]:
+        - button "🔔 2" [ref=f59e83] [cursor=pointer]:
+          - text: 🔔
+          - generic [ref=f59e84]: "2"
+        - button "☀️" [ref=f59e41] [cursor=pointer]
+        - button "English" [ref=f59e42] [cursor=pointer]
+        - generic [ref=f59e43]: PMO Admin · pmo_admin, admin
+        - button "تسجيل الخروج" [ref=f59e44] [cursor=pointer]
+    - main [ref=f59e45]:
+      - generic [ref=f59e46]:
+        - generic [ref=f59e47]:
+          - heading "المخاطر والمشكلات" [level=2] [ref=f59e48]
+          - button "خطر/مشكلة جديدة" [ref=f59e49] [cursor=pointer]
+        - generic [ref=f59e50]:
+          - generic [ref=f59e52]:
+            - log [ref=f59e54]
+            - generic [ref=f59e56]:
+              - generic [ref=f59e57]: "المشاريع: الكل"
+              - combobox [ref=f59e59]
+          - generic [ref=f59e66]:
+            - log [ref=f59e68]
+            - generic [ref=f59e70]:
+              - generic [ref=f59e71]: "الحالة: الكل"
+              - combobox [ref=f59e73]
+          - generic [ref=f59e79]:
+            - checkbox "تعرض مرتفع" [ref=f59e80]
+            - text: تعرض مرتفع
+        - table [ref=f59e86]:
+          - rowgroup [ref=f59e87]:
+            - row [ref=f59e88]:
+              - columnheader "النوع" [ref=f59e89]
+              - columnheader "العنوان" [ref=f59e90]
+              - columnheader "المشاريع" [ref=f59e91]
+              - columnheader "المالك" [ref=f59e92]
+              - columnheader "الاحتمال" [ref=f59e93]
+              - columnheader "الأثر" [ref=f59e94]
+              - columnheader "الدرجة" [ref=f59e95]
+              - columnheader "الحالة" [ref=f59e96]
+              - columnheader "إجراءات" [ref=f59e97]
+          - rowgroup [ref=f59e98]:
+            - row [ref=f59e99]:
+              - cell "خطر" [ref=f59e100]
+              - cell "AI model accuracy below target" [ref=f59e102]
+              - cell "AI Customer Insights" [ref=f59e103]
+              - cell "Yousef Al Marri" [ref=f59e104]
+              - cell "5" [ref=f59e105]
+              - cell "5" [ref=f59e106]
+              - cell "25" [ref=f59e107]
+              - cell "مفتوح" [ref=f59e109]
+              - cell [ref=f59e111]:
+                - button "التفاصيل" [ref=f59e112] [cursor=pointer]
+                - button "تعديل" [ref=f59e113] [cursor=pointer]
+            - row [ref=f59e114]:
+              - cell "خطر" [ref=f59e115]
+              - cell "Data quality gap" [ref=f59e117]
+              - cell "HR Self-Service Portal" [ref=f59e118]
+              - cell "Khalid Al Shamsi" [ref=f59e119]
+              - cell "5" [ref=f59e120]
+              - cell "5" [ref=f59e121]
+              - cell "25" [ref=f59e122]
+              - cell "مفتوح" [ref=f59e124]
+              - cell [ref=f59e126]:
+                - button "التفاصيل" [ref=f59e127] [cursor=pointer]
+                - button "تعديل" [ref=f59e128] [cursor=pointer]
+            - row [ref=f59e129]:
+              - cell "مشكلة" [ref=f59e130]
+              - cell "Third-party API change" [ref=f59e132]
+              - cell "AI Customer Insights" [ref=f59e133]
+              - cell "Rashid Al Falasi" [ref=f59e134]
+              - cell "5" [ref=f59e135]
+              - cell "5" [ref=f59e136]
+              - cell "25" [ref=f59e137]
+              - cell "قيد المعالجة" [ref=f59e139]
+              - cell [ref=f59e141]:
+                - button "التفاصيل" [ref=f59e142] [cursor=pointer]
+                - button "تعديل" [ref=f59e143] [cursor=pointer]
+            - row [ref=f59e144]:
+              - cell "مشكلة" [ref=f59e145]
+              - cell "Vendor delay" [ref=f59e147]
+              - cell "Legacy Decommissioning" [ref=f59e148]
+              - cell "Ali Al Hammadi" [ref=f59e149]
+              - cell "5" [ref=f59e150]
+              - cell "5" [ref=f59e151]
+              - cell "25" [ref=f59e152]
+              - cell "قيد المعالجة" [ref=f59e154]
+              - cell [ref=f59e156]:
+                - button "التفاصيل" [ref=f59e157] [cursor=pointer]
+                - button "تعديل" [ref=f59e158] [cursor=pointer]
+            - row [ref=f59e159]:
+              - cell "مشكلة" [ref=f59e160]
+              - cell "Scope creep" [ref=f59e162]
+              - cell "AI Customer Insights" [ref=f59e163]
+              - cell "Khalid Al Shamsi" [ref=f59e164]
+              - cell "5" [ref=f59e165]
+              - cell "5" [ref=f59e166]
+              - cell "25" [ref=f59e167]
+              - cell "قيد المعالجة" [ref=f59e169]
+              - cell [ref=f59e171]:
+                - button "التفاصيل" [ref=f59e172] [cursor=pointer]
+                - button "تعديل" [ref=f59e173] [cursor=pointer]
+            - row [ref=f59e174]:
+              - cell "خطر" [ref=f59e175]
+              - cell "Third-party API change" [ref=f59e177]
+              - cell "Cybersecurity Hardening" [ref=f59e178]
+              - cell "Tariq Al Jaberi" [ref=f59e179]
+              - cell "5" [ref=f59e180]
+              - cell "4" [ref=f59e181]
+              - cell "20" [ref=f59e182]
+              - cell "مفتوح" [ref=f59e184]
+              - cell [ref=f59e186]:
+                - button "التفاصيل" [ref=f59e187] [cursor=pointer]
+                - button "تعديل" [ref=f59e188] [cursor=pointer]
+            - row [ref=f59e189]:
+              - cell "مشكلة" [ref=f59e190]
+              - cell "Unpatched critical CVE in gateway" [ref=f59e192]
+              - cell "Cybersecurity Hardening" [ref=f59e193]
+              - cell "Khalid Al Shamsi" [ref=f59e194]
+              - cell "4" [ref=f59e195]
+              - cell "5" [ref=f59e196]
+              - cell "20" [ref=f59e197]
+              - cell "مفتوح" [ref=f59e199]
+              - cell [ref=f59e201]:
+                - button "التفاصيل" [ref=f59e202] [cursor=pointer]
+                - button "تعديل" [ref=f59e203] [cursor=pointer]
+            - row [ref=f59e204]:
+              - cell "خطر" [ref=f59e205]
+              - cell "Core migration data loss" [ref=f59e207]
+              - cell "Core Banking Modernization" [ref=f59e208]
+              - cell "Hamdan Al Zaabi" [ref=f59e209]
+              - cell "5" [ref=f59e210]
+              - cell "4" [ref=f59e211]
+              - cell "20" [ref=f59e212]
+              - cell "مغلق" [ref=f59e214]
+              - cell [ref=f59e216]:
+                - button "التفاصيل" [ref=f59e217] [cursor=pointer]
+                - button "تعديل" [ref=f59e218] [cursor=pointer]
+            - row [ref=f59e219]:
+              - cell "خطر" [ref=f59e220]
+              - cell "Infrastructure capacity" [ref=f59e222]
+              - cell "Cybersecurity Hardening" [ref=f59e223]
+              - cell "Tariq Al Jaberi" [ref=f59e224]
+              - cell "5" [ref=f59e225]
+              - cell "4" [ref=f59e226]
+              - cell "20" [ref=f59e227]
+              - cell "قيد المعالجة" [ref=f59e229]
+              - cell [ref=f59e231]:
+                - button "التفاصيل" [ref=f59e232] [cursor=pointer]
+                - button "تعديل" [ref=f59e233] [cursor=pointer]
+            - row [ref=f59e234]:
+              - cell "خطر" [ref=f59e235]
+              - cell "Vendor delay" [ref=f59e237]
+              - cell "AI Customer Insights" [ref=f59e238]
+              - cell "Rashid Al Falasi" [ref=f59e239]
+              - cell "4" [ref=f59e240]
+              - cell "4" [ref=f59e241]
+              - cell "16" [ref=f59e242]
+              - cell "مفتوح" [ref=f59e244]
+              - cell [ref=f59e246]:
+                - button "التفاصيل" [ref=f59e247] [cursor=pointer]
+                - button "تعديل" [ref=f59e248] [cursor=pointer]
+            - row [ref=f59e249]:
+              - cell "خطر" [ref=f59e250]
+              - cell "Integration failure" [ref=f59e252]
+              - cell "Core Banking Modernization" [ref=f59e253]
+              - cell "Tariq Al Jaberi" [ref=f59e254]
+              - cell "4" [ref=f59e255]
+              - cell "4" [ref=f59e256]
+              - cell "16" [ref=f59e257]
+              - cell "قيد المعالجة" [ref=f59e259]
+              - cell [ref=f59e261]:
+                - button "التفاصيل" [ref=f59e262] [cursor=pointer]
+                - button "تعديل" [ref=f59e263] [cursor=pointer]
+            - row [ref=f59e264]:
+              - cell "خطر" [ref=f59e265]
+              - cell "Security vulnerability" [ref=f59e267]
+              - cell "Mobile App Revamp" [ref=f59e268]
+              - cell "Saeed Al Ketbi" [ref=f59e269]
+              - cell "3" [ref=f59e270]
+              - cell "5" [ref=f59e271]
+              - cell "15" [ref=f59e272]
+              - cell "قيد المعالجة" [ref=f59e274]
+              - cell [ref=f59e276]:
+                - button "التفاصيل" [ref=f59e277] [cursor=pointer]
+                - button "تعديل" [ref=f59e278] [cursor=pointer]
+            - row [ref=f59e279]:
+              - cell "مشكلة" [ref=f59e280]
+              - cell "Third-party API change" [ref=f59e282]
+              - cell "Data Lake Platform" [ref=f59e283]
+              - cell "Huda Al Dhaheri" [ref=f59e284]
+              - cell "3" [ref=f59e285]
+              - cell "4" [ref=f59e286]
+              - cell "12" [ref=f59e287]
+              - cell "مغلق" [ref=f59e289]
+              - cell [ref=f59e291]:
+                - button "التفاصيل" [ref=f59e292] [cursor=pointer]
+                - button "تعديل" [ref=f59e293] [cursor=pointer]
+            - row [ref=f59e294]:
+              - cell "مشكلة" [ref=f59e295]
+              - cell "Security vulnerability" [ref=f59e297]
+              - cell "Legacy Decommissioning" [ref=f59e298]
+              - cell "Ali Al Hammadi" [ref=f59e299]
+              - cell "3" [ref=f59e300]
+              - cell "4" [ref=f59e301]
+              - cell "12" [ref=f59e302]
+              - cell "قيد المعالجة" [ref=f59e304]
+              - cell [ref=f59e306]:
+                - button "التفاصيل" [ref=f59e307] [cursor=pointer]
+                - button "تعديل" [ref=f59e308] [cursor=pointer]
+            - row [ref=f59e309]:
+              - cell "مشكلة" [ref=f59e310]
+              - cell "Vendor delay" [ref=f59e312]
+              - cell "Data Lake Platform" [ref=f59e313]
+              - cell "Yousef Al Marri" [ref=f59e314]
+              - cell "4" [ref=f59e315]
+              - cell "3" [ref=f59e316]
+              - cell "12" [ref=f59e317]
+              - cell "مفتوح" [ref=f59e319]
+              - cell [ref=f59e321]:
+                - button "التفاصيل" [ref=f59e322] [cursor=pointer]
+                - button "تعديل" [ref=f59e323] [cursor=pointer]
+            - row [ref=f59e324]:
+              - cell "خطر" [ref=f59e325]
+              - cell "الكهرياء مفتوحة" [ref=f59e327]
+              - cell "مجموعة الصيانة" [ref=f59e328]
+              - cell "Saeed Al Ketbi" [ref=f59e329]
+              - cell "3" [ref=f59e330]
+              - cell "3" [ref=f59e331]
+              - cell "9" [ref=f59e332]
+              - cell "مغلق" [ref=f59e333]
+              - cell [ref=f59e335]:
+                - button "التفاصيل" [ref=f59e336] [cursor=pointer]
+                - button "تعديل" [ref=f59e337] [cursor=pointer]
+            - row [ref=f59e338]:
+              - cell "خطر" [ref=f59e339]
+              - cell "Integration failure" [ref=f59e341]
+              - cell "AI Customer Insights" [ref=f59e342]
+              - cell "Mariam Al Ali" [ref=f59e343]
+              - cell "2" [ref=f59e344]
+              - cell "4" [ref=f59e345]
+              - cell "8" [ref=f59e346]
+              - cell "قيد المعالجة" [ref=f59e347]
+              - cell [ref=f59e349]:
+                - button "التفاصيل" [ref=f59e350] [cursor=pointer]
+                - button "تعديل" [ref=f59e351] [cursor=pointer]
+            - row [ref=f59e352]:
+              - cell "خطر" [ref=f59e353]
+              - cell "Third-party API change" [ref=f59e355]
+              - cell "Mobile App Revamp" [ref=f59e356]
+              - cell "Layla Al Mazrouei" [ref=f59e357]
+              - cell "4" [ref=f59e358]
+              - cell "2" [ref=f59e359]
+              - cell "8" [ref=f59e360]
+              - cell "مفتوح" [ref=f59e361]
+              - cell [ref=f59e363]:
+                - button "التفاصيل" [ref=f59e364] [cursor=pointer]
+                - button "تعديل" [ref=f59e365] [cursor=pointer]
+            - row [ref=f59e366]:
+              - cell "مشكلة" [ref=f59e367]
+              - cell "Budget pressure" [ref=f59e369]
+              - cell "Data Lake Platform" [ref=f59e370]
+              - cell "Layla Al Mazrouei" [ref=f59e371]
+              - cell "1" [ref=f59e372]
+              - cell "4" [ref=f59e373]
+              - cell "4" [ref=f59e374]
+              - cell "مغلق" [ref=f59e375]
+              - cell [ref=f59e377]:
+                - button "التفاصيل" [ref=f59e378] [cursor=pointer]
+                - button "تعديل" [ref=f59e379] [cursor=pointer]
+            - row [ref=f59e380]:
+              - cell "مشكلة" [ref=f59e381]
+              - cell "Integration failure" [ref=f59e383]
+              - cell "Legacy Decommissioning" [ref=f59e384]
+              - cell "Sara Al Hashimi" [ref=f59e385]
+              - cell "1" [ref=f59e386]
+              - cell "3" [ref=f59e387]
+              - cell "3" [ref=f59e388]
+              - cell "قيد المعالجة" [ref=f59e389]
+              - cell [ref=f59e391]:
+                - button "التفاصيل" [ref=f59e392] [cursor=pointer]
+                - button "تعديل" [ref=f59e393] [cursor=pointer]
+            - row [ref=f59e394]:
+              - cell "مشكلة" [ref=f59e395]
+              - cell "Regulatory change" [ref=f59e397]
+              - cell "Network Backbone Upgrade" [ref=f59e398]
+              - cell "Ali Al Hammadi" [ref=f59e399]
+              - cell "2" [ref=f59e400]
+              - cell "1" [ref=f59e401]
+              - cell "2" [ref=f59e402]
+              - cell "قيد المعالجة" [ref=f59e403]
+              - cell [ref=f59e405]:
+                - button "التفاصيل" [ref=f59e406] [cursor=pointer]
+                - button "تعديل" [ref=f59e407] [cursor=pointer]
+            - row [ref=f59e408]:
+              - cell "مشكلة" [ref=f59e409]
+              - cell "Security vulnerability" [ref=f59e411]
+              - cell "AI Customer Insights" [ref=f59e412]
+              - cell "Khalid Al Shamsi" [ref=f59e413]
+              - cell "2" [ref=f59e414]
+              - cell "1" [ref=f59e415]
+              - cell "2" [ref=f59e416]
+              - cell "مفتوح" [ref=f59e417]
+              - cell [ref=f59e419]:
+                - button "التفاصيل" [ref=f59e420] [cursor=pointer]
+                - button "تعديل" [ref=f59e421] [cursor=pointer]
+            - row [ref=f59e422]:
+              - cell "مشكلة" [ref=f59e423]
+              - cell "Scope creep" [ref=f59e425]
+              - cell "Mobile App Revamp" [ref=f59e426]
+              - cell "Tariq Al Jaberi" [ref=f59e427]
+              - cell "1" [ref=f59e428]
+              - cell "1" [ref=f59e429]
+              - cell "1" [ref=f59e430]
+              - cell "مفتوح" [ref=f59e431]
+              - cell [ref=f59e433]:
+                - button "التفاصيل" [ref=f59e434] [cursor=pointer]
+                - button "تعديل" [ref=f59e435] [cursor=pointer]
+  - button "✨" [ref=f59e82] [cursor=pointer]

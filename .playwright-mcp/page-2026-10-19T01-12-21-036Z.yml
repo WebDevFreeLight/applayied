@@ -1,0 +1,233 @@
+- generic [ref=f57e3]:
+  - complementary [ref=f57e4]:
+    - generic [ref=f57e5]:
+      - text: بوابة مكتب المشاريع
+      - generic [ref=f57e6]: محفظة المشاريع والتحكم المالي
+    - link "لوحة القيادة" [ref=f57e7] [cursor=pointer]:
+      - /url: /
+    - link "المشاريع" [ref=f57e8] [cursor=pointer]:
+      - /url: /projects
+    - link "المهام" [ref=f57e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "المعالم الرئيسية" [ref=f57e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "المخاطر والمشكلات" [ref=f57e11] [cursor=pointer]:
+      - /url: /risks
+    - link "طلبات التغيير" [ref=f57e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "الشؤون المالية" [ref=f57e13] [cursor=pointer]:
+      - /url: /finance
+    - link "الأتمتة والسجلات" [ref=f57e14] [cursor=pointer]:
+      - /url: /activity
+    - link "الموظفون" [ref=f57e15] [cursor=pointer]:
+      - /url: /employees
+    - link "فئات التكلفة" [ref=f57e16] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f57e17]: الإدارة
+    - link "المستخدمون" [ref=f57e18] [cursor=pointer]:
+      - /url: /admin/users
+    - link "الأدوار" [ref=f57e19] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "القوائم والصلاحيات" [ref=f57e20] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "الإدارات" [ref=f57e21] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "المناصب" [ref=f57e22] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "القواميس" [ref=f57e23] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "الإعدادات" [ref=f57e24] [cursor=pointer]:
+      - /url: /admin/config
+    - link "الإشعارات" [ref=f57e25] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "المهام المجدولة" [ref=f57e26] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "سجلات المهام" [ref=f57e27] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "سجل الدخول" [ref=f57e28] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "الجلسات" [ref=f57e29] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "سجل العمليات" [ref=f57e30] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "المستخدمون المتصلون" [ref=f57e31] [cursor=pointer]:
+      - /url: /admin/online
+    - link "مراقبة الخادم" [ref=f57e32] [cursor=pointer]:
+      - /url: /admin/server
+    - link "الرسائل" [ref=f57e33] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "الملف الشخصي" [ref=f57e34] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f57e35]:
+    - banner [ref=f57e36]:
+      - strong [ref=f57e37]: بوابة مكتب المشاريع
+      - generic [ref=f57e38]:
+        - button "🔔 2" [ref=f57e40] [cursor=pointer]:
+          - text: 🔔
+          - generic [ref=f57e41]: "2"
+        - button "☀️" [ref=f57e42] [cursor=pointer]
+        - button "English" [ref=f57e43] [cursor=pointer]
+        - generic [ref=f57e44]: PMO Admin · pmo_admin, admin
+        - button "تسجيل الخروج" [ref=f57e45] [cursor=pointer]
+    - main [ref=f57e46]:
+      - generic [ref=f57e47]:
+        - generic [ref=f57e48]:
+          - heading "المشاريع" [level=2] [ref=f57e49]
+          - button "مشروع جديد" [ref=f57e50] [cursor=pointer]
+        - generic [ref=f57e51]:
+          - textbox "الرمز أو الاسم" [ref=f57e52]
+          - generic [ref=f57e54]:
+            - log [ref=f57e56]
+            - generic [ref=f57e58]:
+              - generic [ref=f57e59]: "الإدارة: الكل"
+              - combobox [ref=f57e61]
+          - generic [ref=f57e68]:
+            - log [ref=f57e70]
+            - generic [ref=f57e72]:
+              - generic [ref=f57e73]: "المالك: الكل"
+              - combobox [ref=f57e75]
+          - generic [ref=f57e82]:
+            - log [ref=f57e84]
+            - generic [ref=f57e86]:
+              - generic [ref=f57e87]: "الحالة: الكل"
+              - combobox [ref=f57e89]
+          - button "تطبيق" [ref=f57e95] [cursor=pointer]
+          - button "إعادة تعيين" [ref=f57e96] [cursor=pointer]
+        - table [ref=f57e104]:
+          - rowgroup [ref=f57e105]:
+            - row [ref=f57e106]:
+              - columnheader "الرمز" [ref=f57e107]
+              - columnheader "الاسم" [ref=f57e108]
+              - columnheader "الإدارة" [ref=f57e109]
+              - columnheader "المالك" [ref=f57e110]
+              - columnheader "الحالة" [ref=f57e111]
+              - columnheader "الأولوية" [ref=f57e112]
+              - columnheader "الميزانية الأولية" [ref=f57e113]
+              - columnheader "الانتهاء المخطط" [ref=f57e114]
+              - columnheader "إجراءات" [ref=f57e115]
+          - rowgroup [ref=f57e116]:
+            - row [ref=f57e117]:
+              - cell "MK" [ref=f57e118]
+              - cell "Air condistions" [ref=f57e119]
+              - cell "Infrastructure" [ref=f57e120]
+              - cell "Fatima Al Qubaisi" [ref=f57e121]
+              - cell "التخطيط" [ref=f57e122]
+              - cell "متوسط" [ref=f57e124]
+              - cell "AED 9,000" [ref=f57e126]
+              - cell "2026-10-31" [ref=f57e127]
+              - cell [ref=f57e128]:
+                - button "التفاصيل" [ref=f57e129] [cursor=pointer]
+                - button "تعديل" [ref=f57e130] [cursor=pointer]
+            - row [ref=f57e131]:
+              - cell "Res" [ref=f57e132]
+              - cell "مجموعة الصيانة" [ref=f57e133]
+              - cell "Infrastructure" [ref=f57e134]
+              - cell "Fatima Al Qubaisi" [ref=f57e135]
+              - cell "التخطيط" [ref=f57e136]
+              - cell "متوسط" [ref=f57e138]
+              - cell "AED 500,000" [ref=f57e140]
+              - cell "2027-02-28" [ref=f57e141]
+              - cell [ref=f57e142]:
+                - button "التفاصيل" [ref=f57e143] [cursor=pointer]
+                - button "تعديل" [ref=f57e144] [cursor=pointer]
+            - row [ref=f57e145]:
+              - cell "PRJ-LEG" [ref=f57e146]
+              - cell "Legacy Decommissioning" [ref=f57e147]
+              - cell "IT Delivery" [ref=f57e148]
+              - cell "Fatima Al Qubaisi" [ref=f57e149]
+              - cell "مكتمل" [ref=f57e150]
+              - cell "متوسط" [ref=f57e152]
+              - cell "AED 900,000" [ref=f57e154]
+              - cell "2026-06-30" [ref=f57e155]
+              - cell [ref=f57e156]:
+                - button "التفاصيل" [ref=f57e157] [cursor=pointer]
+                - button "تعديل" [ref=f57e158] [cursor=pointer]
+            - row [ref=f57e159]:
+              - cell "PRJ-MOB" [ref=f57e160]
+              - cell "Mobile App Revamp" [ref=f57e161]
+              - cell "IT Delivery" [ref=f57e162]
+              - cell "Hamdan Al Zaabi" [ref=f57e163]
+              - cell "نشط" [ref=f57e164]
+              - cell "منخفض" [ref=f57e166]
+              - cell "AED 600,000" [ref=f57e168]
+              - cell "2027-01-31" [ref=f57e169]
+              - cell [ref=f57e170]:
+                - button "التفاصيل" [ref=f57e171] [cursor=pointer]
+                - button "تعديل" [ref=f57e172] [cursor=pointer]
+            - row [ref=f57e173]:
+              - cell "PRJ-SEC" [ref=f57e174]
+              - cell "Cybersecurity Hardening" [ref=f57e175]
+              - cell "Infrastructure" [ref=f57e176]
+              - cell "Khalid Al Shamsi" [ref=f57e177]
+              - cell "نشط" [ref=f57e178]
+              - cell "حرج" [ref=f57e180]
+              - cell "AED 1,200,000" [ref=f57e182]
+              - cell "2026-12-15" [ref=f57e183]
+              - cell [ref=f57e184]:
+                - button "التفاصيل" [ref=f57e185] [cursor=pointer]
+                - button "تعديل" [ref=f57e186] [cursor=pointer]
+            - row [ref=f57e187]:
+              - cell "PRJ-DLP" [ref=f57e188]
+              - cell "Data Lake Platform" [ref=f57e189]
+              - cell "Digital Transformation" [ref=f57e190]
+              - cell "Yousef Al Marri" [ref=f57e191]
+              - cell "معلّق" [ref=f57e192]
+              - cell "متوسط" [ref=f57e194]
+              - cell "AED 3,000,000" [ref=f57e196]
+              - cell "2027-03-31" [ref=f57e197]
+              - cell [ref=f57e198]:
+                - button "التفاصيل" [ref=f57e199] [cursor=pointer]
+                - button "تعديل" [ref=f57e200] [cursor=pointer]
+            - row [ref=f57e201]:
+              - cell "PRJ-HRP" [ref=f57e202]
+              - cell "HR Self-Service Portal" [ref=f57e203]
+              - cell "Project Management Office" [ref=f57e204]
+              - cell "Fatima Al Qubaisi" [ref=f57e205]
+              - cell "نشط" [ref=f57e206]
+              - cell "متوسط" [ref=f57e208]
+              - cell "AED 800,000" [ref=f57e210]
+              - cell "2026-10-15" [ref=f57e211]
+              - cell [ref=f57e212]:
+                - button "التفاصيل" [ref=f57e213] [cursor=pointer]
+                - button "تعديل" [ref=f57e214] [cursor=pointer]
+            - row [ref=f57e215]:
+              - cell "PRJ-AII" [ref=f57e216]
+              - cell "AI Customer Insights" [ref=f57e217]
+              - cell "Digital Transformation" [ref=f57e218]
+              - cell "Yousef Al Marri" [ref=f57e219]
+              - cell "نشط" [ref=f57e220]
+              - cell "مرتفع" [ref=f57e222]
+              - cell "AED 1,500,000" [ref=f57e224]
+              - cell "2026-11-30" [ref=f57e225]
+              - cell [ref=f57e226]:
+                - button "التفاصيل" [ref=f57e227] [cursor=pointer]
+                - button "تعديل" [ref=f57e228] [cursor=pointer]
+            - row [ref=f57e229]:
+              - cell "PRJ-NET" [ref=f57e230]
+              - cell "Network Backbone Upgrade" [ref=f57e231]
+              - cell "Infrastructure" [ref=f57e232]
+              - cell "Sara Al Hashimi" [ref=f57e233]
+              - cell "نشط" [ref=f57e234]
+              - cell "مرتفع" [ref=f57e236]
+              - cell "AED 2,000,000" [ref=f57e238]
+              - cell "2026-10-31" [ref=f57e239]
+              - cell [ref=f57e240]:
+                - button "التفاصيل" [ref=f57e241] [cursor=pointer]
+                - button "تعديل" [ref=f57e242] [cursor=pointer]
+            - row [ref=f57e243]:
+              - cell "PRJ-CBM" [ref=f57e244]
+              - cell "Core Banking Modernization" [ref=f57e245]
+              - cell "IT Delivery" [ref=f57e246]
+              - cell "Hamdan Al Zaabi" [ref=f57e247]
+              - cell "نشط" [ref=f57e248]
+              - cell "حرج" [ref=f57e250]
+              - cell "AED 5,000,000" [ref=f57e252]
+              - cell "2026-12-31" [ref=f57e253]
+              - cell [ref=f57e254]:
+                - button "التفاصيل" [ref=f57e255] [cursor=pointer]
+                - button "تعديل" [ref=f57e256] [cursor=pointer]
+        - generic [ref=f57e98]:
+          - generic [ref=f57e99]: 10 من · صفحة 1/1
+          - button "‹" [disabled] [ref=f57e100]
+          - button "›" [disabled] [ref=f57e101]
+  - button "✨" [ref=f57e102] [cursor=pointer]

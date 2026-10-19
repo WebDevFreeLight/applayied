@@ -1,0 +1,195 @@
+- generic [ref=f56e3]:
+  - complementary [ref=f56e4]:
+    - generic [ref=f56e5]:
+      - text: بوابة مكتب المشاريع
+      - generic [ref=f56e6]: محفظة المشاريع والتحكم المالي
+    - link "لوحة القيادة" [ref=f56e124] [cursor=pointer]:
+      - /url: /
+    - link "المشاريع" [ref=f56e125] [cursor=pointer]:
+      - /url: /projects
+    - link "المهام" [ref=f56e126] [cursor=pointer]:
+      - /url: /tasks
+    - link "المعالم الرئيسية" [ref=f56e127] [cursor=pointer]:
+      - /url: /milestones
+    - link "المخاطر والمشكلات" [ref=f56e128] [cursor=pointer]:
+      - /url: /risks
+    - link "طلبات التغيير" [ref=f56e129] [cursor=pointer]:
+      - /url: /change-requests
+    - link "الشؤون المالية" [ref=f56e130] [cursor=pointer]:
+      - /url: /finance
+    - link "الأتمتة والسجلات" [ref=f56e131] [cursor=pointer]:
+      - /url: /activity
+    - link "الموظفون" [ref=f56e132] [cursor=pointer]:
+      - /url: /employees
+    - link "فئات التكلفة" [ref=f56e133] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f56e17]: الإدارة
+    - link "المستخدمون" [ref=f56e134] [cursor=pointer]:
+      - /url: /admin/users
+    - link "الأدوار" [ref=f56e135] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "القوائم والصلاحيات" [ref=f56e136] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "الإدارات" [ref=f56e137] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "المناصب" [ref=f56e138] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "القواميس" [ref=f56e139] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "الإعدادات" [ref=f56e140] [cursor=pointer]:
+      - /url: /admin/config
+    - link "الإشعارات" [ref=f56e141] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "المهام المجدولة" [ref=f56e142] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "سجلات المهام" [ref=f56e143] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "سجل الدخول" [ref=f56e144] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "الجلسات" [ref=f56e145] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "سجل العمليات" [ref=f56e146] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "المستخدمون المتصلون" [ref=f56e147] [cursor=pointer]:
+      - /url: /admin/online
+    - link "مراقبة الخادم" [ref=f56e148] [cursor=pointer]:
+      - /url: /admin/server
+    - link "الرسائل" [ref=f56e149] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "الملف الشخصي" [ref=f56e150] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f56e35]:
+    - banner [ref=f56e36]:
+      - strong [ref=f56e37]: بوابة مكتب المشاريع
+      - generic [ref=f56e38]:
+        - button "🔔 2" [ref=f56e151] [cursor=pointer]:
+          - text: 🔔
+          - generic [ref=f56e152]: "2"
+        - button "☀️" [ref=f56e41] [cursor=pointer]
+        - button "English" [ref=f56e153] [cursor=pointer]
+        - generic [ref=f56e43]: PMO Admin · pmo_admin, admin
+        - button "تسجيل الخروج" [ref=f56e154] [cursor=pointer]
+    - main [ref=f56e45]:
+      - generic [ref=f56e46]:
+        - generic [ref=f56e47]:
+          - heading "لوحة القيادة التنفيذية" [level=2] [ref=f56e155]
+          - button "✨ رؤى ذكية" [ref=f56e156] [cursor=pointer]
+          - generic [ref=f56e50]:
+            - generic [ref=f56e52]:
+              - log [ref=f56e54]
+              - generic [ref=f56e56]:
+                - generic [ref=f56e57]: "الإدارة: الكل"
+                - combobox [ref=f56e59]
+            - generic [ref=f56e66]:
+              - log [ref=f56e68]
+              - generic [ref=f56e70]:
+                - generic [ref=f56e71]: "المالك: الكل"
+                - combobox [ref=f56e73]
+            - generic [ref=f56e80]:
+              - log [ref=f56e82]
+              - generic [ref=f56e84]:
+                - generic [ref=f56e85]: "المشاريع: الكل"
+                - combobox [ref=f56e87]
+            - generic [ref=f56e94]:
+              - log [ref=f56e96]
+              - generic [ref=f56e98]:
+                - generic [ref=f56e99]: "الحالة: الكل"
+                - combobox [ref=f56e101]
+            - generic [ref=f56e108]:
+              - log [ref=f56e110]
+              - generic [ref=f56e112]:
+                - generic [ref=f56e113]: "الفئة: الكل"
+                - combobox [ref=f56e115]
+            - textbox "تاريخ القطع" [ref=f56e157]: 2026-09-30
+        - generic [ref=f56e158]: التسليم
+        - generic [ref=f56e159]:
+          - generic [ref=f56e160]:
+            - generic [ref=f56e161]: إجمالي المشاريع
+            - generic [ref=f56e162]: "10"
+          - generic [ref=f56e163]:
+            - generic [ref=f56e164]: المشاريع النشطة
+            - generic [ref=f56e165]: "6"
+          - generic [ref=f56e166]:
+            - generic [ref=f56e167]: تقدم المحفظة
+            - generic [ref=f56e168]: 65%
+          - generic "⇲" [ref=f56e169] [cursor=pointer]:
+            - generic [ref=f56e170]: المهام المتأخرة
+            - generic [ref=f56e171]: "22"
+          - generic [ref=f56e172]:
+            - generic [ref=f56e173]: معالم مستحقة (14 يوم)
+            - generic [ref=f56e174]: "1"
+        - generic [ref=f56e175]: المخاطر والحوكمة
+        - generic [ref=f56e176]:
+          - generic "⇲" [ref=f56e177] [cursor=pointer]:
+            - generic [ref=f56e178]: مخاطر مرتفعة مفتوحة
+            - generic [ref=f56e179]: "6"
+          - generic "⇲" [ref=f56e180] [cursor=pointer]:
+            - generic [ref=f56e181]: مهام محجوبة
+            - generic [ref=f56e182]: "18"
+          - generic [ref=f56e183]:
+            - generic [ref=f56e184]: طلبات تغيير معلّقة
+            - generic [ref=f56e185]: "0"
+        - generic [ref=f56e186]: المالية
+        - generic [ref=f56e187]:
+          - generic [ref=f56e188]:
+            - generic [ref=f56e189]: الميزانية المعتمدة
+            - generic [ref=f56e190]: AED 16,111,600
+          - generic [ref=f56e191]:
+            - generic [ref=f56e192]: الإنفاق الفعلي
+            - generic [ref=f56e193]: AED 8,218,146
+          - generic [ref=f56e194]:
+            - generic [ref=f56e195]: الميزانية المتبقية
+            - generic [ref=f56e196]: AED 7,893,454
+          - generic [ref=f56e197]:
+            - generic [ref=f56e198]: نسبة الاستخدام
+            - generic [ref=f56e199]: 5100%
+          - generic [ref=f56e200]:
+            - generic [ref=f56e201]: التقدير المتوقع
+            - generic [ref=f56e202]: AED 11,866,035
+          - generic [ref=f56e203]:
+            - generic [ref=f56e204]: التجاوزات المتوقعة
+            - generic [ref=f56e205]: "2"
+            - generic [ref=f56e206]: AED 534,094
+        - generic [ref=f56e207]:
+          - heading "الميزانية مقابل الفعلي والتقدير (درهم)" [level=3] [ref=f56e209]
+          - heading "اتجاه التكلفة الشهري (درهم)" [level=3] [ref=f56e214]
+          - heading "الإنفاق حسب الفئة (درهم)" [level=3] [ref=f56e219]
+          - heading "مصفوفة المخاطر (الاحتمال × الأثر)" [level=3] [ref=f56e224]
+          - heading "صحة المشاريع" [level=3] [ref=f56e229]
+          - heading "المهام المتأخرة حسب المالك" [level=3] [ref=f56e234]
+        - generic [ref=f56e238]:
+          - heading "خارطة المعالم" [level=3] [ref=f56e239]
+          - table [ref=f56e241]:
+            - rowgroup [ref=f56e242]:
+              - row [ref=f56e243]:
+                - columnheader "المشاريع" [ref=f56e244]
+                - columnheader "الاسم" [ref=f56e245]
+                - columnheader "تاريخ الاستحقاق" [ref=f56e246]
+                - columnheader "الحالة" [ref=f56e247]
+            - rowgroup [ref=f56e248]:
+              - row [ref=f56e249]:
+                - cell "Network Backbone Upgrade" [ref=f56e250]
+                - cell "Cutover readiness" [ref=f56e251]
+                - cell "2026-10-07" [ref=f56e252]
+                - cell "قيد الانتظار" [ref=f56e253]
+              - row [ref=f56e255]:
+                - cell "Mobile App Revamp" [ref=f56e256]
+                - cell "Kickoff" [ref=f56e257]
+                - cell "2026-10-31" [ref=f56e258]
+                - cell "قيد الانتظار" [ref=f56e259]
+              - row [ref=f56e261]:
+                - cell "Mobile App Revamp" [ref=f56e262]
+                - cell "Design Complete" [ref=f56e263]
+                - cell "2026-12-30" [ref=f56e264]
+                - cell "قيد الانتظار" [ref=f56e265]
+              - row [ref=f56e267]:
+                - cell "Mobile App Revamp" [ref=f56e268]
+                - cell "Build Complete" [ref=f56e269]
+                - cell "2027-02-28" [ref=f56e270]
+                - cell "قيد الانتظار" [ref=f56e271]
+              - row [ref=f56e273]:
+                - cell "Mobile App Revamp" [ref=f56e274]
+                - cell "UAT Sign-off" [ref=f56e275]
+                - cell "2027-04-29" [ref=f56e276]
+                - cell "قيد الانتظار" [ref=f56e277]
+  - button "✨" [ref=f56e123] [cursor=pointer]

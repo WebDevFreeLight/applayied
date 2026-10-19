@@ -1,0 +1,208 @@
+- generic [ref=f58e3]:
+  - complementary [ref=f58e4]:
+    - generic [ref=f58e5]:
+      - text: بوابة مكتب المشاريع
+      - generic [ref=f58e6]: محفظة المشاريع والتحكم المالي
+    - link "لوحة القيادة" [ref=f58e7] [cursor=pointer]:
+      - /url: /
+    - link "المشاريع" [ref=f58e8] [cursor=pointer]:
+      - /url: /projects
+    - link "المهام" [ref=f58e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "المعالم الرئيسية" [ref=f58e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "المخاطر والمشكلات" [ref=f58e11] [cursor=pointer]:
+      - /url: /risks
+    - link "طلبات التغيير" [ref=f58e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "الشؤون المالية" [ref=f58e13] [cursor=pointer]:
+      - /url: /finance
+    - link "الأتمتة والسجلات" [ref=f58e14] [cursor=pointer]:
+      - /url: /activity
+    - link "الموظفون" [ref=f58e15] [cursor=pointer]:
+      - /url: /employees
+    - link "فئات التكلفة" [ref=f58e16] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f58e17]: الإدارة
+    - link "المستخدمون" [ref=f58e18] [cursor=pointer]:
+      - /url: /admin/users
+    - link "الأدوار" [ref=f58e19] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "القوائم والصلاحيات" [ref=f58e20] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "الإدارات" [ref=f58e21] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "المناصب" [ref=f58e22] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "القواميس" [ref=f58e23] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "الإعدادات" [ref=f58e24] [cursor=pointer]:
+      - /url: /admin/config
+    - link "الإشعارات" [ref=f58e25] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "المهام المجدولة" [ref=f58e26] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "سجلات المهام" [ref=f58e27] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "سجل الدخول" [ref=f58e28] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "الجلسات" [ref=f58e29] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "سجل العمليات" [ref=f58e30] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "المستخدمون المتصلون" [ref=f58e31] [cursor=pointer]:
+      - /url: /admin/online
+    - link "مراقبة الخادم" [ref=f58e32] [cursor=pointer]:
+      - /url: /admin/server
+    - link "الرسائل" [ref=f58e33] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "الملف الشخصي" [ref=f58e34] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f58e35]:
+    - banner [ref=f58e36]:
+      - strong [ref=f58e37]: بوابة مكتب المشاريع
+      - generic [ref=f58e38]:
+        - button "🔔 2" [ref=f58e80] [cursor=pointer]:
+          - text: 🔔
+          - generic [ref=f58e81]: "2"
+        - button "☀️" [ref=f58e41] [cursor=pointer]
+        - button "English" [ref=f58e42] [cursor=pointer]
+        - generic [ref=f58e43]: PMO Admin · pmo_admin, admin
+        - button "تسجيل الخروج" [ref=f58e44] [cursor=pointer]
+    - main [ref=f58e45]:
+      - generic [ref=f58e46]:
+        - generic [ref=f58e47]:
+          - heading "الشؤون المالية" [level=2] [ref=f58e48]
+          - generic [ref=f58e50]:
+            - log [ref=f58e52]
+            - generic [ref=f58e54]:
+              - generic [ref=f58e55]: "الإدارة: الكل"
+              - combobox [ref=f58e57]
+          - generic [ref=f58e64]:
+            - log [ref=f58e66]
+            - generic [ref=f58e68]:
+              - generic [ref=f58e69]: "المشاريع: الكل"
+              - combobox [ref=f58e71]
+          - textbox "تاريخ القطع" [ref=f58e77]: 2026-09-30
+        - generic [ref=f58e82]:
+          - generic [ref=f58e83]:
+            - generic [ref=f58e84]:
+              - generic [ref=f58e85]: الميزانية المعتمدة
+              - generic [ref=f58e86]: AED 16,111,600
+            - generic [ref=f58e87]:
+              - generic [ref=f58e88]: الإنفاق الفعلي
+              - generic [ref=f58e89]: AED 8,218,146
+            - generic [ref=f58e90]:
+              - generic [ref=f58e91]: المتبقي
+              - generic [ref=f58e92]: AED 7,893,454
+            - generic [ref=f58e93]:
+              - generic [ref=f58e94]: نسبة الاستخدام
+              - generic [ref=f58e95]: 5100%
+            - generic [ref=f58e96]:
+              - generic [ref=f58e97]: التقدير عند الإنجاز
+              - generic [ref=f58e98]: AED 11,866,035
+            - generic [ref=f58e99]:
+              - generic [ref=f58e100]: التجاوزات المتوقعة
+              - generic [ref=f58e101]: "2"
+          - generic [ref=f58e102]:
+            - heading "الملخص — المشاريع" [level=3] [ref=f58e103]
+            - table [ref=f58e105]:
+              - rowgroup [ref=f58e106]:
+                - row [ref=f58e107]:
+                  - columnheader "المشاريع" [ref=f58e108]
+                  - columnheader "الميزانية المعتمدة" [ref=f58e109]
+                  - columnheader "الإنفاق الفعلي" [ref=f58e110]
+                  - columnheader "المتبقي" [ref=f58e111]
+                  - columnheader "نسبة الاستخدام" [ref=f58e112]
+                  - columnheader "التقدير عند الإنجاز" [ref=f58e113]
+                  - columnheader "التباين المتوقع" [ref=f58e114]
+              - rowgroup [ref=f58e115]:
+                - row [ref=f58e116] [cursor=pointer]:
+                  - cell "مجموعة الصيانة" [ref=f58e117]
+                  - cell "AED 501,000" [ref=f58e118]
+                  - cell "AED 5,500" [ref=f58e119]
+                  - cell "AED 495,500" [ref=f58e120]
+                  - cell "1%" [ref=f58e121]
+                  - cell "AED 7,000" [ref=f58e122]
+                  - cell "AED 494,000" [ref=f58e123]
+                - row [ref=f58e124] [cursor=pointer]:
+                  - cell "AI Customer Insights التجاوزات المتوقعة" [ref=f58e125]:
+                    - text: AI Customer Insights
+                    - generic [ref=f58e126]: التجاوزات المتوقعة
+                  - cell "AED 1,500,000" [ref=f58e127]
+                  - cell "AED 900,657" [ref=f58e128]
+                  - cell "AED 599,343" [ref=f58e129]
+                  - cell "60%" [ref=f58e130]
+                  - cell "AED 2,025,657" [ref=f58e131]
+                  - cell "AED -525,657" [ref=f58e132]
+                - row [ref=f58e133] [cursor=pointer]:
+                  - cell "Air condistions" [ref=f58e134]
+                  - cell "AED 9,100" [ref=f58e135]
+                  - cell "AED 8,500" [ref=f58e136]
+                  - cell "AED 600" [ref=f58e137]
+                  - cell "93%" [ref=f58e138]
+                  - cell "AED 8,600" [ref=f58e139]
+                  - cell "AED 500" [ref=f58e140]
+                - row [ref=f58e141] [cursor=pointer]:
+                  - cell "Core Banking Modernization" [ref=f58e142]
+                  - cell "AED 5,300,000" [ref=f58e143]
+                  - cell "AED 2,963,664" [ref=f58e144]
+                  - cell "AED 2,336,336" [ref=f58e145]
+                  - cell "56%" [ref=f58e146]
+                  - cell "AED 4,804,198" [ref=f58e147]
+                  - cell "AED 495,802" [ref=f58e148]
+                - row [ref=f58e149] [cursor=pointer]:
+                  - cell "Cybersecurity Hardening" [ref=f58e150]
+                  - cell "AED 1,450,000" [ref=f58e151]
+                  - cell "AED 813,120" [ref=f58e152]
+                  - cell "AED 636,880" [ref=f58e153]
+                  - cell "56%" [ref=f58e154]
+                  - cell "AED 814,620" [ref=f58e155]
+                  - cell "AED 635,380" [ref=f58e156]
+                - row [ref=f58e157] [cursor=pointer]:
+                  - cell "Data Lake Platform" [ref=f58e158]
+                  - cell "AED 3,001,500" [ref=f58e159]
+                  - cell "AED 635,900" [ref=f58e160]
+                  - cell "AED 2,365,600" [ref=f58e161]
+                  - cell "21%" [ref=f58e162]
+                  - cell "AED 635,900" [ref=f58e163]
+                  - cell "AED 2,365,600" [ref=f58e164]
+                - row [ref=f58e165] [cursor=pointer]:
+                  - cell "HR Self-Service Portal" [ref=f58e166]
+                  - cell "AED 800,000" [ref=f58e167]
+                  - cell "AED 316,730" [ref=f58e168]
+                  - cell "AED 483,270" [ref=f58e169]
+                  - cell "40%" [ref=f58e170]
+                  - cell "AED 631,426" [ref=f58e171]
+                  - cell "AED 168,574" [ref=f58e172]
+                - row [ref=f58e173] [cursor=pointer]:
+                  - cell "Legacy Decommissioning" [ref=f58e174]
+                  - cell "AED 900,000" [ref=f58e175]
+                  - cell "AED 679,638" [ref=f58e176]
+                  - cell "AED 220,362" [ref=f58e177]
+                  - cell "76%" [ref=f58e178]
+                  - cell "AED 679,638" [ref=f58e179]
+                  - cell "AED 220,362" [ref=f58e180]
+                - row [ref=f58e181] [cursor=pointer]:
+                  - cell "Mobile App Revamp" [ref=f58e182]
+                  - cell "AED 600,000" [ref=f58e183]
+                  - cell "AED 0" [ref=f58e184]
+                  - cell "AED 600,000" [ref=f58e185]
+                  - cell "0%" [ref=f58e186]
+                  - cell "AED 200,559" [ref=f58e187]
+                  - cell "AED 399,441" [ref=f58e188]
+                - row [ref=f58e189] [cursor=pointer]:
+                  - cell "Network Backbone Upgrade التجاوزات المتوقعة" [ref=f58e190]:
+                    - text: Network Backbone Upgrade
+                    - generic [ref=f58e191]: التجاوزات المتوقعة
+                  - cell "AED 2,050,000" [ref=f58e192]
+                  - cell "AED 1,894,437" [ref=f58e193]
+                  - cell "AED 155,563" [ref=f58e194]
+                  - cell "92%" [ref=f58e195]
+                  - cell "AED 2,058,437" [ref=f58e196]
+                  - cell "AED -8,437" [ref=f58e197]
+          - generic [ref=f58e198]:
+            - heading "الميزانية مقابل الفعلي والتقدير (AED)" [level=3] [ref=f58e200]
+            - heading "اتجاه التكلفة الشهري (AED)" [level=3] [ref=f58e205]
+            - heading "الإنفاق حسب الفئة (AED)" [level=3] [ref=f58e210]
+  - button "✨" [ref=f58e79] [cursor=pointer]

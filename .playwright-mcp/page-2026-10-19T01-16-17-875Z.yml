@@ -1,0 +1,46 @@
+- generic [active] [ref=f60e1]:
+  - generic [ref=f60e2]: PMO Portal · Product Showcase · 1 / 15
+  - generic [ref=f60e5]:
+    - generic [ref=f60e6]:
+      - generic [ref=f60e7]: P
+      - generic [ref=f60e8]:
+        - generic [ref=f60e9]: Project Portfolio & Financial Control
+        - heading "PMO Portal" [level=1] [ref=f60e10]
+    - paragraph [ref=f60e11]: One live, permissioned, bilingual view of delivery, risk and money — with automation and AI built in. Every screen on the following slides is a real capture from the running product.
+    - generic [ref=f60e12]:
+      - generic [ref=f60e13]:
+        - generic [ref=f60e14]: "8"
+        - text: projects · 84 tasks
+      - generic [ref=f60e15]:
+        - generic [ref=f60e16]: SQL-live
+        - text: no spreadsheet models
+      - generic [ref=f60e17]:
+        - generic [ref=f60e18]: EN / AR
+        - text: bilingual + RTL
+      - generic [ref=f60e19]:
+        - generic [ref=f60e20]: AI + Auto
+        - text: built in
+    - generic [ref=f60e21]: Use → / ← or Space · click dots to jump · press ? for help
+  - generic [ref=f60e22]:
+    - generic [ref=f60e23]:
+      - generic [ref=f60e24]: P
+      - text: PMO Portal
+    - button "‹" [ref=f60e25] [cursor=pointer]
+    - generic [ref=f60e26]: Welcome
+    - button "Next ›" [ref=f60e27] [cursor=pointer]
+    - generic [ref=f60e28]:
+      - generic "Welcome" [ref=f60e29] [cursor=pointer]
+      - generic "Why PMO Portal" [ref=f60e30] [cursor=pointer]
+      - generic "Executive Dashboard" [ref=f60e31] [cursor=pointer]
+      - generic "Portfolio" [ref=f60e32] [cursor=pointer]
+      - generic "Project workspace" [ref=f60e33] [cursor=pointer]
+      - generic "Financial control" [ref=f60e34] [cursor=pointer]
+      - generic "Risk & change" [ref=f60e35] [cursor=pointer]
+      - generic "Change Requests" [ref=f60e36] [cursor=pointer]
+      - generic "Automation" [ref=f60e37] [cursor=pointer]
+      - generic "AI built in" [ref=f60e38] [cursor=pointer]
+      - generic "Security & RBAC" [ref=f60e39] [cursor=pointer]
+      - generic "People" [ref=f60e40] [cursor=pointer]
+      - generic "Bilingual · Arabic" [ref=f60e41] [cursor=pointer]
+      - generic "Power BI reporting" [ref=f60e42] [cursor=pointer]
+      - generic "Let's talk" [ref=f60e43] [cursor=pointer]

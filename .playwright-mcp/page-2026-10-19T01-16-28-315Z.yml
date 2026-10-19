@@ -1,0 +1,51 @@
+- generic [active] [ref=f60e1]:
+  - generic [ref=f60e2]: PMO Portal · Product Showcase · 13 / 15
+  - generic [ref=f60e47]:
+    - generic [ref=f60e48]:
+      - generic [ref=f60e49]: Bilingual by design
+      - heading "Arabic & English. Full RTL." [level=2] [ref=f60e50]
+      - list [ref=f60e51]:
+        - listitem [ref=f60e52]:
+          - text: Every screen localized EN ⇄ AR
+          - generic [ref=f60e53]: one click, no reload
+        - listitem [ref=f60e54]:
+          - text: Layout mirrors right-to-left
+          - generic [ref=f60e55]: navigation, cards, tables & charts
+        - listitem [ref=f60e56]: Numbers, dates & currency stay correct
+        - listitem [ref=f60e57]: Same bilingual treatment in Power BI →
+      - generic [ref=f60e58]:
+        - figure [ref=f60e59]:
+          - img "Projects (Arabic)" [ref=f60e61]
+          - generic [ref=f60e62]: المشاريع
+        - figure [ref=f60e63]:
+          - img "Finance (Arabic)" [ref=f60e65]
+          - generic [ref=f60e66]: الشؤون المالية
+        - figure [ref=f60e67]:
+          - img "Risks (Arabic)" [ref=f60e69]
+          - generic [ref=f60e70]: المخاطر
+    - generic [ref=f60e71]:
+      - generic [ref=f60e72]: بوابة مكتب المشاريع · لوحة القيادة
+      - img "Arabic dashboard" [ref=f60e78]
+  - generic [ref=f60e22]:
+    - generic [ref=f60e23]:
+      - generic [ref=f60e24]: P
+      - text: PMO Portal
+    - button "‹" [ref=f60e25] [cursor=pointer]
+    - generic [ref=f60e26]: Bilingual · Arabic
+    - button "Next ›" [ref=f60e27] [cursor=pointer]
+    - generic [ref=f60e28]:
+      - generic "Welcome" [ref=f60e29] [cursor=pointer]
+      - generic "Why PMO Portal" [ref=f60e30] [cursor=pointer]
+      - generic "Executive Dashboard" [ref=f60e31] [cursor=pointer]
+      - generic "Portfolio" [ref=f60e32] [cursor=pointer]
+      - generic "Project workspace" [ref=f60e33] [cursor=pointer]
+      - generic "Financial control" [ref=f60e34] [cursor=pointer]
+      - generic "Risk & change" [ref=f60e35] [cursor=pointer]
+      - generic "Change Requests" [ref=f60e36] [cursor=pointer]
+      - generic "Automation" [ref=f60e37] [cursor=pointer]
+      - generic "AI built in" [ref=f60e38] [cursor=pointer]
+      - generic "Security & RBAC" [ref=f60e39] [cursor=pointer]
+      - generic "People" [ref=f60e40] [cursor=pointer]
+      - generic "Bilingual · Arabic" [ref=f60e41] [cursor=pointer]
+      - generic "Power BI reporting" [ref=f60e42] [cursor=pointer]
+      - generic "Let's talk" [ref=f60e43] [cursor=pointer]

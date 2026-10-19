@@ -1,0 +1,86 @@
+- generic [ref=f58e3]:
+  - complementary [ref=f58e4]:
+    - generic [ref=f58e5]:
+      - text: بوابة مكتب المشاريع
+      - generic [ref=f58e6]: محفظة المشاريع والتحكم المالي
+    - link "لوحة القيادة" [ref=f58e7] [cursor=pointer]:
+      - /url: /
+    - link "المشاريع" [ref=f58e8] [cursor=pointer]:
+      - /url: /projects
+    - link "المهام" [ref=f58e9] [cursor=pointer]:
+      - /url: /tasks
+    - link "المعالم الرئيسية" [ref=f58e10] [cursor=pointer]:
+      - /url: /milestones
+    - link "المخاطر والمشكلات" [ref=f58e11] [cursor=pointer]:
+      - /url: /risks
+    - link "طلبات التغيير" [ref=f58e12] [cursor=pointer]:
+      - /url: /change-requests
+    - link "الشؤون المالية" [ref=f58e13] [cursor=pointer]:
+      - /url: /finance
+    - link "الأتمتة والسجلات" [ref=f58e14] [cursor=pointer]:
+      - /url: /activity
+    - link "الموظفون" [ref=f58e15] [cursor=pointer]:
+      - /url: /employees
+    - link "فئات التكلفة" [ref=f58e16] [cursor=pointer]:
+      - /url: /categories
+    - generic [ref=f58e17]: الإدارة
+    - link "المستخدمون" [ref=f58e18] [cursor=pointer]:
+      - /url: /admin/users
+    - link "الأدوار" [ref=f58e19] [cursor=pointer]:
+      - /url: /admin/roles
+    - link "القوائم والصلاحيات" [ref=f58e20] [cursor=pointer]:
+      - /url: /admin/menus
+    - link "الإدارات" [ref=f58e21] [cursor=pointer]:
+      - /url: /admin/depts
+    - link "المناصب" [ref=f58e22] [cursor=pointer]:
+      - /url: /admin/posts
+    - link "القواميس" [ref=f58e23] [cursor=pointer]:
+      - /url: /admin/dicts
+    - link "الإعدادات" [ref=f58e24] [cursor=pointer]:
+      - /url: /admin/config
+    - link "الإشعارات" [ref=f58e25] [cursor=pointer]:
+      - /url: /admin/notices
+    - link "المهام المجدولة" [ref=f58e26] [cursor=pointer]:
+      - /url: /admin/jobs
+    - link "سجلات المهام" [ref=f58e27] [cursor=pointer]:
+      - /url: /admin/job-logs
+    - link "سجل الدخول" [ref=f58e28] [cursor=pointer]:
+      - /url: /admin/login-log
+    - link "الجلسات" [ref=f58e29] [cursor=pointer]:
+      - /url: /admin/sessions
+    - link "سجل العمليات" [ref=f58e30] [cursor=pointer]:
+      - /url: /admin/oper-log
+    - link "المستخدمون المتصلون" [ref=f58e31] [cursor=pointer]:
+      - /url: /admin/online
+    - link "مراقبة الخادم" [ref=f58e32] [cursor=pointer]:
+      - /url: /admin/server
+    - link "الرسائل" [ref=f58e33] [cursor=pointer]:
+      - /url: /admin/messages
+    - link "الملف الشخصي" [ref=f58e34] [cursor=pointer]:
+      - /url: /admin/profile
+  - generic [ref=f58e35]:
+    - banner [ref=f58e36]:
+      - strong [ref=f58e37]: بوابة مكتب المشاريع
+      - generic [ref=f58e38]:
+        - button "🔔" [ref=f58e40] [cursor=pointer]
+        - button "☀️" [ref=f58e41] [cursor=pointer]
+        - button "English" [ref=f58e42] [cursor=pointer]
+        - generic [ref=f58e43]: PMO Admin · pmo_admin, admin
+        - button "تسجيل الخروج" [ref=f58e44] [cursor=pointer]
+    - main [ref=f58e45]:
+      - generic [ref=f58e46]:
+        - generic [ref=f58e47]:
+          - heading "الشؤون المالية" [level=2] [ref=f58e48]
+          - generic [ref=f58e50]:
+            - log [ref=f58e52]
+            - generic [ref=f58e54]:
+              - generic [ref=f58e55]: "الإدارة: الكل"
+              - combobox [ref=f58e57]
+          - generic [ref=f58e64]:
+            - log [ref=f58e66]
+            - generic [ref=f58e68]:
+              - generic [ref=f58e69]: "المشاريع: الكل"
+              - combobox [ref=f58e71]
+          - textbox "تاريخ القطع" [ref=f58e77]: 2026-09-30
+        - generic [ref=f58e78]: جارٍ التحميل…
+  - button "✨" [ref=f58e79] [cursor=pointer]
