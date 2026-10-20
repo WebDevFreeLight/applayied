@@ -29,8 +29,10 @@ declare                                                 @Registration_no        
                                                         @GOSI_No                      VARCHAR(100)=NULL,
                                                         @Aramco_MRNo                  VARCHAR(100)=NULL,
                                                         @Residence_PH                 VARCHAR(32)=NULL,
-                                                        @Card_Code                    VARCHAR(32)=NULL
- 
+                                                        @Card_Code                    VARCHAR(32)=NULL,
+                                                        @Encoded_From                 VARCHAR(10)='20-10-2026', -- dd-mm-yyyy
+                                                        @Encoded_To                   VARCHAR(10)='20-10-2026'  -- dd-mm-yyyy
+
     SET DATEFORMAT DMY
 
     DECLARE @Cmd NVARCHAR(MAX)
@@ -40,7 +42,13 @@ declare                                                 @Registration_no        
     SET @Where=''
     SET @InnerWhere=''
 
-          SET @InnerWhere = @InnerWhere + ' and ( convert(date,PR.Encoded_Date ,103) BETWEEN   convert(date, ''20-10-2026'',103) AND convert(date,  ''20-10-2026'',103))'
+    IF Isnull(@Encoded_From, '') <> ''
+      SET @InnerWhere = @InnerWhere + ' and ( convert(date,PR.Encoded_Date) >= convert(date, '''
+                        + @Encoded_From + ''',103))'
+
+    IF Isnull(@Encoded_To, '') <> ''
+      SET @InnerWhere = @InnerWhere + ' and ( convert(date,PR.Encoded_Date) <= convert(date, '''
+                        + @Encoded_To + ''',103))'
 
 
     IF ( @Registration_no <> '' )
@@ -226,6 +234,7 @@ declare                                                 @Registration_no        
          English_Name                 NVARCHAR(250),
 		 isIndexed						int,
 		 DataVerified  bit,
+		 Encoded_Date				   DATETIME,
 		 Seq						   INT IDENTITY(1, 1) -- insert order: first branch gets the lowest Seq
       )
 
@@ -292,6 +301,7 @@ declare                                                 @Registration_no        
 										,isnull(pr.IndexUpdated,''0'') as IndexUpdated ,isnull( CM. Nationality_ID_Limit,10) as Nationality_ID_Limit
 										,COM.English_Name,dbo.fn_PRG_IsFileIndexed(PR.registration_no ) as isIndexed
 										, isnull( PR.DataVerified,0) as DataVerified
+										, PR.Encoded_Date
 				FROM    dbo.tbl_PRG_Patient_Registration AS PR
 				INNER JOIN dbo.tbl_CMT_Company COM WITH(NOLOCK) ON COM.Company_Code = PR.Company_Code
 				INNER JOIN tbl_MST_Hospital_Locations loc WITH(NOLOCK)  on PR.Location_Code = loc.Location_Code
@@ -365,6 +375,7 @@ declare                                                 @Registration_no        
 										,isnull(pr.IndexUpdated,''0'') as IndexUpdated ,isnull( CM. Nationality_ID_Limit,10) as Nationality_ID_Limit
 										,COM.English_Name,' + @base  + '.dbo.fn_PRG_IsFileIndexed(PR.registration_no ) as isIndexed
 										, isnull( PR.DataVerified,0) as DataVerified
+										, PR.Encoded_Date
 				FROM ' + @base + '.dbo.tbl_PRG_Patient_Registration AS PR
 				LEFT OUTER JOIN dbo.tbl_CMT_Company COM WITH(NOLOCK)  ON COM.Company_Code = PR.Company_Code
 				Left JOIN dbo.tbl_CMT_INSURANCE INS WITH(NOLOCK)  ON INS.Insurance_Code = COM.Insurance_Code
@@ -382,10 +393,10 @@ declare                                                 @Registration_no        
       END
 
 
-    -- keep one row per file number: the one from the first branch inserted
+    -- keep one row per file number: the branch where it was encoded first (Seq breaks ties)
     ;WITH Dups AS
       (
-         SELECT ROW_NUMBER() OVER (PARTITION BY registration_no ORDER BY Seq) AS rn
+         SELECT ROW_NUMBER() OVER (PARTITION BY registration_no ORDER BY Encoded_Date, Seq) AS rn
          FROM   #Files
       )
     DELETE FROM Dups
@@ -395,6 +406,7 @@ declare                                                 @Registration_no        
 
     SELECT *
     FROM   #Files
+    ORDER  BY Encoded_Date
 
 
     DROP TABLE #Locations
