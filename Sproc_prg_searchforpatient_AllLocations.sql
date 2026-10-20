@@ -393,10 +393,49 @@ declare                                                 @Registration_no        
       END
 
 
-    -- drop every file number that exists in more than one location
+    -- where else do the found files exist? checked on ALL dates (no @InnerWhere / @where here)
+    IF Object_id('tempdb..#FileLocations') IS NOT NULL
+      DROP TABLE #FileLocations
+
+    CREATE TABLE #FileLocations
+      (
+         registration_no VARCHAR(10) COLLATE DATABASE_DEFAULT,
+         Location_Code   VARCHAR(3) COLLATE DATABASE_DEFAULT
+      )
+
+    INSERT INTO #FileLocations
+    SELECT DISTINCT PR.registration_no,
+                    PR.Location_Code
+    FROM   dbo.tbl_PRG_Patient_Registration AS PR WITH(NOLOCK)
+    WHERE  EXISTS (SELECT 1
+                   FROM   #Files F
+                   WHERE  F.registration_no COLLATE DATABASE_DEFAULT = PR.registration_no)
+
+    SET @DetailCntr = 1
+
+    WHILE @DetailCntr <= @DetailCnt
+      BEGIN
+          SELECT @base = QVW_PRG_DatabaseName,
+                 @Location_Code = Location_Code
+          FROM   #Locations
+          WHERE  rowID = @DetailCntr
+
+          SET @SQL = ' INSERT INTO #FileLocations
+                       SELECT DISTINCT PR.registration_no, ''' + @Location_Code + '''
+                       FROM   ' + @base + '.dbo.tbl_PRG_Patient_Registration AS PR WITH(NOLOCK)
+                       WHERE  EXISTS (SELECT 1
+                                      FROM   #Files F
+                                      WHERE  F.registration_no COLLATE DATABASE_DEFAULT = PR.registration_no)'
+
+          EXEC Sp_executesql @SQL
+
+          SET @DetailCntr = @DetailCntr + 1
+      END
+
+    -- drop every file number that exists in more than one location (any Encoded_Date)
     DELETE FROM #Files
     WHERE  registration_no IN (SELECT registration_no
-                               FROM   #Files
+                               FROM   #FileLocations
                                GROUP  BY registration_no
                                HAVING COUNT(DISTINCT Location_Code) > 1)
 
@@ -411,9 +450,34 @@ declare                                                 @Registration_no        
 
     ALTER TABLE #Files DROP COLUMN Seq
 
-    SELECT *
+    -- one result set per location
+    DECLARE @OutLocations TABLE
+      (
+         rowID         INT IDENTITY(1, 1),
+         Location_Code VARCHAR(3)
+      )
+
+    INSERT INTO @OutLocations (Location_Code)
+    SELECT DISTINCT Location_Code
     FROM   #Files
-    ORDER  BY Encoded_Date
+    ORDER  BY Location_Code
+
+    DECLARE @OutCnt INT = @@ROWCOUNT
+    DECLARE @OutCntr INT = 1
+
+    WHILE @OutCntr <= @OutCnt
+      BEGIN
+          SELECT @Location_Code = Location_Code
+          FROM   @OutLocations
+          WHERE  rowID = @OutCntr
+
+          SELECT *
+          FROM   #Files
+          WHERE  Location_Code = @Location_Code
+          ORDER  BY Encoded_Date
+
+          SET @OutCntr = @OutCntr + 1
+      END
 
     -- how many files per location
     SELECT Location_Code,
@@ -427,5 +491,7 @@ declare                                                 @Registration_no        
 
     DROP TABLE #Locations
 
-    DROP TABLE #Files 
+    DROP TABLE #Files
+
+    DROP TABLE #FileLocations
 
