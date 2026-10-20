@@ -415,6 +415,15 @@ declare                                                 @Registration_no        
     FROM   #Files
     ORDER  BY Encoded_Date
 
+    -- how many files per location
+    SELECT Location_Code,
+           Short_Location_Name,
+           COUNT(*) AS Files_Count
+    FROM   #Files
+    GROUP  BY Location_Code,
+              Short_Location_Name
+    ORDER  BY Files_Count DESC
+
 
     DROP TABLE #Locations
 
