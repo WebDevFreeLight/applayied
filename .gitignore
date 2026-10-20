@@ -2,3 +2,5 @@
 **/.pbi/cache.abf
 # Playwright MCP session logs
 .playwright-mcp/
+db-backups/
+submission/
