@@ -393,7 +393,14 @@ declare                                                 @Registration_no        
       END
 
 
-    -- keep one row per file number: the branch where it was encoded first (Seq breaks ties)
+    -- drop every file number that exists in more than one location
+    DELETE FROM #Files
+    WHERE  registration_no IN (SELECT registration_no
+                               FROM   #Files
+                               GROUP  BY registration_no
+                               HAVING COUNT(DISTINCT Location_Code) > 1)
+
+    -- a single location can still return the same file twice (e.g. join fan-out): keep one row
     ;WITH Dups AS
       (
          SELECT ROW_NUMBER() OVER (PARTITION BY registration_no ORDER BY Encoded_Date, Seq) AS rn
