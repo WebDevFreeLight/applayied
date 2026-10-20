@@ -35,10 +35,12 @@ declare                                                 @Registration_no        
 
     DECLARE @Cmd NVARCHAR(MAX)
     DECLARE @Where VARCHAR(MAX)
+    DECLARE @InnerWhere VARCHAR(MAX) -- filters on PR.* columns; applied inside the derived table where alias PR is visible
 
     SET @Where=''
+    SET @InnerWhere=''
 
-          SET @where = @where + ' and ( convert(date,PR.Encoded_Date ,103) BETWEEN   convert(date, ''20-10-2026'',103) AND convert(date,  ''20-10-2026'',103))'
+          SET @InnerWhere = @InnerWhere + ' and ( convert(date,PR.Encoded_Date ,103) BETWEEN   convert(date, ''20-10-2026'',103) AND convert(date,  ''20-10-2026'',103))'
 
 
     IF ( @Registration_no <> '' )
@@ -223,7 +225,8 @@ declare                                                 @Registration_no        
          Nationality_ID_Limit         INT,
          English_Name                 NVARCHAR(250),
 		 isIndexed						int,
-		 DataVerified  bit
+		 DataVerified  bit,
+		 Seq						   INT IDENTITY(1, 1) -- insert order: first branch gets the lowest Seq
       )
 
     INSERT INTO #Locations
@@ -296,7 +299,8 @@ declare                                                 @Registration_no        
 				LEFT JOIN tbl_CMT_Insurance_Administrator CA WITH(NOLOCK)  ON CA.Insurance_Administrator_code = COM.Insurance_Administrator_code
 				left join 	tbl_mst_lookupmaster  LM WITH(NOLOCK)  on  LM.Lookupvalue=PR.relation and LM.LookupTypeid=''2''
 				left join tbl_MST_Country_Master CM WITH(NOLOCK)  on CM.Country_Code=PR.Nationality_Id	
-				left join tbl_PRG_Patient_Index i on i.Registration_no = pr.Registration_no 
+				left join tbl_PRG_Patient_Index i on i.Registration_no = pr.Registration_no
+				where 1=1 ' + @InnerWhere + '
 				) as tbl  where 1=1 ' + @where
 	PRINT @SQL
     EXEC Sp_executesql    @SQL
@@ -367,7 +371,8 @@ declare                                                 @Registration_no        
 				LEFT JOIN tbl_CMT_Insurance_Administrator CA WITH(NOLOCK)  ON CA.Insurance_Administrator_code = COM.Insurance_Administrator_code
 				left join 	tbl_mst_lookupmaster  LM WITH(NOLOCK)  on  LM.Lookupvalue=PR.relation and LM.LookupTypeid=''2''
 				left join tbl_MST_Country_Master CM WITH(NOLOCK)  on CM.Country_Code=PR.Nationality_Id	
-				left join dbo.tbl_PRG_Patient_Index i on i.Registration_no = pr.Registration_no 
+				left join dbo.tbl_PRG_Patient_Index i on i.Registration_no = pr.Registration_no
+				where 1=1 ' + @InnerWhere + '
 				) as tbl  where 1=1 ' + @where
 
     PRINT @SQL
@@ -376,6 +381,17 @@ declare                                                 @Registration_no        
           SET @DetailCntr = @DetailCntr + 1
       END
 
+
+    -- keep one row per file number: the one from the first branch inserted
+    ;WITH Dups AS
+      (
+         SELECT ROW_NUMBER() OVER (PARTITION BY registration_no ORDER BY Seq) AS rn
+         FROM   #Files
+      )
+    DELETE FROM Dups
+    WHERE  rn > 1
+
+    ALTER TABLE #Files DROP COLUMN Seq
 
     SELECT *
     FROM   #Files
