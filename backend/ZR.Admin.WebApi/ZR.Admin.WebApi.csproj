@@ -44,9 +44,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Controllers\Finance\Budget\" />
-		<Folder Include="Controllers\HR\Attendance\" />
 		<Folder Include="Properties\PublishProfiles\" />
+		<Folder Include="secure-uploads\contracts\" />
+		<Folder Include="uploads\" />
+		<Folder Include="Views\" />
 	</ItemGroup>
 
 	<ItemGroup>
