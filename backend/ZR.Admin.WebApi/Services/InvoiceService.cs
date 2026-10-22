@@ -14,7 +14,6 @@ using Zatca.EInvoice.SDK;
 using Zatca.EInvoice.SDK.Contracts.Models;
 using ZatcaIntegrationApp.Helpers;
 using ZatcaIntegrationApp.Models;
-using ZR.Mall.Service.IService;
 using Org.BouncyCastle.Asn1.X509;
 using System.IO;
 using System.Runtime.ConstrainedExecution;

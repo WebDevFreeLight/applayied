@@ -122,7 +122,7 @@ namespace ZR.ServiceCore.Services
                 //"ZR.Service",
                 //"ZR.Tasks",
                 //"ZR.ServiceCore",
-                "ZR.Mall",
+                
                 "ZR.Admin.WebApi",
                 //"ZR.Pdf",
                 //"ZR.Puppeteer",

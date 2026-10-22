@@ -24,7 +24,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ZR.CodeGenerator\ZR.CodeGenerator.csproj" />
-		<ProjectReference Include="..\ZR.Mall\ZR.Mall.csproj" />
 		<ProjectReference Include="..\ZR.Service\ZR.Service.csproj" />
 		<ProjectReference Include="..\ZR.Tasks\ZR.Tasks.csproj" />
 		<ProjectReference Include="..\ZR.Puppeteer\ZR.Puppeteer.csproj" />

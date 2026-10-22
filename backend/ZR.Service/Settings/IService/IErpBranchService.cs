@@ -60,16 +60,9 @@ namespace ZR.Service.Settings.IService
         /// Toggle branch status - تبديل حالة الفرع
         /// </summary>
         int ToggleStatus(long branchId);
+ 
 
-        /// <summary>
-        /// Get branch employees - الحصول على موظفي الفرع
-        /// </summary>
-        List<HrEmployeeCore> GetBranchEmployees(long branchId);
-
-        /// <summary>
-        /// Get branch statistics - الحصول على إحصائيات الفرع
-        /// </summary>
-        object GetBranchStatistics(long branchId);
+       
     }
 }
 

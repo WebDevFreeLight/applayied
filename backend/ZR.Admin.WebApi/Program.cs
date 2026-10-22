@@ -15,41 +15,13 @@ using ZR.Common.Cache;
 using ZR.HR;
 using ZR.Infrastructure.WebExtensions;
 using ZR.Pdf;
-
-using ZR.Model.HR.Attendance;
-using ZR.Model.HR.Attendance.AttendanceCapture;
-using ZR.Model.HR.Attendance.AttendanceProcessing;
-using ZR.Model.HR.Attendance.Configuration;
-using ZR.Model.HR.Attendance.LeaveManagement;
-using ZR.Model.HR.Attendance.Overtime;
-using ZR.Model.HR.Attendance.Shifts_Scheduling;
+ 
 using ZR.Model.HR.EmployeeCore;
-using ZR.Model.HR.Finance;
-using ZR.Model.Marketing;
 using ZR.Model.Notification;
-using ZR.Model.Customers.Leads;
-using ZR.Model.BusinessPartners.Meetings;
-using ZR.Model.Marketing.Campaigns;
-using ZR.Model.Marketing.AiEngine;
-using ZR.Model.Marketing.Journeys;
-using ZR.Model.Marketing.Investors;
-using ZR.Model.Marketing.CrowdAnalytics;
-using ZR.Model.Marketing.SocialMedia;
-using ZR.Model.Marketing.EmailMarketing;
-using ZR.Model.Marketing.ContentMgmt;
-using ZR.Model.Marketing.PublicRelations;
-using ZR.Model.Marketing.Advertising;
-using ZR.Model.Sales;
-using ZR.Model.Boulevard;
-using ZR.Model.Operations;
-using ZR.Model.Operations.Readiness;
-using ZR.Model.Finance.ARAP;
-using ZR.Model.Customers.DataMine;
 using ZR.ServiceCore.Signalr;
 using ZR.ServiceCore.SqlSugar;
 using ZR.ServiceCore.Services;
 using static QRCoder.PayloadGenerator;
-using HrShift = ZR.Model.HR.Attendance.Shifts_Scheduling.HrShift;
 //using SQLitePCL;
 
 // On a cloud/free host (PORT, RENDER or DATABASE_URL provided) force a neutral "Cloud" environment at
@@ -428,18 +400,18 @@ if (initDb)
     try
     {
         Console.WriteLine("Starting database seeding...");
-        var seedDataService = new SeedDataService();
+        //var seedDataService = new SeedDataService();
         var dataPath = Path.Combine(app.Environment.WebRootPath, "data.xlsx");
         var webRootPath = app.Environment.ContentRootPath;
 
         if (File.Exists(dataPath))
         {
-            var seedResults = seedDataService.InitSeedData(dataPath, webRootPath, false);
+            //var seedResults = seedDataService.InitSeedData(dataPath, webRootPath, false);
             Console.ForegroundColor = ConsoleColor.Green;
-            foreach (var result in seedResults)
-            {
-                Console.WriteLine(result);
-            }
+            //foreach (var result in seedResults)
+            //{
+            //    Console.WriteLine(result);
+            //}
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Database seeding completed!");
         }
@@ -508,40 +480,40 @@ if (builder.Configuration["PmoSeed"].ParseToBool())
 try
 {
     var _mktDb = app.Services.GetRequiredService<ISqlSugarClient>();
-    var mktTypes = new[]
-    {
-        // Campaigns
-        typeof(MktCampaign), typeof(MktCampaignChannel), typeof(MktCampaignPerformance), typeof(MktAbTest),
-        // AI Engine
-        typeof(MktAudienceSegment), typeof(MktSegmentMember), typeof(MktPredictiveModel),
-        typeof(MktBehaviorPrediction), typeof(MktAiAgent), typeof(MktAiAgentTask),
-        typeof(MktCompetitorAnalysis), typeof(MktBudgetOptimization),
-        // Customer Journeys
-        typeof(MktCustomerJourney), typeof(MktJourneyStage), typeof(MktJourneyTrigger),
-        typeof(MktJourneyExecution), typeof(MktDynamicContent),
-        // Investor Nexus
-        typeof(MktInvestmentOpportunity), typeof(MktSponsorPackage),
-        typeof(MktSponsorApplication), typeof(MktInvestorKpiReport),
-        // Crowd Analytics
-        typeof(MktCrowdAnalytics), typeof(MktCrowdHeatmap),
-        typeof(MktExhibitorReport), typeof(MktRealtimeInsight),
-        // Social Media
-        typeof(MktSocialAccount), typeof(MktSocialPost), typeof(MktSocialAnalytics),
-        // Email Marketing
-        typeof(MktEmailTemplate), typeof(MktEmailCampaign), typeof(MktSubscriber),
-        typeof(MktSubscriberList), typeof(MktSubscriberListMember),
-        // Content Management
-        typeof(MktContent), typeof(MktAiContentGeneration),
-        // Public Relations
-        typeof(MktPressRelease), typeof(MktMediaContact), typeof(MktMediaMention), typeof(MktPrSentiment),
-        // Advertising
-        typeof(MktAdCampaign), typeof(MktAdCreative), typeof(MktAdPerformance)
-    };
-    foreach (var t in mktTypes)
-    {
-        _mktDb.CodeFirst.InitTables(t);
-    }
-    Console.WriteLine($"✅ Marketing PR module: {mktTypes.Length} tables initialized successfully");
+    //var mktTypes = new[]
+    //{
+    //    // Campaigns
+    //    typeof(MktCampaign), typeof(MktCampaignChannel), typeof(MktCampaignPerformance), typeof(MktAbTest),
+    //    // AI Engine
+    //    typeof(MktAudienceSegment), typeof(MktSegmentMember), typeof(MktPredictiveModel),
+    //    typeof(MktBehaviorPrediction), typeof(MktAiAgent), typeof(MktAiAgentTask),
+    //    typeof(MktCompetitorAnalysis), typeof(MktBudgetOptimization),
+    //    // Customer Journeys
+    //    typeof(MktCustomerJourney), typeof(MktJourneyStage), typeof(MktJourneyTrigger),
+    //    typeof(MktJourneyExecution), typeof(MktDynamicContent),
+    //    // Investor Nexus
+    //    typeof(MktInvestmentOpportunity), typeof(MktSponsorPackage),
+    //    typeof(MktSponsorApplication), typeof(MktInvestorKpiReport),
+    //    // Crowd Analytics
+    //    typeof(MktCrowdAnalytics), typeof(MktCrowdHeatmap),
+    //    typeof(MktExhibitorReport), typeof(MktRealtimeInsight),
+    //    // Social Media
+    //    typeof(MktSocialAccount), typeof(MktSocialPost), typeof(MktSocialAnalytics),
+    //    // Email Marketing
+    //    typeof(MktEmailTemplate), typeof(MktEmailCampaign), typeof(MktSubscriber),
+    //    typeof(MktSubscriberList), typeof(MktSubscriberListMember),
+    //    // Content Management
+    //    typeof(MktContent), typeof(MktAiContentGeneration),
+    //    // Public Relations
+    //    typeof(MktPressRelease), typeof(MktMediaContact), typeof(MktMediaMention), typeof(MktPrSentiment),
+    //    // Advertising
+    //    typeof(MktAdCampaign), typeof(MktAdCreative), typeof(MktAdPerformance)
+    //};
+    //foreach (var t in mktTypes)
+    //{
+    //    _mktDb.CodeFirst.InitTables(t);
+    //}
+    //Console.WriteLine($"✅ Marketing PR module: {mktTypes.Length} tables initialized successfully");
 }
 catch (Exception ex)
 {
@@ -566,18 +538,18 @@ catch (Exception ex)
 try
 {
     var _opsPermitDb = app.Services.GetRequiredService<ISqlSugarClient>();
-    var opsPermitTypes = new[] {
-        typeof(ZR.Model.Operations.OpsCustomerWorker),
-        typeof(ZR.Model.Operations.OpsPermitType),
-        typeof(ZR.Model.Operations.OpsPermit),
-        typeof(ZR.Model.Operations.OpsPermitVerification),
-        typeof(ZR.Model.Operations.OpsGeoTemporalRule)
-    };
-    foreach (var t in opsPermitTypes)
-    {
-        _opsPermitDb.CodeFirst.InitTables(t);
-    }
-    Console.WriteLine($"✅ Operations Permits module: {opsPermitTypes.Length} tables initialized successfully");
+    //var opsPermitTypes = new[] {
+    //    typeof(ZR.Model.Operations.OpsCustomerWorker),
+    //    typeof(ZR.Model.Operations.OpsPermitType),
+    //    typeof(ZR.Model.Operations.OpsPermit),
+    //    typeof(ZR.Model.Operations.OpsPermitVerification),
+    //    typeof(ZR.Model.Operations.OpsGeoTemporalRule)
+    //};
+    //foreach (var t in opsPermitTypes)
+    //{
+    //    _opsPermitDb.CodeFirst.InitTables(t);
+    //}
+    //Console.WriteLine($"✅ Operations Permits module: {opsPermitTypes.Length} tables initialized successfully");
 }
 catch (Exception ex)
 {
@@ -917,25 +889,25 @@ catch (Exception ex)
 //);
 
 //ActionPermissionFilterInfo.PrintAllFiltersWithPermissions(); 
-try
-{
-    builder.Environment.InitDbWithTypes(
-     forceRecreate: true,
-      typeof(OpsPermit),
-      typeof(OpsPermitType),
-      typeof(OpsPermitVerification),
-      typeof(OpsCustomerWorker),
-      typeof(OpsGeoTemporalRule),
-      typeof(OpsWorkType),
-      typeof(OpsWorkCategory),
-      typeof(OpsSafetyPrecaution),
-      typeof(OpsPermitWorker),
-      typeof(OpsPermitSafetyCheck));
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"⚠️ Ops permit table init skipped: {ex.Message}");
-}
+//try
+//{
+//    builder.Environment.InitDbWithTypes(
+//     forceRecreate: true,
+//      typeof(OpsPermit),
+//      typeof(OpsPermitType),
+//      typeof(OpsPermitVerification),
+//      typeof(OpsCustomerWorker),
+//      typeof(OpsGeoTemporalRule),
+//      typeof(OpsWorkType),
+//      typeof(OpsWorkCategory),
+//      typeof(OpsSafetyPrecaution),
+//      typeof(OpsPermitWorker),
+//      typeof(OpsPermitSafetyCheck));
+//}
+//catch (Exception ex)
+//{
+//    Console.WriteLine($"⚠️ Ops permit table init skipped: {ex.Message}");
+//}
 //   typeof(HrAttendanceLog),
 
 //   // Attendance Processing

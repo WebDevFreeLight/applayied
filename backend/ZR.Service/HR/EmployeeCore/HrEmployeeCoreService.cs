@@ -60,46 +60,7 @@ namespace ZR.Service.HR.EmployeeCore
         {
             return await Context.Deleteable<HrEmployeeCore>().In(employeeIds).ExecuteCommandAsync();
         }
-
-        /// <summary>
-        /// Get lookup list for dropdowns (minimal data)
-        /// Returns: EmployeeId, EmployeeCode, FirstName, LastName, FullName
-        /// Only returns active employees with primary names
-        /// </summary>
-        public async Task<List<EmployeeLookupDto>> GetLookupList(string search = null)
-        {
-            var query = Context.Queryable<HrEmployeeCore, HrPersonName>((emp, name) => new JoinQueryInfos(
-                JoinType.Inner, emp.PersonId == name.PersonId
-            ))
-            .Where((emp, name) => emp.IsActive == true && name.IsPrimary == true);
-
-            // Apply search filter if provided
-            if (!string.IsNullOrEmpty(search))
-            {
-                query = query.Where((emp, name) =>
-                    emp.EmployeeCode.Contains(search) ||
-                    name.GivenName.Contains(search) ||
-                    name.FamilyName.Contains(search) ||
-                    name.FullNameAr.Contains(search)
-                );
-            }
-
-            // Select minimal fields and limit results
-            var result = await query
-                .Select((emp, name) => new EmployeeLookupDto
-                {
-                    EmployeeId = emp.EmployeeId,
-                    EmployeeCode = emp.EmployeeCode,
-                    FirstName = name.GivenName,
-                    LastName = name.FamilyName,
-                    FullNameAr = name.FullNameAr
-                })
-                .Take(100) // Limit to 100 results for performance
-                .ToListAsync();
-
-            return result;
-        }
-
+ 
         /// <summary>
         /// Get employee ID by user ID (hr_employee_core.user_id → sys_user.user_id)
         /// الحصول على معرف الموظف من معرف المستخدم

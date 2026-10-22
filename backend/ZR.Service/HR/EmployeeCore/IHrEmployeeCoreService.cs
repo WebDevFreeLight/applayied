@@ -20,10 +20,7 @@ namespace ZR.Service.HR.IService
         Task<int> UpdateAsync(HrEmployeeCore entity);
         Task<int> DeleteAsync(long[] employeeIds);
 
-        /// <summary>
-        /// Get lookup list for dropdowns (minimal data: EmployeeId, EmployeeCode, Names)
-        /// </summary>
-        Task<List<EmployeeLookupDto>> GetLookupList(string search = null);
+       
 
         /// <summary>
         /// Get employee ID by user ID (hr_employee_core.user_id → sys_user.user_id)

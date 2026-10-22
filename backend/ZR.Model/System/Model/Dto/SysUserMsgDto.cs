@@ -1,10 +1,24 @@
  
 using Infrastructure.Converter;
-using ZR.Model.Content.Dto;
 using ZR.Model.System.Enums;
 
 namespace ZR.Model.Dto
 {
+
+
+    public class UserDto
+    {
+        [JsonConverter(typeof(ValueToStringConverter))]
+        public long UserId { get; set; }
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public string Avatar { get; set; }
+        /// <summary>
+        /// ????(0? 1? 2??)
+        /// </summary>
+        public int Sex { get; set; }
+    }
+
     /// <summary>
     /// 用户系统消息查询对象
     /// </summary>

@@ -506,17 +506,17 @@ namespace ZR.Admin.WebApi.Controllers
             }
             var path = Path.Combine(WebHostEnvironment.WebRootPath, "data.xlsx");
             var WebRootPath = Path.Combine(WebHostEnvironment.ContentRootPath );
-            SeedDataService seedDataService = new();
-            var result = seedDataService.InitSeedData(path, WebRootPath, clean);
+            //SeedDataService seedDataService = new();
+            //var result = seedDataService.InitSeedData(path, WebRootPath, clean);
             Console.ForegroundColor = ConsoleColor.Red;
-            foreach (var item in result)
-            {
-                Console.WriteLine(item);
-            }
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
             Console.ForegroundColor = ConsoleColor.White;
             return SUCCESS(new
             {
-                result
+                result =new { SysDeptService=""}
             });
         }
 
@@ -535,18 +535,18 @@ namespace ZR.Admin.WebApi.Controllers
                 return ToResponse(ResultCode.CUSTOM_ERROR, "Failed to import data, please initialize in development mode");
             }
             var path = Path.Combine(WebHostEnvironment.WebRootPath, "data.xlsx");
-            SeedDataService seedDataService = new();
+            //SeedDataService seedDataService = new();
 
             var sysNotice = MiniExcel.Query<SysNotice>(path, sheetName: "notice").ToList();
-            var result = seedDataService.InitNoticeData(sysNotice);
+            //var result = seedDataService.InitNoticeData(sysNotice);
 
             var sysMenu = MiniExcel.Query<SysMenu>(path, sheetName: "menu").Where(f => f.MenuId >= 1104).ToList();
-            var result5 = seedDataService.InitMenuData(sysMenu);
+            //var result5 = seedDataService.InitMenuData(sysMenu);
 
             return SUCCESS(new
             {
-                result,
-                result5
+                result=new {mass="" }
+               
             });
         }
     }

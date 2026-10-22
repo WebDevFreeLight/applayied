@@ -25,18 +25,17 @@ namespace ZR.Service.HR
         private readonly ISysUserService _userService;
         private readonly ISysRoleService _roleService;
         private readonly ISysPostRoleService _postRoleService;
-        private readonly IEmployeeApiMappingService _employeeMappingService;
+        //private readonly IEmployeeApiMappingService _employeeMappingService;
 
         public EmployeeUserAccountService(
             ISysUserService userService,
             ISysRoleService roleService,
-            ISysPostRoleService postRoleService,
-            IEmployeeApiMappingService employeeMappingService)
+            ISysPostRoleService postRoleService )
         {
             _userService = userService;
             _roleService = roleService;
             _postRoleService = postRoleService;
-            _employeeMappingService = employeeMappingService;
+            //_employeeMappingService = employeeMappingService;
         }
 
         public async Task<long?> EnsureUserLinkedOnCreateAsync(EmployeeApiDto employee)
@@ -411,7 +410,9 @@ namespace ZR.Service.HR
         private async Task<EmployeeApiDto> GetEmployeeWithAssignmentAsync(long employeeId)
         {
             // Use the existing mapping service which handles all the normalized data
-            return await _employeeMappingService.ToApiDtoAsync(employeeId);
+
+            return await GetEmployeeWithAssignmentAsync(employeeId);
+            //return await _employeeMappingService.ToApiDtoAsync(employeeId);
         }
 
         private async Task<string[]> GetRoleNamesAsync(long[] roleIds)

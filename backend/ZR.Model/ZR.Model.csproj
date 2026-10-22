@@ -23,8 +23,4 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Infrastructure\ZR.Infrastructure.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="HR\Settings\" />
-	</ItemGroup>
 </Project>

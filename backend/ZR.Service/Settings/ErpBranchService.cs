@@ -2,9 +2,7 @@ using Infrastructure.Attribute;
 using SqlSugar;
 using ZR.Model;
 using ZR.Model.Settings;
-using ZR.Model.HR.EmployeeCore;
-using ZR.Model.Sales;
-using ZR.Model.Subscriptions;
+using ZR.Model.HR.EmployeeCore; 
 using ZR.Repository;
 using ZR.Service.Settings.IService;
 
@@ -145,63 +143,7 @@ namespace ZR.Service.Settings
                 .Where(it => it.BranchID == branchId)
                 .ExecuteCommand();
         }
-
-        public List<HrEmployeeCore> GetBranchEmployees(long branchId)
-        {
-            // Get employees linked to this branch via department assignment
-            return Context.Queryable<HrEmployeeCore, HrEmployeeAssignment>((emp, assign) =>
-                emp.EmployeeId == assign.EmployeeId)
-                .Where((emp, assign) => assign.DepartmentId == branchId && emp.IsActive)
-                .Select((emp, assign) => emp)
-                .ToList();
-        }
-
-        public object GetBranchStatistics(long branchId)
-        {
-            var today = DateTime.Today;
-            var monthStart = new DateTime(today.Year, today.Month, 1);
-
-            // Today's sales
-            var todaySales = Context.Queryable<ErpSalesInvoice>()
-                .Where(x => x.BranchID == branchId)
-                .Where(x => x.InvoiceDate >= today && x.InvoiceDate < today.AddDays(1))
-                .Where(x => x.Status != "cancelled")
-                .Sum(x => x.TotalAmount);
-
-            // Month's sales
-            var monthSales = Context.Queryable<ErpSalesInvoice>()
-                .Where(x => x.BranchID == branchId)
-                .Where(x => x.InvoiceDate >= monthStart && x.InvoiceDate < today.AddDays(1))
-                .Where(x => x.Status != "cancelled")
-                .Sum(x => x.TotalAmount);
-
-            // Active members (all members since no branch field)
-            var activeMembers = Context.Queryable<ErpMember>()
-                .Where(x => x.IsActive)
-                .Count();
-
-            // Today's visits
-            var todayVisits = Context.Queryable<ErpMemberVisit>()
-                .Where(x => x.CheckInTime >= today && x.CheckInTime < today.AddDays(1))
-                .Count();
-
-            // Employees count linked to this branch via department
-            var employeeCount = Context.Queryable<HrEmployeeCore, HrEmployeeAssignment>((emp, assign) =>
-                emp.EmployeeId == assign.EmployeeId)
-                .Where((emp, assign) => assign.DepartmentId == branchId && emp.IsActive)
-                .Count();
-
-            return new
-            {
-                BranchId = branchId,
-                TodaySales = todaySales,
-                MonthSales = monthSales,
-                ActiveMembers = activeMembers,
-                TodayVisits = todayVisits,
-                EmployeeCount = employeeCount,
-                AsOf = DateTime.Now
-            };
-        }
+         
     }
 }
 
