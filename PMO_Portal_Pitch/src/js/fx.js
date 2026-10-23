@@ -115,6 +115,14 @@ PMO.fx = (function () {
     return animate(scope, dot, frames, { duration, delay, iterations, easing: 'linear', fill: 'none' });
   }
 
+  /* Responsive layout mode.
+     "stage": the fixed 1920×1080 stage, uniformly scaled (desktop, large tablets).
+     "flow":  phones, small tablets and very short windows — the stage fills the
+              window at 1:1, scenes reflow and scroll vertically (styles.css, .flow).
+     The scaled stage is kept wherever it renders text at a readable size, so
+     1366×768 and 1920×1080 (including browser chrome) are untouched. */
+  function isFlow() { return window.innerWidth < 1100 || window.innerHeight < 520; }
+
   function setReduced(v) { state.reduced = v; document.documentElement.classList.toggle('reduced', v); }
   function setPaused(v) {
     state.paused = v;
@@ -122,5 +130,5 @@ PMO.fx = (function () {
     document.getAnimations().forEach(a => { if (a.effect && a.effect.getTiming().iterations === Infinity) { v ? a.pause() : a.play(); } });
   }
 
-  return { state, EASE, createScope, animate, splitWords, revealWords, rise, countUp, drawPath, travel, setReduced, setPaused };
+  return { state, EASE, createScope, animate, splitWords, revealWords, rise, countUp, drawPath, travel, setReduced, setPaused, isFlow };
 })();

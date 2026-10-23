@@ -14,28 +14,45 @@
    ========================================================================== */
 PMO.constellation = (function () {
   'use strict';
-  const W = 1920, H = 1080;
+  // Internal size. Fixed 1920×1080 on the scaled stage; in the responsive "flow"
+  // layout the canvas matches the window (× devicePixelRatio) and the layouts
+  // below scale their radii by S, so circles stay round on portrait phones.
+  let W = 1920, H = 1080, S = 1, DPR = 1, fluid = false;
   let ctx, canvas, layout = 'sphere', mode = 'neutral', t = 0, raf = null;
   const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
   const COLORS = { neutral: [124, 196, 255], alarm: [255, 107, 94], warn: [245, 179, 66], healthy: [45, 212, 191], ai: [139, 124, 255] };
 
-  const nodes = PMO.data.projects.map((p, i) => ({ id: p.id, x: W / 2, y: H / 2, tx: W / 2, ty: H / 2, r: 6 + p.budget * 1.4, phase: i * 0.8, col: [124, 196, 255], tcol: [124, 196, 255], alpha: 1, talpha: 1 }));
+  const nodes = PMO.data.projects.map((p, i) => ({ id: p.id, x: W / 2, y: H / 2, tx: W / 2, ty: H / 2, r0: 6 + p.budget * 1.4, r: 6 + p.budget * 1.4, phase: i * 0.8, col: [124, 196, 255], tcol: [124, 196, 255], alpha: 1, talpha: 1 }));
   const dust = Array.from({ length: 150 }, (_, i) => ({ a: Math.random() * Math.PI * 2, d: 0.15 + Math.random() * 0.85, z: Math.random(), s: 0.4 + Math.random() * 1.6, sp: 0.0003 + Math.random() * 0.0009, i }));
 
   // Target positions per layout. Returns [x,y] for node index i.
   const LAYOUTS = {
-    sphere: (i, n, tm) => { const a = (i / n) * Math.PI * 2 + tm * 0.00012; return [W * 0.68 + Math.cos(a) * 300, H * 0.5 + Math.sin(a) * 300 * Math.cos(a * 0.5 + 0.6)]; },
+    sphere: (i, n, tm) => { const a = (i / n) * Math.PI * 2 + tm * 0.00012; return [W * 0.68 + Math.cos(a) * 300 * S, H * 0.5 + Math.sin(a) * 300 * S * Math.cos(a * 0.5 + 0.6)]; },
     chaos:  (i) => { const pts = [[0.58,0.2],[0.88,0.34],[0.66,0.78],[0.94,0.7],[0.54,0.52],[0.8,0.12],[0.72,0.46],[0.9,0.9]]; return [pts[i][0] * W, pts[i][1] * H]; },
-    ring:   (i, n) => { const a = (i / n) * Math.PI * 2 - Math.PI / 2; return [W * 0.5 + Math.cos(a) * 360, H * 0.53 + Math.sin(a) * 360]; },
-    orbit:  (i, n, tm) => { const a = (i / n) * Math.PI * 2 + tm * 0.00006; return [W * 0.5 + Math.cos(a) * 470, H * 0.52 + Math.sin(a) * 300]; },
+    ring:   (i, n) => { const a = (i / n) * Math.PI * 2 - Math.PI / 2; return [W * 0.5 + Math.cos(a) * 360 * S, H * 0.53 + Math.sin(a) * 360 * S]; },
+    orbit:  (i, n, tm) => { const a = (i / n) * Math.PI * 2 + tm * 0.00006; return [W * 0.5 + Math.cos(a) * 470 * S, H * 0.52 + Math.sin(a) * 300 * S]; },
     top:    (i, n) => [W * 0.30 + (W * 0.62 * i) / (n - 1), 34],
     left:   (i, n) => [34, H * 0.2 + (H * 0.62 * i) / (n - 1)],
     line:   (i, n) => [W * 0.1 + (W * 0.8 * i) / (n - 1), H * 0.9],
-    core:   () => [820, 600]
+    core:   () => [W * 820 / 1920, H * 600 / 1080]
   };
 
+  function resize(initial) {
+    if (PMO.fx.isFlow()) {
+      W = Math.max(1, window.innerWidth); H = Math.max(1, window.innerHeight);
+      S = Math.min(W, H) / 1080; DPR = Math.min(2, window.devicePixelRatio || 1); fluid = true;
+    } else { W = 1920; H = 1080; S = 1; DPR = 1; fluid = false; }
+    if (canvas.width !== Math.round(W * DPR) || canvas.height !== Math.round(H * DPR)) {
+      canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+    }
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    nodes.forEach(n => { n.r = n.r0 * Math.max(0.6, Math.min(1, S * 1.6)); });
+    if (!initial) setLayout(layout, mode, true);
+  }
+
   function init(el) {
-    canvas = el; canvas.width = W; canvas.height = H; ctx = canvas.getContext('2d');
+    canvas = el; ctx = canvas.getContext('2d');
+    resize(true);
     document.addEventListener('pointermove', (e) => { mouse.tx = (e.clientX / window.innerWidth - 0.5); mouse.ty = (e.clientY / window.innerHeight - 0.5); });
     document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
     setLayout('sphere', 'neutral', true);
@@ -51,7 +68,9 @@ PMO.constellation = (function () {
       if (mode === 'alarm') c = p.eac > p.budget * 1.02 ? COLORS.alarm : (i % 2 ? COLORS.warn : COLORS.neutral);
       if (mode === 'health') c = p.eac > p.budget * 1.05 ? COLORS.alarm : p.eac > p.budget ? COLORS.warn : COLORS.healthy;
       // Side/edge layouts are a quiet reminder of the portfolio, so they are dimmed.
-      n.tcol = c.slice(); n.talpha = name === 'core' ? 0 : (name === 'top' || name === 'left' || name === 'line') ? 0.35 : 1;
+      // On small screens (fluid) the content sits on top of the canvas, so it is quieter still.
+      const edge = name === 'top' || name === 'left' || name === 'line';
+      n.tcol = c.slice(); n.talpha = name === 'core' ? 0 : edge ? (fluid ? 0.16 : 0.35) : (fluid ? 0.7 : 1);
       if (snap) { const [x, y] = LAYOUTS[name](i, nodes.length, t); n.x = n.tx = x; n.y = n.ty = y; n.col = c.slice(); }
     });
     if (PMO.fx.state.reduced) drawFrame(performance.now(), true);
@@ -71,7 +90,7 @@ PMO.constellation = (function () {
   function drawFrame(now, snap) {
     t = now;
     mouse.x += (mouse.tx - mouse.x) * 0.04; mouse.y += (mouse.ty - mouse.y) * 0.04;
-    const px = mouse.x * 40, py = mouse.y * 30;
+    const px = mouse.x * 40 * S, py = mouse.y * 30 * S;
     ctx.clearRect(0, 0, W, H);
 
     // Ambient dust with parallax depth (z) — gives the stage its sense of depth.
@@ -98,8 +117,9 @@ PMO.constellation = (function () {
     for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
       const a = nodes[i], b = nodes[j];
       const dist = Math.hypot(a.x - b.x, a.y - b.y);
-      if (dist > 520) continue;
-      const al = (1 - dist / 520) * 0.22 * Math.min(a.alpha, b.alpha);
+      const reach = 520 * Math.max(S, 0.45);
+      if (dist > reach) continue;
+      const al = (1 - dist / reach) * 0.22 * Math.min(a.alpha, b.alpha);
       ctx.strokeStyle = `rgba(${a.col.map(Math.round).join(',')},${al})`;
       ctx.beginPath(); ctx.moveTo(a.x + px * 0.6, a.y + py * 0.6); ctx.lineTo(b.x + px * 0.6, b.y + py * 0.6); ctx.stroke();
     }
@@ -113,11 +133,12 @@ PMO.constellation = (function () {
       g.addColorStop(0, `rgba(${c},${0.45 * n.alpha})`); g.addColorStop(1, `rgba(${c},0)`);
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, n.r * 5 * pulse, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = `rgba(${c},${n.alpha})`; ctx.beginPath(); ctx.arc(x, y, n.r * 0.55, 0, Math.PI * 2); ctx.fill();
+      if (fluid && n.talpha < 0.5) return; // no code labels behind text on small screens
       ctx.font = '600 15px "JetBrains Mono", monospace';
       ctx.fillStyle = `rgba(220,232,250,${0.7 * n.alpha})`;
       ctx.fillText(n.id, x + n.r + 6, y - n.r - 4);
     });
   }
 
-  return { init, setLayout, setVisible, start, stop, drawFrame };
+  return { init, resize, setLayout, setVisible, start, stop, drawFrame };
 })();

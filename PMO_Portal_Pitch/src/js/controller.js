@@ -28,10 +28,31 @@ PMO.controller = (function () {
   };
   const savedIndex = parseInt(store.get('scene') || '0', 10) || 0;
 
-  /* ---------- Stage scaling ---------- */
+  /* ---------- Stage scaling / responsive layout ----------
+     Desktop: the 1920×1080 stage is uniformly scaled (letterboxed), exactly as before.
+     Phones & small tablets ("flow", see fx.isFlow): the stage fills the window at 1:1,
+     scenes reflow via styles.css and scroll vertically inside themselves. */
+  let lastFlow = null, lastW = 0, relayoutTimer = null;
   function fit() {
+    const flow = fx.isFlow();
+    document.documentElement.classList.toggle('flow', flow);
+    if (flow) { stage.style.transform = ''; return; }
     const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
     stage.style.transform = `scale(${k})`;
+  }
+  // Resize / orientation change: rescale at once; when the flow layout changes width
+  // (or the mode flips), redraw the background and quietly re-render the current
+  // scene so JS-built SVGs and charts are rebuilt for the new size.
+  function onResize() {
+    fit();
+    clearTimeout(relayoutTimer);
+    relayoutTimer = setTimeout(() => {
+      const flow = fx.isFlow(), w = window.innerWidth;
+      const modeChanged = flow !== lastFlow, widthChanged = flow && w !== lastW;
+      lastFlow = flow; lastW = w;
+      if (flow || modeChanged) PMO.constellation.resize();
+      if ((modeChanged || widthChanged) && index >= 0) go(index, { force: true, quiet: true });
+    }, 180);
   }
 
   /* ---------- Transitions ----------
@@ -51,8 +72,10 @@ PMO.controller = (function () {
       const a = [];
       if (out) {
         out.querySelectorAll('.artefact').forEach((n, i) => {
-          const r = n.getBoundingClientRect(), s = stage.getBoundingClientRect(), k = s.width / 1920;
-          const dx = 820 - ((r.left - s.left) / k + r.width / k / 2), dy = 600 - ((r.top - s.top) / k + r.height / k / 2);
+          const flow = fx.isFlow();
+          const r = n.getBoundingClientRect(), s = stage.getBoundingClientRect(), k = flow ? 1 : s.width / 1920;
+          const hx = flow ? window.innerWidth / 2 : 820, hy = flow ? window.innerHeight * 0.45 : 600;
+          const dx = hx - ((r.left - s.left) / k + r.width / k / 2), dy = hy - ((r.top - s.top) / k + r.height / k / 2);
           a.push(n.animate([{ transform: getComputedStyle(n).transform, opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.1) rotate(0)`, opacity: 0 }], { duration: 800, delay: i * 50, easing: 'cubic-bezier(.6,0,.4,1)', fill: 'forwards' }));
         });
         out.querySelectorAll('.scene-head, .problem-grid, .problem-foot').forEach(n => a.push(n.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateX(-60px)' }], { duration: 500, easing: fx.EASE, fill: 'forwards' })));
@@ -68,7 +91,8 @@ PMO.controller = (function () {
       const a = [];
       if (out) {
         const map = out.querySelector('.value-map');
-        map.style.transformOrigin = `${820 / 19.2}% ${600 / 10.8}%`;
+        const vb = map.viewBox && map.viewBox.baseVal;
+        map.style.transformOrigin = fx.isFlow() && vb && vb.width ? `${(820 - vb.x) / vb.width * 100}% ${(600 - vb.y) / vb.height * 100}%` : `${820 / 19.2}% ${600 / 10.8}%`;
         a.push(map.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(4)', opacity: 0 }], { duration: 900, easing: 'cubic-bezier(.7,0,.3,1)', fill: 'forwards' }));
         out.querySelectorAll('.scene-head, .persona-panel, .value-hint').forEach(n => a.push(n.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'forwards' })));
       }
@@ -113,7 +137,7 @@ PMO.controller = (function () {
     inc.classList.add('active');
     // Named set pieces only play forward; going back always uses the reversible push.
     const kind = dir > 0 && inScene.transIn && T[inScene.transIn] ? inScene.transIn : 'push';
-    const anims = fx.state.reduced ? [] : T[kind](out, inc, dir);
+    const anims = fx.state.reduced || opts.quiet ? [] : T[kind](out, inc, dir);
     const cleanup = () => {
       if (out) { out.classList.remove('leaving'); out.getAnimations({ subtree: true }).forEach(a => a.cancel()); }
       anims.forEach(a => { try { a.cancel(); } catch (e) { /* ignore */ } });
@@ -144,7 +168,7 @@ PMO.controller = (function () {
     seen.add(index);
     [...$('#hud-progress').children].forEach((b, i) => { b.classList.toggle('cur', i === index); b.classList.toggle('seen', seen.has(i)); });
     const title = document.getElementById(scenes[index].id).dataset.title;
-    $('#hud-label').innerHTML = `<b>${String(index + 1).padStart(2, '0')}</b> / ${scenes.length} · ${title}`;
+    $('#hud-label').innerHTML = `<b>${String(index + 1).padStart(2, '0')}</b> / ${scenes.length}<span class="hud-title"> · ${title}</span>`;
     document.querySelector('[data-action="prev"].hud-btn').disabled = index === 0;
     document.querySelector('[data-action="next"].hud-btn').disabled = index === scenes.length - 1;
   }
@@ -192,10 +216,48 @@ PMO.controller = (function () {
     if (/^[0-9]$/.test(k)) { e.preventDefault(); go(k === '0' ? 9 : +k - 1); poke(); }
   }
 
+  /* ---------- Touch: swipe left / right to change scene ----------
+     Passive touch listeners, so vertical scrolling inside a scene stays native.
+     A swipe must be mostly horizontal, long enough and quick; it is ignored when it
+     starts on a slider, inside something that scrolls sideways, near the screen
+     edges (OS back/forward gestures), with two fingers, or while help is open. */
+  function blocksSwipe(node) {
+    for (let n = node; n && n !== stage; n = n.parentElement) {
+      if (n.matches && n.matches('input[type="range"], textarea, select')) return true;
+      if (n.scrollWidth > n.clientWidth + 1) { const ox = getComputedStyle(n).overflowX; if (ox === 'auto' || ox === 'scroll') return true; }
+    }
+    return false;
+  }
+  function initSwipe() {
+    let t0 = null;
+    stage.addEventListener('touchstart', (e) => {
+      poke();
+      t0 = null;
+      if (e.touches.length !== 1 || !$('#help').hidden) return;
+      const p = e.touches[0];
+      if (p.clientX < 16 || p.clientX > window.innerWidth - 16 || blocksSwipe(e.target)) return;
+      t0 = { x: p.clientX, y: p.clientY, t: performance.now() };
+    }, { passive: true });
+    stage.addEventListener('touchmove', (e) => { if (e.touches.length > 1) t0 = null; }, { passive: true });
+    stage.addEventListener('touchcancel', () => { t0 = null; }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      if (!t0) return;
+      const p = e.changedTouches[0], dx = p.clientX - t0.x, dy = p.clientY - t0.y, dt = performance.now() - t0.t;
+      t0 = null;
+      const min = Math.max(50, Math.min(120, window.innerWidth * 0.15));
+      if (dt > 900 || Math.abs(dx) < min || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      if (dx < 0) actions.next(); else actions.prev();
+    }, { passive: true });
+  }
+
   /* ---------- Boot ---------- */
   function boot() {
     fit();
-    window.addEventListener('resize', fit);
+    lastFlow = fx.isFlow(); lastW = window.innerWidth;
+    window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', onResize);
+    if (!(document.fullscreenEnabled || document.webkitFullscreenEnabled)) document.querySelector('.hud-btn[data-action="fullscreen"]').hidden = true;
+    initSwipe();
     PMO.constellation.init($('#constellation'));
     PMO.charts.initTooltips(stage);
     buildHud();

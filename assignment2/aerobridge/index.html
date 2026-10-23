@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>AeroBridge — Lifelines, Airborne</title>
 <style>
 /* ============ AeroBridge · cinematic investor pitch · 100% offline, vanilla ============ */
@@ -14,15 +14,18 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
+body{height:100vh;height:100dvh}
 body{background:radial-gradient(1200px 700px at 70% -10%,#12233f 0,var(--bg) 55%);
   color:var(--ink);font-family:"Segoe UI",system-ui,Arial,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
-.app{position:fixed;inset:0}
-canvas#stars{position:fixed;inset:0;z-index:0;opacity:.6}
+.app{position:fixed;inset:0;height:100vh;height:100dvh}
+canvas#stars{position:fixed;inset:0;z-index:0;opacity:.6;width:100%;height:100%}
 /* scenes */
-.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  padding:64px 40px;opacity:0;visibility:hidden;transition:opacity .7s var(--ease);z-index:1}
+.scene{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;
+  padding:calc(64px + env(safe-area-inset-top)) calc(40px + env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) calc(40px + env(safe-area-inset-left));
+  opacity:0;visibility:hidden;transition:opacity .7s var(--ease);z-index:1;
+  overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y pinch-zoom}
 .scene.active{opacity:1;visibility:visible;z-index:2}
-.scene .wrap{width:100%;max-width:var(--maxw);position:relative}
+.scene .wrap{width:100%;max-width:var(--maxw);position:relative;margin-top:auto;margin-bottom:auto}
 .kicker{letter-spacing:.32em;text-transform:uppercase;font-size:12px;color:var(--cyan);font-weight:700}
 h1{font-size:clamp(40px,8vw,104px);line-height:.98;font-weight:800;letter-spacing:-.02em}
 h2{font-size:clamp(28px,4.4vw,52px);line-height:1.05;font-weight:800;letter-spacing:-.01em}
@@ -47,7 +50,7 @@ p.lead{font-size:clamp(16px,1.9vw,22px);color:var(--muted);max-width:60ch;line-h
 .statlbl{color:var(--muted);font-size:13px;margin-top:2px}
 /* hud / nav */
 .hud{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:14px;
-  padding:14px 22px;background:linear-gradient(0deg,rgba(6,11,22,.9),transparent)}
+  padding:14px calc(22px + env(safe-area-inset-right)) calc(14px + env(safe-area-inset-bottom)) calc(22px + env(safe-area-inset-left));background:linear-gradient(0deg,rgba(6,11,22,.9),transparent)}
 .brandmark{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.02em}
 .brandmark .dot{width:11px;height:11px;border-radius:50%;background:var(--cyan);box-shadow:var(--glow)}
 .dots{display:flex;gap:7px;margin-left:auto}
@@ -58,8 +61,8 @@ p.lead{font-size:clamp(16px,1.9vw,22px);color:var(--muted);max-width:60ch;line-h
 .btn:hover{border-color:var(--cyan);color:var(--cyan)}
 .btn.primary{background:linear-gradient(90deg,var(--cyan2),var(--cyan));color:#04121a;border:none;font-weight:700}
 .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--signal));z-index:40;transition:width .5s var(--ease)}
-.topleft{position:fixed;top:16px;left:22px;z-index:30}
-.topright{position:fixed;top:14px;right:22px;z-index:30;display:flex;gap:8px}
+.topleft{position:fixed;top:calc(16px + env(safe-area-inset-top));left:calc(22px + env(safe-area-inset-left));z-index:30}
+.topright{position:fixed;top:calc(14px + env(safe-area-inset-top));right:calc(22px + env(safe-area-inset-right));z-index:30;display:flex;gap:8px}
 kbd{font:inherit;font-size:11px;background:#0d1b30;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--muted)}
 /* reduced motion */
 body.rm *{animation-duration:.001s!important;transition-duration:.08s!important}
@@ -112,6 +115,83 @@ small.note{color:var(--muted);font-size:12px}
 .hero-sub div{border-left:2px solid var(--cyan);padding-left:12px}
 .hero-sub b{font-size:22px}.hero-sub span{display:block;color:var(--muted);font-size:12px}
 @media(max-width:820px){.g3,.g2,.g4,.sim,.tl .steps,.kpis{grid-template-columns:1fr}.sim{display:block}.topleft .kicker{display:none}}
+/* ---------- responsive: touch, tablets, phones, landscape phones ---------- */
+@media(max-width:820px),(pointer:coarse){
+  .btn{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+  input[type=range]{height:44px;touch-action:pan-x;cursor:pointer}
+  .ctrl label{margin:10px 0 0}
+  .dots b{position:relative}
+  .dots b::after{content:"";position:absolute;inset:-9px -4px}
+}
+/* scrims so content scrolling under the fixed top bar / HUD stays legible */
+@media(max-width:820px),(max-height:540px) and (orientation:landscape){
+  .app::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(62px + env(safe-area-inset-top));z-index:5;pointer-events:none;
+    background:linear-gradient(180deg,rgba(6,11,22,.94) 62%,rgba(6,11,22,0))}
+  .hud{background:linear-gradient(0deg,rgba(6,11,22,.96) 70%,rgba(6,11,22,0))}
+}
+@media(max-width:820px){
+  .sim > .ctrl{margin-bottom:34px}
+  #ucStages + div{flex-wrap:wrap}
+  .tl{padding-left:0;margin-top:22px}
+  .tl .line{left:6px;top:0;bottom:0;width:3px;height:auto}
+  .tl .line i{width:3px;height:0}
+  .scene.active .tl .line i{animation:growv 2s var(--ease) .4s forwards;width:3px}
+  .tl .steps{gap:18px}
+  .tl .step{position:relative;padding:0 0 0 30px}
+  .tl .step::before{left:0;top:3px}
+  [dir=rtl] .tl .line{left:auto;right:6px}
+  [dir=rtl] .tl .line i{left:auto;right:0}
+  [dir=rtl] .tl .step{padding:0 30px 0 0}
+  [dir=rtl] .tl .step::before{left:auto;right:0}
+}
+@keyframes growv{to{height:100%}}
+@media(min-width:601px) and (max-width:820px){.g4,.kpis{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){
+  .scene{padding:calc(72px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) calc(118px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left))}
+  .topleft{display:none}
+  .topright{top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));gap:6px}
+  .topright .btn{font-size:13px;padding:0 10px}
+  /* HUD on two rows: brand + dots / prev · scene name · next */
+  .hud{flex-wrap:wrap;column-gap:10px;row-gap:4px;
+    padding:12px calc(12px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left))}
+  .hud::after{content:"";order:2;flex-basis:100%;height:0}
+  .hud .brandmark{order:0;font-size:14px}
+  .hud .dots{order:1}
+  #prev,#sceneName,#next{order:3}
+  #sceneName{flex:1;min-width:0!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #ucStages{grid-template-columns:1fr!important}
+  .card{padding:16px 18px}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:12px}.kpi .v{font-size:24px}
+  .bars{height:180px;gap:8px}
+  .bar em{font-size:11px;line-height:1.15;bottom:-32px}
+  .bar span{font-size:13px}
+  .kpis{margin-top:46px}
+  svg .hublbl{font-size:18px}
+  #drone{width:34px;height:34px}
+  .hero-sub{gap:16px 20px}
+}
+/* phones in landscape: short screen, plenty of width -> keep columns, trim vertical rhythm */
+@media(max-width:950px) and (max-height:540px) and (orientation:landscape){
+  .g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}
+  .tl .steps{grid-template-columns:repeat(4,1fr)}
+  .sim{display:grid;grid-template-columns:minmax(230px,300px) 1fr;gap:20px}
+  .sim > .ctrl{margin-bottom:0}
+  .kpis{grid-template-columns:1fr 1fr;margin-top:34px}.kpi .v{font-size:22px}
+  .bars{height:150px}.fin{height:160px}
+  .mapwrap{max-height:62vh;max-height:62dvh}
+  .stat{font-size:clamp(26px,4.2vw,40px)}
+  .card{padding:14px 16px}
+  .tl{margin-top:22px;padding-left:4px}
+  .tl .line{left:0;top:18px;bottom:auto;width:100%;height:3px}
+  .tl .line i{height:3px;width:0}
+  .scene.active .tl .line i{animation:grow 2s var(--ease) .4s forwards;height:3px}
+  .tl .step{position:static;padding:40px 0 0}
+  .tl .step::before{top:12px;left:auto}
+  [dir=rtl] .tl .line{right:auto;left:0}
+  [dir=rtl] .tl .step{padding:40px 0 0}
+  [dir=rtl] .tl .step::before{right:auto}
+}
 /* RTL / Arabic */
 [dir=rtl] body{font-family:"Segoe UI","Tahoma",system-ui,Arial,sans-serif}
 [dir=rtl] .hero-sub div{border-left:none;border-right:2px solid var(--cyan);padding-left:0;padding-right:12px}
@@ -126,7 +206,7 @@ small.note{color:var(--muted);font-size:12px}
 <div class="progress" id="prog"></div>
 <div class="topleft"><div class="brandmark"><span class="dot"></span>AeroBridge <span class="kicker" style="margin-left:8px">Investor Brief</span></div></div>
 <div class="topright">
-  <a class="btn" href="https://claude.ai/artifact/SBwjhkm4nsNgTUHhPBmyFF" target="_blank" rel="noopener" title="PMO Portal — sales showcase" style="text-decoration:none">▣ PMO Portal ↗</a>
+  <a class="btn" href="https://abdulqader-pmo-showcase.netlify.app" target="_blank" rel="noopener" title="PMO Portal — sales showcase" style="text-decoration:none">▣ PMO Portal ↗</a>
   <button class="btn" id="lang" title="العربية / English">ع</button>
   <button class="btn" id="mo" title="Toggle motion">◐ Motion</button>
   <button class="btn" id="help" title="Shortcuts">?</button>
@@ -364,6 +444,7 @@ small.note{color:var(--muted);font-size:12px}
     n=Math.max(0,Math.min(scenes.length-1,n));
     scenes[i].classList.remove('active');
     i=n;
+    scenes[i].scrollTop=0;
     scenes[i].classList.add('active');
     dots.forEach(function(d,k){d.classList.toggle('on',k===i)});
     prog.style.width=((i)/(scenes.length-1)*100)+'%';
@@ -377,17 +458,38 @@ small.note{color:var(--muted);font-size:12px}
   document.getElementById('prev').onclick=prev;
   document.getElementById('restart').onclick=function(){go(0)};
   document.addEventListener('keydown',function(e){
+    var tg=e.target; if(tg&&tg.closest&&tg.closest('input,textarea,select'))return; // sliders keep their arrow keys
     if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();next();}
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
     else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(scenes.length-1);}
   });
   // wheel (debounced) — paced, no auto-advance
   var wlock=false;
+  function canScroll(dir){ // active scene taller than the screen and not yet at that edge -> let it scroll natively
+    var sc=scenes[i]; if(sc.scrollHeight<=sc.clientHeight+2)return false;
+    return dir>0 ? sc.scrollTop+sc.clientHeight<sc.scrollHeight-2 : sc.scrollTop>2;
+  }
   window.addEventListener('wheel',function(e){
+    if(canScroll(e.deltaY))return;
     if(wlock)return; if(Math.abs(e.deltaY)<30)return;
     wlock=true; setTimeout(function(){wlock=false},700);
     e.deltaY>0?next():prev();
   },{passive:true});
+  // touch swipe (horizontal, thresholded); vertical drags scroll tall scenes; sliders/controls are never hijacked
+  var tx=null,ty=0,tt=0;
+  document.addEventListener('touchstart',function(e){
+    var tg=e.target;
+    if(e.touches.length!==1||(tg.closest&&tg.closest('input,textarea,select,.ctrl,a'))){tx=null;return;}
+    tx=e.touches[0].clientX;ty=e.touches[0].clientY;tt=Date.now();
+  },{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(tx===null)return;
+    var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty; tx=null;
+    if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5||Date.now()-tt>900)return;
+    var rtl=document.documentElement.dir==='rtl';
+    ((dx<0)!==rtl)?next():prev();
+  },{passive:true});
+  document.addEventListener('touchcancel',function(){tx=null},{passive:true});
 
   /* ---- count-up numbers ---- */
   function countUp(el){
@@ -401,7 +503,11 @@ small.note{color:var(--muted);font-size:12px}
   function onEnter(n){
     scenes[n].querySelectorAll('[data-count]').forEach(countUp);
     if(scenes[n].dataset.scene==='Capability') buildNet();
-    if(scenes[n].dataset.scene==='Business case') scenes[n].querySelectorAll('.fin .b').forEach(function(b){setTimeout(function(){b.style.height=b.dataset.h+'px'},60);});
+    if(scenes[n].dataset.scene==='Business case') setTimeout(sizeFin,60);
+  }
+  function sizeFin(){ // bar heights are authored for a 220px chart; scale to the chart's actual height
+    var f=document.getElementById('finChart'); if(!f)return; var k=(f.clientHeight||220)/220;
+    f.querySelectorAll('.b').forEach(function(b){b.style.height=(b.dataset.h*k)+'px';});
   }
 
   /* ---- drone cross-scene continuity: parks near a focal point per scene ---- */
@@ -506,9 +612,12 @@ small.note{color:var(--muted);font-size:12px}
 
   /* ---- starfield canvas (particle system) ---- */
   var cv=document.getElementById('stars'),cx=cv.getContext('2d'),W,H,stars=[],raf;
-  function rz(){W=cv.width=innerWidth;H=cv.height=innerHeight;stars=[];for(var k=0;k<120;k++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*2+.3,s:Math.random()*1.4+.3});}
+  function rz(){var dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cx.setTransform(dpr,0,0,dpr,0,0);
+    stars=[];for(var k=0;k<120;k++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*2+.3,s:Math.random()*1.4+.3});}
   function tick(){cx.clearRect(0,0,W,H);for(var k=0;k<stars.length;k++){var s=stars[k];s.x-=s.z*.25;if(s.x<0){s.x=W;s.y=Math.random()*H;}cx.fillStyle='rgba(150,200,255,'+(s.z/2.3)+')';cx.fillRect(s.x,s.y,s.s,s.s);}raf=requestAnimationFrame(tick);}
-  rz();addEventListener('resize',rz);tick();
+  var rzT; function onRz(){clearTimeout(rzT);rzT=setTimeout(function(){rz();if(animated[7])sizeFin();},120);}
+  rz();addEventListener('resize',onRz);addEventListener('orientationchange',onRz);tick();
 
   /* ---- parallax ---- */
   addEventListener('mousemove',function(e){
@@ -525,9 +634,10 @@ small.note{color:var(--muted);font-size:12px}
     else{this.textContent='◐ Motion';tick();}
   };
   document.getElementById('help').onclick=function(){
-    alert('AeroBridge — controls\\n\\n→ / Space : next scene\\n← : previous\\nHome / End : first / last\\nClick dots to jump\\nMotion button : reduced-motion / pause loops\\nع / EN : Arabic / English (RTL)\\n\\nFully offline — no server or internet needed.');
+    alert('AeroBridge — controls\n\n→ / Space : next scene\n← : previous\nHome / End : first / last\nSwipe left / right on touch screens\nClick dots to jump\nMotion button : reduced-motion / pause loops\nع / EN : Arabic / English (RTL)\n\nFully offline — no server or internet needed.');
   };
 
+  try{ if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) document.getElementById('mo').click(); }catch(e){}
   go(0);
 })();
 

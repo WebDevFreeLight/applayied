@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>PMO Portal · Investment Proposal</title>
 <!-- Inline background so there is never a white flash before the stylesheet loads. -->
 <style>html,body{background:#05080f;margin:0;height:100%;overflow:hidden}</style>
@@ -470,6 +470,265 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px;
 .open-meta { margin-top: 40px; }
 .disclaimer { bottom: 96px; }
 
+/* ==========================================================================
+   Responsive "flow" layout: phones, small tablets and very short windows.
+   html.flow is set by controller.js (fx.isFlow: width < 1100px or height < 520px).
+   Desktop never gets .flow, so the scaled 1920x1080 stage above is unchanged.
+   In flow the stage fills the window at 1:1, every scene reflows into a single
+   (or two-column) layout and scrolls vertically inside itself; the HUD sits at
+   the bottom, clear of the home indicator (safe-area insets).
+   ========================================================================== */
+.touch-hint { display: none; }
+@media (hover: none) and (pointer: coarse) {
+  .open-meta .touch-hint { display: inline; }
+  .open-meta .touch-hint ~ span { display: none; }
+}
+
+.flow {
+  --gut: clamp(16px, 4vw, 40px);
+  --scene-pad: max(clamp(16px, min(4vw, 5vh), 40px), env(safe-area-inset-top)) max(var(--gut), env(safe-area-inset-right)) calc(96px + env(safe-area-inset-bottom)) max(var(--gut), env(safe-area-inset-left));
+}
+html.flow, html.flow body { overscroll-behavior: none; }
+.flow #viewport { bottom: auto; height: 100vh; height: 100dvh; }
+.flow #stage { left: 0; top: 0; margin: 0; width: 100%; height: 100%; transform: none; font-size: 16px; }
+.flow .scene, .flow #s-open, .flow #s-dash { padding: var(--scene-pad); overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+
+/* Type scale: fluid between phone and tablet, capped by height on landscape phones. */
+.flow h2 { font-size: clamp(24px, min(6.2vw, 7vh + 10px), 46px); }
+.flow .display { font-size: clamp(34px, min(10vw, 11vh + 6px), 76px); }
+.flow .display-sm { font-size: clamp(26px, min(7vw, 8vh + 6px), 48px); }
+.flow .kicker { font-size: clamp(11px, 3vw, 15px); margin-bottom: 10px; }
+.flow .lede { font-size: clamp(16px, 4.2vw, 21px); margin-top: 18px; }
+.flow .side-label { font-size: 13px; }
+
+/* Touch targets: at least 44px. */
+.flow .btn { font-size: 16px; min-height: 44px; padding: 10px 18px; }
+.flow .btn.big { font-size: 17px; padding: 12px 22px; }
+.flow .btn.small { font-size: 15px; padding: 10px 14px; }
+
+/* 01 Opening */
+.flow .open-left { position: static; width: auto; max-width: 900px; }
+.flow .eyebrow { font-size: clamp(11px, 2.9vw, 15px); line-height: 1.5; }
+.flow .brand { margin: 20px 0 18px; font-size: clamp(20px, 5vw, 26px); flex-wrap: wrap; gap: 8px 14px; }
+.flow .brand-sub { font-size: clamp(13px, 3.4vw, 17px); }
+.flow .brand-mark { width: 30px; height: 30px; }
+.flow .open-cta { flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.flow .open-meta { flex-wrap: wrap; gap: 10px 22px; margin-top: 22px; font-size: 14px; }
+.flow .open-orbit-label { position: static; margin-top: 22px; font-size: 13px; }
+.flow .disclaimer { position: static; margin-top: 12px; font-size: 13px; }
+
+/* 02 Problem: stat cards in a 2-up grid, the "chaos" artefacts become a tilted pile of chips. */
+.flow .problem-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
+.flow .stat-card { padding: 16px 16px 14px; border-radius: 14px; }
+.flow .stat-num { font-size: clamp(34px, 9vw, 60px); }
+.flow .stat-label { font-size: clamp(13px, 3.4vw, 18px); }
+.flow .stat-foot { font-size: 12px; min-height: 0; }
+.flow .chaos { position: static; display: flex; flex-wrap: wrap; gap: 14px 10px; margin-top: 22px; }
+.flow .artefact { position: static; max-width: 100%; white-space: normal; padding: 8px 12px; font-size: 12.5px; }
+.flow .problem-foot { position: static; margin-top: 18px; font-size: 13px; }
+
+/* 03 Opportunity: the value map is cropped to hub + personas (scenes.js) and fills the width. */
+.flow #s-value.active, .flow #s-value.leaving { display: grid; grid-template-columns: minmax(0, 1fr); grid-auto-rows: max-content; align-content: start; gap: 12px 24px; }
+.flow .value-map { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 1060 / 740; }
+.flow .persona .p-ico { font-size: 52px; }
+.flow .persona .p-name { font-size: 36px; }
+.flow .persona .p-role { font-size: 26px; }
+.flow .persona-panel { position: static; width: auto; min-height: 0; padding: 18px; }
+.flow .persona-panel h3 { font-size: clamp(20px, 5vw, 26px); }
+.flow .persona-panel .pp-sub { font-size: 14px; margin-bottom: 10px; }
+.flow .outcome { gap: 12px; padding: 10px 0; }
+.flow .outcome .o-num { font-size: clamp(20px, 5.5vw, 30px); min-width: 90px; }
+.flow .outcome .o-txt { font-size: 15px; }
+.flow .value-hint { position: static; font-size: 13px; }
+
+/* 04 Solution: the module orbit becomes a grid under the core disc. */
+.flow .solution-wrap { position: static; display: grid; gap: 16px; margin-top: 20px; }
+.flow .module-orbit { position: static; width: auto; height: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.flow .module-link { display: none; }
+.flow .core-disc { position: relative; left: auto; top: auto; grid-column: 1 / -1; width: 150px; height: 150px; margin: 0 auto 6px; }
+.flow .core-in b { font-size: 22px; }
+.flow .core-in span { display: block; padding: 0 16px; font-size: 11px; }
+.flow .module { position: relative; left: auto !important; top: auto !important; width: auto; min-height: 44px; padding: 12px 14px; }
+.flow .module .m-ico { font-size: 22px; }
+.flow .module .m-name { font-size: 16px; }
+.flow .module .m-tag { font-size: 12.5px; }
+.flow .module-detail { position: static; width: auto; min-height: 0; padding: 20px; }
+.flow .module-detail h3 { font-size: clamp(22px, 5.5vw, 28px); }
+.flow .module-detail .md-tag { font-size: 14px; margin: 6px 0 12px; }
+.flow .module-detail li { padding: 9px 0 9px 26px; font-size: 15px; }
+.flow .module-detail li::before { top: 16px; }
+.flow .md-metric b { font-size: 24px; }
+.flow .md-metric span { font-size: 13px; }
+.flow .chip-row { position: static; margin-top: 18px; gap: 8px; }
+.flow .chip { padding: 6px 12px; font-size: 13px; }
+
+/* 05 Architecture: diagram full width (two-column variant on narrow screens), panel below/beside. */
+.flow .arch-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 18px; }
+.flow .arch { width: 100%; height: auto; }
+.flow .arch.compact .layer-name { font-size: 18px; }
+.flow .arch.compact .comp text { font-size: 22px; }
+.flow .arch.compact .comp text.sub { font-size: 17px; }
+.flow .btn.trace { font-size: 15px; }
+.flow .trace-steps { min-height: 0; }
+.flow .trace-steps li { font-size: 14px; }
+.flow .arch-detail { min-height: 0; padding: 16px; font-size: 15px; }
+.flow .arch-detail h4 { font-size: 19px; }
+
+/* 06 Use case */
+.flow .journey { margin-top: 16px; }
+.flow .journey-rail { display: block; width: 100%; height: auto; }
+.flow .journey-rail .st text { font-size: 14px; }
+.flow .journey-rail .st text.n { font-size: 15px; }
+.flow .journey-stage { flex-direction: column; gap: 16px; margin-top: 4px; }
+.flow .journey-card { min-height: 0; padding: 20px; }
+.flow .journey-card h3 { font-size: clamp(21px, 5.4vw, 28px); }
+.flow .journey-card .jc-actor { font-size: 13px; margin-bottom: 12px; }
+.flow .journey-card p { font-size: 15.5px; }
+.flow .typed { min-height: 48px; padding: 12px 14px; font-size: 14px; }
+.flow .typed .caret { width: 8px; height: 16px; }
+.flow .formgrid { gap: 8px; }
+.flow .formgrid div { padding: 8px 10px; font-size: 14px; }
+.flow .formgrid span { font-size: 11px; }
+.flow .ai-note { font-size: 15px; }
+.flow .project-card { width: auto; padding: 20px; }
+.flow .pc-head { font-size: 19px; }
+.flow .pc-row { flex-wrap: wrap; gap: 4px 12px; font-size: 14.5px; }
+.flow .pc-log div { font-size: 12px; }
+.flow .pill { font-size: 13px !important; }
+.flow .journey-controls { flex-wrap: wrap; gap: 10px; }
+.flow .decision { flex-wrap: wrap; gap: 8px; }
+
+/* 07 Dashboard */
+.flow .dash-top { flex-wrap: wrap; gap: 12px; }
+.flow .dash-title { flex-wrap: wrap; gap: 12px; font-size: clamp(24px, 6vw, 36px); }
+.flow .tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.flow .tab { flex: 1 1 auto; min-height: 44px; padding: 10px 12px; font-size: 14.5px; white-space: nowrap; }
+@media (max-width: 599px) { .flow .tabs { width: 100%; } }
+.flow .slicer { gap: 6px; margin-top: 14px; }
+.flow .slice { min-width: 44px; min-height: 44px; padding: 6px 10px; font-size: 13px; }
+.flow .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.flow .kpi { padding: 12px 14px; }
+.flow .kpi-l { font-size: 11.5px; }
+.flow .kpi-v { font-size: clamp(22px, 6vw, 32px); }
+.flow .kpi-s { font-size: 11.5px; }
+.flow .dash-body { grid-template-columns: minmax(0, 1fr); height: auto; gap: 12px; margin-top: 12px; }
+.flow .dash-body .panel { height: 300px; }
+.flow .dash-body .p-c { height: 340px; }
+.flow .panel { padding: 14px; }
+.flow .panel-t { flex-wrap: wrap; font-size: 14.5px; }
+.flow .panel-t .hint { font-size: 12px; }
+/* Charts are drawn at the container's real size (charts.js); the legend sits below the chart. */
+.flow .viz { display: flex; flex-direction: column; }
+.flow .viz > svg.chart { flex: 1 1 0; min-height: 0; height: auto; }
+.flow .viz.has-legend { padding-bottom: 0; }
+.flow .viz .legend { position: static; margin-top: 6px; gap: 6px 12px; font-size: 12px; }
+.flow .drill { flex: 1 1 0; height: auto; min-height: 0; font-size: 14px; }
+.flow .insight { flex-wrap: wrap; gap: 8px 12px; padding: 12px 14px; font-size: 15px; }
+
+/* 08 Simulator */
+.flow .sim { grid-template-columns: minmax(0, 1fr); gap: 18px; margin-top: 18px; }
+.flow .sim-inputs { gap: 12px; }
+.flow .ctl { padding: 14px 16px; font-size: 15px; }
+.flow .ctl b { font-size: 18px; }
+.flow input[type=range] { height: 44px; }
+.flow .seg button { min-height: 44px; padding: 8px 10px; font-size: 14px; }
+.flow .assump { font-size: 14px; }
+.flow .assump summary { padding: 12px 0; line-height: 20px; }
+.flow .sim-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.flow .kpi.big .kpi-v { font-size: clamp(22px, 6vw, 32px); }
+.flow .sim-chart { height: clamp(220px, 60vw, 340px); padding-left: 20px; padding-right: 20px; }
+.flow .payback-flag { top: 34px; font-size: 12px; }
+.flow .split-legend { flex-wrap: wrap; gap: 6px 18px; font-size: 14px; }
+
+/* 09 Automation & AI */
+.flow .auto { grid-template-columns: minmax(0, 1fr); height: auto; gap: 16px; margin-top: 18px; }
+.flow .auto-head { flex-wrap: wrap; gap: 10px; }
+.flow .auto-head .seg { width: 100%; }
+.flow .cycle { gap: 12px; }
+.flow .cyc-row { grid-template-columns: minmax(0, 1fr) 52px; gap: 6px 12px; }
+.flow .cyc-row > div:first-child { grid-column: 1 / -1; }
+.flow .cyc-name { font-size: 15px; }
+.flow .cyc-how { min-height: 0; font-size: 12.5px; }
+.flow .cyc-track { height: 20px; }
+.flow .cyc-h { font-size: 15px; }
+.flow .cycle-total { gap: 10px; margin-top: 12px; font-size: 14px; }
+.flow .cycle-total b { font-size: clamp(32px, 9vw, 44px); }
+.flow .switch { min-height: 44px; font-size: 14px; }
+.flow .gateway { height: auto; }
+.flow .gateway.compact .gw-node text { font-size: 14px; }
+.flow .gateway.compact .gw-hub text { font-size: 19px; }
+.flow .gw-status { font-size: 13px; }
+.flow .ai-caps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.flow .cap b { font-size: 14.5px; }
+.flow .cap span { font-size: 12.5px; }
+
+/* 10 Roadmap */
+.flow .road { margin-top: 14px; }
+.flow .road-svg { display: block; width: 100%; height: auto; }
+.flow .road-svg .ph .ph-t { font-size: 17px; }
+.flow .road-svg .ph .ph-d { font-size: 13px; }
+.flow .road-svg.vertical .ph .ph-t, .flow .road-svg.vertical .ph .ph-d, .flow .road-svg.vertical .now { text-anchor: start; }
+.flow .road-bottom { grid-template-columns: minmax(0, 1fr); height: auto; gap: 14px; }
+.flow .phase-detail h3 { font-size: clamp(20px, 5vw, 24px); }
+.flow .phase-detail .pd-when { font-size: 13px; }
+.flow .phase-detail li { font-size: 15px; }
+.flow .pd-cost { font-size: 15px; }
+.flow .gates li { font-size: 14.5px; }
+.flow .ask-list { font-size: 16px; }
+.flow .ask-case { font-size: 13px; }
+.flow .closing { position: static; margin-top: 24px; }
+
+/* Presenter HUD and help */
+.flow .hud { position: fixed; bottom: calc(10px + env(safe-area-inset-bottom)); max-width: calc(100% - 16px); gap: 2px; padding: 4px 6px; }
+.flow .hud.idle { opacity: .55; }
+.flow .hud-btn { flex: none; width: 44px; height: 44px; }
+.flow .hud-progress, .flow .hud-sep { display: none; }
+.flow .hud-label { min-width: 0; padding: 0 6px; font-size: 14px; }
+.flow .help-card { width: min(620px, calc(100% - 32px)); max-height: calc(100% - 32px); overflow-y: auto; padding: 22px; }
+.flow .help-card h3 { font-size: 22px; }
+.flow .help-card dl { grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; font-size: 15px; }
+.flow .help-card p { font-size: 14px; }
+
+/* Breakpoints inside the flow layout */
+@media (max-width: 599px) {
+  .flow .persona .p-role, .flow .hud-title { display: none; }
+}
+@media (max-width: 479px) {
+  .flow .hud-btn[data-action="home"], .flow .hud-btn[data-action="fullscreen"] { display: none; }
+  .flow .help-card dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .flow .help-card dd { margin-bottom: 8px; }
+}
+@media (max-width: 420px) {
+  .flow .formgrid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (min-width: 600px) {
+  .flow .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .flow .ai-caps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 700px) and (orientation: landscape) {
+  .flow #s-value.active, .flow #s-value.leaving { grid-template-columns: minmax(0, 1.15fr) minmax(280px, 1fr); }
+  .flow #s-value .scene-head, .flow #s-value .value-hint { grid-column: 1 / -1; }
+}
+@media (min-width: 700px) {
+  .flow .solution-wrap { grid-template-columns: minmax(0, 1.2fr) minmax(280px, 1fr); align-items: start; }
+  .flow .arch-wrap.compact { grid-template-columns: minmax(0, 1.15fr) minmax(250px, 1fr); align-items: start; }
+  .flow .dash-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .flow .dash-body .p-a { grid-column: 1 / -1; height: 320px; }
+}
+@media (min-width: 760px) {
+  .flow .journey-stage { flex-direction: row; }
+  .flow .project-card { flex: none; width: 44%; }
+  .flow .road-bottom { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .flow .road-bottom .ask { grid-column: 1 / -1; }
+}
+@media (min-width: 900px) {
+  .flow .problem-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .flow .sim { grid-template-columns: minmax(300px, .9fr) minmax(0, 1.3fr); }
+}
+@media (min-width: 1000px) {
+  .flow .auto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
 </style>
 </head>
 <body>
@@ -495,7 +754,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px;
         <button class="btn ghost big" id="resume-btn" hidden>Resume at scene <span id="resume-n"></span></button>
       </div>
       <div class="open-meta" data-anim="fade">
-        <span><kbd>←</kbd><kbd>→</kbd> navigate</span><span><kbd>F</kbd> full screen</span><span><kbd>P</kbd> pause motion</span><span><kbd>?</kbd> help</span>
+        <span class="touch-hint">Swipe left or right to change scene</span><span><kbd>←</kbd><kbd>→</kbd> navigate</span><span><kbd>F</kbd> full screen</span><span><kbd>P</kbd> pause motion</span><span><kbd>?</kbd> help</span>
       </div>
     </div>
     <div class="open-orbit-label" data-anim="fade"><span class="dot"></span>8 live projects in the pilot portfolio</div>
@@ -1159,6 +1418,14 @@ PMO.fx = (function () {
     return animate(scope, dot, frames, { duration, delay, iterations, easing: 'linear', fill: 'none' });
   }
 
+  /* Responsive layout mode.
+     "stage": the fixed 1920×1080 stage, uniformly scaled (desktop, large tablets).
+     "flow":  phones, small tablets and very short windows — the stage fills the
+              window at 1:1, scenes reflow and scroll vertically (styles.css, .flow).
+     The scaled stage is kept wherever it renders text at a readable size, so
+     1366×768 and 1920×1080 (including browser chrome) are untouched. */
+  function isFlow() { return window.innerWidth < 1100 || window.innerHeight < 520; }
+
   function setReduced(v) { state.reduced = v; document.documentElement.classList.toggle('reduced', v); }
   function setPaused(v) {
     state.paused = v;
@@ -1166,7 +1433,7 @@ PMO.fx = (function () {
     document.getAnimations().forEach(a => { if (a.effect && a.effect.getTiming().iterations === Infinity) { v ? a.pause() : a.play(); } });
   }
 
-  return { state, EASE, createScope, animate, splitWords, revealWords, rise, countUp, drawPath, travel, setReduced, setPaused };
+  return { state, EASE, createScope, animate, splitWords, revealWords, rise, countUp, drawPath, travel, setReduced, setPaused, isFlow };
 })();
 
 </script>
@@ -1191,10 +1458,30 @@ PMO.charts = (function () {
     return n;
   }
 
+  // Chart coordinate size. On the scaled stage the authored size is used (unchanged).
+  // In the responsive "flow" layout the chart is drawn at the container's real pixel
+  // size, so axis text stays at its CSS size and nothing is stretched.
+  function dims(container, w, h) {
+    if (!PMO.fx.isFlow()) return [w, h];
+    // Once drawn, measure the chart's own box (the legend sits beside it in flow layout).
+    const own = container._s && container._s.svg;
+    if (own && own.isConnected && own.clientWidth > 40 && own.clientHeight > 40) return [own.clientWidth, own.clientHeight];
+    const cs = getComputedStyle(container);
+    const cw = container.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const ch = container.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    return cw > 40 && ch > 40 ? [Math.round(cw), Math.round(ch)] : [w, h];
+  }
+
   // One SVG per container, created once. Returns { svg, keyed(key, tag, layer) }.
   function surface(container, w, h) {
+    if (container._s) {
+      // Flow layout: keep the viewBox in step with the container after a resize.
+      const vb = `0 0 ${w} ${h}`;
+      if (container._s.svg.getAttribute('viewBox') !== vb) container._s.svg.setAttribute('viewBox', vb);
+      container._s.svg.setAttribute('preserveAspectRatio', PMO.fx.isFlow() ? 'xMidYMid meet' : 'none');
+    }
     if (!container._s) {
-      const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, class: 'chart', preserveAspectRatio: 'none' });
+      const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, class: 'chart', preserveAspectRatio: PMO.fx.isFlow() ? 'xMidYMid meet' : 'none' });
       container.innerHTML = '';
       container.appendChild(svg);
       const layers = {};
@@ -1230,7 +1517,7 @@ PMO.charts = (function () {
 
   /* Grouped bars: series = [{name, cls}], rows = [{label, values:[...]}] */
   function groupedBars(container, rows, series, opts = {}) {
-    const W = opts.w || 640, H = opts.h || 300, pad = { l: 48, r: 12, t: 16, b: 34 };
+    const [W, H] = dims(container, opts.w || 640, opts.h || 300), pad = { l: 48, r: 12, t: 16, b: 34 };
     const s = surface(container, W, H); s.begin();
     const max = opts.max || Math.max(0.0001, ...rows.flatMap(r => r.values)) * 1.12;
     const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
@@ -1260,7 +1547,7 @@ PMO.charts = (function () {
 
   /* Multi-line chart. lines = [{key, values, cls}], labels = x labels */
   function lines(container, linesData, labels, opts = {}) {
-    const W = opts.w || 640, H = opts.h || 280, pad = { l: 44, r: 16, t: 14, b: 30 };
+    const [W, H] = dims(container, opts.w || 640, opts.h || 280), pad = { l: 44, r: 16, t: 14, b: 30 };
     const s = surface(container, W, H); s.begin();
     const all = linesData.flatMap(l => l.values);
     const max = opts.max !== undefined ? opts.max : Math.max(...all) * 1.1;
@@ -1357,7 +1644,7 @@ PMO.charts = (function () {
 
   /* Horizontal stacked bars. rows = [{label, parts:{k:v}}], keys = [{k, cls, name}] */
   function stacked(container, rows, keys, opts = {}) {
-    const W = opts.w || 600, H = opts.h || 300, pad = { l: 56, r: 16, t: 6, b: 6 };
+    const [W, H] = dims(container, opts.w || 600, opts.h || 300), pad = { l: 56, r: 16, t: 6, b: 6 };
     const s = surface(container, W, H); s.begin();
     const max = Math.max(1, ...rows.map(r => keys.reduce((a, k) => a + (r.parts[k.k] || 0), 0)));
     const rh = (H - pad.t - pad.b) / Math.max(1, rows.length);
@@ -1385,7 +1672,7 @@ PMO.charts = (function () {
       const t = e.target.closest && e.target.closest('[data-tip]');
       if (!t) { tip.classList.remove('on'); return; }
       tip.textContent = t.dataset.tip;
-      const r = root.getBoundingClientRect(), k = r.width / 1920;
+      const r = root.getBoundingClientRect(), k = PMO.fx.isFlow() ? 1 : r.width / 1920;
       tip.style.transform = `translate(${(e.clientX - r.left) / k + 14}px, ${(e.clientY - r.top) / k + 14}px)`;
       tip.classList.add('on');
     });
@@ -1413,28 +1700,45 @@ PMO.charts = (function () {
    ========================================================================== */
 PMO.constellation = (function () {
   'use strict';
-  const W = 1920, H = 1080;
+  // Internal size. Fixed 1920×1080 on the scaled stage; in the responsive "flow"
+  // layout the canvas matches the window (× devicePixelRatio) and the layouts
+  // below scale their radii by S, so circles stay round on portrait phones.
+  let W = 1920, H = 1080, S = 1, DPR = 1, fluid = false;
   let ctx, canvas, layout = 'sphere', mode = 'neutral', t = 0, raf = null;
   const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
   const COLORS = { neutral: [124, 196, 255], alarm: [255, 107, 94], warn: [245, 179, 66], healthy: [45, 212, 191], ai: [139, 124, 255] };
 
-  const nodes = PMO.data.projects.map((p, i) => ({ id: p.id, x: W / 2, y: H / 2, tx: W / 2, ty: H / 2, r: 6 + p.budget * 1.4, phase: i * 0.8, col: [124, 196, 255], tcol: [124, 196, 255], alpha: 1, talpha: 1 }));
+  const nodes = PMO.data.projects.map((p, i) => ({ id: p.id, x: W / 2, y: H / 2, tx: W / 2, ty: H / 2, r0: 6 + p.budget * 1.4, r: 6 + p.budget * 1.4, phase: i * 0.8, col: [124, 196, 255], tcol: [124, 196, 255], alpha: 1, talpha: 1 }));
   const dust = Array.from({ length: 150 }, (_, i) => ({ a: Math.random() * Math.PI * 2, d: 0.15 + Math.random() * 0.85, z: Math.random(), s: 0.4 + Math.random() * 1.6, sp: 0.0003 + Math.random() * 0.0009, i }));
 
   // Target positions per layout. Returns [x,y] for node index i.
   const LAYOUTS = {
-    sphere: (i, n, tm) => { const a = (i / n) * Math.PI * 2 + tm * 0.00012; return [W * 0.68 + Math.cos(a) * 300, H * 0.5 + Math.sin(a) * 300 * Math.cos(a * 0.5 + 0.6)]; },
+    sphere: (i, n, tm) => { const a = (i / n) * Math.PI * 2 + tm * 0.00012; return [W * 0.68 + Math.cos(a) * 300 * S, H * 0.5 + Math.sin(a) * 300 * S * Math.cos(a * 0.5 + 0.6)]; },
     chaos:  (i) => { const pts = [[0.58,0.2],[0.88,0.34],[0.66,0.78],[0.94,0.7],[0.54,0.52],[0.8,0.12],[0.72,0.46],[0.9,0.9]]; return [pts[i][0] * W, pts[i][1] * H]; },
-    ring:   (i, n) => { const a = (i / n) * Math.PI * 2 - Math.PI / 2; return [W * 0.5 + Math.cos(a) * 360, H * 0.53 + Math.sin(a) * 360]; },
-    orbit:  (i, n, tm) => { const a = (i / n) * Math.PI * 2 + tm * 0.00006; return [W * 0.5 + Math.cos(a) * 470, H * 0.52 + Math.sin(a) * 300]; },
+    ring:   (i, n) => { const a = (i / n) * Math.PI * 2 - Math.PI / 2; return [W * 0.5 + Math.cos(a) * 360 * S, H * 0.53 + Math.sin(a) * 360 * S]; },
+    orbit:  (i, n, tm) => { const a = (i / n) * Math.PI * 2 + tm * 0.00006; return [W * 0.5 + Math.cos(a) * 470 * S, H * 0.52 + Math.sin(a) * 300 * S]; },
     top:    (i, n) => [W * 0.30 + (W * 0.62 * i) / (n - 1), 34],
     left:   (i, n) => [34, H * 0.2 + (H * 0.62 * i) / (n - 1)],
     line:   (i, n) => [W * 0.1 + (W * 0.8 * i) / (n - 1), H * 0.9],
-    core:   () => [820, 600]
+    core:   () => [W * 820 / 1920, H * 600 / 1080]
   };
 
+  function resize(initial) {
+    if (PMO.fx.isFlow()) {
+      W = Math.max(1, window.innerWidth); H = Math.max(1, window.innerHeight);
+      S = Math.min(W, H) / 1080; DPR = Math.min(2, window.devicePixelRatio || 1); fluid = true;
+    } else { W = 1920; H = 1080; S = 1; DPR = 1; fluid = false; }
+    if (canvas.width !== Math.round(W * DPR) || canvas.height !== Math.round(H * DPR)) {
+      canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+    }
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    nodes.forEach(n => { n.r = n.r0 * Math.max(0.6, Math.min(1, S * 1.6)); });
+    if (!initial) setLayout(layout, mode, true);
+  }
+
   function init(el) {
-    canvas = el; canvas.width = W; canvas.height = H; ctx = canvas.getContext('2d');
+    canvas = el; ctx = canvas.getContext('2d');
+    resize(true);
     document.addEventListener('pointermove', (e) => { mouse.tx = (e.clientX / window.innerWidth - 0.5); mouse.ty = (e.clientY / window.innerHeight - 0.5); });
     document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
     setLayout('sphere', 'neutral', true);
@@ -1450,7 +1754,9 @@ PMO.constellation = (function () {
       if (mode === 'alarm') c = p.eac > p.budget * 1.02 ? COLORS.alarm : (i % 2 ? COLORS.warn : COLORS.neutral);
       if (mode === 'health') c = p.eac > p.budget * 1.05 ? COLORS.alarm : p.eac > p.budget ? COLORS.warn : COLORS.healthy;
       // Side/edge layouts are a quiet reminder of the portfolio, so they are dimmed.
-      n.tcol = c.slice(); n.talpha = name === 'core' ? 0 : (name === 'top' || name === 'left' || name === 'line') ? 0.35 : 1;
+      // On small screens (fluid) the content sits on top of the canvas, so it is quieter still.
+      const edge = name === 'top' || name === 'left' || name === 'line';
+      n.tcol = c.slice(); n.talpha = name === 'core' ? 0 : edge ? (fluid ? 0.16 : 0.35) : (fluid ? 0.7 : 1);
       if (snap) { const [x, y] = LAYOUTS[name](i, nodes.length, t); n.x = n.tx = x; n.y = n.ty = y; n.col = c.slice(); }
     });
     if (PMO.fx.state.reduced) drawFrame(performance.now(), true);
@@ -1470,7 +1776,7 @@ PMO.constellation = (function () {
   function drawFrame(now, snap) {
     t = now;
     mouse.x += (mouse.tx - mouse.x) * 0.04; mouse.y += (mouse.ty - mouse.y) * 0.04;
-    const px = mouse.x * 40, py = mouse.y * 30;
+    const px = mouse.x * 40 * S, py = mouse.y * 30 * S;
     ctx.clearRect(0, 0, W, H);
 
     // Ambient dust with parallax depth (z) — gives the stage its sense of depth.
@@ -1497,8 +1803,9 @@ PMO.constellation = (function () {
     for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
       const a = nodes[i], b = nodes[j];
       const dist = Math.hypot(a.x - b.x, a.y - b.y);
-      if (dist > 520) continue;
-      const al = (1 - dist / 520) * 0.22 * Math.min(a.alpha, b.alpha);
+      const reach = 520 * Math.max(S, 0.45);
+      if (dist > reach) continue;
+      const al = (1 - dist / reach) * 0.22 * Math.min(a.alpha, b.alpha);
       ctx.strokeStyle = `rgba(${a.col.map(Math.round).join(',')},${al})`;
       ctx.beginPath(); ctx.moveTo(a.x + px * 0.6, a.y + py * 0.6); ctx.lineTo(b.x + px * 0.6, b.y + py * 0.6); ctx.stroke();
     }
@@ -1512,13 +1819,14 @@ PMO.constellation = (function () {
       g.addColorStop(0, `rgba(${c},${0.45 * n.alpha})`); g.addColorStop(1, `rgba(${c},0)`);
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, n.r * 5 * pulse, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = `rgba(${c},${n.alpha})`; ctx.beginPath(); ctx.arc(x, y, n.r * 0.55, 0, Math.PI * 2); ctx.fill();
+      if (fluid && n.talpha < 0.5) return; // no code labels behind text on small screens
       ctx.font = '600 15px "JetBrains Mono", monospace';
       ctx.fillStyle = `rgba(220,232,250,${0.7 * n.alpha})`;
       ctx.fillText(n.id, x + n.r + 6, y - n.r - 4);
     });
   }
 
-  return { init, setLayout, setVisible, start, stop, drawFrame };
+  return { init, resize, setLayout, setVisible, start, stop, drawFrame };
 })();
 
 </script>
@@ -1545,6 +1853,8 @@ PMO.scenes = (function () {
   const $$ = (sel, root) => [...(root || document).querySelectorAll(sel)];
   const NS = 'http://www.w3.org/2000/svg';
   const svgEl = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; };
+  // Responsive "flow" layout (phones / small tablets): see fx.isFlow and styles.css.
+  const flow = () => fx.isFlow();
   const aed = (m) => 'AED ' + (m >= 1 ? m.toFixed(m >= 10 ? 1 : 2) + 'M' : Math.round(m * 1000) + 'K');
   const store = {
     get(k, d) { try { const v = localStorage.getItem('pmo.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
@@ -1620,14 +1930,17 @@ PMO.scenes = (function () {
       introduce(ctx);
       const spokes = $('#value-spokes'), people = $('#value-personas');
       spokes.innerHTML = ''; people.innerHTML = '';
+      // Flow layout: crop the 1920x1080 canvas to the hub + personas so they fill the width.
+      const F = flow();
+      $('.value-map', ctx.el).setAttribute('viewBox', F ? '290 240 1060 740' : '0 0 1920 1080');
       PERSONAS.forEach((p, i) => {
         const path = svgEl('path', { d: `M${HUB.x} ${HUB.y} Q ${(HUB.x + p.x) / 2 + (i % 2 ? 60 : -60)} ${(HUB.y + p.y) / 2} ${p.x} ${p.y}`, class: 'spoke', id: 'spoke-' + p.id }, spokes);
         fx.drawPath(path, 900, 500 + i * 120, ctx.scope);
         const g = svgEl('g', { class: 'persona', tabindex: 0, role: 'button', 'aria-label': p.name, 'data-id': p.id, transform: `translate(${p.x} ${p.y})` }, people);
         svgEl('circle', { r: 74 }, g);
         svgEl('text', { class: 'p-ico', y: -6 }, g).textContent = p.ico;
-        svgEl('text', { class: 'p-name', y: 106 }, g).textContent = p.name;
-        svgEl('text', { class: 'p-role', y: 130 }, g).textContent = p.role;
+        svgEl('text', { class: 'p-name', y: F ? 116 : 106 }, g).textContent = p.name;
+        svgEl('text', { class: 'p-role', y: F ? 150 : 130 }, g).textContent = p.role;
         fx.animate(ctx.scope, g, [{ opacity: 0, transform: `translate(${HUB.x}px, ${HUB.y}px) scale(.2)` }, { opacity: 1, transform: `translate(${p.x}px, ${p.y}px) scale(1)` }],
           { duration: 1000, delay: 400 + i * 120, fill: 'none' });
         const pick = () => this.select(ctx, p.id, true);
@@ -1685,7 +1998,8 @@ PMO.scenes = (function () {
         b.style.left = (x - 105) + 'px'; b.style.top = (y - 48) + 'px';
         b.innerHTML = `<div class="m-ico">${m.ico}</div><div class="m-name">${m.name}</div><div class="m-tag">${m.tag}</div>`;
         orbit.appendChild(b);
-        fx.animate(ctx.scope, b, [{ opacity: 0, transform: `translate(${cx - x}px, ${cy - y}px) scale(.3)` }, { opacity: 1, transform: 'none' }],
+        // Flow layout lays the modules out as a grid (styles.css), so they simply rise in.
+        fx.animate(ctx.scope, b, [{ opacity: 0, transform: flow() ? 'translateY(24px) scale(.9)' : `translate(${cx - x}px, ${cy - y}px) scale(.3)` }, { opacity: 1, transform: 'none' }],
           { duration: 900, delay: 300 + i * 70, easing: 'cubic-bezier(.2,1.2,.3,1)', fill: 'backwards' });
         ctx.scope.on(b, 'click', () => this.select(ctx, m.id));
       });
@@ -1727,6 +2041,29 @@ PMO.scenes = (function () {
     { id: 'llm', l: 3, x: 640, w: 550, t: '12 LLM providers', s: 'Groq → OpenRouter → Cerebras → Gemini → …', d: 'Groq (Llama 3.3 70B) is the default; OpenRouter, Cerebras, Gemini, SambaNova, Together, HuggingFace, Qwen, DeepSeek, Mistral, NVIDIA NIM and Grok follow in order.' },
     { id: 'mail', l: 3, x: 120, w: 380, t: 'Email & integrations', s: 'ERP cost feed · SSO (phase 1)', d: 'Planned integrations for the scale-up: corporate SSO and an ERP feed for posted costs.' }
   ].map(c => ({ ...c, y: LAYERS[c.l].y + (c.l === 3 ? 44 : 46), h: 76 }));
+  // Narrow screens: the same layers and components re-flowed into two columns
+  // (a portrait diagram) so labels stay legible instead of shrinking to ~5px.
+  const ARCH_FULL = ['gw', 'db', 'llm', 'mail'];
+  function archGeometry(compact) {
+    if (!compact) return { layers: LAYERS, comps: COMPS, vb: '0 0 1240 720', lw: 1230, ty: [33, 56] };
+    const W = 640, pad = 16, gap = 14, ch = 90, colW = (W - pad * 2 - gap) / 2;
+    const layers = [], comps = [];
+    let y = 8;
+    LAYERS.forEach((L, li) => {
+      const top = y; let row = 0, col = 0;
+      COMPS.filter(c => c.l === li).forEach(c => {
+        const full = ARCH_FULL.includes(c.id);
+        if (full && col === 1) { row++; col = 0; }
+        comps.push({ ...c, x: pad + (full ? 0 : col * (colW + gap)), w: full ? W - pad * 2 : colW, y: top + 44 + row * (ch + gap), h: ch });
+        if (full || col === 1) { row++; col = 0; } else col = 1;
+      });
+      if (col === 1) row++;
+      const h = 44 + row * (ch + gap) - gap + 16;
+      layers.push({ ...L, y: top, h });
+      y = top + h + 22;
+    });
+    return { layers, comps, vb: `0 0 ${W} ${y - 14}`, lw: W, ty: [40, 66] };
+  }
   const TRACES = {
     dashboard: { hops: [['spa', 'auth'], ['auth', 'api'], ['api', 'db'], ['db', 'api'], ['api', 'charts']],
       steps: ['Executive opens the dashboard tab', 'JWT validated; pmo:dashboard:view checked', 'KPIs & analytics endpoints query SQL Server', 'Aggregates returned for the cutoff date', 'ECharts renders 18 KPIs and 9 visuals'] },
@@ -1741,19 +2078,22 @@ PMO.scenes = (function () {
     enter(ctx) {
       introduce(ctx);
       const svg = $('#arch-svg'); svg.innerHTML = '';
-      const center = (id) => { const c = COMPS.find(x => x.id === id); return { x: c.x + c.w / 2, y: c.y + c.h / 2, c }; };
-      LAYERS.forEach((L, i) => {
+      const compact = flow() && $('.arch-wrap', ctx.el).clientWidth < 900;
+      const geo = archGeometry(compact);
+      svg.setAttribute('viewBox', geo.vb); svg.classList.toggle('compact', compact); $('.arch-wrap', ctx.el).classList.toggle('compact', compact);
+      const center = (id) => { const c = geo.comps.find(x => x.id === id); return { x: c.x + c.w / 2, y: c.y + c.h / 2, c }; };
+      geo.layers.forEach((L, i) => {
         const g = svgEl('g', {}, svg);
-        svgEl('rect', { x: 0, y: L.y, width: 1230, height: L.h, rx: 14, class: 'layer-bg' }, g);
+        svgEl('rect', { x: 0, y: L.y, width: geo.lw, height: L.h, rx: 14, class: 'layer-bg' }, g);
         svgEl('text', { x: 18, y: L.y + 26, class: 'layer-name' }, g).textContent = L.name;
         fx.animate(ctx.scope, g, [{ opacity: 0, transform: 'translateY(30px)' }, { opacity: 1, transform: 'none' }], { duration: 700, delay: 200 + i * 140 });
       });
       this.wires = svgEl('g', {}, svg);
-      COMPS.forEach((c, i) => {
+      geo.comps.forEach((c, i) => {
         const g = svgEl('g', { class: 'comp', 'data-id': c.id, tabindex: 0, role: 'button', 'aria-label': c.t }, svg);
         svgEl('rect', { x: c.x, y: c.y, width: c.w, height: c.h, rx: 10 }, g);
-        svgEl('text', { x: c.x + c.w / 2, y: c.y + 33 }, g).textContent = c.t;
-        svgEl('text', { x: c.x + c.w / 2, y: c.y + 56, class: 'sub' }, g).textContent = c.s;
+        svgEl('text', { x: c.x + c.w / 2, y: c.y + geo.ty[0] }, g).textContent = c.t;
+        svgEl('text', { x: c.x + c.w / 2, y: c.y + geo.ty[1], class: 'sub' }, g).textContent = c.s;
         fx.animate(ctx.scope, g, [{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: 500 + i * 45 });
         const pick = () => this.inspect(c);
         ctx.scope.on(g, 'click', pick);
@@ -1784,10 +2124,11 @@ PMO.scenes = (function () {
         ctx.scope.timeout(() => {
           if (run !== this.runId) return;
           const A = this.center(a), B = this.center(b);
-          const sameRow = A.c.l === B.c.l;
+          const sameRow = Math.abs(A.y - B.y) < 1; // same layer on desktop; same row in the 2-column layout
           const y1 = sameRow ? A.y : A.y + (B.y > A.y ? A.c.h / 2 : -A.c.h / 2);
           const y2 = sameRow ? B.y : B.y + (B.y > A.y ? -B.c.h / 2 : B.c.h / 2);
-          const d = sameRow ? `M${A.x} ${A.y - 38} C ${A.x} ${A.y - 80}, ${B.x} ${B.y - 80}, ${B.x} ${B.y - 38}` : `M${A.x} ${y1} C ${A.x} ${(y1 + y2) / 2}, ${B.x} ${(y1 + y2) / 2}, ${B.x} ${y2}`;
+          const hh = A.c.h / 2;
+          const d = sameRow ? `M${A.x} ${A.y - hh} C ${A.x} ${A.y - hh - 42}, ${B.x} ${B.y - hh - 42}, ${B.x} ${B.y - hh}` : `M${A.x} ${y1} C ${A.x} ${(y1 + y2) / 2}, ${B.x} ${(y1 + y2) / 2}, ${B.x} ${y2}`;
           const w = svgEl('path', { d, class: 'wire lit' }, this.wires);
           fx.drawPath(w, hopMs * 0.7, 0, ctx.scope);
           $$('#arch-svg .comp').forEach(g => { if (g.dataset.id === a || g.dataset.id === b) g.classList.add('hot'); });
@@ -1807,13 +2148,18 @@ PMO.scenes = (function () {
     enter(ctx) {
       introduce(ctx);
       const rail = $('#journey-rail'); rail.innerHTML = '';
-      const xs = STEPS.map((_, i) => 90 + i * 380);
+      // Flow layout: draw the rail in real pixels across the available width.
+      const RW = flow() ? Math.max(300, $('.journey', ctx.el).clientWidth) : 0;
+      const rpad = RW ? Math.max(40, Math.min(90, RW * 0.06)) : 0, rstep = RW ? (RW - rpad * 2) / (STEPS.length - 1) : 380;
+      rail.setAttribute('viewBox', RW ? `0 0 ${RW} 150` : '0 0 1700 160');
+      const xs = STEPS.map((_, i) => (RW ? rpad : 90) + i * rstep);
       svgEl('path', { d: `M${xs[0]} 60 L${xs[xs.length - 1]} 60`, class: 'rail' }, rail);
       this.fill = svgEl('path', { d: `M${xs[0]} 60 L${xs[xs.length - 1]} 60`, class: 'rail-fill' }, rail);
       this.railLen = xs[xs.length - 1] - xs[0];
       this.fill.style.strokeDasharray = this.railLen; this.fill.style.transition = 'stroke-dashoffset .8s cubic-bezier(.2,.75,.15,1), stroke .4s';
       STEPS.forEach((s, i) => {
         const g = svgEl('g', { class: 'st', 'data-i': i, transform: `translate(${xs[i]} 60)`, role: 'button', tabindex: 0, 'aria-label': 'Step ' + (i + 1) + ': ' + s }, rail);
+        if (RW) svgEl('rect', { x: -rstep / 2, y: -44, width: rstep, height: 120, fill: 'transparent', class: 'hit' }, g); // >=44px touch target
         svgEl('circle', { r: 24 }, g);
         svgEl('text', { class: 'n', y: 6 }, g).textContent = i + 1;
         svgEl('text', { y: 66 }, g).textContent = s;
@@ -2080,6 +2426,7 @@ PMO.scenes = (function () {
       const lo = Math.min(-r.invest * 1.1, ...r.cash), hi = Math.max(r.invest * 0.5, ...r.cash) * 1.08;
       const g = C.lines($('#sim-viz'), [{ key: 'cash', values: r.cash, cls: r.net3y >= 0 ? 'c-teal' : 'c-coral' }], labels, { area: true, min: lo, max: hi, zero: 0, w: 1060, h: 340, tick: (v) => v.toFixed(1) });
       const flag = $('#payback-flag');
+      flag.style.top = flow() ? ($('#sim-viz').offsetTop + 2) + 'px' : ''; // below a wrapped title on small screens
       if (r.payback) { flag.style.opacity = 1; flag.textContent = `Payback · M${r.payback}`; flag.style.left = (20 + (g.X(r.payback - 1) / g.W) * ($('#sim-viz').clientWidth || 1000)) + 'px'; }
       else flag.style.opacity = 0;
       const tot = r.overrunAvoided + r.labour || 1;
@@ -2102,22 +2449,29 @@ PMO.scenes = (function () {
       ctx.scope.timeout(() => this.renderCycle(ctx), 400);
       // Gateway diagram
       const svg = $('#gateway'); svg.innerHTML = '';
+      // Narrow panel: portal + gateway on top, the 12 providers in a 3-column grid below.
+      const compact = flow() && $('.auto-right', ctx.el).clientWidth < 600;
+      svg.setAttribute('viewBox', compact ? '0 0 420 420' : '0 0 760 330'); svg.classList.toggle('compact', compact);
+      const G = compact
+        ? { portal: [16, 22, 130, 56], hub: [196, 8, 208, 84], inWire: 'M146 50 L196 50', hubT: [300, 44, 70],
+            node: (i) => [10 + (i % 3) * 137, 132 + Math.floor(i / 3) * 72, 126, 48], wire: (x, y, w) => `M300 92 C 300 112, ${x + w / 2} ${y - 24}, ${x + w / 2} ${y}` }
+        : { portal: [10, 135, 120, 60], hub: [180, 120, 150, 90], inWire: 'M130 165 L180 165', hubT: [255, 160, 184],
+            node: (i) => [400 + Math.floor(i / 4) * 125, 30 + (i % 4) * 75, 115, 44], wire: (x, y) => `M330 165 C 365 165, 365 ${y + 22}, ${x} ${y + 22}` };
       const portal = svgEl('g', { class: 'gw-hub' }, svg);
-      svgEl('rect', { x: 10, y: 135, width: 120, height: 60, rx: 10 }, portal);
-      svgEl('text', { x: 70, y: 171 }, portal).textContent = 'Portal';
+      svgEl('rect', { x: G.portal[0], y: G.portal[1], width: G.portal[2], height: G.portal[3], rx: 10 }, portal);
+      svgEl('text', { x: G.portal[0] + G.portal[2] / 2, y: G.portal[1] + G.portal[3] / 2 + 6 }, portal).textContent = 'Portal';
       const hub = svgEl('g', { class: 'gw-hub' }, svg);
-      svgEl('rect', { x: 180, y: 120, width: 150, height: 90, rx: 12 }, hub);
-      svgEl('text', { x: 255, y: 160 }, hub).textContent = 'AI gateway';
-      svgEl('text', { x: 255, y: 184, style: 'font-size:13px;fill:var(--text-3)' }, hub).textContent = 'ordered failover';
-      this.inWire = svgEl('path', { d: 'M130 165 L180 165', class: 'gw-wire active' }, svg);
+      svgEl('rect', { x: G.hub[0], y: G.hub[1], width: G.hub[2], height: G.hub[3], rx: 12 }, hub);
+      svgEl('text', { x: G.hubT[0], y: G.hubT[1] }, hub).textContent = 'AI gateway';
+      svgEl('text', { x: G.hubT[0], y: G.hubT[2], style: 'font-size:13px;fill:var(--text-3)' }, hub).textContent = 'ordered failover';
+      this.inWire = svgEl('path', { d: G.inWire, class: 'gw-wire active' }, svg);
       this.nodes = []; this.wires = [];
       D.aiProviders.forEach((name, i) => {
-        const col = Math.floor(i / 4), row = i % 4;
-        const x = 400 + col * 125, y = 30 + row * 75;
-        const w = svgEl('path', { d: `M330 165 C 365 165, 365 ${y + 22}, ${x} ${y + 22}`, class: 'gw-wire' }, svg);
+        const [x, y, nw, nh] = G.node(i);
+        const w = svgEl('path', { d: G.wire(x, y, nw), class: 'gw-wire' }, svg);
         const g = svgEl('g', { class: 'gw-node' }, svg);
-        svgEl('rect', { x, y, width: 115, height: 44, rx: 8 }, g);
-        svgEl('text', { x: x + 57, y: y + 27 }, g).textContent = (i + 1) + ' ' + name;
+        svgEl('rect', { x, y, width: nw, height: nh, rx: 8 }, g);
+        svgEl('text', { x: x + (compact ? nw / 2 : 57), y: y + (compact ? 29 : 27) }, g).textContent = (i + 1) + ' ' + name;
         this.nodes.push(g); this.wires.push(w);
         fx.animate(ctx.scope, g, [{ opacity: 0, transform: 'translateX(-20px)' }, { opacity: 1, transform: 'none' }], { duration: 500, delay: 300 + i * 60 });
       });
@@ -2191,19 +2545,35 @@ PMO.scenes = (function () {
       const defs = svgEl('defs', {}, svg);
       const lg = svgEl('linearGradient', { id: 'roadGrad' }, defs);
       svgEl('stop', { offset: 0, 'stop-color': '#2dd4bf' }, lg); svgEl('stop', { offset: 1, 'stop-color': '#7cc4ff' }, lg);
-      const xs = PHASES.map((_, i) => 140 + i * 480);
-      const d = `M${xs[0]} 80 C ${xs[0] + 200} 20, ${xs[1] - 200} 140, ${xs[1]} 80 S ${xs[2] - 200} 20, ${xs[2]} 80 S ${xs[3] - 200} 140, ${xs[3]} 80`;
+      // Flow layout: drawn in real pixels - a horizontal track when there is room,
+      // otherwise a vertical timeline with the labels beside each phase.
+      const RW = flow() ? Math.max(300, $('.road', ctx.el).clientWidth) : 0, vert = RW && RW < 640;
+      svg.classList.toggle('vertical', !!vert);
+      let pts, d, now, vbH;
+      if (vert) {
+        pts = PHASES.map((_, i) => [34, 40 + i * 86]);
+        d = `M34 40 L34 ${pts[3][1]}`; now = [72, (pts[0][1] + pts[1][1]) / 2 + 5, '← WE ARE HERE']; vbH = pts[3][1] + 44;
+      } else {
+        const x0 = RW ? 90 : 140, step = RW ? (RW - 180) / 3 : 480, amp = RW ? Math.min(60, step / 4) : 60, c = RW ? step * 0.42 : 200;
+        const xs = PHASES.map((_, i) => x0 + i * step);
+        pts = xs.map(x => [x, 80]);
+        d = `M${xs[0]} 80 C ${xs[0] + c} ${80 - amp}, ${xs[1] - c} ${80 + amp}, ${xs[1]} 80 S ${xs[2] - c} ${80 - amp}, ${xs[2]} 80 S ${xs[3] - c} ${80 + amp}, ${xs[3]} 80`;
+        now = [(xs[0] + xs[1]) / 2, 22, '▼ WE ARE HERE']; vbH = 190;
+      }
+      svg.setAttribute('viewBox', RW ? `0 0 ${RW} ${vbH}` : '0 0 1720 210');
       svgEl('path', { d, class: 'track' }, svg);
       const fill = svgEl('path', { d, class: 'track-fill' }, svg);
       fx.drawPath(fill, 1800, 400, ctx.scope);
-      svgEl('text', { x: (xs[0] + xs[1]) / 2, y: 22, class: 'now' }, svg).textContent = '▼ WE ARE HERE';
+      svgEl('text', { x: now[0], y: now[1], class: 'now' }, svg).textContent = now[2];
       PHASES.forEach((p, i) => {
-        const g = svgEl('g', { class: 'ph' + (p.done ? ' done' : ''), 'data-i': i, transform: `translate(${xs[i]} 80)`, role: 'button', tabindex: 0, 'aria-label': p.t }, svg);
+        const [px, py] = pts[i];
+        const g = svgEl('g', { class: 'ph' + (p.done ? ' done' : ''), 'data-i': i, transform: `translate(${px} ${py})`, role: 'button', tabindex: 0, 'aria-label': p.t }, svg);
+        if (RW) svgEl('rect', vert ? { x: -30, y: -40, width: Math.min(RW - 8, 420), height: 80, fill: 'transparent' } : { x: -60, y: -34, width: 120, height: 140, fill: 'transparent' }, g); // >=44px touch target
         svgEl('circle', { r: 26 }, g);
         svgEl('text', { class: 'ph-n', y: 6 }, g).textContent = p.done ? '✓' : i;
-        svgEl('text', { class: 'ph-t', y: 70 }, g).textContent = p.t;
-        svgEl('text', { class: 'ph-d', y: 96 }, g).textContent = p.d;
-        fx.animate(ctx.scope, g, [{ opacity: 0, transform: `translate(${xs[i]}px, 110px) scale(.6)` }, { opacity: 1, transform: `translate(${xs[i]}px, 80px) scale(1)` }], { duration: 700, delay: 600 + i * 350, fill: 'none' });
+        svgEl('text', vert ? { class: 'ph-t', x: 44, y: -2 } : { class: 'ph-t', y: RW ? 64 : 70 }, g).textContent = p.t;
+        svgEl('text', vert ? { class: 'ph-d', x: 44, y: 20 } : { class: 'ph-d', y: RW ? 86 : 96 }, g).textContent = p.d;
+        fx.animate(ctx.scope, g, [{ opacity: 0, transform: `translate(${px}px, ${py + 30}px) scale(.6)` }, { opacity: 1, transform: `translate(${px}px, ${py}px) scale(1)` }], { duration: 700, delay: 600 + i * 350, fill: 'none' });
         ctx.scope.on(g, 'click', () => this.select(ctx, i));
         ctx.scope.on(g, 'keydown', (e) => { if (e.key === 'Enter') this.select(ctx, i); });
       });
@@ -2262,10 +2632,31 @@ PMO.controller = (function () {
   };
   const savedIndex = parseInt(store.get('scene') || '0', 10) || 0;
 
-  /* ---------- Stage scaling ---------- */
+  /* ---------- Stage scaling / responsive layout ----------
+     Desktop: the 1920×1080 stage is uniformly scaled (letterboxed), exactly as before.
+     Phones & small tablets ("flow", see fx.isFlow): the stage fills the window at 1:1,
+     scenes reflow via styles.css and scroll vertically inside themselves. */
+  let lastFlow = null, lastW = 0, relayoutTimer = null;
   function fit() {
+    const flow = fx.isFlow();
+    document.documentElement.classList.toggle('flow', flow);
+    if (flow) { stage.style.transform = ''; return; }
     const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
     stage.style.transform = `scale(${k})`;
+  }
+  // Resize / orientation change: rescale at once; when the flow layout changes width
+  // (or the mode flips), redraw the background and quietly re-render the current
+  // scene so JS-built SVGs and charts are rebuilt for the new size.
+  function onResize() {
+    fit();
+    clearTimeout(relayoutTimer);
+    relayoutTimer = setTimeout(() => {
+      const flow = fx.isFlow(), w = window.innerWidth;
+      const modeChanged = flow !== lastFlow, widthChanged = flow && w !== lastW;
+      lastFlow = flow; lastW = w;
+      if (flow || modeChanged) PMO.constellation.resize();
+      if ((modeChanged || widthChanged) && index >= 0) go(index, { force: true, quiet: true });
+    }, 180);
   }
 
   /* ---------- Transitions ----------
@@ -2285,8 +2676,10 @@ PMO.controller = (function () {
       const a = [];
       if (out) {
         out.querySelectorAll('.artefact').forEach((n, i) => {
-          const r = n.getBoundingClientRect(), s = stage.getBoundingClientRect(), k = s.width / 1920;
-          const dx = 820 - ((r.left - s.left) / k + r.width / k / 2), dy = 600 - ((r.top - s.top) / k + r.height / k / 2);
+          const flow = fx.isFlow();
+          const r = n.getBoundingClientRect(), s = stage.getBoundingClientRect(), k = flow ? 1 : s.width / 1920;
+          const hx = flow ? window.innerWidth / 2 : 820, hy = flow ? window.innerHeight * 0.45 : 600;
+          const dx = hx - ((r.left - s.left) / k + r.width / k / 2), dy = hy - ((r.top - s.top) / k + r.height / k / 2);
           a.push(n.animate([{ transform: getComputedStyle(n).transform, opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.1) rotate(0)`, opacity: 0 }], { duration: 800, delay: i * 50, easing: 'cubic-bezier(.6,0,.4,1)', fill: 'forwards' }));
         });
         out.querySelectorAll('.scene-head, .problem-grid, .problem-foot').forEach(n => a.push(n.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateX(-60px)' }], { duration: 500, easing: fx.EASE, fill: 'forwards' })));
@@ -2302,7 +2695,8 @@ PMO.controller = (function () {
       const a = [];
       if (out) {
         const map = out.querySelector('.value-map');
-        map.style.transformOrigin = `${820 / 19.2}% ${600 / 10.8}%`;
+        const vb = map.viewBox && map.viewBox.baseVal;
+        map.style.transformOrigin = fx.isFlow() && vb && vb.width ? `${(820 - vb.x) / vb.width * 100}% ${(600 - vb.y) / vb.height * 100}%` : `${820 / 19.2}% ${600 / 10.8}%`;
         a.push(map.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(4)', opacity: 0 }], { duration: 900, easing: 'cubic-bezier(.7,0,.3,1)', fill: 'forwards' }));
         out.querySelectorAll('.scene-head, .persona-panel, .value-hint').forEach(n => a.push(n.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'forwards' })));
       }
@@ -2347,7 +2741,7 @@ PMO.controller = (function () {
     inc.classList.add('active');
     // Named set pieces only play forward; going back always uses the reversible push.
     const kind = dir > 0 && inScene.transIn && T[inScene.transIn] ? inScene.transIn : 'push';
-    const anims = fx.state.reduced ? [] : T[kind](out, inc, dir);
+    const anims = fx.state.reduced || opts.quiet ? [] : T[kind](out, inc, dir);
     const cleanup = () => {
       if (out) { out.classList.remove('leaving'); out.getAnimations({ subtree: true }).forEach(a => a.cancel()); }
       anims.forEach(a => { try { a.cancel(); } catch (e) { /* ignore */ } });
@@ -2378,7 +2772,7 @@ PMO.controller = (function () {
     seen.add(index);
     [...$('#hud-progress').children].forEach((b, i) => { b.classList.toggle('cur', i === index); b.classList.toggle('seen', seen.has(i)); });
     const title = document.getElementById(scenes[index].id).dataset.title;
-    $('#hud-label').innerHTML = `<b>${String(index + 1).padStart(2, '0')}</b> / ${scenes.length} · ${title}`;
+    $('#hud-label').innerHTML = `<b>${String(index + 1).padStart(2, '0')}</b> / ${scenes.length}<span class="hud-title"> · ${title}</span>`;
     document.querySelector('[data-action="prev"].hud-btn').disabled = index === 0;
     document.querySelector('[data-action="next"].hud-btn').disabled = index === scenes.length - 1;
   }
@@ -2426,10 +2820,48 @@ PMO.controller = (function () {
     if (/^[0-9]$/.test(k)) { e.preventDefault(); go(k === '0' ? 9 : +k - 1); poke(); }
   }
 
+  /* ---------- Touch: swipe left / right to change scene ----------
+     Passive touch listeners, so vertical scrolling inside a scene stays native.
+     A swipe must be mostly horizontal, long enough and quick; it is ignored when it
+     starts on a slider, inside something that scrolls sideways, near the screen
+     edges (OS back/forward gestures), with two fingers, or while help is open. */
+  function blocksSwipe(node) {
+    for (let n = node; n && n !== stage; n = n.parentElement) {
+      if (n.matches && n.matches('input[type="range"], textarea, select')) return true;
+      if (n.scrollWidth > n.clientWidth + 1) { const ox = getComputedStyle(n).overflowX; if (ox === 'auto' || ox === 'scroll') return true; }
+    }
+    return false;
+  }
+  function initSwipe() {
+    let t0 = null;
+    stage.addEventListener('touchstart', (e) => {
+      poke();
+      t0 = null;
+      if (e.touches.length !== 1 || !$('#help').hidden) return;
+      const p = e.touches[0];
+      if (p.clientX < 16 || p.clientX > window.innerWidth - 16 || blocksSwipe(e.target)) return;
+      t0 = { x: p.clientX, y: p.clientY, t: performance.now() };
+    }, { passive: true });
+    stage.addEventListener('touchmove', (e) => { if (e.touches.length > 1) t0 = null; }, { passive: true });
+    stage.addEventListener('touchcancel', () => { t0 = null; }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      if (!t0) return;
+      const p = e.changedTouches[0], dx = p.clientX - t0.x, dy = p.clientY - t0.y, dt = performance.now() - t0.t;
+      t0 = null;
+      const min = Math.max(50, Math.min(120, window.innerWidth * 0.15));
+      if (dt > 900 || Math.abs(dx) < min || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      if (dx < 0) actions.next(); else actions.prev();
+    }, { passive: true });
+  }
+
   /* ---------- Boot ---------- */
   function boot() {
     fit();
-    window.addEventListener('resize', fit);
+    lastFlow = fx.isFlow(); lastW = window.innerWidth;
+    window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', onResize);
+    if (!(document.fullscreenEnabled || document.webkitFullscreenEnabled)) document.querySelector('.hud-btn[data-action="fullscreen"]').hidden = true;
+    initSwipe();
     PMO.constellation.init($('#constellation'));
     PMO.charts.initTooltips(stage);
     buildHud();
