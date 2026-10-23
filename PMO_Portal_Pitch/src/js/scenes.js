@@ -20,6 +20,8 @@ PMO.scenes = (function () {
   const $$ = (sel, root) => [...(root || document).querySelectorAll(sel)];
   const NS = 'http://www.w3.org/2000/svg';
   const svgEl = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; };
+  // Responsive "flow" layout (phones / small tablets): see fx.isFlow and styles.css.
+  const flow = () => fx.isFlow();
   const aed = (m) => 'AED ' + (m >= 1 ? m.toFixed(m >= 10 ? 1 : 2) + 'M' : Math.round(m * 1000) + 'K');
   const store = {
     get(k, d) { try { const v = localStorage.getItem('pmo.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
@@ -95,14 +97,17 @@ PMO.scenes = (function () {
       introduce(ctx);
       const spokes = $('#value-spokes'), people = $('#value-personas');
       spokes.innerHTML = ''; people.innerHTML = '';
+      // Flow layout: crop the 1920x1080 canvas to the hub + personas so they fill the width.
+      const F = flow();
+      $('.value-map', ctx.el).setAttribute('viewBox', F ? '290 240 1060 740' : '0 0 1920 1080');
       PERSONAS.forEach((p, i) => {
         const path = svgEl('path', { d: `M${HUB.x} ${HUB.y} Q ${(HUB.x + p.x) / 2 + (i % 2 ? 60 : -60)} ${(HUB.y + p.y) / 2} ${p.x} ${p.y}`, class: 'spoke', id: 'spoke-' + p.id }, spokes);
         fx.drawPath(path, 900, 500 + i * 120, ctx.scope);
         const g = svgEl('g', { class: 'persona', tabindex: 0, role: 'button', 'aria-label': p.name, 'data-id': p.id, transform: `translate(${p.x} ${p.y})` }, people);
         svgEl('circle', { r: 74 }, g);
         svgEl('text', { class: 'p-ico', y: -6 }, g).textContent = p.ico;
-        svgEl('text', { class: 'p-name', y: 106 }, g).textContent = p.name;
-        svgEl('text', { class: 'p-role', y: 130 }, g).textContent = p.role;
+        svgEl('text', { class: 'p-name', y: F ? 116 : 106 }, g).textContent = p.name;
+        svgEl('text', { class: 'p-role', y: F ? 150 : 130 }, g).textContent = p.role;
         fx.animate(ctx.scope, g, [{ opacity: 0, transform: `translate(${HUB.x}px, ${HUB.y}px) scale(.2)` }, { opacity: 1, transform: `translate(${p.x}px, ${p.y}px) scale(1)` }],
           { duration: 1000, delay: 400 + i * 120, fill: 'none' });
         const pick = () => this.select(ctx, p.id, true);
@@ -160,7 +165,8 @@ PMO.scenes = (function () {
         b.style.left = (x - 105) + 'px'; b.style.top = (y - 48) + 'px';
         b.innerHTML = `<div class="m-ico">${m.ico}</div><div class="m-name">${m.name}</div><div class="m-tag">${m.tag}</div>`;
         orbit.appendChild(b);
-        fx.animate(ctx.scope, b, [{ opacity: 0, transform: `translate(${cx - x}px, ${cy - y}px) scale(.3)` }, { opacity: 1, transform: 'none' }],
+        // Flow layout lays the modules out as a grid (styles.css), so they simply rise in.
+        fx.animate(ctx.scope, b, [{ opacity: 0, transform: flow() ? 'translateY(24px) scale(.9)' : `translate(${cx - x}px, ${cy - y}px) scale(.3)` }, { opacity: 1, transform: 'none' }],
           { duration: 900, delay: 300 + i * 70, easing: 'cubic-bezier(.2,1.2,.3,1)', fill: 'backwards' });
         ctx.scope.on(b, 'click', () => this.select(ctx, m.id));
       });
@@ -202,6 +208,29 @@ PMO.scenes = (function () {
     { id: 'llm', l: 3, x: 640, w: 550, t: '12 LLM providers', s: 'Groq → OpenRouter → Cerebras → Gemini → …', d: 'Groq (Llama 3.3 70B) is the default; OpenRouter, Cerebras, Gemini, SambaNova, Together, HuggingFace, Qwen, DeepSeek, Mistral, NVIDIA NIM and Grok follow in order.' },
     { id: 'mail', l: 3, x: 120, w: 380, t: 'Email & integrations', s: 'ERP cost feed · SSO (phase 1)', d: 'Planned integrations for the scale-up: corporate SSO and an ERP feed for posted costs.' }
   ].map(c => ({ ...c, y: LAYERS[c.l].y + (c.l === 3 ? 44 : 46), h: 76 }));
+  // Narrow screens: the same layers and components re-flowed into two columns
+  // (a portrait diagram) so labels stay legible instead of shrinking to ~5px.
+  const ARCH_FULL = ['gw', 'db', 'llm', 'mail'];
+  function archGeometry(compact) {
+    if (!compact) return { layers: LAYERS, comps: COMPS, vb: '0 0 1240 720', lw: 1230, ty: [33, 56] };
+    const W = 640, pad = 16, gap = 14, ch = 90, colW = (W - pad * 2 - gap) / 2;
+    const layers = [], comps = [];
+    let y = 8;
+    LAYERS.forEach((L, li) => {
+      const top = y; let row = 0, col = 0;
+      COMPS.filter(c => c.l === li).forEach(c => {
+        const full = ARCH_FULL.includes(c.id);
+        if (full && col === 1) { row++; col = 0; }
+        comps.push({ ...c, x: pad + (full ? 0 : col * (colW + gap)), w: full ? W - pad * 2 : colW, y: top + 44 + row * (ch + gap), h: ch });
+        if (full || col === 1) { row++; col = 0; } else col = 1;
+      });
+      if (col === 1) row++;
+      const h = 44 + row * (ch + gap) - gap + 16;
+      layers.push({ ...L, y: top, h });
+      y = top + h + 22;
+    });
+    return { layers, comps, vb: `0 0 ${W} ${y - 14}`, lw: W, ty: [40, 66] };
+  }
   const TRACES = {
     dashboard: { hops: [['spa', 'auth'], ['auth', 'api'], ['api', 'db'], ['db', 'api'], ['api', 'charts']],
       steps: ['Executive opens the dashboard tab', 'JWT validated; pmo:dashboard:view checked', 'KPIs & analytics endpoints query SQL Server', 'Aggregates returned for the cutoff date', 'ECharts renders 18 KPIs and 9 visuals'] },
@@ -216,19 +245,22 @@ PMO.scenes = (function () {
     enter(ctx) {
       introduce(ctx);
       const svg = $('#arch-svg'); svg.innerHTML = '';
-      const center = (id) => { const c = COMPS.find(x => x.id === id); return { x: c.x + c.w / 2, y: c.y + c.h / 2, c }; };
-      LAYERS.forEach((L, i) => {
+      const compact = flow() && $('.arch-wrap', ctx.el).clientWidth < 900;
+      const geo = archGeometry(compact);
+      svg.setAttribute('viewBox', geo.vb); svg.classList.toggle('compact', compact); $('.arch-wrap', ctx.el).classList.toggle('compact', compact);
+      const center = (id) => { const c = geo.comps.find(x => x.id === id); return { x: c.x + c.w / 2, y: c.y + c.h / 2, c }; };
+      geo.layers.forEach((L, i) => {
         const g = svgEl('g', {}, svg);
-        svgEl('rect', { x: 0, y: L.y, width: 1230, height: L.h, rx: 14, class: 'layer-bg' }, g);
+        svgEl('rect', { x: 0, y: L.y, width: geo.lw, height: L.h, rx: 14, class: 'layer-bg' }, g);
         svgEl('text', { x: 18, y: L.y + 26, class: 'layer-name' }, g).textContent = L.name;
         fx.animate(ctx.scope, g, [{ opacity: 0, transform: 'translateY(30px)' }, { opacity: 1, transform: 'none' }], { duration: 700, delay: 200 + i * 140 });
       });
       this.wires = svgEl('g', {}, svg);
-      COMPS.forEach((c, i) => {
+      geo.comps.forEach((c, i) => {
         const g = svgEl('g', { class: 'comp', 'data-id': c.id, tabindex: 0, role: 'button', 'aria-label': c.t }, svg);
         svgEl('rect', { x: c.x, y: c.y, width: c.w, height: c.h, rx: 10 }, g);
-        svgEl('text', { x: c.x + c.w / 2, y: c.y + 33 }, g).textContent = c.t;
-        svgEl('text', { x: c.x + c.w / 2, y: c.y + 56, class: 'sub' }, g).textContent = c.s;
+        svgEl('text', { x: c.x + c.w / 2, y: c.y + geo.ty[0] }, g).textContent = c.t;
+        svgEl('text', { x: c.x + c.w / 2, y: c.y + geo.ty[1], class: 'sub' }, g).textContent = c.s;
         fx.animate(ctx.scope, g, [{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: 500 + i * 45 });
         const pick = () => this.inspect(c);
         ctx.scope.on(g, 'click', pick);
@@ -259,10 +291,11 @@ PMO.scenes = (function () {
         ctx.scope.timeout(() => {
           if (run !== this.runId) return;
           const A = this.center(a), B = this.center(b);
-          const sameRow = A.c.l === B.c.l;
+          const sameRow = Math.abs(A.y - B.y) < 1; // same layer on desktop; same row in the 2-column layout
           const y1 = sameRow ? A.y : A.y + (B.y > A.y ? A.c.h / 2 : -A.c.h / 2);
           const y2 = sameRow ? B.y : B.y + (B.y > A.y ? -B.c.h / 2 : B.c.h / 2);
-          const d = sameRow ? `M${A.x} ${A.y - 38} C ${A.x} ${A.y - 80}, ${B.x} ${B.y - 80}, ${B.x} ${B.y - 38}` : `M${A.x} ${y1} C ${A.x} ${(y1 + y2) / 2}, ${B.x} ${(y1 + y2) / 2}, ${B.x} ${y2}`;
+          const hh = A.c.h / 2;
+          const d = sameRow ? `M${A.x} ${A.y - hh} C ${A.x} ${A.y - hh - 42}, ${B.x} ${B.y - hh - 42}, ${B.x} ${B.y - hh}` : `M${A.x} ${y1} C ${A.x} ${(y1 + y2) / 2}, ${B.x} ${(y1 + y2) / 2}, ${B.x} ${y2}`;
           const w = svgEl('path', { d, class: 'wire lit' }, this.wires);
           fx.drawPath(w, hopMs * 0.7, 0, ctx.scope);
           $$('#arch-svg .comp').forEach(g => { if (g.dataset.id === a || g.dataset.id === b) g.classList.add('hot'); });
@@ -282,13 +315,18 @@ PMO.scenes = (function () {
     enter(ctx) {
       introduce(ctx);
       const rail = $('#journey-rail'); rail.innerHTML = '';
-      const xs = STEPS.map((_, i) => 90 + i * 380);
+      // Flow layout: draw the rail in real pixels across the available width.
+      const RW = flow() ? Math.max(300, $('.journey', ctx.el).clientWidth) : 0;
+      const rpad = RW ? Math.max(40, Math.min(90, RW * 0.06)) : 0, rstep = RW ? (RW - rpad * 2) / (STEPS.length - 1) : 380;
+      rail.setAttribute('viewBox', RW ? `0 0 ${RW} 150` : '0 0 1700 160');
+      const xs = STEPS.map((_, i) => (RW ? rpad : 90) + i * rstep);
       svgEl('path', { d: `M${xs[0]} 60 L${xs[xs.length - 1]} 60`, class: 'rail' }, rail);
       this.fill = svgEl('path', { d: `M${xs[0]} 60 L${xs[xs.length - 1]} 60`, class: 'rail-fill' }, rail);
       this.railLen = xs[xs.length - 1] - xs[0];
       this.fill.style.strokeDasharray = this.railLen; this.fill.style.transition = 'stroke-dashoffset .8s cubic-bezier(.2,.75,.15,1), stroke .4s';
       STEPS.forEach((s, i) => {
         const g = svgEl('g', { class: 'st', 'data-i': i, transform: `translate(${xs[i]} 60)`, role: 'button', tabindex: 0, 'aria-label': 'Step ' + (i + 1) + ': ' + s }, rail);
+        if (RW) svgEl('rect', { x: -rstep / 2, y: -44, width: rstep, height: 120, fill: 'transparent', class: 'hit' }, g); // >=44px touch target
         svgEl('circle', { r: 24 }, g);
         svgEl('text', { class: 'n', y: 6 }, g).textContent = i + 1;
         svgEl('text', { y: 66 }, g).textContent = s;
@@ -555,6 +593,7 @@ PMO.scenes = (function () {
       const lo = Math.min(-r.invest * 1.1, ...r.cash), hi = Math.max(r.invest * 0.5, ...r.cash) * 1.08;
       const g = C.lines($('#sim-viz'), [{ key: 'cash', values: r.cash, cls: r.net3y >= 0 ? 'c-teal' : 'c-coral' }], labels, { area: true, min: lo, max: hi, zero: 0, w: 1060, h: 340, tick: (v) => v.toFixed(1) });
       const flag = $('#payback-flag');
+      flag.style.top = flow() ? ($('#sim-viz').offsetTop + 2) + 'px' : ''; // below a wrapped title on small screens
       if (r.payback) { flag.style.opacity = 1; flag.textContent = `Payback · M${r.payback}`; flag.style.left = (20 + (g.X(r.payback - 1) / g.W) * ($('#sim-viz').clientWidth || 1000)) + 'px'; }
       else flag.style.opacity = 0;
       const tot = r.overrunAvoided + r.labour || 1;
@@ -577,22 +616,29 @@ PMO.scenes = (function () {
       ctx.scope.timeout(() => this.renderCycle(ctx), 400);
       // Gateway diagram
       const svg = $('#gateway'); svg.innerHTML = '';
+      // Narrow panel: portal + gateway on top, the 12 providers in a 3-column grid below.
+      const compact = flow() && $('.auto-right', ctx.el).clientWidth < 600;
+      svg.setAttribute('viewBox', compact ? '0 0 420 420' : '0 0 760 330'); svg.classList.toggle('compact', compact);
+      const G = compact
+        ? { portal: [16, 22, 130, 56], hub: [196, 8, 208, 84], inWire: 'M146 50 L196 50', hubT: [300, 44, 70],
+            node: (i) => [10 + (i % 3) * 137, 132 + Math.floor(i / 3) * 72, 126, 48], wire: (x, y, w) => `M300 92 C 300 112, ${x + w / 2} ${y - 24}, ${x + w / 2} ${y}` }
+        : { portal: [10, 135, 120, 60], hub: [180, 120, 150, 90], inWire: 'M130 165 L180 165', hubT: [255, 160, 184],
+            node: (i) => [400 + Math.floor(i / 4) * 125, 30 + (i % 4) * 75, 115, 44], wire: (x, y) => `M330 165 C 365 165, 365 ${y + 22}, ${x} ${y + 22}` };
       const portal = svgEl('g', { class: 'gw-hub' }, svg);
-      svgEl('rect', { x: 10, y: 135, width: 120, height: 60, rx: 10 }, portal);
-      svgEl('text', { x: 70, y: 171 }, portal).textContent = 'Portal';
+      svgEl('rect', { x: G.portal[0], y: G.portal[1], width: G.portal[2], height: G.portal[3], rx: 10 }, portal);
+      svgEl('text', { x: G.portal[0] + G.portal[2] / 2, y: G.portal[1] + G.portal[3] / 2 + 6 }, portal).textContent = 'Portal';
       const hub = svgEl('g', { class: 'gw-hub' }, svg);
-      svgEl('rect', { x: 180, y: 120, width: 150, height: 90, rx: 12 }, hub);
-      svgEl('text', { x: 255, y: 160 }, hub).textContent = 'AI gateway';
-      svgEl('text', { x: 255, y: 184, style: 'font-size:13px;fill:var(--text-3)' }, hub).textContent = 'ordered failover';
-      this.inWire = svgEl('path', { d: 'M130 165 L180 165', class: 'gw-wire active' }, svg);
+      svgEl('rect', { x: G.hub[0], y: G.hub[1], width: G.hub[2], height: G.hub[3], rx: 12 }, hub);
+      svgEl('text', { x: G.hubT[0], y: G.hubT[1] }, hub).textContent = 'AI gateway';
+      svgEl('text', { x: G.hubT[0], y: G.hubT[2], style: 'font-size:13px;fill:var(--text-3)' }, hub).textContent = 'ordered failover';
+      this.inWire = svgEl('path', { d: G.inWire, class: 'gw-wire active' }, svg);
       this.nodes = []; this.wires = [];
       D.aiProviders.forEach((name, i) => {
-        const col = Math.floor(i / 4), row = i % 4;
-        const x = 400 + col * 125, y = 30 + row * 75;
-        const w = svgEl('path', { d: `M330 165 C 365 165, 365 ${y + 22}, ${x} ${y + 22}`, class: 'gw-wire' }, svg);
+        const [x, y, nw, nh] = G.node(i);
+        const w = svgEl('path', { d: G.wire(x, y, nw), class: 'gw-wire' }, svg);
         const g = svgEl('g', { class: 'gw-node' }, svg);
-        svgEl('rect', { x, y, width: 115, height: 44, rx: 8 }, g);
-        svgEl('text', { x: x + 57, y: y + 27 }, g).textContent = (i + 1) + ' ' + name;
+        svgEl('rect', { x, y, width: nw, height: nh, rx: 8 }, g);
+        svgEl('text', { x: x + (compact ? nw / 2 : 57), y: y + (compact ? 29 : 27) }, g).textContent = (i + 1) + ' ' + name;
         this.nodes.push(g); this.wires.push(w);
         fx.animate(ctx.scope, g, [{ opacity: 0, transform: 'translateX(-20px)' }, { opacity: 1, transform: 'none' }], { duration: 500, delay: 300 + i * 60 });
       });
@@ -666,19 +712,35 @@ PMO.scenes = (function () {
       const defs = svgEl('defs', {}, svg);
       const lg = svgEl('linearGradient', { id: 'roadGrad' }, defs);
       svgEl('stop', { offset: 0, 'stop-color': '#2dd4bf' }, lg); svgEl('stop', { offset: 1, 'stop-color': '#7cc4ff' }, lg);
-      const xs = PHASES.map((_, i) => 140 + i * 480);
-      const d = `M${xs[0]} 80 C ${xs[0] + 200} 20, ${xs[1] - 200} 140, ${xs[1]} 80 S ${xs[2] - 200} 20, ${xs[2]} 80 S ${xs[3] - 200} 140, ${xs[3]} 80`;
+      // Flow layout: drawn in real pixels - a horizontal track when there is room,
+      // otherwise a vertical timeline with the labels beside each phase.
+      const RW = flow() ? Math.max(300, $('.road', ctx.el).clientWidth) : 0, vert = RW && RW < 640;
+      svg.classList.toggle('vertical', !!vert);
+      let pts, d, now, vbH;
+      if (vert) {
+        pts = PHASES.map((_, i) => [34, 40 + i * 86]);
+        d = `M34 40 L34 ${pts[3][1]}`; now = [72, (pts[0][1] + pts[1][1]) / 2 + 5, '← WE ARE HERE']; vbH = pts[3][1] + 44;
+      } else {
+        const x0 = RW ? 90 : 140, step = RW ? (RW - 180) / 3 : 480, amp = RW ? Math.min(60, step / 4) : 60, c = RW ? step * 0.42 : 200;
+        const xs = PHASES.map((_, i) => x0 + i * step);
+        pts = xs.map(x => [x, 80]);
+        d = `M${xs[0]} 80 C ${xs[0] + c} ${80 - amp}, ${xs[1] - c} ${80 + amp}, ${xs[1]} 80 S ${xs[2] - c} ${80 - amp}, ${xs[2]} 80 S ${xs[3] - c} ${80 + amp}, ${xs[3]} 80`;
+        now = [(xs[0] + xs[1]) / 2, 22, '▼ WE ARE HERE']; vbH = 190;
+      }
+      svg.setAttribute('viewBox', RW ? `0 0 ${RW} ${vbH}` : '0 0 1720 210');
       svgEl('path', { d, class: 'track' }, svg);
       const fill = svgEl('path', { d, class: 'track-fill' }, svg);
       fx.drawPath(fill, 1800, 400, ctx.scope);
-      svgEl('text', { x: (xs[0] + xs[1]) / 2, y: 22, class: 'now' }, svg).textContent = '▼ WE ARE HERE';
+      svgEl('text', { x: now[0], y: now[1], class: 'now' }, svg).textContent = now[2];
       PHASES.forEach((p, i) => {
-        const g = svgEl('g', { class: 'ph' + (p.done ? ' done' : ''), 'data-i': i, transform: `translate(${xs[i]} 80)`, role: 'button', tabindex: 0, 'aria-label': p.t }, svg);
+        const [px, py] = pts[i];
+        const g = svgEl('g', { class: 'ph' + (p.done ? ' done' : ''), 'data-i': i, transform: `translate(${px} ${py})`, role: 'button', tabindex: 0, 'aria-label': p.t }, svg);
+        if (RW) svgEl('rect', vert ? { x: -30, y: -40, width: Math.min(RW - 8, 420), height: 80, fill: 'transparent' } : { x: -60, y: -34, width: 120, height: 140, fill: 'transparent' }, g); // >=44px touch target
         svgEl('circle', { r: 26 }, g);
         svgEl('text', { class: 'ph-n', y: 6 }, g).textContent = p.done ? '✓' : i;
-        svgEl('text', { class: 'ph-t', y: 70 }, g).textContent = p.t;
-        svgEl('text', { class: 'ph-d', y: 96 }, g).textContent = p.d;
-        fx.animate(ctx.scope, g, [{ opacity: 0, transform: `translate(${xs[i]}px, 110px) scale(.6)` }, { opacity: 1, transform: `translate(${xs[i]}px, 80px) scale(1)` }], { duration: 700, delay: 600 + i * 350, fill: 'none' });
+        svgEl('text', vert ? { class: 'ph-t', x: 44, y: -2 } : { class: 'ph-t', y: RW ? 64 : 70 }, g).textContent = p.t;
+        svgEl('text', vert ? { class: 'ph-d', x: 44, y: 20 } : { class: 'ph-d', y: RW ? 86 : 96 }, g).textContent = p.d;
+        fx.animate(ctx.scope, g, [{ opacity: 0, transform: `translate(${px}px, ${py + 30}px) scale(.6)` }, { opacity: 1, transform: `translate(${px}px, ${py}px) scale(1)` }], { duration: 700, delay: 600 + i * 350, fill: 'none' });
         ctx.scope.on(g, 'click', () => this.select(ctx, i));
         ctx.scope.on(g, 'keydown', (e) => { if (e.key === 'Enter') this.select(ctx, i); });
       });

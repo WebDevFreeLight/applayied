@@ -18,10 +18,30 @@ PMO.charts = (function () {
     return n;
   }
 
+  // Chart coordinate size. On the scaled stage the authored size is used (unchanged).
+  // In the responsive "flow" layout the chart is drawn at the container's real pixel
+  // size, so axis text stays at its CSS size and nothing is stretched.
+  function dims(container, w, h) {
+    if (!PMO.fx.isFlow()) return [w, h];
+    // Once drawn, measure the chart's own box (the legend sits beside it in flow layout).
+    const own = container._s && container._s.svg;
+    if (own && own.isConnected && own.clientWidth > 40 && own.clientHeight > 40) return [own.clientWidth, own.clientHeight];
+    const cs = getComputedStyle(container);
+    const cw = container.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const ch = container.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    return cw > 40 && ch > 40 ? [Math.round(cw), Math.round(ch)] : [w, h];
+  }
+
   // One SVG per container, created once. Returns { svg, keyed(key, tag, layer) }.
   function surface(container, w, h) {
+    if (container._s) {
+      // Flow layout: keep the viewBox in step with the container after a resize.
+      const vb = `0 0 ${w} ${h}`;
+      if (container._s.svg.getAttribute('viewBox') !== vb) container._s.svg.setAttribute('viewBox', vb);
+      container._s.svg.setAttribute('preserveAspectRatio', PMO.fx.isFlow() ? 'xMidYMid meet' : 'none');
+    }
     if (!container._s) {
-      const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, class: 'chart', preserveAspectRatio: 'none' });
+      const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, class: 'chart', preserveAspectRatio: PMO.fx.isFlow() ? 'xMidYMid meet' : 'none' });
       container.innerHTML = '';
       container.appendChild(svg);
       const layers = {};
@@ -57,7 +77,7 @@ PMO.charts = (function () {
 
   /* Grouped bars: series = [{name, cls}], rows = [{label, values:[...]}] */
   function groupedBars(container, rows, series, opts = {}) {
-    const W = opts.w || 640, H = opts.h || 300, pad = { l: 48, r: 12, t: 16, b: 34 };
+    const [W, H] = dims(container, opts.w || 640, opts.h || 300), pad = { l: 48, r: 12, t: 16, b: 34 };
     const s = surface(container, W, H); s.begin();
     const max = opts.max || Math.max(0.0001, ...rows.flatMap(r => r.values)) * 1.12;
     const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
@@ -87,7 +107,7 @@ PMO.charts = (function () {
 
   /* Multi-line chart. lines = [{key, values, cls}], labels = x labels */
   function lines(container, linesData, labels, opts = {}) {
-    const W = opts.w || 640, H = opts.h || 280, pad = { l: 44, r: 16, t: 14, b: 30 };
+    const [W, H] = dims(container, opts.w || 640, opts.h || 280), pad = { l: 44, r: 16, t: 14, b: 30 };
     const s = surface(container, W, H); s.begin();
     const all = linesData.flatMap(l => l.values);
     const max = opts.max !== undefined ? opts.max : Math.max(...all) * 1.1;
@@ -184,7 +204,7 @@ PMO.charts = (function () {
 
   /* Horizontal stacked bars. rows = [{label, parts:{k:v}}], keys = [{k, cls, name}] */
   function stacked(container, rows, keys, opts = {}) {
-    const W = opts.w || 600, H = opts.h || 300, pad = { l: 56, r: 16, t: 6, b: 6 };
+    const [W, H] = dims(container, opts.w || 600, opts.h || 300), pad = { l: 56, r: 16, t: 6, b: 6 };
     const s = surface(container, W, H); s.begin();
     const max = Math.max(1, ...rows.map(r => keys.reduce((a, k) => a + (r.parts[k.k] || 0), 0)));
     const rh = (H - pad.t - pad.b) / Math.max(1, rows.length);
@@ -212,7 +232,7 @@ PMO.charts = (function () {
       const t = e.target.closest && e.target.closest('[data-tip]');
       if (!t) { tip.classList.remove('on'); return; }
       tip.textContent = t.dataset.tip;
-      const r = root.getBoundingClientRect(), k = r.width / 1920;
+      const r = root.getBoundingClientRect(), k = PMO.fx.isFlow() ? 1 : r.width / 1920;
       tip.style.transform = `translate(${(e.clientX - r.left) / k + 14}px, ${(e.clientY - r.top) / k + 14}px)`;
       tip.classList.add('on');
     });

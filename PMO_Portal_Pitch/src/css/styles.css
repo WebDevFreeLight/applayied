@@ -460,3 +460,262 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px;
 .open-left { top: 130px; }
 .open-meta { margin-top: 40px; }
 .disclaimer { bottom: 96px; }
+
+/* ==========================================================================
+   Responsive "flow" layout: phones, small tablets and very short windows.
+   html.flow is set by controller.js (fx.isFlow: width < 1100px or height < 520px).
+   Desktop never gets .flow, so the scaled 1920x1080 stage above is unchanged.
+   In flow the stage fills the window at 1:1, every scene reflows into a single
+   (or two-column) layout and scrolls vertically inside itself; the HUD sits at
+   the bottom, clear of the home indicator (safe-area insets).
+   ========================================================================== */
+.touch-hint { display: none; }
+@media (hover: none) and (pointer: coarse) {
+  .open-meta .touch-hint { display: inline; }
+  .open-meta .touch-hint ~ span { display: none; }
+}
+
+.flow {
+  --gut: clamp(16px, 4vw, 40px);
+  --scene-pad: max(clamp(16px, min(4vw, 5vh), 40px), env(safe-area-inset-top)) max(var(--gut), env(safe-area-inset-right)) calc(96px + env(safe-area-inset-bottom)) max(var(--gut), env(safe-area-inset-left));
+}
+html.flow, html.flow body { overscroll-behavior: none; }
+.flow #viewport { bottom: auto; height: 100vh; height: 100dvh; }
+.flow #stage { left: 0; top: 0; margin: 0; width: 100%; height: 100%; transform: none; font-size: 16px; }
+.flow .scene, .flow #s-open, .flow #s-dash { padding: var(--scene-pad); overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+
+/* Type scale: fluid between phone and tablet, capped by height on landscape phones. */
+.flow h2 { font-size: clamp(24px, min(6.2vw, 7vh + 10px), 46px); }
+.flow .display { font-size: clamp(34px, min(10vw, 11vh + 6px), 76px); }
+.flow .display-sm { font-size: clamp(26px, min(7vw, 8vh + 6px), 48px); }
+.flow .kicker { font-size: clamp(11px, 3vw, 15px); margin-bottom: 10px; }
+.flow .lede { font-size: clamp(16px, 4.2vw, 21px); margin-top: 18px; }
+.flow .side-label { font-size: 13px; }
+
+/* Touch targets: at least 44px. */
+.flow .btn { font-size: 16px; min-height: 44px; padding: 10px 18px; }
+.flow .btn.big { font-size: 17px; padding: 12px 22px; }
+.flow .btn.small { font-size: 15px; padding: 10px 14px; }
+
+/* 01 Opening */
+.flow .open-left { position: static; width: auto; max-width: 900px; }
+.flow .eyebrow { font-size: clamp(11px, 2.9vw, 15px); line-height: 1.5; }
+.flow .brand { margin: 20px 0 18px; font-size: clamp(20px, 5vw, 26px); flex-wrap: wrap; gap: 8px 14px; }
+.flow .brand-sub { font-size: clamp(13px, 3.4vw, 17px); }
+.flow .brand-mark { width: 30px; height: 30px; }
+.flow .open-cta { flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.flow .open-meta { flex-wrap: wrap; gap: 10px 22px; margin-top: 22px; font-size: 14px; }
+.flow .open-orbit-label { position: static; margin-top: 22px; font-size: 13px; }
+.flow .disclaimer { position: static; margin-top: 12px; font-size: 13px; }
+
+/* 02 Problem: stat cards in a 2-up grid, the "chaos" artefacts become a tilted pile of chips. */
+.flow .problem-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
+.flow .stat-card { padding: 16px 16px 14px; border-radius: 14px; }
+.flow .stat-num { font-size: clamp(34px, 9vw, 60px); }
+.flow .stat-label { font-size: clamp(13px, 3.4vw, 18px); }
+.flow .stat-foot { font-size: 12px; min-height: 0; }
+.flow .chaos { position: static; display: flex; flex-wrap: wrap; gap: 14px 10px; margin-top: 22px; }
+.flow .artefact { position: static; max-width: 100%; white-space: normal; padding: 8px 12px; font-size: 12.5px; }
+.flow .problem-foot { position: static; margin-top: 18px; font-size: 13px; }
+
+/* 03 Opportunity: the value map is cropped to hub + personas (scenes.js) and fills the width. */
+.flow #s-value.active, .flow #s-value.leaving { display: grid; grid-template-columns: minmax(0, 1fr); grid-auto-rows: max-content; align-content: start; gap: 12px 24px; }
+.flow .value-map { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 1060 / 740; }
+.flow .persona .p-ico { font-size: 52px; }
+.flow .persona .p-name { font-size: 36px; }
+.flow .persona .p-role { font-size: 26px; }
+.flow .persona-panel { position: static; width: auto; min-height: 0; padding: 18px; }
+.flow .persona-panel h3 { font-size: clamp(20px, 5vw, 26px); }
+.flow .persona-panel .pp-sub { font-size: 14px; margin-bottom: 10px; }
+.flow .outcome { gap: 12px; padding: 10px 0; }
+.flow .outcome .o-num { font-size: clamp(20px, 5.5vw, 30px); min-width: 90px; }
+.flow .outcome .o-txt { font-size: 15px; }
+.flow .value-hint { position: static; font-size: 13px; }
+
+/* 04 Solution: the module orbit becomes a grid under the core disc. */
+.flow .solution-wrap { position: static; display: grid; gap: 16px; margin-top: 20px; }
+.flow .module-orbit { position: static; width: auto; height: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.flow .module-link { display: none; }
+.flow .core-disc { position: relative; left: auto; top: auto; grid-column: 1 / -1; width: 150px; height: 150px; margin: 0 auto 6px; }
+.flow .core-in b { font-size: 22px; }
+.flow .core-in span { display: block; padding: 0 16px; font-size: 11px; }
+.flow .module { position: relative; left: auto !important; top: auto !important; width: auto; min-height: 44px; padding: 12px 14px; }
+.flow .module .m-ico { font-size: 22px; }
+.flow .module .m-name { font-size: 16px; }
+.flow .module .m-tag { font-size: 12.5px; }
+.flow .module-detail { position: static; width: auto; min-height: 0; padding: 20px; }
+.flow .module-detail h3 { font-size: clamp(22px, 5.5vw, 28px); }
+.flow .module-detail .md-tag { font-size: 14px; margin: 6px 0 12px; }
+.flow .module-detail li { padding: 9px 0 9px 26px; font-size: 15px; }
+.flow .module-detail li::before { top: 16px; }
+.flow .md-metric b { font-size: 24px; }
+.flow .md-metric span { font-size: 13px; }
+.flow .chip-row { position: static; margin-top: 18px; gap: 8px; }
+.flow .chip { padding: 6px 12px; font-size: 13px; }
+
+/* 05 Architecture: diagram full width (two-column variant on narrow screens), panel below/beside. */
+.flow .arch-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 18px; }
+.flow .arch { width: 100%; height: auto; }
+.flow .arch.compact .layer-name { font-size: 18px; }
+.flow .arch.compact .comp text { font-size: 22px; }
+.flow .arch.compact .comp text.sub { font-size: 17px; }
+.flow .btn.trace { font-size: 15px; }
+.flow .trace-steps { min-height: 0; }
+.flow .trace-steps li { font-size: 14px; }
+.flow .arch-detail { min-height: 0; padding: 16px; font-size: 15px; }
+.flow .arch-detail h4 { font-size: 19px; }
+
+/* 06 Use case */
+.flow .journey { margin-top: 16px; }
+.flow .journey-rail { display: block; width: 100%; height: auto; }
+.flow .journey-rail .st text { font-size: 14px; }
+.flow .journey-rail .st text.n { font-size: 15px; }
+.flow .journey-stage { flex-direction: column; gap: 16px; margin-top: 4px; }
+.flow .journey-card { min-height: 0; padding: 20px; }
+.flow .journey-card h3 { font-size: clamp(21px, 5.4vw, 28px); }
+.flow .journey-card .jc-actor { font-size: 13px; margin-bottom: 12px; }
+.flow .journey-card p { font-size: 15.5px; }
+.flow .typed { min-height: 48px; padding: 12px 14px; font-size: 14px; }
+.flow .typed .caret { width: 8px; height: 16px; }
+.flow .formgrid { gap: 8px; }
+.flow .formgrid div { padding: 8px 10px; font-size: 14px; }
+.flow .formgrid span { font-size: 11px; }
+.flow .ai-note { font-size: 15px; }
+.flow .project-card { width: auto; padding: 20px; }
+.flow .pc-head { font-size: 19px; }
+.flow .pc-row { flex-wrap: wrap; gap: 4px 12px; font-size: 14.5px; }
+.flow .pc-log div { font-size: 12px; }
+.flow .pill { font-size: 13px !important; }
+.flow .journey-controls { flex-wrap: wrap; gap: 10px; }
+.flow .decision { flex-wrap: wrap; gap: 8px; }
+
+/* 07 Dashboard */
+.flow .dash-top { flex-wrap: wrap; gap: 12px; }
+.flow .dash-title { flex-wrap: wrap; gap: 12px; font-size: clamp(24px, 6vw, 36px); }
+.flow .tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.flow .tab { flex: 1 1 auto; min-height: 44px; padding: 10px 12px; font-size: 14.5px; white-space: nowrap; }
+@media (max-width: 599px) { .flow .tabs { width: 100%; } }
+.flow .slicer { gap: 6px; margin-top: 14px; }
+.flow .slice { min-width: 44px; min-height: 44px; padding: 6px 10px; font-size: 13px; }
+.flow .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.flow .kpi { padding: 12px 14px; }
+.flow .kpi-l { font-size: 11.5px; }
+.flow .kpi-v { font-size: clamp(22px, 6vw, 32px); }
+.flow .kpi-s { font-size: 11.5px; }
+.flow .dash-body { grid-template-columns: minmax(0, 1fr); height: auto; gap: 12px; margin-top: 12px; }
+.flow .dash-body .panel { height: 300px; }
+.flow .dash-body .p-c { height: 340px; }
+.flow .panel { padding: 14px; }
+.flow .panel-t { flex-wrap: wrap; font-size: 14.5px; }
+.flow .panel-t .hint { font-size: 12px; }
+/* Charts are drawn at the container's real size (charts.js); the legend sits below the chart. */
+.flow .viz { display: flex; flex-direction: column; }
+.flow .viz > svg.chart { flex: 1 1 0; min-height: 0; height: auto; }
+.flow .viz.has-legend { padding-bottom: 0; }
+.flow .viz .legend { position: static; margin-top: 6px; gap: 6px 12px; font-size: 12px; }
+.flow .drill { flex: 1 1 0; height: auto; min-height: 0; font-size: 14px; }
+.flow .insight { flex-wrap: wrap; gap: 8px 12px; padding: 12px 14px; font-size: 15px; }
+
+/* 08 Simulator */
+.flow .sim { grid-template-columns: minmax(0, 1fr); gap: 18px; margin-top: 18px; }
+.flow .sim-inputs { gap: 12px; }
+.flow .ctl { padding: 14px 16px; font-size: 15px; }
+.flow .ctl b { font-size: 18px; }
+.flow input[type=range] { height: 44px; }
+.flow .seg button { min-height: 44px; padding: 8px 10px; font-size: 14px; }
+.flow .assump { font-size: 14px; }
+.flow .assump summary { padding: 12px 0; line-height: 20px; }
+.flow .sim-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.flow .kpi.big .kpi-v { font-size: clamp(22px, 6vw, 32px); }
+.flow .sim-chart { height: clamp(220px, 60vw, 340px); padding-left: 20px; padding-right: 20px; }
+.flow .payback-flag { top: 34px; font-size: 12px; }
+.flow .split-legend { flex-wrap: wrap; gap: 6px 18px; font-size: 14px; }
+
+/* 09 Automation & AI */
+.flow .auto { grid-template-columns: minmax(0, 1fr); height: auto; gap: 16px; margin-top: 18px; }
+.flow .auto-head { flex-wrap: wrap; gap: 10px; }
+.flow .auto-head .seg { width: 100%; }
+.flow .cycle { gap: 12px; }
+.flow .cyc-row { grid-template-columns: minmax(0, 1fr) 52px; gap: 6px 12px; }
+.flow .cyc-row > div:first-child { grid-column: 1 / -1; }
+.flow .cyc-name { font-size: 15px; }
+.flow .cyc-how { min-height: 0; font-size: 12.5px; }
+.flow .cyc-track { height: 20px; }
+.flow .cyc-h { font-size: 15px; }
+.flow .cycle-total { gap: 10px; margin-top: 12px; font-size: 14px; }
+.flow .cycle-total b { font-size: clamp(32px, 9vw, 44px); }
+.flow .switch { min-height: 44px; font-size: 14px; }
+.flow .gateway { height: auto; }
+.flow .gateway.compact .gw-node text { font-size: 14px; }
+.flow .gateway.compact .gw-hub text { font-size: 19px; }
+.flow .gw-status { font-size: 13px; }
+.flow .ai-caps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.flow .cap b { font-size: 14.5px; }
+.flow .cap span { font-size: 12.5px; }
+
+/* 10 Roadmap */
+.flow .road { margin-top: 14px; }
+.flow .road-svg { display: block; width: 100%; height: auto; }
+.flow .road-svg .ph .ph-t { font-size: 17px; }
+.flow .road-svg .ph .ph-d { font-size: 13px; }
+.flow .road-svg.vertical .ph .ph-t, .flow .road-svg.vertical .ph .ph-d, .flow .road-svg.vertical .now { text-anchor: start; }
+.flow .road-bottom { grid-template-columns: minmax(0, 1fr); height: auto; gap: 14px; }
+.flow .phase-detail h3 { font-size: clamp(20px, 5vw, 24px); }
+.flow .phase-detail .pd-when { font-size: 13px; }
+.flow .phase-detail li { font-size: 15px; }
+.flow .pd-cost { font-size: 15px; }
+.flow .gates li { font-size: 14.5px; }
+.flow .ask-list { font-size: 16px; }
+.flow .ask-case { font-size: 13px; }
+.flow .closing { position: static; margin-top: 24px; }
+
+/* Presenter HUD and help */
+.flow .hud { position: fixed; bottom: calc(10px + env(safe-area-inset-bottom)); max-width: calc(100% - 16px); gap: 2px; padding: 4px 6px; }
+.flow .hud.idle { opacity: .55; }
+.flow .hud-btn { flex: none; width: 44px; height: 44px; }
+.flow .hud-progress, .flow .hud-sep { display: none; }
+.flow .hud-label { min-width: 0; padding: 0 6px; font-size: 14px; }
+.flow .help-card { width: min(620px, calc(100% - 32px)); max-height: calc(100% - 32px); overflow-y: auto; padding: 22px; }
+.flow .help-card h3 { font-size: 22px; }
+.flow .help-card dl { grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; font-size: 15px; }
+.flow .help-card p { font-size: 14px; }
+
+/* Breakpoints inside the flow layout */
+@media (max-width: 599px) {
+  .flow .persona .p-role, .flow .hud-title { display: none; }
+}
+@media (max-width: 479px) {
+  .flow .hud-btn[data-action="home"], .flow .hud-btn[data-action="fullscreen"] { display: none; }
+  .flow .help-card dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .flow .help-card dd { margin-bottom: 8px; }
+}
+@media (max-width: 420px) {
+  .flow .formgrid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (min-width: 600px) {
+  .flow .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .flow .ai-caps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 700px) and (orientation: landscape) {
+  .flow #s-value.active, .flow #s-value.leaving { grid-template-columns: minmax(0, 1.15fr) minmax(280px, 1fr); }
+  .flow #s-value .scene-head, .flow #s-value .value-hint { grid-column: 1 / -1; }
+}
+@media (min-width: 700px) {
+  .flow .solution-wrap { grid-template-columns: minmax(0, 1.2fr) minmax(280px, 1fr); align-items: start; }
+  .flow .arch-wrap.compact { grid-template-columns: minmax(0, 1.15fr) minmax(250px, 1fr); align-items: start; }
+  .flow .dash-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .flow .dash-body .p-a { grid-column: 1 / -1; height: 320px; }
+}
+@media (min-width: 760px) {
+  .flow .journey-stage { flex-direction: row; }
+  .flow .project-card { flex: none; width: 44%; }
+  .flow .road-bottom { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .flow .road-bottom .ask { grid-column: 1 / -1; }
+}
+@media (min-width: 900px) {
+  .flow .problem-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .flow .sim { grid-template-columns: minmax(300px, .9fr) minmax(0, 1.3fr); }
+}
+@media (min-width: 1000px) {
+  .flow .auto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
