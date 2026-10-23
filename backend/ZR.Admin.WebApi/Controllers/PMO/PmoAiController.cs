@@ -18,9 +18,12 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         private readonly IPmoAiService _ai;
         public PmoAiController(IPmoAiService ai) => _ai = ai;
 
-        /// <summary>Which providers are configured (names/models/order) and whether AI is available.</summary>
+        /// <summary>
+        /// Which providers are configured (names/models/order) and whether AI is available.
+        /// Public so a deploy can be checked without signing in; it never returns API keys.
+        /// </summary>
         [HttpGet("status")]
-        [ActionPermissionFilter(Permission = "pmo:ai:use")]
+        [AllowAnonymous]
         public IActionResult Status() => SUCCESS(new
         {
             configured = _ai.IsConfigured,

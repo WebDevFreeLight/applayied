@@ -89,6 +89,23 @@ namespace ZR.Service.Tests.PMO
         }
 
         [Fact]
+        public void Reports_key_by_name_that_matches_no_provider_or_is_empty()
+        {
+            var handler = new FakeHandler((_, _) => throw new InvalidOperationException("must not be called"));
+            var ai = Build(handler, new Dictionary<string, string>
+            {
+                ["AI:Keys:Gorq"] = "real-key-typo",
+                ["AI:Keys:Groq"] = " "
+            }, ("Groq", "YOUR_GROQ_API_KEY"));
+
+            ai.IsConfigured.Should().BeFalse();
+            var skipped = string.Join(" | ", ai.GetSkippedProviders().Select(s => s.ToString()));
+            skipped.Should().Contain("AI:Keys:Gorq").And.Contain("matches no provider name")
+                .And.Contain("AI:Keys:Groq").And.Contain("is set but empty")
+                .And.NotContain("real-key-typo");
+        }
+
+        [Fact]
         public async Task Falls_back_to_next_provider_and_sends_max_tokens()
         {
             string a = Uniq("A"), b = Uniq("B");

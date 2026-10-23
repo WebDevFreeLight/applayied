@@ -77,6 +77,16 @@ namespace ZR.Service.PMO
                 else _skipped.Add((p.Name, reason));
             }
 
+            // Surface AI:Keys entries that can't take effect, so a typo'd or empty host env var
+            // shows up in /pmo/ai/status instead of silently doing nothing.
+            foreach (var k in config.GetSection("AI:Keys").GetChildren())
+            {
+                if (!all.Any(p => string.Equals(p.Name, k.Key, StringComparison.OrdinalIgnoreCase)))
+                    _skipped.Add(($"AI:Keys:{k.Key}", $"matches no provider name in AI:Providers ({string.Join(", ", all.Select(p => p.Name))})"));
+                else if (string.IsNullOrWhiteSpace(k.Value))
+                    _skipped.Add(($"AI:Keys:{k.Key}", "is set but empty"));
+            }
+
             _logger.LogInformation("[PMO-AI] Initialized with {Count} provider(s): {Names}",
                 _providers.Count, string.Join(", ", _providers.Select(p => $"{p.Name}({p.Model})")));
             if (_providers.Count == 0)
