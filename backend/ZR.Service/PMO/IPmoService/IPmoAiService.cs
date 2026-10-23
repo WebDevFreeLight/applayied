@@ -15,8 +15,17 @@ namespace ZR.Service.PMO.IPmoService
         /// <summary>Names/models/order of the providers that hold a real API key.</summary>
         List<object> GetProviderStatus();
 
+        /// <summary>Configured providers that are NOT used, with why (no key, placeholder key, ...).</summary>
+        List<object> GetSkippedProviders();
+
         /// <summary>True when at least one provider is configured with a real key.</summary>
         bool IsConfigured { get; }
+
+        /// <summary>
+        /// Why the most recent call on this instance returned null: "none configured" or each
+        /// provider that was tried and how it failed. Null after a successful call.
+        /// </summary>
+        string LastError { get; }
 
         /// <summary>Low-level: run one system+user prompt through the fallback chain.</summary>
         Task<string> CompleteAsync(string systemPrompt, string userPrompt);

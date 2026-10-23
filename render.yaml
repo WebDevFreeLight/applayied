@@ -36,7 +36,14 @@ services:
       - key: corsUrls__0
         sync: false
       # Optional AI + Power BI secrets (leave unset to disable those features).
-      - key: AI__Providers__0__ApiKey
+      # On Render only base appsettings.json loads (placeholder keys), so AI needs at least one of
+      # these. Keys go by provider name (see AI:Providers); any other provider works the same way,
+      # e.g. AI__Keys__Mistral. Groq and Google Gemini both have free tiers.
+      - key: AI__Keys__Groq
+        sync: false
+      - key: AI__Keys__GoogleGemini
+        sync: false
+      - key: AI__Keys__OpenRouter
         sync: false
       - key: PowerBI__ClientSecret
         sync: false

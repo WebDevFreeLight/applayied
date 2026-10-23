@@ -21,7 +21,12 @@ namespace ZR.Admin.WebApi.Controllers.PMO
         /// <summary>Which providers are configured (names/models/order) and whether AI is available.</summary>
         [HttpGet("status")]
         [ActionPermissionFilter(Permission = "pmo:ai:use")]
-        public IActionResult Status() => SUCCESS(new { configured = _ai.IsConfigured, providers = _ai.GetProviderStatus() });
+        public IActionResult Status() => SUCCESS(new
+        {
+            configured = _ai.IsConfigured,
+            providers = _ai.GetProviderStatus(),
+            skipped = _ai.GetSkippedProviders()
+        });
 
         /// <summary>Free-form assistant chat about the portfolio.</summary>
         [HttpPost("chat")]
@@ -54,11 +59,12 @@ namespace ZR.Admin.WebApi.Controllers.PMO
             => Reply(await _ai.AutofillAsync(dto.Kind, dto.Fields, dto.Message, dto.Lang));
 
         // All providers failed / none configured -> 200 with a clear message so the UI can show it.
+        // The message names each provider tried and why it failed (never the key itself).
         private IActionResult Reply(string text) => SUCCESS(new
         {
             ok = !string.IsNullOrWhiteSpace(text),
             text = string.IsNullOrWhiteSpace(text)
-                ? "AI is unavailable right now (no provider responded). Please try again later."
+                ? $"AI is unavailable right now: {_ai.LastError ?? "no provider responded"}."
                 : text
         });
     }
