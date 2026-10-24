@@ -604,6 +604,7 @@ html.flow, html.flow body { overscroll-behavior: none; }
 .flow .tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 .flow .tab { flex: 1 1 auto; min-height: 44px; padding: 10px 12px; font-size: 14.5px; white-space: nowrap; }
 @media (max-width: 599px) { .flow .tabs { width: 100%; } }
+@media (max-width: 399px) { .flow .tab { padding: 10px 7px; font-size: 13.5px; } }
 .flow .slicer { gap: 6px; margin-top: 14px; }
 .flow .slice { min-width: 44px; min-height: 44px; padding: 6px 10px; font-size: 13px; }
 .flow .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
@@ -1819,7 +1820,7 @@ PMO.constellation = (function () {
       g.addColorStop(0, `rgba(${c},${0.45 * n.alpha})`); g.addColorStop(1, `rgba(${c},0)`);
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, n.r * 5 * pulse, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = `rgba(${c},${n.alpha})`; ctx.beginPath(); ctx.arc(x, y, n.r * 0.55, 0, Math.PI * 2); ctx.fill();
-      if (fluid && n.talpha < 0.5) return; // no code labels behind text on small screens
+      if (fluid && (n.talpha < 0.5 || W < 700)) return; // no code labels behind text on small screens
       ctx.font = '600 15px "JetBrains Mono", monospace';
       ctx.fillStyle = `rgba(220,232,250,${0.7 * n.alpha})`;
       ctx.fillText(n.id, x + n.r + 6, y - n.r - 4);

@@ -595,6 +595,7 @@ html.flow, html.flow body { overscroll-behavior: none; }
 .flow .tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 .flow .tab { flex: 1 1 auto; min-height: 44px; padding: 10px 12px; font-size: 14.5px; white-space: nowrap; }
 @media (max-width: 599px) { .flow .tabs { width: 100%; } }
+@media (max-width: 399px) { .flow .tab { padding: 10px 7px; font-size: 13.5px; } }
 .flow .slicer { gap: 6px; margin-top: 14px; }
 .flow .slice { min-width: 44px; min-height: 44px; padding: 6px 10px; font-size: 13px; }
 .flow .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
