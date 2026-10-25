@@ -352,6 +352,7 @@ namespace ZR.Service.PMO
             ("pmo:automation:list", "PMO Automation Log", "PM"),
             ("pmo:audit:list", "PMO Audit Log", "PM"),
             ("pmo:ai:use", "PMO AI Assistant", "ALL"),
+            ("pmo:ml:view", "PMO ML Insights", "ALL"), ("pmo:ml:train", "PMO ML Training", "ADMIN"),
             ("pmo:report:view", "PMO Power BI Reports", "PM"),
             ("pmo:employee:list", "PMO Employee Directory", "PM"),
             ("pmo:employee:add", "PMO Employee Add", "ADMIN"), ("pmo:employee:edit", "PMO Employee Edit", "ADMIN"), ("pmo:employee:remove", "PMO Employee Remove", "ADMIN"),

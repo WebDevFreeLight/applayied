@@ -305,6 +305,8 @@ builder.Services.AddTransient(typeof(Lazy<>), typeof(LazyResolver<>));
 builder.Services.AddHttpClient<ZR.Service.PMO.IPmoService.IPmoAiService, ZR.Service.PMO.PmoAiService>();
 // PMO Power BI embed-token service (Azure AD service principal -> embed for your organization).
 builder.Services.AddHttpClient<ZR.Service.PMO.IPmoService.IPmoPowerBiService, ZR.Service.PMO.PmoPowerBiService>();
+// PMO ML bridge -> Python scikit-learn service (ml/, FastAPI). Config section "ML" (BaseUrl, ApiKey).
+builder.Services.AddHttpClient<ZR.Service.PMO.IPmoService.IPmoMlService, ZR.Service.PMO.PmoMlService>();
 // PMO business-automation background worker (overdue escalation + budget-overrun alerts).
 builder.Services.AddHostedService<ZR.Admin.WebApi.Framework.PmoAutomationWorker>();
 
