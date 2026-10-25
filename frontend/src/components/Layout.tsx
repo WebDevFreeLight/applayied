@@ -19,6 +19,7 @@ const LINKS: { to: string; key: string; end?: boolean; perm?: string }[] = [
   { to: '/finance', key: 'finance', perm: 'pmo:finance:list' },
   { to: '/activity', key: 'activity', perm: 'pmo:automation:list' },
   { to: '/employees', key: 'employees', perm: 'pmo:employee:list' },
+  { to: '/ml', key: 'ml', perm: 'pmo:ml:view' },
   { to: '/reports', key: 'reports', perm: 'pmo:report:view' },
   { to: '/categories', key: 'categories', perm: 'pmo:category:list' },
 ]

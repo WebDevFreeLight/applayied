@@ -49,6 +49,16 @@ npm run dev        # http://localhost:5173, proxies /api -> backend (VITE_API_TA
 ```
 `cp .env.example .env` to change the API target/base.
 
+## 2b — Machine learning (optional)
+Five scikit-learn models trained on this same PostgreSQL — task delay risk, risk severity, monthly spend
+forecast, cost anomalies and portfolio segments — served to the **ML Insights** page through `/pmo/ml/*`.
+```bash
+powershell -ExecutionPolicy Bypass -File ml\scripts\setup.ps1      # once
+powershell -ExecutionPolicy Bypass -File ml\scripts\run_pipeline.ps1
+ml\.venv\Scripts\python -m pmo_ml serve                            # http://localhost:8001/docs
+```
+Full bilingual (EN/AR) tutorial, one file per ML lifecycle step: [`ml/README.md`](ml/README.md).
+
 ## 3 — Demo logins (password `123456`)
 | Username | Role | Can do |
 |----------|------|--------|

@@ -1,0 +1,7 @@
+.venv
+models
+reports
+data
+tests
+__pycache__
+*.pyc

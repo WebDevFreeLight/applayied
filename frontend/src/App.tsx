@@ -16,6 +16,7 @@ import Categories from './pages/Categories'
 import Activity from './pages/Activity'
 import Employees from './pages/Employees'
 import Reports from './pages/Reports'
+import MlInsights from './pages/MlInsights'
 import Users from './pages/admin/Users'
 import Roles from './pages/admin/Roles'
 import Menus from './pages/admin/Menus'
@@ -67,6 +68,7 @@ export default function App() {
           <Route path="/activity" element={<RequirePerm perm="pmo:automation:list"><Activity /></RequirePerm>} />
           <Route path="/employees" element={<RequirePerm perm="pmo:employee:list"><Employees /></RequirePerm>} />
           <Route path="/reports" element={<RequirePerm perm="pmo:report:view"><Reports /></RequirePerm>} />
+          <Route path="/ml" element={<RequirePerm perm="pmo:ml:view"><MlInsights /></RequirePerm>} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/roles" element={<Roles />} />
           <Route path="/admin/menus" element={<Menus />} />
