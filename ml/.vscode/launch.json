@@ -1,0 +1,70 @@
+{
+  // VS Code debug configurations for the PMO ML project.
+  // Open the ml/ folder in VS Code (File > Open Folder > ml), pick the interpreter
+  // ml/.venv/Scripts/python.exe (Ctrl+Shift+P > Python: Select Interpreter), then F5.
+  // "justMyCode": false lets you step into scikit-learn / pandas when needed.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ML: serve API (debug)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pmo_ml",
+      "args": ["serve", "--port", "8001"],
+      "cwd": "${workspaceFolder}",
+      "env": { "PMO_ML_AUTO_RETRAIN_HOURS": "0" },
+      "justMyCode": true
+    },
+    {
+      "name": "ML: train one model",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pmo_ml",
+      "args": ["train", "--problem", "${input:problem}", "--no-eda"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "ML: train on CSV seed",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pmo_ml",
+      "args": ["train", "--source", "csv"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "ML: predict (terminal)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pmo_ml",
+      "args": ["predict", "${input:problem}", "--lang", "en"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "ML: monitor",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pmo_ml",
+      "args": ["monitor"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "ML: pytest (all)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["-q", "-p", "no:warnings"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "problem",
+      "type": "pickString",
+      "description": "Which model?",
+      "options": ["task_delay", "risk_severity", "spend_forecast", "cost_anomaly", "portfolio_segments"],
+      "default": "task_delay"
+    }
+  ]
+}

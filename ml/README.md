@@ -62,6 +62,7 @@ Override with `PMO_DB_CONN` (Npgsql style) or `DATABASE_URL` (postgres://…).
 | [10_MONITORING_AND_AUTOMATION](docs/10_MONITORING_AND_AUTOMATION.md) | Drift (PSI), live accuracy, auto-retrain |
 | [11_UI_AND_API_REFERENCE](docs/11_UI_AND_API_REFERENCE.md) | Every endpoint, the portal page, permissions |
 | [12_CUSTOMIZATION](docs/12_CUSTOMIZATION.md) | Add a model, a feature or an algorithm (tutorial) |
+| [13_RUN_AND_DEBUG](docs/13_RUN_AND_DEBUG.md) | Run the whole stack step by step, and debug the ML |
 
 ## Commands
 
@@ -76,6 +77,7 @@ Override with `PMO_DB_CONN` (Npgsql style) or `DATABASE_URL` (postgres://…).
 | `python -m pmo_ml promote task_delay 20261025-025527` | Roll back to an older model version |
 | `python -m pmo_ml serve` | Start the REST API on port 8001 |
 | `python -m pytest` | 23 tests (run inside `ml/`) |
+| `scripts\start_all.ps1` / `scripts\check_stack.ps1` | Start the whole stack / check every layer |
 
 ## Honest limits
 
@@ -119,7 +121,7 @@ more data, because the scheduler retrains when enough new rows arrive.
 
 ## الدروس — درس لكل خطوة
 
-الملفات من `00` إلى `12` في مجلد [docs](docs/00_START_HERE.md)، وكل ملف مكتوب بالإنجليزية ثم بالعربية.
+الملفات من `00` إلى `13` في مجلد [docs](docs/00_START_HERE.md)، وكل ملف مكتوب بالإنجليزية ثم بالعربية.
 الملف [00_MODIFICATIONS](docs/00_MODIFICATIONS.md) يسرد كل ملف أُضيف أو عُدّل في المستودع.
 
 ## حدود واقعية

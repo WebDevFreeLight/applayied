@@ -65,6 +65,15 @@ each later change so the history of the ML work stays readable in one place.
 No schema change. On first start of the updated API the seeder adds two permission rows (`pmo:ml:view`,
 `pmo:ml:train`) under the PMO menu and grants them by tier. The ML service only **reads** the PMO tables.
 
+## 2026-10-25 — v1.0.1: run & debug guide
+
+| File | Change |
+|---|---|
+| `ml/docs/13_RUN_AND_DEBUG.md` | Step-by-step start of PostgreSQL → ML → API → frontend, and ML debugging guide (EN/AR) |
+| `ml/scripts/start_all.ps1` | Opens one window per service in dependency order (`-Train`, `-SkipMl`) |
+| `ml/scripts/check_stack.ps1` | Read-only health check of every layer with a fix hint per failure |
+| `ml/.vscode/launch.json` | VS Code debug configurations (serve, train, predict, monitor, pytest) |
+
 ## Template for the next change
 
 ```markdown
