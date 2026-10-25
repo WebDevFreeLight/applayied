@@ -1,0 +1,48 @@
+# PMO ML configuration. Every value can be overridden by an environment variable (shown in brackets).
+#
+# Database: by default the connection string is read at runtime from the .NET API's
+# appsettings.json -> dbConfigs[0].Conn, so the ML service uses exactly the same PMO database
+# and no password is copied into this project.
+
+data:
+  source: db                     # db | csv   [PMO_ML_SOURCE]   csv = the synthetic seed in ../data/csv
+  appsettings_path: ../backend/ZR.Admin.WebApi/appsettings.json   # [PMO_ML_APPSETTINGS]
+  db_config_index: 0             # which entry of dbConfigs to use
+  # Optional overrides (take precedence over appsettings):
+  #   PMO_DB_CONN  = Npgsql style  "Host=..;Port=..;Database=..;Username=..;Password=.."
+  #   DATABASE_URL = postgres://user:pass@host:port/db
+  csv_dir: ../data/csv
+  as_of_date: null               # yyyy-mm-dd; null = today. The "now" used to label outcomes. [PMO_ML_AS_OF]
+
+paths:
+  models_dir: models             # trained models + metadata (git-ignored)
+  reports_dir: reports           # EDA charts, evaluation reports (git-ignored)
+  raw_dir: data/raw              # snapshot of each collection run (git-ignored)
+
+training:
+  random_state: 42
+  test_size: 0.25                # hold-out share for supervised problems
+  cv_folds: 5                    # reduced automatically when a class is too small
+  scoring:
+    task_delay: f1               # model selection metric per problem
+    risk_severity: f1_macro
+    spend_forecast: neg_mean_absolute_error
+  problems: [task_delay, risk_severity, spend_forecast, cost_anomaly, portfolio_segments]
+
+anomaly:
+  contamination: 0.06            # expected share of unusual transactions
+
+segments:
+  k_min: 2
+  k_max: 4
+
+monitoring:
+  drift_psi_threshold: 0.25      # PSI above this on any key feature = drift
+  min_new_rows_for_retrain: 5
+
+api:
+  host: 0.0.0.0                  # [PMO_ML_HOST]
+  port: 8001                     # [PMO_ML_PORT]
+  api_key: null                  # optional shared secret; .NET sends it as X-ML-Key  [PMO_ML_API_KEY]
+  auto_retrain_hours: 24         # built-in scheduler; 0 disables  [PMO_ML_AUTO_RETRAIN_HOURS]
+  train_on_startup_if_missing: true
