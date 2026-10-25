@@ -75,6 +75,8 @@ def collect(settings: Settings, source: str | None = None) -> dict[str, pd.DataF
         engine.dispose()
     elif source == "csv":
         csv_dir = resolve(settings.section("data")["csv_dir"])
+        if not (csv_dir / "tasks.csv").exists():
+            raise FileNotFoundError(f"CSV seed not found in {csv_dir} (set data.csv_dir, or use source: db)")
         for name, (_, file, cols) in TABLES.items():
             path = csv_dir / file
             frames[name] = _normalize(pd.read_csv(path) if path.exists() else pd.DataFrame(), cols)
