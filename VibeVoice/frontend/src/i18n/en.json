@@ -447,7 +447,14 @@
     "saveAsNote": "Save as note",
     "savedAsNote": "Saved as a new note",
     "noTranscript": "Record or upload audio or video to see its transcript here.",
-    "responsibleUse": "Generated speech is labeled as AI-generated. Don't use AI voices to impersonate real people."
+    "responsibleUse": "Generated speech is labeled as AI-generated. Don't use AI voices to impersonate real people.",
+    "ocrTab": "Image → Text",
+    "ocrDrop": "Drop a picture here, paste it, or",
+    "ocrChoose": "choose a picture",
+    "keepInLibrary": "Keep in Images library",
+    "ocrEmpty": "Pick a picture to read its Arabic or English text.",
+    "picture": "Picture",
+    "changePicture": "Choose another picture"
   },
   "images": {
     "title": "Images",
@@ -493,18 +500,20 @@
   },
   "search": {
     "title": "Search",
-    "subtitle": "Find anything across notes, memories and transcripts.",
+    "subtitle": "Find anything across notes, memories, transcripts and text in pictures.",
     "placeholder": "Search notes, memories, transcripts…",
     "label": "Search query",
     "types": {
       "notes": "Notes",
       "memories": "Memories",
-      "audio": "Audio"
+      "audio": "Audio",
+      "images": "Images"
     },
     "kinds": {
       "note": "Note",
       "memory": "Memory",
-      "audio": "Audio"
+      "audio": "Audio",
+      "image": "Image"
     },
     "matchedIn": "Matched in {{field}}",
     "fields": {
@@ -513,7 +522,8 @@
       "tag": "tag",
       "transcript": "transcript",
       "person": "person",
-      "location": "location"
+      "location": "location",
+      "imageText": "text in image"
     },
     "start": "Start typing to search",
     "startBody": "Arabic search ignores diacritics and letter variants (أ/إ/آ, ى/ي, ة/ه).",
@@ -594,5 +604,34 @@
     "downloadAs": "Download transcript as {{format}}",
     "seekTo": "Play from {{time}}",
     "notReady": "No transcript yet — use Transcribe."
+  },
+  "ocr": {
+    "extract": "Extract text",
+    "extracting": "Extracting text…",
+    "extractOption": "Extract text (OCR)",
+    "extractHint": "Arabic and English text in pictures becomes searchable.",
+    "language": "Text language",
+    "languages": {
+      "auto": "Auto (Arabic + English)",
+      "ar": "Arabic",
+      "en": "English"
+    },
+    "unavailable": "Text extraction is unavailable — no OCR engine is configured.",
+    "failed": "The images were saved, but text extraction failed: {{message}}",
+    "textBadge": "Text",
+    "textInImage": "Text in image",
+    "showText": "Show extracted text",
+    "hideText": "Hide extracted text",
+    "extractedText": "Extracted text",
+    "copy": "Copy text",
+    "downloadTxt": "Download .txt",
+    "insertNote": "Insert into note",
+    "insertMemory": "Insert into story",
+    "inserted": "Text inserted — it will be saved automatically",
+    "extracted": "Text extracted",
+    "noText": "No text was found in this picture.",
+    "lines": "Lines",
+    "confidence": "{{value}}% confidence",
+    "fullText": "Full text"
   }
 }

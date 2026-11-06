@@ -71,6 +71,9 @@ export interface ImageDto {
   sizeBytes: number
   caption: string | null
   sortOrder: number
+  /** v3: text extracted from the picture (null until extracted). */
+  ocrText: string | null
+  ocrLanguage: string | null
   createdAt: string
 }
 
@@ -287,6 +290,8 @@ export interface VoiceStatus {
   available: boolean
   ttsEngine: string | null
   asrEngine: string | null
+  /** v3: OCR engine (e.g. "rapidocr"), null when text extraction is unavailable. */
+  ocrEngine: string | null
   device: string | null
   message: string | null
 }
@@ -304,6 +309,25 @@ export interface Segment {
   speaker: string | null
 }
 
+export interface OcrLine {
+  text: string
+  confidence: number
+}
+
+export interface OcrResultDto {
+  text: string
+  language: string | null
+  /** top-to-bottom reading order */
+  lines: OcrLine[]
+  /** set when the picture was kept in the Images library (save=true) */
+  image: ImageDto | null
+}
+
+export interface OcrRequest {
+  appendToBody?: boolean
+  language?: string
+}
+
 export interface TranscriptionResult {
   text: string
   language: string
@@ -313,19 +337,21 @@ export interface TranscriptionResult {
 
 // ---------- Search / tags / dashboard / health ----------
 
-export type SearchKind = 'note' | 'memory' | 'audio'
-export type SearchType = 'notes' | 'memories' | 'audio'
-export type MatchedIn = 'title' | 'body' | 'tag' | 'transcript' | 'person' | 'location'
+export type SearchKind = 'note' | 'memory' | 'audio' | 'image'
+export type SearchType = 'notes' | 'memories' | 'audio' | 'images'
+export type MatchedIn = 'title' | 'body' | 'tag' | 'transcript' | 'person' | 'location' | 'imageText'
 
 export interface SearchResultDto {
   kind: SearchKind
   id: string
   ownerId: string | null
-  ownerKind: 'note' | 'memory' | 'studio' | null
+  ownerKind: 'note' | 'memory' | 'studio' | 'library' | null
   title: string
   snippet: string
   matchedIn: MatchedIn
   date: string
+  /** Optional thumbnail for image results (rendered when the API provides it). */
+  thumbnailPath?: string | null
 }
 
 export interface SearchQuery {

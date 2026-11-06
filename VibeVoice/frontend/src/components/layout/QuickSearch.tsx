@@ -7,8 +7,9 @@ import { qk } from '@/api/keys'
 import { searchApi } from '@/api/misc'
 import { useDebouncedValue } from '@/hooks/misc'
 import { highlight } from '@/lib/highlight'
-import { KIND_ICON, searchResultLink } from '@/lib/links'
+import { searchResultLink } from '@/lib/links'
 import { cn } from '@/lib/utils'
+import { ResultThumb } from '../ResultThumb'
 import { Modal } from '../ui/Modal'
 
 /** ⌘/Ctrl+K command-palette style search. */
@@ -91,7 +92,6 @@ function QuickSearchBody({
 
       <ul id={listId} role="listbox" aria-label={t('search.title')} className="flex flex-col gap-1">
         {items.map((r, i) => {
-          const Icon = KIND_ICON[r.kind]
           return (
             <li
               key={`${r.kind}-${r.id}`}
@@ -105,7 +105,7 @@ function QuickSearchBody({
                 i === active ? 'bg-accent-soft' : 'hover:bg-surface-2',
               )}
             >
-              <Icon className="mt-0.5 size-4 shrink-0 text-accent-text" aria-hidden />
+              <ResultThumb r={r} size="sm" />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-fg" dir="auto">
                   {highlight(r.title || t('common.untitled'), debounced)}
@@ -116,7 +116,10 @@ function QuickSearchBody({
                   </p>
                 )}
               </div>
-              <span className="shrink-0 text-[11px] text-subtle">{t(`search.kinds.${r.kind}`)}</span>
+              <span className="flex shrink-0 flex-col items-end gap-0.5 text-[11px] text-subtle">
+                {t(`search.kinds.${r.kind}`)}
+                {r.matchedIn === 'imageText' && <span className="text-warning">{t('ocr.textInImage')}</span>}
+              </span>
             </li>
           )
         })}

@@ -1,7 +1,7 @@
 import { AudioLines, BookHeart, Image, NotebookPen, type LucideIcon } from 'lucide-react'
 import type { ActivityItem, SearchKind, SearchResultDto } from '@/api/types'
 
-export const KIND_ICON: Record<SearchKind | 'image', LucideIcon> = {
+export const KIND_ICON: Record<SearchKind, LucideIcon> = {
   note: NotebookPen,
   memory: BookHeart,
   audio: AudioLines,
@@ -12,10 +12,10 @@ export const KIND_ICON: Record<SearchKind | 'image', LucideIcon> = {
 export function searchResultLink(r: SearchResultDto): string {
   if (r.kind === 'note') return `/notes/${r.id}`
   if (r.kind === 'memory') return `/memories/${r.id}`
-  // audio → its owner
+  // audio / image → its owner (library images → /images)
   if (r.ownerKind === 'note' && r.ownerId) return `/notes/${r.ownerId}`
   if (r.ownerKind === 'memory' && r.ownerId) return `/memories/${r.ownerId}`
-  return '/studio'
+  return r.kind === 'image' ? '/images' : '/studio'
 }
 
 export function audioOwnerLink(ownerType: string, ownerId: string): string {

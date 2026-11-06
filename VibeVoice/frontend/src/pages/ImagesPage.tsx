@@ -1,10 +1,11 @@
 import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
-import { BookHeart, ExternalLink, Images, Link2, NotebookPen, Search, Trash2 } from 'lucide-react'
+import { BookHeart, ChevronDown, ExternalLink, Images, Link2, Loader2, NotebookPen, ScanText, Search, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { toast } from 'sonner'
 import { errorMessage, fileUrl } from '@/api/client'
+import { useOcrAvailable } from '@/api/hooks'
 import { qk } from '@/api/keys'
 import { imagesApi } from '@/api/library'
 import { memoriesApi } from '@/api/memories'
@@ -13,12 +14,13 @@ import { notesApi } from '@/api/notes'
 import type { ImageOwnerType, ImageWithOwnerDto } from '@/api/types'
 import { ImageUploader } from '@/components/images/ImageUploader'
 import { Lightbox } from '@/components/images/Lightbox'
+import { OcrTextPanel } from '@/components/images/OcrTextPanel'
 import { Button, IconButton } from '@/components/ui/Button'
 import { Badge, Chip, EmptyState, ErrorState, PageHeader, Skeleton, Spinner } from '@/components/ui/Display'
 import { Input } from '@/components/ui/Field'
 import { ConfirmDialog, Modal } from '@/components/ui/Modal'
 import { useDebouncedValue } from '@/hooks/misc'
-import { formatBytes } from '@/lib/utils'
+import { cn, formatBytes } from '@/lib/utils'
 
 const OWNER_TYPES: ImageOwnerType[] = ['Library', 'Note', 'Memory']
 
@@ -30,6 +32,9 @@ export function ImagesPage() {
   const [attaching, setAttaching] = useState<ImageWithOwnerDto | null>(null)
   const [deleting, setDeleting] = useState<ImageWithOwnerDto | null>(null)
   const [busyDelete, setBusyDelete] = useState(false)
+  const [extracting, setExtracting] = useState<string | null>(null)
+  const [openText, setOpenText] = useState<string | null>(null)
+  const ocrAvailable = useOcrAvailable()
 
   const query = { pageSize: 48, ownerType }
   const list = useInfiniteQuery({
@@ -43,6 +48,28 @@ export function ImagesPage() {
   const refresh = () => {
     void qc.invalidateQueries({ queryKey: qk.images.all })
     void qc.invalidateQueries({ queryKey: qk.dashboard })
+  }
+
+  /** Library OCR: POST /api/images/{id}/ocr, then refresh the grid. */
+  const extractText = async (id: string) => {
+    const updated = await imagesApi.ocr(id)
+    await qc.invalidateQueries({ queryKey: qk.images.all })
+    void qc.invalidateQueries({ queryKey: qk.notes.all })
+    void qc.invalidateQueries({ queryKey: qk.memories.all })
+    return updated
+  }
+
+  const extractFromTile = async (id: string) => {
+    setExtracting(id)
+    try {
+      await extractText(id)
+      toast.success(t('ocr.extracted'))
+      setOpenText(id)
+    } catch (err) {
+      toast.error(errorMessage(err))
+    } finally {
+      setExtracting(null)
+    }
   }
 
   const confirmDelete = async () => {
@@ -68,7 +95,8 @@ export function ImagesPage() {
 
       <ImageUploader
         className="mb-6"
-        upload={(file, onProgress) => imagesApi.upload([file], onProgress)}
+        ocrAvailable={ocrAvailable}
+        upload={(file, onProgress, opts) => imagesApi.upload([file], { ...opts, onProgress })}
         onUploaded={refresh}
       />
 
@@ -117,6 +145,12 @@ export function ImagesPage() {
                         ? t('audio.ownerTypes.Note')
                         : t('audio.ownerTypes.Memory')}
                   </Badge>
+                  {img.ocrText && (
+                    <Badge className="absolute end-2 bottom-2 border-transparent bg-black/60 text-white backdrop-blur">
+                      <ScanText className="size-3" aria-hidden />
+                      {t('ocr.textBadge')}
+                    </Badge>
+                  )}
                 </button>
                 <div className="flex items-center gap-1 px-2 py-1.5">
                   <div className="min-w-0 flex-1">
@@ -134,6 +168,20 @@ export function ImagesPage() {
                       </span>
                     )}
                   </div>
+                  <span title={ocrAvailable ? undefined : t('ocr.unavailable')} className="inline-flex">
+                    <IconButton
+                      label={t('ocr.extract')}
+                      size="icon-sm"
+                      disabled={!ocrAvailable || extracting === img.id}
+                      onClick={() => void extractFromTile(img.id)}
+                    >
+                      {extracting === img.id ? (
+                        <Loader2 className="size-4 animate-spin" aria-hidden />
+                      ) : (
+                        <ScanText className="size-4" aria-hidden />
+                      )}
+                    </IconButton>
+                  </span>
                   <IconButton label={t('images.attach')} size="icon-sm" onClick={() => setAttaching(img)}>
                     <Link2 className="size-4" aria-hidden />
                   </IconButton>
@@ -141,6 +189,26 @@ export function ImagesPage() {
                     <Trash2 className="size-4" aria-hidden />
                   </IconButton>
                 </div>
+                {img.ocrText && (
+                  <div className="border-t border-border">
+                    <button
+                      type="button"
+                      onClick={() => setOpenText(openText === img.id ? null : img.id)}
+                      aria-expanded={openText === img.id}
+                      className="flex w-full items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-muted hover:text-fg"
+                    >
+                      <ScanText className="size-3.5" aria-hidden />
+                      {openText === img.id ? t('ocr.hideText') : t('ocr.showText')}
+                      <ChevronDown
+                        className={cn('ms-auto size-3.5 transition-transform', openText === img.id && 'rotate-180')}
+                        aria-hidden
+                      />
+                    </button>
+                    {openText === img.id && (
+                      <OcrTextPanel text={img.ocrText} filename={`image-${img.id.slice(0, 8)}-text`} className="max-h-64 px-2 pb-2" />
+                    )}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -155,7 +223,14 @@ export function ImagesPage() {
       )}
 
       {openIndex !== null && items[openIndex] && (
-        <Lightbox images={items} index={openIndex} onIndexChange={setOpenIndex} onClose={() => setOpenIndex(null)} />
+        <Lightbox
+          images={items}
+          index={openIndex}
+          onIndexChange={setOpenIndex}
+          onClose={() => setOpenIndex(null)}
+          onExtractText={extractText}
+          ocrAvailable={ocrAvailable}
+        />
       )}
 
       <AttachDialog

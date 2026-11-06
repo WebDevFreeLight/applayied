@@ -126,6 +126,18 @@ export function isImageFile(file: File): boolean {
   return (IMAGE_TYPES as readonly string[]).includes(file.type.toLowerCase())
 }
 
+/** Saves text as a UTF-8 .txt file (client-side Blob). */
+export function downloadText(text: string, filename: string): void {
+  const url = URL.createObjectURL(new Blob(['\ufeff', text], { type: 'text/plain;charset=utf-8' }))
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename.endsWith('.txt') ? filename : `${filename}.txt`
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 10_000)
+}
+
 /**
  * Downloads a (possibly cross-origin) URL as a file. The `download` attribute is ignored
  * cross-origin, so we fetch a blob first and fall back to opening the URL.

@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, GripVertical, Star, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, GripVertical, Loader2, ScanText, Star, Trash2 } from 'lucide-react'
 import { useState, type DragEvent, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { Badge } from '../ui/Display'
 import { ConfirmDialog } from '../ui/Modal'
 import { Lightbox } from './Lightbox'
+import { OcrTextPanel } from './OcrTextPanel'
 
 export interface ImageGalleryProps {
   images: ImageDto[]
@@ -17,10 +18,28 @@ export interface ImageGalleryProps {
   /** Memories only. */
   onSetCover?: (id: string | null) => Promise<unknown>
   coverImageId?: string | null
+  /** "Extract text" (OCR) for one picture; resolves once the owner data is refreshed. */
+  onExtractText?: (id: string) => Promise<unknown>
+  /** False disables "Extract text" with an explanation (no OCR engine). */
+  ocrAvailable?: boolean
+  /** Inserts extracted text into the open editor ("Insert into note / story"). */
+  onInsertText?: (text: string) => void
+  insertLabel?: string
 }
 
 /** Thumbnail grid: lightbox, drag (or ←/→ buttons) to reorder, captions, delete, set cover. */
-export function ImageGallery({ images, onReorder, onCaption, onDelete, onSetCover, coverImageId }: ImageGalleryProps) {
+export function ImageGallery({
+  images,
+  onReorder,
+  onCaption,
+  onDelete,
+  onSetCover,
+  coverImageId,
+  onExtractText,
+  ocrAvailable = true,
+  onInsertText,
+  insertLabel,
+}: ImageGalleryProps) {
   const { t } = useTranslation()
   const sorted = [...images].sort((a, b) => a.sortOrder - b.sortOrder)
   // Optimistic order while a reorder request is in flight.
@@ -30,6 +49,30 @@ export function ImageGallery({ images, onReorder, onCaption, onDelete, onSetCove
   const [overId, setOverId] = useState<string | null>(null)
   const [pendingDelete, setPendingDelete] = useState<ImageDto | null>(null)
   const [deleting, setDeleting] = useState(false)
+  const [extracting, setExtracting] = useState<string | null>(null)
+  const [openText, setOpenText] = useState<Set<string>>(() => new Set())
+
+  const toggleText = (id: string, open?: boolean) =>
+    setOpenText((prev) => {
+      const next = new Set(prev)
+      if (open ?? !next.has(id)) next.add(id)
+      else next.delete(id)
+      return next
+    })
+
+  const extract = async (id: string) => {
+    if (!onExtractText) return
+    setExtracting(id)
+    try {
+      await onExtractText(id)
+      toast.success(t('ocr.extracted'))
+      toggleText(id, true)
+    } catch (err) {
+      toast.error(errorMessage(err))
+    } finally {
+      setExtracting(null)
+    }
+  }
 
   const byId = new Map(sorted.map((i) => [i.id, i]))
   const list =
@@ -132,6 +175,12 @@ export function ImageGallery({ images, onReorder, onCaption, onDelete, onSetCove
                     {t('images.coverBadge')}
                   </Badge>
                 )}
+                {img.ocrText && (
+                  <Badge className="absolute end-2 bottom-2 border-transparent bg-black/60 text-white backdrop-blur">
+                    <ScanText className="size-3" aria-hidden />
+                    {t('ocr.textBadge')}
+                  </Badge>
+                )}
               </button>
 
               {onCaption ? (
@@ -163,6 +212,21 @@ export function ImageGallery({ images, onReorder, onCaption, onDelete, onSetCove
                   </>
                 )}
                 <span className="flex-1" />
+                {onExtractText && (
+                  <span title={ocrAvailable ? undefined : t('ocr.unavailable')} className="inline-flex">
+                    <TileButton
+                      label={t('ocr.extract')}
+                      disabled={!ocrAvailable || extracting === img.id}
+                      onClick={() => void extract(img.id)}
+                    >
+                      {extracting === img.id ? (
+                        <Loader2 className="size-4 animate-spin" aria-hidden />
+                      ) : (
+                        <ScanText className="size-4" aria-hidden />
+                      )}
+                    </TileButton>
+                  </span>
+                )}
                 {onSetCover && (
                   <TileButton
                     label={isCover ? t('memories.removeCover') : t('memories.setCover')}
@@ -183,6 +247,33 @@ export function ImageGallery({ images, onReorder, onCaption, onDelete, onSetCove
                   </TileButton>
                 )}
               </div>
+
+              {img.ocrText && (
+                <div className="border-t border-border">
+                  <button
+                    type="button"
+                    onClick={() => toggleText(img.id)}
+                    aria-expanded={openText.has(img.id)}
+                    className="flex w-full items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-muted hover:text-fg"
+                  >
+                    <ScanText className="size-3.5" aria-hidden />
+                    {openText.has(img.id) ? t('ocr.hideText') : t('ocr.showText')}
+                    <ChevronDown
+                      className={cn('ms-auto size-3.5 transition-transform', openText.has(img.id) && 'rotate-180')}
+                      aria-hidden
+                    />
+                  </button>
+                  {openText.has(img.id) && (
+                    <OcrTextPanel
+                      text={img.ocrText}
+                      filename={`image-${i + 1}-text`}
+                      onInsert={onInsertText}
+                      insertLabel={insertLabel}
+                      className="max-h-64 px-2 pb-2"
+                    />
+                  )}
+                </div>
+              )}
             </li>
           )
         })}
@@ -194,6 +285,10 @@ export function ImageGallery({ images, onReorder, onCaption, onDelete, onSetCove
           index={Math.min(openIndex, list.length - 1)}
           onIndexChange={setOpenIndex}
           onClose={() => setOpenIndex(null)}
+          onExtractText={onExtractText}
+          ocrAvailable={ocrAvailable}
+          onInsertText={onInsertText}
+          insertLabel={insertLabel}
         />
       )}
 

@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Copy, FileAudio, FilePlus2, Mic, ShieldCheck, Sparkles, Upload, Wand2 } from 'lucide-react'
+import { Copy, FileAudio, FilePlus2, Mic, ScanText, ShieldCheck, Sparkles, Upload, Wand2 } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -16,13 +16,14 @@ import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { AudioRecorder } from '@/components/audio/AudioRecorder'
 import { VoiceSelect } from '@/components/audio/VoiceSelect'
 import { VoiceStatusChip } from '@/components/layout/VoiceStatusChip'
+import { ImageToText } from '@/components/studio/ImageToText'
 import { Button } from '@/components/ui/Button'
 import { Card, EmptyState, PageHeader, ProgressBar, Segmented, Skeleton } from '@/components/ui/Display'
 import { Checkbox, Field, Select, Textarea } from '@/components/ui/Field'
 import { copyText } from '@/hooks/misc'
 import { formatDuration, MEDIA_ACCEPT, textToHtml, validateMediaFile } from '@/lib/utils'
 
-type Tab = 'tts' | 'stt'
+type Tab = 'tts' | 'stt' | 'ocr'
 const LANGS = ['auto', 'en', 'ar'] as const
 
 export function StudioPage() {
@@ -38,10 +39,11 @@ export function StudioPage() {
         options={[
           { value: 'tts', label: t('studio.ttsTab'), icon: Sparkles },
           { value: 'stt', label: t('studio.sttTab'), icon: Mic },
+          { value: 'ocr', label: t('studio.ocrTab'), icon: ScanText },
         ]}
         className="mb-6"
       />
-      {tab === 'tts' ? <TextToSpeech /> : <SpeechToText />}
+      {tab === 'tts' ? <TextToSpeech /> : tab === 'stt' ? <SpeechToText /> : <ImageToText />}
     </div>
   )
 }

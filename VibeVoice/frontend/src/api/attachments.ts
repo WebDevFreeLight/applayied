@@ -1,5 +1,5 @@
-import { http, upload, uploadWithResponse } from './client'
-import type { AudioDto, ImageDto, TranscribeRequest, TtsRequest } from './types'
+import { http, uploadWithResponse } from './client'
+import type { AudioDto, ImageDto, OcrRequest, TranscribeRequest, TtsRequest } from './types'
 
 /** Notes and memories share the same attachment endpoint shape. */
 export type OwnerKind = 'notes' | 'memories'
@@ -20,19 +20,48 @@ export interface UploadMediaResult {
   transcriptionError: string | null
 }
 
+export interface UploadImagesOptions {
+  /** Extract text from each picture after upload (form field `ocr=true`). */
+  ocr?: boolean
+  /** "ar" / "en"; omit for auto (Arabic + English). */
+  language?: string
+  onProgress?: (fraction: number) => void
+}
+
+export interface UploadImagesResult {
+  images: ImageDto[]
+  /** From the X-Ocr-Error header when text extraction failed (the images were still saved). */
+  ocrError: string | null
+}
+
+/** Multipart body shared by note/memory/library image uploads. */
+export function imagesForm(files: File[], options: UploadImagesOptions = {}): FormData {
+  const form = new FormData()
+  for (const f of files) form.append('files', f, f.name)
+  if (options.ocr) {
+    form.append('ocr', 'true')
+    if (options.language) form.append('language', options.language)
+  }
+  return form
+}
+
 const base = (kind: OwnerKind, id: string) => `/api/${kind}/${id}`
 
 export const attachmentsApi = {
-  uploadImages: (
+  /** Uploads images; with `ocr` the API extracts text per image (failures → X-Ocr-Error header). */
+  uploadImages: async (
     kind: OwnerKind,
     id: string,
     files: File[],
-    onProgress?: (fraction: number) => void,
-  ) => {
-    const form = new FormData()
-    for (const f of files) form.append('files', f, f.name)
-    return upload<ImageDto[]>(`${base(kind, id)}/images`, form, { onProgress })
+    options: UploadImagesOptions = {},
+  ): Promise<UploadImagesResult> => {
+    const res = await uploadWithResponse<ImageDto[]>(`${base(kind, id)}/images`, imagesForm(files, options), {
+      onProgress: options.onProgress,
+    })
+    return { images: res.data ?? [], ocrError: res.header('X-Ocr-Error') }
   },
+  ocrImage: (kind: OwnerKind, id: string, imageId: string, body: OcrRequest = {}) =>
+    http.post<ImageDto>(`${base(kind, id)}/images/${imageId}/ocr`, body),
   updateCaption: (kind: OwnerKind, id: string, imageId: string, caption: string | null) =>
     http.patch<ImageDto>(`${base(kind, id)}/images/${imageId}`, { caption }),
   deleteImage: (kind: OwnerKind, id: string, imageId: string) =>

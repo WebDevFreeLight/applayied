@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Search } from 'lucide-react'
+import { ScanText, Search } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router'
 import { qk } from '@/api/keys'
@@ -12,9 +12,12 @@ import { useDebouncedValue } from '@/hooks/misc'
 import { useDates } from '@/lib/dates'
 import { highlight } from '@/lib/highlight'
 import { KIND_ICON, searchResultLink } from '@/lib/links'
+import { ResultThumb } from '@/components/ResultThumb'
 
-const TYPES: SearchType[] = ['notes', 'memories', 'audio']
-const KIND_ORDER: SearchKind[] = ['note', 'memory', 'audio']
+const TYPES: SearchType[] = ['notes', 'memories', 'audio', 'images']
+const KIND_ORDER: SearchKind[] = ['note', 'memory', 'audio', 'image']
+const TYPE_OF: Record<SearchKind, SearchType> = { note: 'notes', memory: 'memories', audio: 'audio', image: 'images' }
+const KIND_OF: Record<SearchType, SearchKind> = { notes: 'note', memories: 'memory', audio: 'audio', images: 'image' }
 
 export function SearchPage() {
   const { t } = useTranslation()
@@ -69,7 +72,7 @@ export function SearchPage() {
         </div>
         <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t('common.filters')}>
           {TYPES.map((type) => (
-            <Chip key={type} active={types.includes(type)} onClick={() => toggleType(type)} icon={KIND_ICON[type === 'notes' ? 'note' : type === 'memories' ? 'memory' : 'audio']}>
+            <Chip key={type} active={types.includes(type)} onClick={() => toggleType(type)} icon={KIND_ICON[KIND_OF[type]]}>
               {t(`search.types.${type}`)}
             </Chip>
           ))}
@@ -98,7 +101,7 @@ export function SearchPage() {
           {grouped.map((g) => (
             <section key={g.kind} aria-labelledby={`search-${g.kind}`}>
               <h2 id={`search-${g.kind}`} className="mb-3 text-xs font-semibold tracking-wider text-subtle uppercase">
-                {t(`search.types.${g.kind === 'note' ? 'notes' : g.kind === 'memory' ? 'memories' : 'audio'}`)} ({g.items.length})
+                {t(`search.types.${TYPE_OF[g.kind]}`)} ({g.items.length})
               </h2>
               <ul className="flex flex-col gap-2">
                 {g.items.map((r) => (
@@ -122,23 +125,27 @@ export function SearchPage() {
 
 function ResultRow({ r, q, date }: { r: SearchResultDto; q: string; date: string }) {
   const { t } = useTranslation()
-  const Icon = KIND_ICON[r.kind]
   return (
     <li>
       <Link
         to={searchResultLink(r)}
         className="flex items-start gap-3 rounded-2xl border border-border bg-surface p-4 shadow-card transition hover:border-border-strong"
       >
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent-text">
-          <Icon className="size-4" aria-hidden />
-        </span>
+        <ResultThumb r={r} />
         <span className="min-w-0 flex-1">
           <span className="flex flex-wrap items-center gap-2">
             <span className="truncate font-medium text-fg" dir="auto">
               {highlight(r.title || t('common.untitled'), q)}
             </span>
             <Badge tone="accent">{t(`search.kinds.${r.kind}`)}</Badge>
-            <Badge>{t('search.matchedIn', { field: t(`search.fields.${r.matchedIn}`) })}</Badge>
+            {r.matchedIn === 'imageText' ? (
+              <Badge tone="warning">
+                <ScanText className="size-3" aria-hidden />
+                {t('ocr.textInImage')}
+              </Badge>
+            ) : (
+              <Badge>{t('search.matchedIn', { field: t(`search.fields.${r.matchedIn}`) })}</Badge>
+            )}
           </span>
           {r.snippet && (
             <span className="mt-1 line-clamp-2 block text-sm text-muted" dir="auto">

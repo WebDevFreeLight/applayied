@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { toast } from 'sonner'
 import { attachmentsApi, type OwnerKind } from '@/api/attachments'
+import { useOcrAvailable } from '@/api/hooks'
 import type { AudioDto, ImageDto } from '@/api/types'
 import type { AutosaveStatus } from '@/hooks/useAutosave'
 import { textToHtml } from '@/lib/utils'
@@ -102,6 +103,8 @@ export function AttachmentsPanel({
 }) {
   const { t } = useTranslation()
   const qc = useQueryClient()
+  const ocrAvailable = useOcrAvailable()
+  const insertText = (text: string) => editorRef.current?.appendHtml(textToHtml(text))
   const refresh = () => {
     void qc.invalidateQueries({ queryKey: detailKey })
     void qc.invalidateQueries({ queryKey: ['audio'] })
@@ -120,7 +123,7 @@ export function AttachmentsPanel({
           ownerId={ownerId}
           onChanged={refresh}
           defaultRecorderOpen={recorderOpen}
-          onAppendTranscript={(text) => editorRef.current?.appendHtml(textToHtml(text))}
+          onAppendTranscript={insertText}
           actions={
             <ReadAloudButton
               compact
@@ -155,10 +158,23 @@ export function AttachmentsPanel({
             await attachmentsApi.deleteImage(kind, ownerId, id)
             refresh()
           }}
+          ocrAvailable={ocrAvailable}
+          onExtractText={async (id) => {
+            // Insert client-side (not appendToBody) so the editor + autosave stay the source of truth.
+            const updated = await attachmentsApi.ocrImage(kind, ownerId, id, { appendToBody: false })
+            patchImages(images.map((i) => (i.id === id ? updated : i)))
+            void qc.invalidateQueries({ queryKey: ['images'] })
+            return updated
+          }}
+          onInsertText={insertText}
+          insertLabel={kind === 'notes' ? t('ocr.insertNote') : t('ocr.insertMemory')}
         />
         <ImageUploader
           compact={images.length > 0}
-          upload={(file, onProgress) => attachmentsApi.uploadImages(kind, ownerId, [file], onProgress)}
+          ocrAvailable={ocrAvailable}
+          upload={(file, onProgress, opts) =>
+            attachmentsApi.uploadImages(kind, ownerId, [file], { ...opts, onProgress })
+          }
           onUploaded={refresh}
         />
       </Card>

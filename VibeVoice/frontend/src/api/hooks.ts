@@ -21,6 +21,13 @@ export function useVoiceStatus() {
   })
 }
 
+/** True when the API reports an OCR engine (optimistic while the status is still loading). */
+export function useOcrAvailable(): boolean {
+  const { data, isError } = useVoiceStatus()
+  if (data) return !!data.ocrEngine
+  return !isError
+}
+
 export function useVoices() {
   return useQuery({
     queryKey: qk.voice.voices(),

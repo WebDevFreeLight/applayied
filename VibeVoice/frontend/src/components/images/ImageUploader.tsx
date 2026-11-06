@@ -6,6 +6,7 @@ import { errorMessage } from '@/api/client'
 import { useLatest } from '@/hooks/misc'
 import { cn, IMAGE_MAX_BYTES, IMAGE_TYPES, isImageFile } from '@/lib/utils'
 import { ProgressBar } from '../ui/Display'
+import { Checkbox, Select } from '../ui/Field'
 
 interface QueueItem {
   key: string
@@ -15,10 +16,27 @@ interface QueueItem {
   error?: string
 }
 
+export interface ImageOcrChoice {
+  /** Extract text from the picture after upload (form field `ocr=true`). */
+  ocr: boolean
+  /** "ar" / "en"; undefined = auto (Arabic + English). */
+  language?: string
+}
+
+const OCR_LANGS = ['auto', 'ar', 'en'] as const
+
 export interface ImageUploaderProps {
-  /** Uploads one file (called once per file, in parallel) and reports 0..1 progress. */
-  upload: (file: File, onProgress: (fraction: number) => void) => Promise<unknown>
+  /**
+   * Uploads one file (called once per file, in parallel) and reports 0..1 progress.
+   * Resolve with `{ ocrError }` (from the X-Ocr-Error header) to show a warning toast.
+   */
+  upload: (file: File, onProgress: (fraction: number) => void, options: ImageOcrChoice) => Promise<unknown>
   onUploaded?: (count: number) => void
+  /**
+   * Shows the "Extract text (OCR)" option (default on) when defined; `false` renders it disabled
+   * with an explanation (no OCR engine configured).
+   */
+  ocrAvailable?: boolean
   /** Listen for images pasted anywhere on the page (default true). */
   enablePaste?: boolean
   compact?: boolean
@@ -26,7 +44,14 @@ export interface ImageUploaderProps {
 }
 
 /** Drag & drop / paste / file-picker multi-upload with per-file progress and validation. */
-export function ImageUploader({ upload, onUploaded, enablePaste = true, compact, className }: ImageUploaderProps) {
+export function ImageUploader({
+  upload,
+  onUploaded,
+  ocrAvailable,
+  enablePaste = true,
+  compact,
+  className,
+}: ImageUploaderProps) {
   const { t } = useTranslation()
   const [dragging, setDragging] = useState(false)
   const [queue, setQueue] = useState<QueueItem[]>([])
@@ -34,6 +59,11 @@ export function ImageUploader({ upload, onUploaded, enablePaste = true, compact,
   const inputRef = useRef<HTMLInputElement>(null)
   const seqRef = useRef(0)
   const inputId = useId()
+  const ocrLangId = useId()
+  const [ocrChecked, setOcrChecked] = useState(true)
+  const [ocrLang, setOcrLang] = useState<(typeof OCR_LANGS)[number]>('auto')
+  const showOcr = ocrAvailable !== undefined
+  const ocrOn = showOcr && !!ocrAvailable && ocrChecked
 
   const patch = (key: string, p: Partial<QueueItem>) =>
     setQueue((q) => q.map((it) => (it.key === key ? { ...it, ...p } : it)))
@@ -54,10 +84,16 @@ export function ImageUploader({ upload, onUploaded, enablePaste = true, compact,
     const items = valid.map((f) => ({ key: `u${++seqRef.current}`, name: f.name || 'image', progress: 0, status: 'uploading' as const }))
     setQueue((q) => [...q, ...items])
 
+    const choice: ImageOcrChoice = { ocr: ocrOn, language: ocrOn && ocrLang !== 'auto' ? ocrLang : undefined }
+    const ocrErrors: string[] = []
     const results = await Promise.allSettled(
       valid.map((file, i) =>
-        upload(file, (p) => patch(items[i].key, { progress: p })).then(
-          () => patch(items[i].key, { status: 'done', progress: 1 }),
+        upload(file, (p) => patch(items[i].key, { progress: p }), choice).then(
+          (res) => {
+            const ocrError = (res as { ocrError?: unknown } | undefined)?.ocrError
+            if (typeof ocrError === 'string' && ocrError) ocrErrors.push(ocrError)
+            patch(items[i].key, { status: 'done', progress: 1 })
+          },
           (err: unknown) => {
             patch(items[i].key, { status: 'error', error: errorMessage(err) })
             throw err
@@ -72,6 +108,8 @@ export function ImageUploader({ upload, onUploaded, enablePaste = true, compact,
       onUploaded?.(ok)
     }
     if (failed) toast.error(t('images.uploadFailed'))
+    // Text extraction failures never fail the upload — warn once per batch.
+    if (ocrErrors.length) toast.warning(t('ocr.failed', { message: [...new Set(ocrErrors)].join(' · ') }))
     setTimeout(() => {
       const done = new Set(items.filter((_, i) => results[i].status === 'fulfilled').map((it) => it.key))
       setQueue((q) => q.filter((it) => !done.has(it.key)))
@@ -148,6 +186,39 @@ export function ImageUploader({ upload, onUploaded, enablePaste = true, compact,
           }}
         />
       </div>
+
+      {showOcr && (
+        <div
+          className="flex flex-wrap items-center gap-x-4 gap-y-2 px-1"
+          title={ocrAvailable ? t('ocr.extractHint') : t('ocr.unavailable')}
+        >
+          <Checkbox
+            label={t('ocr.extractOption')}
+            checked={ocrOn}
+            disabled={!ocrAvailable}
+            onChange={(e) => setOcrChecked(e.target.checked)}
+          />
+          <span className="flex items-center gap-2">
+            <label htmlFor={ocrLangId} className="text-xs text-muted">
+              {t('ocr.language')}
+            </label>
+            <Select
+              id={ocrLangId}
+              value={ocrLang}
+              disabled={!ocrOn}
+              onChange={(e) => setOcrLang(e.target.value as (typeof OCR_LANGS)[number])}
+              className="h-8 w-auto py-0 text-xs"
+            >
+              {OCR_LANGS.map((l) => (
+                <option key={l} value={l}>
+                  {t(`ocr.languages.${l}`)}
+                </option>
+              ))}
+            </Select>
+          </span>
+          {!ocrAvailable && <span className="text-xs text-warning">{t('ocr.unavailable')}</span>}
+        </div>
+      )}
 
       {rejected.length > 0 && (
         <div role="alert" className="flex items-start gap-2 rounded-xl bg-danger-soft/70 px-3 py-2 text-sm text-danger">
