@@ -1,0 +1,143 @@
+import type { Mood } from '@/api/types'
+
+/** Tiny className joiner. */
+export function cn(...parts: Array<string | false | null | undefined>): string {
+  return parts.filter(Boolean).join(' ')
+}
+
+export function formatDuration(seconds: number | null | undefined): string {
+  if (seconds == null || !Number.isFinite(seconds) || seconds < 0) return '--:--'
+  const total = Math.floor(seconds)
+  const h = Math.floor(total / 3600)
+  const m = Math.floor((total % 3600) / 60)
+  const s = total % 60
+  const mm = h ? String(m).padStart(2, '0') : String(m)
+  return `${h ? `${h}:` : ''}${mm}:${String(s).padStart(2, '0')}`
+}
+
+export function formatBytes(bytes: number): string {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '0 B'
+  const units = ['B', 'KB', 'MB', 'GB']
+  const i = Math.min(units.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)))
+  const v = bytes / 1024 ** i
+  return `${v >= 10 || i === 0 ? Math.round(v) : v.toFixed(1)} ${units[i]}`
+}
+
+export function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+/** Plain text → simple HTML paragraphs (for TipTap bodies). */
+export function textToHtml(text: string): string {
+  return text
+    .split(/\n{2,}|\r\n\r\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`)
+    .join('')
+}
+
+export function stripHtml(html: string): string {
+  if (!html) return ''
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  return (doc.body.textContent ?? '').replace(/\s+/g, ' ').trim()
+}
+
+export function todayIso(): string {
+  const d = new Date()
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const dd = String(d.getDate()).padStart(2, '0')
+  return `${d.getFullYear()}-${mm}-${dd}`
+}
+
+/** Parses a date-only string (yyyy-MM-dd) as a local date (avoids UTC shifting). */
+export function parseDateOnly(value: string): Date {
+  const [y, m, d] = value.slice(0, 10).split('-').map(Number)
+  return new Date(y, (m || 1) - 1, d || 1)
+}
+
+export const NOTE_COLORS = ['yellow', 'green', 'blue', 'purple', 'pink', 'orange', 'gray'] as const
+export type NoteColor = (typeof NOTE_COLORS)[number]
+
+export function noteColorVar(color: string | null | undefined): string | undefined {
+  if (!color) return undefined
+  return (NOTE_COLORS as readonly string[]).includes(color) ? `var(--note-${color})` : color
+}
+
+export const MOOD_EMOJI: Record<Mood, string> = {
+  Happy: '😊',
+  Grateful: '🙏',
+  Calm: '😌',
+  Excited: '🤩',
+  Nostalgic: '🥹',
+  Proud: '🏆',
+  Sad: '😢',
+  Loved: '🥰',
+}
+
+export const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const
+export const IMAGE_MAX_BYTES = 10 * 1024 * 1024
+export const AUDIO_TYPES = [
+  'audio/webm',
+  'audio/ogg',
+  'audio/wav',
+  'audio/x-wav',
+  'audio/wave',
+  'audio/mpeg',
+  'audio/mp3',
+  'audio/mp4',
+  'audio/x-m4a',
+  'audio/m4a',
+  'audio/aac',
+  'video/webm',
+] as const
+export const AUDIO_EXTENSIONS = ['webm', 'ogg', 'oga', 'opus', 'wav', 'mp3', 'm4a', 'mp4', 'aac']
+export const AUDIO_MAX_BYTES = 50 * 1024 * 1024
+export const AUDIO_ACCEPT = 'audio/*,.webm,.ogg,.opus,.wav,.mp3,.m4a'
+
+export function isAudioFile(file: File): boolean {
+  const type = file.type.split(';')[0].toLowerCase()
+  if ((AUDIO_TYPES as readonly string[]).includes(type)) return true
+  const ext = file.name.split('.').pop()?.toLowerCase() ?? ''
+  return (!type || type === 'application/octet-stream') && AUDIO_EXTENSIONS.includes(ext)
+}
+
+export function isImageFile(file: File): boolean {
+  return (IMAGE_TYPES as readonly string[]).includes(file.type.toLowerCase())
+}
+
+/**
+ * Downloads a (possibly cross-origin) URL as a file. The `download` attribute is ignored
+ * cross-origin, so we fetch a blob first and fall back to opening the URL.
+ */
+export async function downloadUrl(url: string, filename: string): Promise<void> {
+  try {
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(String(res.status))
+    const blobUrl = URL.createObjectURL(await res.blob())
+    const a = document.createElement('a')
+    a.href = blobUrl
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 10_000)
+  } catch {
+    window.open(url, '_blank', 'noopener')
+  }
+}
+
+export function extensionForMime(mime: string): string {
+  const m = mime.toLowerCase()
+  if (m.includes('webm')) return 'webm'
+  if (m.includes('ogg')) return 'ogg'
+  if (m.includes('mp4') || m.includes('m4a') || m.includes('aac')) return 'm4a'
+  if (m.includes('mpeg') || m.includes('mp3')) return 'mp3'
+  if (m.includes('wav')) return 'wav'
+  return 'bin'
+}

@@ -1,0 +1,280 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode: <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f7f7fb;
+  --surface: #ffffff;
+  --surface-2: #f1f1f7;
+  --surface-3: #e8e8f1;
+  --border: #e3e3ec;
+  --border-strong: #cfcfdc;
+  --text: #17171f;
+  --muted: #62627a;
+  --subtle: #8e8ea4;
+  --accent: #6552f0;
+  --accent-hover: #5641e6;
+  --accent-soft: #eeebff;
+  --accent-text: #4b38d6;
+  --accent-fg: #ffffff;
+  --danger: #dc2626;
+  --danger-soft: #fdecec;
+  --success: #15935a;
+  --success-soft: #e5f6ee;
+  --warning: #b7791f;
+  --warning-soft: #fdf3e1;
+  --ai: #c026d3;
+  --ai-soft: #fbe9fd;
+  --ring: #7c6cf6;
+  --shadow: 0 1px 2px rgb(20 20 40 / 0.04), 0 4px 16px -6px rgb(20 20 40 / 0.08);
+  --shadow-lg: 0 10px 40px -10px rgb(20 20 40 / 0.25);
+
+  --note-yellow: #fff6d6;
+  --note-green: #e3f6e8;
+  --note-blue: #e1effd;
+  --note-purple: #efe9ff;
+  --note-pink: #fde7f0;
+  --note-orange: #ffecdc;
+  --note-gray: #eeeef2;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0e0e14;
+  --surface: #16161f;
+  --surface-2: #1d1d28;
+  --surface-3: #262633;
+  --border: #2a2a38;
+  --border-strong: #3a3a4c;
+  --text: #ececf3;
+  --muted: #a0a0b6;
+  --subtle: #737389;
+  --accent: #8b7cff;
+  --accent-hover: #9d90ff;
+  --accent-soft: #25214a;
+  --accent-text: #b3a9ff;
+  --accent-fg: #0e0e14;
+  --danger: #f87171;
+  --danger-soft: #3a1818;
+  --success: #4ade80;
+  --success-soft: #12301f;
+  --warning: #fbbf24;
+  --warning-soft: #33280f;
+  --ai: #e879f9;
+  --ai-soft: #3a1740;
+  --ring: #a399ff;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px -6px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 10px 40px -10px rgb(0 0 0 / 0.7);
+
+  --note-yellow: #3a3115;
+  --note-green: #15301f;
+  --note-blue: #142a40;
+  --note-purple: #2a2147;
+  --note-pink: #3d1a2b;
+  --note-orange: #3d2614;
+  --note-gray: #24242e;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--text);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-accent-fg: var(--accent-fg);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-ai: var(--ai);
+  --color-ai-soft: var(--ai-soft);
+  --color-ring: var(--ring);
+  --shadow-card: var(--shadow);
+  --shadow-pop: var(--shadow-lg);
+}
+
+@theme {
+  --font-sans: 'Inter', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --animate-fade-in: fade-in 160ms ease-out;
+  --animate-pop-in: pop-in 160ms ease-out;
+  --animate-pulse-soft: pulse-soft 1.4s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  html[lang='ar'] body {
+    font-family: 'IBM Plex Sans Arabic', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Rich text (TipTap output and read-only rendering). */
+.rich-text {
+  line-height: 1.7;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+.rich-text:focus {
+  outline: none;
+}
+.rich-text > * + * {
+  margin-top: 0.65em;
+}
+.rich-text p,
+.rich-text h1,
+.rich-text h2,
+.rich-text h3,
+.rich-text li,
+.rich-text blockquote {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+.rich-text h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 1em;
+}
+.rich-text h2 {
+  font-size: 1.3rem;
+  font-weight: 650;
+  line-height: 1.35;
+  margin-top: 0.9em;
+}
+.rich-text h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0.8em;
+}
+.rich-text ul {
+  list-style: disc;
+  padding-inline-start: 1.5rem;
+}
+.rich-text ol {
+  list-style: decimal;
+  padding-inline-start: 1.5rem;
+}
+.rich-text li > p {
+  margin: 0;
+}
+.rich-text blockquote {
+  border-inline-start: 3px solid var(--accent);
+  padding-inline-start: 1rem;
+  color: var(--muted);
+}
+.rich-text code {
+  font-family: var(--font-mono);
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+}
+.rich-text pre {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  overflow-x: auto;
+  direction: ltr;
+}
+.rich-text pre code {
+  background: none;
+  padding: 0;
+}
+.rich-text a {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.rich-text hr {
+  border-color: var(--border);
+}
+.rich-text p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--subtle);
+  float: inline-start;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Highlighted search terms */
+mark.hl {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
