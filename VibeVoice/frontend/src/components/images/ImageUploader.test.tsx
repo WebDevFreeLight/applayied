@@ -77,7 +77,7 @@ describe('ImageUploader', () => {
     render(<ImageUploader upload={upload} enablePaste={false} />)
     const file = jpg()
     fireEvent.change(screen.getByTestId('image-input'), { target: { files: [file] } })
-    await waitFor(() => expect(upload).toHaveBeenCalledWith(file, expect.any(Function)))
+    await waitFor(() => expect(upload).toHaveBeenCalledWith(file, expect.any(Function), { ocr: false, language: undefined }))
   })
 
   it('uploads images pasted from the clipboard', async () => {
@@ -89,7 +89,83 @@ describe('ImageUploader', () => {
     act(() => {
       window.dispatchEvent(event)
     })
-    await waitFor(() => expect(upload).toHaveBeenCalledWith(file, expect.any(Function)))
+    await waitFor(() => expect(upload).toHaveBeenCalledWith(file, expect.any(Function), { ocr: false, language: undefined }))
     expect(event.defaultPrevented).toBe(true)
+  })
+})
+
+describe('ImageUploader — OCR option', () => {
+  it('shows "Extract text (OCR)" checked by default and sends ocr=true + language', async () => {
+    const { attachmentsApi } = await import('@/api/attachments')
+    const { FakeXHR } = await import('@/test/fakeXhr')
+    FakeXHR.instances = []
+    vi.stubGlobal('XMLHttpRequest', FakeXHR)
+    const onUploaded = vi.fn()
+    render(
+      <ImageUploader
+        ocrAvailable
+        enablePaste={false}
+        onUploaded={onUploaded}
+        upload={(file, onProgress, opts) => attachmentsApi.uploadImages('notes', 'n1', [file], { ...opts, onProgress })}
+      />,
+    )
+    expect(screen.getByRole('checkbox', { name: 'Extract text (OCR)' })).toBeChecked()
+    fireEvent.change(screen.getByLabelText('Text language'), { target: { value: 'ar' } })
+    drop([png()])
+    await waitFor(() => expect(FakeXHR.instances).toHaveLength(1))
+    const form = FakeXHR.last.body as FormData
+    expect(FakeXHR.last.url).toBe('http://localhost:5080/api/notes/n1/images')
+    expect(form.getAll('files')).toHaveLength(1)
+    expect(form.get('ocr')).toBe('true')
+    expect(form.get('language')).toBe('ar')
+    await act(async () => FakeXHR.last.respond(200, [{ id: 'i1', ocrText: 'مرحبا' }]))
+    await waitFor(() => expect(onUploaded).toHaveBeenCalledWith(1))
+    vi.unstubAllGlobals()
+  })
+
+  it('omits the OCR fields when the box is unchecked', async () => {
+    const upload = vi.fn().mockResolvedValue({ images: [], ocrError: null })
+    render(<ImageUploader ocrAvailable enablePaste={false} upload={upload} />)
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Extract text (OCR)' }))
+    drop([png()])
+    await waitFor(() => expect(upload).toHaveBeenCalledWith(expect.any(File), expect.any(Function), { ocr: false, language: undefined }))
+  })
+
+  it('shows a warning toast for X-Ocr-Error (images are still saved)', async () => {
+    const { toast } = await import('sonner')
+    const warning = vi.spyOn(toast, 'warning').mockImplementation(() => 1)
+    const { imagesApi } = await import('@/api/library')
+    const { FakeXHR } = await import('@/test/fakeXhr')
+    FakeXHR.instances = []
+    vi.stubGlobal('XMLHttpRequest', FakeXHR)
+    const onUploaded = vi.fn()
+    render(
+      <ImageUploader
+        ocrAvailable
+        enablePaste={false}
+        onUploaded={onUploaded}
+        upload={(file, onProgress, opts) => imagesApi.upload([file], { ...opts, onProgress })}
+      />,
+    )
+    drop([jpg()])
+    await waitFor(() => expect(FakeXHR.instances).toHaveLength(1))
+    expect((FakeXHR.last.body as FormData).get('ocr')).toBe('true')
+    expect((FakeXHR.last.body as FormData).get('language')).toBeNull()
+    await act(async () => FakeXHR.last.respond(200, [{ id: 'i2' }], { 'X-Ocr-Error': 'OCR engine is not configured' }))
+    await waitFor(() => expect(warning).toHaveBeenCalledTimes(1))
+    expect(String(warning.mock.calls[0][0])).toContain('OCR engine is not configured')
+    expect(onUploaded).toHaveBeenCalledWith(1)
+    vi.unstubAllGlobals()
+  })
+
+  it('disables the option with an explanation when no OCR engine is available', async () => {
+    const upload = vi.fn().mockResolvedValue({ images: [], ocrError: null })
+    render(<ImageUploader ocrAvailable={false} enablePaste={false} upload={upload} />)
+    const box = screen.getByRole('checkbox', { name: 'Extract text (OCR)' })
+    expect(box).toBeDisabled()
+    expect(box).not.toBeChecked()
+    expect(screen.getByText(/Text extraction is unavailable/)).toBeInTheDocument()
+    drop([png()])
+    await waitFor(() => expect(upload).toHaveBeenCalledWith(expect.any(File), expect.any(Function), { ocr: false, language: undefined }))
   })
 })

@@ -41,7 +41,7 @@ export function StudioPage() {
           { value: 'stt', label: t('studio.sttTab'), icon: Mic },
           { value: 'ocr', label: t('studio.ocrTab'), icon: ScanText },
         ]}
-        className="mb-6"
+        className="mb-6 max-w-full overflow-x-auto"
       />
       {tab === 'tts' ? <TextToSpeech /> : tab === 'stt' ? <SpeechToText /> : <ImageToText />}
     </div>
