@@ -88,7 +88,7 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(p => p
     .WithOrigins(origins)
     .AllowAnyHeader()
     .AllowAnyMethod()
-    .WithExposedHeaders("X-Voice-Service", "X-Transcription-Error", "Content-Disposition")));
+    .WithExposedHeaders("X-Voice-Service", "X-Transcription-Error", "X-Ocr-Error", "Content-Disposition")));
 
 // ---- OpenAPI / Swagger ----
 builder.Services.AddEndpointsApiExplorer();

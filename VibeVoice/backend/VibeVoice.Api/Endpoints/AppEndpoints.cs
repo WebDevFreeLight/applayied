@@ -40,12 +40,15 @@ public static class AppEndpoints
         var images = app.MapGroup("/api/images").WithTags("Images").RequireAuthorization();
         images.MapGet("/", (int? page, int? pageSize, OwnerType? ownerType, LibraryService s, CancellationToken ct) =>
             s.ListImagesAsync(page ?? 1, pageSize ?? 30, ownerType, ct));
-        images.MapPost("/", async (HttpRequest request, AttachmentService s, CancellationToken ct) =>
+        images.MapPost("/", async (HttpRequest request, HttpResponse response, AttachmentService s, ILoggerFactory logs, CancellationToken ct) =>
         {
             var form = await request.ReadMultipartAsync(ct);
             var files = form.Files.GetFiles("files").Concat(form.Files.GetFiles("file")).Select(f => f.ToUpload()).ToList();
-            return await s.UploadImagesAsync(OwnerType.Library, Guid.Empty, files, ct);
+            var uploaded = await s.UploadImagesAsync(OwnerType.Library, Guid.Empty, files, ct);
+            return await ContentEndpoints.OcrAfterUploadAsync(uploaded, form, response, s, logs, ct);
         }).Accepts<IFormFileCollection>("multipart/form-data");
+        images.MapPost("/{id:guid}/ocr", (Guid id, OcrRequest? body, AttachmentService s, CancellationToken ct) =>
+            s.ExtractTextAsync(id, new OcrRequest(false, body?.Language), ct));
         images.MapPost("/{id:guid}/attach", (Guid id, AttachImageRequest body, AttachmentService s, CancellationToken ct) =>
             s.AttachImageAsync(id, body.OwnerType, body.OwnerId, ct));
         images.MapDelete("/{id:guid}", async (Guid id, AttachmentService s, CancellationToken ct) =>
@@ -105,6 +108,14 @@ public static class AppEndpoints
             var source = Enum.TryParse<AudioSource>(form["source"], true, out var parsed) ? parsed : AudioSource.Uploaded;
             string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
             return await s.TranscribeAsync(file.ToUpload(), language, save, source, ct);
+        }).Accepts<IFormFile>("multipart/form-data");
+        voice.MapPost("/ocr", async (HttpRequest request, VoiceStudioService s, CancellationToken ct) =>
+        {
+            var form = await request.ReadMultipartAsync(ct);
+            var file = form.Files.GetFile("file") ?? throw new BadRequestException("Attach the picture as the 'file' field.");
+            var save = !bool.TryParse(form["save"], out var saveFlag) || saveFlag;
+            string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
+            return await s.RecognizeAsync(file.ToUpload(), language, save, ct);
         }).Accepts<IFormFile>("multipart/form-data");
         voice.MapGet("/history", (int? page, int? pageSize, LibraryService s, CancellationToken ct) =>
             s.StudioHistoryAsync(page ?? 1, pageSize ?? 20, ct));

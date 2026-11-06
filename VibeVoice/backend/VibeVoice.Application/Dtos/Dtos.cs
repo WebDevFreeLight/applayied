@@ -34,11 +34,13 @@ public sealed record SetActiveRequest(bool IsActive);
 
 public sealed record ImageDto(
     Guid Id, OwnerType OwnerType, Guid OwnerId, string FilePath, string ThumbnailPath, string MimeType,
-    int Width, int Height, long SizeBytes, string? Caption, int SortOrder, DateTime CreatedAt);
+    int Width, int Height, long SizeBytes, string? Caption, int SortOrder, DateTime CreatedAt,
+    string? OcrText, string? OcrLanguage);
 
 public sealed record ImageWithOwnerDto(
     Guid Id, OwnerType OwnerType, Guid OwnerId, string FilePath, string ThumbnailPath, string MimeType,
-    int Width, int Height, long SizeBytes, string? Caption, int SortOrder, DateTime CreatedAt, string? OwnerTitle);
+    int Width, int Height, long SizeBytes, string? Caption, int SortOrder, DateTime CreatedAt,
+    string? OcrText, string? OcrLanguage, string? OwnerTitle);
 
 public sealed record AudioDto(
     Guid Id, OwnerType OwnerType, Guid OwnerId, AudioSource Source, MediaKind MediaKind, string FilePath, string MimeType,
@@ -110,7 +112,13 @@ public sealed record TranscribeRequest(bool AppendToBody, string? Language);
 
 public sealed record VoiceDto(string Id, string Name, string Language, string? Gender, string Engine, bool IsFallback);
 
-public sealed record VoiceStatusDto(bool Available, string? TtsEngine, string? AsrEngine, string? Device, string? Message);
+public sealed record VoiceStatusDto(bool Available, string? TtsEngine, string? AsrEngine, string? OcrEngine, string? Device, string? Message);
+
+public sealed record OcrRequest(bool AppendToBody, string? Language);
+
+public sealed record OcrLineDto(string Text, double Confidence);
+
+public sealed record OcrResultDto(string Text, string? Language, IReadOnlyList<OcrLineDto> Lines, ImageDto? Image);
 
 public sealed record SegmentDto(double Start, double End, string Text, string? Speaker);
 

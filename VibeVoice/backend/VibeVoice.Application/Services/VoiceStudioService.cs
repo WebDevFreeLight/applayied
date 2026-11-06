@@ -12,14 +12,15 @@ public sealed class VoiceStudioService(
     AttachmentService attachments,
     IRepository<AudioClip> audio,
     IFileStorage storage,
-    ICurrentUser currentUser)
+    ICurrentUser currentUser,
+    Microsoft.Extensions.Options.IOptions<UploadOptions> limits)
 {
     public async Task<VoiceStatusDto> StatusAsync(CancellationToken ct)
     {
         var health = await voice.GetHealthAsync(ct);
         return health is null
-            ? new VoiceStatusDto(false, null, null, null, "The voice service is not reachable. Text, images and recordings still work.")
-            : new VoiceStatusDto(true, health.TtsEngine, health.AsrEngine, health.Device, null);
+            ? new VoiceStatusDto(false, null, null, null, null, "The voice service is not reachable. Text, images and recordings still work.")
+            : new VoiceStatusDto(true, health.TtsEngine, health.AsrEngine, health.OcrEngine is null or "none" ? null : health.OcrEngine, health.Device, null);
     }
 
     public Task<IReadOnlyList<VoiceDto>> VoicesAsync(CancellationToken ct) => voice.GetVoicesAsync(ct);
@@ -51,6 +52,32 @@ public sealed class VoiceStudioService(
             await audio.UpdateAsync(clip, ct);
         }
         return new TranscriptionDto(result.Text.Trim(), result.Language ?? language, result.Segments, clip?.ToDto());
+    }
+
+    /// <summary>
+    /// Picture → text. With <paramref name="save"/> the picture is kept in the Images library (and its text is
+    /// stored and searchable); otherwise it is only validated and sent to the OCR engine.
+    /// </summary>
+    public async Task<OcrResultDto> RecognizeAsync(UploadFile file, string? language, bool save, CancellationToken ct)
+    {
+        if (save)
+        {
+            var stored = (await attachments.UploadImagesAsync(OwnerType.Library, Guid.Empty, [file], ct)).Single();
+            var (image, ocr) = await attachments.ExtractTextWithLinesAsync(stored.Id, new OcrRequest(false, language), ct);
+            return new OcrResultDto(image.OcrText ?? "", image.OcrLanguage, ocr.Lines, image);
+        }
+
+        if (file.Length == 0) throw new BadRequestException("The image is empty.");
+        if (file.Length > limits.Value.MaxImageBytes)
+            throw new PayloadTooLargeException($"Images must be smaller than {limits.Value.MaxImageBytes / 1024 / 1024} MB.");
+        byte[] header;
+        await using (var probe = file.OpenRead()) header = await FileSignatures.ReadHeaderAsync(probe, ct);
+        var detected = FileSignatures.DetectImage(header)
+            ?? throw new BadRequestException($"'{file.FileName}' is not a supported image (jpeg, png, webp, gif).");
+
+        await using var stream = file.OpenRead();
+        var result = await voice.RecognizeTextAsync(stream, file.FileName, detected.MimeType, language, ct);
+        return new OcrResultDto(result.Text.Trim(), result.Language ?? language, result.Lines, null);
     }
 
     public Task DeleteAsync(Guid id, CancellationToken ct) =>

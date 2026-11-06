@@ -78,6 +78,15 @@ public sealed class FakeVoiceClient : IVoiceServiceClient
         return Task.FromResult(new TtsResult(TestFiles.Wav(seconds: 1), "audio/wav", voice ?? "dev-en", "dev", language ?? "en", null));
     }
 
+    public string OcrText { get; set; } = "قائمة التسوق\nCoffee and dates";
+
+    public Task<OcrResult> RecognizeTextAsync(Stream image, string fileName, string contentType, string? language, CancellationToken ct)
+    {
+        if (!Available) throw new VoiceServiceUnavailableException("down");
+        var lines = OcrText.Split('\n').Select(l => new OcrLineDto(l, 0.97)).ToList();
+        return Task.FromResult(new OcrResult(OcrText, "ar", lines));
+    }
+
     public Task<AsrResult> TranscribeAsync(Stream audio, string fileName, string contentType, string? language, CancellationToken ct)
     {
         if (!Available) throw new VoiceServiceUnavailableException("down");

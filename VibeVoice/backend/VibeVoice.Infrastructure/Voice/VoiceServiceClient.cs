@@ -40,7 +40,7 @@ public sealed class VoiceServiceClient(HttpClient http, VoiceServiceOptions opti
         try
         {
             var h = await http.GetFromJsonAsync<HealthPayload>("health", Json, cts.Token);
-            return h is null ? null : new VoiceHealth(h.TtsEngine, h.AsrEngine, h.Device, h.ModelLoaded, h.ArabicTtsEngine);
+            return h is null ? null : new VoiceHealth(h.TtsEngine, h.AsrEngine, h.Device, h.ModelLoaded, h.ArabicTtsEngine, h.OcrEngine);
         }
         catch (Exception ex) when (IsUnavailable(ex, ct))
         {
@@ -105,6 +105,34 @@ public sealed class VoiceServiceClient(HttpClient http, VoiceServiceOptions opti
             });
     }
 
+    public async Task<OcrResult> RecognizeTextAsync(Stream image, string fileName, string contentType, string? language, CancellationToken ct)
+    {
+        // Images are capped at a few MB, so a byte copy keeps retries simple.
+        using var buffer = new MemoryStream();
+        await image.CopyToAsync(buffer, ct);
+        var bytes = buffer.ToArray();
+
+        return await SendAsync(
+            c =>
+            {
+                var form = new MultipartFormDataContent();
+                var file = new ByteArrayContent(bytes);
+                file.Headers.ContentType = MediaTypeHeaderValue.Parse(string.IsNullOrEmpty(contentType) ? "application/octet-stream" : contentType);
+                form.Add(file, "file", fileName);
+                if (!string.IsNullOrWhiteSpace(language)) form.Add(new StringContent(language), "language");
+                return http.PostAsync("ocr", form, c);
+            },
+            ct,
+            async r =>
+            {
+                var p = await r.Content.ReadFromJsonAsync<OcrPayload>(Json, ct)
+                        ?? throw new VoiceServiceUnavailableException("The voice service returned an empty OCR result.");
+                var lines = (p.Lines ?? []).Where(l => !string.IsNullOrWhiteSpace(l.Text))
+                    .Select(l => new OcrLineDto(l.Text!, Math.Round(l.Confidence, 3))).ToList();
+                return new OcrResult(p.Text ?? "", p.Language, lines);
+            });
+    }
+
     /// <summary>
     /// Sends a request and maps failures: unreachable/timeouts/5xx → 503, voice-service validation (4xx) → 400.
     /// </summary>
@@ -157,7 +185,9 @@ public sealed class VoiceServiceClient(HttpClient http, VoiceServiceOptions opti
     private static string? Header(HttpResponseMessage r, string name) =>
         r.Headers.TryGetValues(name, out var v) ? v.FirstOrDefault() : null;
 
-    private sealed record HealthPayload(string? Status, string? TtsEngine, string? AsrEngine, string? Device, bool ModelLoaded, string? ArabicTtsEngine);
+    private sealed record HealthPayload(string? Status, string? TtsEngine, string? AsrEngine, string? Device, bool ModelLoaded, string? ArabicTtsEngine, string? OcrEngine);
+    private sealed record OcrLinePayload(string? Text, double Confidence);
+    private sealed record OcrPayload(string? Text, string? Language, List<OcrLinePayload>? Lines);
     private sealed record VoicePayload(string Id, string Name, string Language, string? Gender, string Engine, bool IsFallback);
     private sealed record TtsPayload(string Text, string? Voice, string? Language, string Format);
     private sealed record SegmentPayload(double Start, double End, string? Text, string? Speaker);

@@ -168,6 +168,30 @@ AudioDto += {
   (`Content-Disposition: attachment`). 404 if not transcribed yet. Accepts `?access_token=` like `/api/files`.
 - Limits: audio ≤ 50 MB, **video ≤ 500 MB** (configurable `Uploads:MaxVideoBytes`).
 
+## Image → text / OCR (v3)
+
+Pictures can be turned into text (Arabic, English and mixed) with RapidOCR (PP-OCRv5) in the voice service.
+
+```ts
+ImageDto += { ocrText: string | null; ocrLanguage: string | null }   // null until extracted
+OcrResultDto = { text: string; language: string | null; lines: OcrLine[]; image: ImageDto | null }
+OcrLine = { text: string; confidence: number }                        // top-to-bottom reading order
+```
+
+- Image uploads (`POST /api/{notes|memories}/{id}/images`, `POST /api/images`) accept optional form fields
+  `ocr=true` and `language` (`ar`, `en`; omit = auto, which reads Arabic + English). Extraction runs per image
+  after upload; failures never fail the upload — the header `X-Ocr-Error: <message>` is set instead.
+- `POST /api/{notes|memories}/{id}/images/{imageId}/ocr` body `{ appendToBody?: bool, language?: string }`
+  → `ImageDto` (with `ocrText`). With `appendToBody` the text is appended to the note body / memory story.
+- `POST /api/images/{id}/ocr` body `{ language?: string }` → `ImageDto` (any of the user's images, incl. library).
+- `POST /api/voice/ocr` multipart `file` (jpeg/png/webp/gif ≤ 10 MB), `language?`, `save?=true`
+  → `OcrResultDto`; with `save=true` the picture is kept in the Images library and returned as `image`.
+- Search: `GET /api/search` gains kind `"image"` (`types=…,images`), `matchedIn: "imageText"`, `ownerId/ownerKind`
+  of the note/memory the picture belongs to (`"library"` for library images).
+- `GET /api/voice/status` adds `ocrEngine: string | null`.
+- Voice service: `POST /ocr` multipart `file`, `language?` → `{ text, language, lines: [{ text, confidence, box }], engine }`;
+  `/health` adds `ocr_engine`. `OCR_ENGINE=rapidocr|none`.
+
 ## Upload limits (configurable)
 
 Images: jpeg/png/webp/gif, ≤ 10 MB each. Audio: webm/ogg/wav/mp3/m4a(mp4), ≤ 50 MB.

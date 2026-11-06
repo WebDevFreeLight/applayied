@@ -96,6 +96,17 @@ public class ImageAttachment
     [SugarColumn(Length = 500, IsNullable = true)]
     public string? Caption { get; set; }
 
+    /// <summary>Text read from the picture (OCR), null until extracted.</summary>
+    [SugarColumn(ColumnDataType = StaticConfig.CodeFirst_BigString, IsNullable = true)]
+    public string? OcrText { get; set; }
+
+    [SugarColumn(Length = 10, IsNullable = true)]
+    public string? OcrLanguage { get; set; }
+
+    /// <summary>Normalized caption + OCR text used by search.</summary>
+    [SugarColumn(ColumnDataType = StaticConfig.CodeFirst_BigString, IsNullable = true)]
+    public string? SearchText { get; set; }
+
     public int SortOrder { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

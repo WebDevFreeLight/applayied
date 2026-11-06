@@ -11,11 +11,11 @@ public static class Mapping
 
     public static ImageDto ToDto(this ImageAttachment i) => new(
         i.Id, i.OwnerType, i.OwnerId, i.FilePath, i.ThumbnailPath, i.MimeType, i.Width, i.Height,
-        i.SizeBytes, i.Caption, i.SortOrder, i.CreatedAt);
+        i.SizeBytes, i.Caption, i.SortOrder, i.CreatedAt, i.OcrText, i.OcrLanguage);
 
     public static ImageWithOwnerDto ToDto(this ImageAttachment i, string? ownerTitle) => new(
         i.Id, i.OwnerType, i.OwnerId, i.FilePath, i.ThumbnailPath, i.MimeType, i.Width, i.Height,
-        i.SizeBytes, i.Caption, i.SortOrder, i.CreatedAt, ownerTitle);
+        i.SizeBytes, i.Caption, i.SortOrder, i.CreatedAt, i.OcrText, i.OcrLanguage, ownerTitle);
 
     public static AudioDto ToDto(this AudioClip a) => new(
         a.Id, a.OwnerType, a.OwnerId, a.Source, a.MediaKind, a.FilePath, a.MimeType, a.DurationSeconds, a.SizeBytes,
@@ -39,6 +39,9 @@ public static class SearchIndex
     public static string ForMemory(Memory m, IEnumerable<string> tags, IEnumerable<string> people) =>
         TextNormalizer.Normalize(
             $"{m.Title}\n{HtmlText.ToPlainText(m.Story)}\n{m.Location}\n{string.Join(' ', tags)}\n{string.Join(' ', people)}");
+
+    public static string? ForImage(ImageAttachment i) =>
+        i.OcrText is null && i.Caption is null ? null : TextNormalizer.Normalize($"{i.Caption}\n{i.OcrText}");
 
     public static string? ForAudio(AudioClip a) =>
         a.Transcript is null && a.Text is null ? null : TextNormalizer.Normalize($"{a.Transcript}\n{a.Text}");

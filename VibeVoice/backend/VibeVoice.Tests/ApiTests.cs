@@ -145,6 +145,23 @@ public sealed class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
+    public async Task Image_upload_with_ocr_still_succeeds_when_the_voice_service_is_down()
+    {
+        var (client, _) = await SignUpAsync();
+        using var form = new MultipartFormDataContent();
+        var file = new ByteArrayContent(TestFiles.Png());
+        file.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+        form.Add(file, "files", "scan.png");
+        form.Add(new StringContent("true"), "ocr");
+
+        var res = await client.PostAsync("/api/images", form, Ct);
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+        Assert.True(res.Headers.Contains("X-Ocr-Error"));
+        var images = await res.Content.ReadFromJsonAsync<JsonElement>(Json, Ct);
+        Assert.Equal(JsonValueKind.Null, images[0].GetProperty("ocrText").ValueKind);
+    }
+
+    [Fact]
     public async Task Only_admins_can_manage_users()
     {
         // The factory's database is shared by this class, so the first-user-is-admin rule is tested in isolation.

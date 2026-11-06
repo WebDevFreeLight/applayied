@@ -159,8 +159,45 @@ public sealed class AttachmentService(
         var img = await GetImageAsync(imageId, ct);
         if (img.OwnerType != type || img.OwnerId != ownerId) throw new NotFoundException("Image", imageId);
         img.Caption = string.IsNullOrWhiteSpace(caption) ? null : caption.Trim()[..Math.Min(caption.Trim().Length, 500)];
+        img.SearchText = SearchIndex.ForImage(img);
         await images.UpdateAsync(img, ct);
         return img.ToDto();
+    }
+
+    /// <summary>
+    /// Reads the text in a stored picture (OCR) and saves it on the image so it shows in the UI and search.
+    /// Optionally appends it to the owning note/memory body. Pass <paramref name="expectedType"/> to check ownership.
+    /// </summary>
+    public async Task<ImageDto> ExtractTextAsync(Guid imageId, OcrRequest request, CancellationToken ct,
+        OwnerType? expectedType = null, Guid? expectedOwner = null) =>
+        (await ExtractTextWithLinesAsync(imageId, request, ct, expectedType, expectedOwner)).Image;
+
+    /// <summary>Same as <see cref="ExtractTextAsync"/> but also returns the per-line OCR result (with confidences).</summary>
+    public async Task<(ImageDto Image, OcrResult Result)> ExtractTextWithLinesAsync(Guid imageId, OcrRequest request, CancellationToken ct,
+        OwnerType? expectedType = null, Guid? expectedOwner = null)
+    {
+        var img = await GetImageAsync(imageId, ct);
+        if (expectedType is not null && (img.OwnerType != expectedType || img.OwnerId != expectedOwner))
+            throw new NotFoundException("Image", imageId);
+
+        OcrResult result;
+        await using (var stream = await storage.OpenReadAsync(img.FilePath, ct) ?? throw new NotFoundException("Image file", img.FilePath))
+            result = await voice.RecognizeTextAsync(stream, Path.GetFileName(img.FilePath), img.MimeType, request.Language, ct);
+
+        img.OcrText = result.Text.Trim();
+        img.OcrLanguage = result.Language ?? request.Language;
+        img.SearchText = SearchIndex.ForImage(img);
+
+        IOwnedContent? owner = img.OwnerType is OwnerType.Note or OwnerType.Memory
+            ? await GetOwnerAsync(img.OwnerType, img.OwnerId, ct)
+            : null;
+        await uow.ExecuteInTransactionAsync(async () =>
+        {
+            await images.UpdateAsync(img, ct);
+            if (owner is not null && request.AppendToBody && img.OcrText.Length > 0)
+                await AppendTextAsync(owner, img.OcrText, ct);
+        }, ct);
+        return (img.ToDto(), result);
     }
 
     public async Task<List<ImageDto>> ReorderImagesAsync(OwnerType type, Guid ownerId, IReadOnlyList<Guid> orderedIds, CancellationToken ct)
@@ -382,7 +419,7 @@ public sealed class AttachmentService(
         {
             await audio.UpdateAsync(clip, ct);
             if (request.AppendToBody && clip.Transcript.Length > 0)
-                await AppendTranscriptAsync(owner, clip.Transcript, ct);
+                await AppendTextAsync(owner, clip.Transcript, ct);
             else
                 await TouchOwnerAsync(owner, ct);
         }, ct);
@@ -407,9 +444,11 @@ public sealed class AttachmentService(
         return (content, mime, $"transcript-{clip.CreatedAt:yyyyMMdd-HHmm}.{ext}");
     }
 
-    private async Task AppendTranscriptAsync(IOwnedContent owner, string transcript, CancellationToken ct)
+    /// <summary>Appends plain text (a transcript or OCR result) to the note body / memory story, one paragraph per line.</summary>
+    private async Task AppendTextAsync(IOwnedContent owner, string text, CancellationToken ct)
     {
-        var paragraph = $"<p dir=\"auto\">{WebUtility.HtmlEncode(transcript)}</p>";
+        var paragraph = string.Concat(text.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(line => $"<p dir=\"auto\">{WebUtility.HtmlEncode(line)}</p>"));
         owner.UpdatedAt = DateTime.UtcNow;
         switch (owner)
         {

@@ -181,4 +181,44 @@ public sealed class ServiceTests : IDisposable
         Assert.EndsWith(".srt", fileName);
         Assert.Contains("00:00:00,000 --> 00:00:01,000", srt);
     }
+
+    [Fact]
+    public async Task Ocr_text_is_stored_searchable_and_can_be_appended_to_the_note()
+    {
+        await using var scope = _host.Scope();
+        var notes = _host.Get<NoteService>(scope);
+        var attachments = _host.Get<AttachmentService>(scope);
+        var note = await notes.CreateAsync(new SaveNoteRequest("Receipt", "<p>Shop</p>", null, null), Ct);
+        var image = (await attachments.UploadImagesAsync(OwnerType.Note, note.Id, [TestFiles.Upload(TestFiles.Png(), "r.png", "image/png")], Ct)).Single();
+
+        var withText = await attachments.ExtractTextAsync(image.Id, new OcrRequest(true, null), Ct, OwnerType.Note, note.Id);
+        Assert.Equal("قائمة التسوق\nCoffee and dates", withText.OcrText);
+        Assert.Equal("ar", withText.OcrLanguage);
+
+        var body = (await notes.GetAsync(note.Id, Ct)).Body;
+        Assert.Contains("<p dir=\"auto\">قائمة التسوق</p><p dir=\"auto\">Coffee and dates</p>", body);
+
+        // Arabic-normalized search finds the picture by its text (ة→ه).
+        var search = await _host.Get<SearchService>(scope).SearchAsync("قائمه", "images", 1, 20, Ct);
+        var hit = Assert.Single(search.Items);
+        Assert.Equal(("image", "imageText", note.Id), (hit.Kind, hit.MatchedIn, hit.OwnerId!.Value));
+    }
+
+    [Fact]
+    public async Task Studio_ocr_works_with_and_without_saving_the_picture()
+    {
+        await using var scope = _host.Scope();
+        var studio = _host.Get<VoiceStudioService>(scope);
+
+        var quick = await studio.RecognizeAsync(TestFiles.Upload(TestFiles.Png(), "a.png", "image/png"), "ar", save: false, Ct);
+        Assert.Null(quick.Image);
+        Assert.Equal(2, quick.Lines.Count);
+
+        var saved = await studio.RecognizeAsync(TestFiles.Upload(TestFiles.Png(), "b.png", "image/png"), null, save: true, Ct);
+        Assert.Equal(OwnerType.Library, saved.Image!.OwnerType);
+        Assert.Equal(0.97, saved.Lines[0].Confidence);
+
+        await Assert.ThrowsAsync<BadRequestException>(() =>
+            studio.RecognizeAsync(TestFiles.Upload("not an image"u8.ToArray(), "x.png", "image/png"), null, false, Ct));
+    }
 }

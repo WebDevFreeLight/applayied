@@ -73,12 +73,20 @@ public static class ContentEndpoints
     /// <summary>Image, audio, TTS and transcription endpoints shared by notes and memories.</summary>
     private static void MapAttachments(this RouteGroupBuilder g, OwnerType type)
     {
-        g.MapPost("/{id:guid}/images", async (Guid id, HttpRequest request, AttachmentService s, CancellationToken ct) =>
+        g.MapPost("/{id:guid}/images", async (Guid id, HttpRequest request, HttpResponse response, AttachmentService s,
+            ILoggerFactory logs, CancellationToken ct) =>
         {
             var form = await request.ReadMultipartAsync(ct);
             var files = form.Files.GetFiles("files").Concat(form.Files.GetFiles("file")).Select(f => f.ToUpload()).ToList();
-            return await s.UploadImagesAsync(type, id, files, ct);
+            var uploaded = await s.UploadImagesAsync(type, id, files, ct);
+            return await OcrAfterUploadAsync(uploaded, form, response, s, logs, ct);
         }).Accepts<IFormFileCollection>("multipart/form-data");
+
+        g.MapPost("/{id:guid}/images/{imageId:guid}/ocr", async (Guid id, Guid imageId, OcrRequest? body, AttachmentService s, CancellationToken ct) =>
+        {
+            await s.GetOwnerAsync(type, id, ct);
+            return await s.ExtractTextAsync(imageId, body ?? new OcrRequest(false, null), ct, type, id);
+        });
 
         g.MapPatch("/{id:guid}/images/{imageId:guid}", (Guid id, Guid imageId, UpdateCaptionRequest body, AttachmentService s, CancellationToken ct) =>
             s.UpdateCaptionAsync(type, id, imageId, body.Caption, ct));
@@ -132,5 +140,32 @@ public static class ContentEndpoints
         g.MapPost("/{id:guid}/audio/{audioId:guid}/transcribe",
             (Guid id, Guid audioId, TranscribeRequest? body, AttachmentService s, CancellationToken ct) =>
                 s.TranscribeAsync(type, id, audioId, body ?? new TranscribeRequest(false, null), ct));
+    }
+
+    /// <summary>
+    /// With form field ocr=true, reads the text in each freshly uploaded picture. OCR problems never fail the
+    /// upload: the images are returned as saved and the first error is reported in X-Ocr-Error.
+    /// </summary>
+    internal static async Task<List<ImageDto>> OcrAfterUploadAsync(List<ImageDto> uploaded, IFormCollection form, HttpResponse response,
+        AttachmentService s, ILoggerFactory logs, CancellationToken ct)
+    {
+        if (!bool.TryParse(form["ocr"], out var ocr) || !ocr) return uploaded;
+        string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
+        var result = new List<ImageDto>(uploaded.Count);
+        foreach (var image in uploaded)
+        {
+            try
+            {
+                result.Add(await s.ExtractTextAsync(image.Id, new OcrRequest(false, language), ct));
+            }
+            catch (AppException ex)
+            {
+                logs.CreateLogger("Upload").LogWarning("OCR of image {ImageId} failed: {Message}", image.Id, ex.Message);
+                if (!response.Headers.ContainsKey("X-Ocr-Error"))
+                    response.Headers["X-Ocr-Error"] = new string(ex.Message.Where(c => c is >= ' ' and <= '~').Take(300).ToArray());
+                result.Add(image);
+            }
+        }
+        return result;
     }
 }

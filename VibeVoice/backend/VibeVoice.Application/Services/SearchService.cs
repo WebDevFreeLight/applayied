@@ -6,11 +6,12 @@ using VibeVoice.Domain.Entities;
 
 namespace VibeVoice.Application.Services;
 
-/// <summary>One search box over notes, memories and audio transcripts / TTS text.</summary>
+/// <summary>One search box over notes, memories, audio transcripts / TTS text and text found in pictures.</summary>
 public sealed class SearchService(
     IRepository<Note> notes,
     IRepository<Memory> memories,
     IRepository<AudioClip> audio,
+    IRepository<ImageAttachment> images,
     TaggingService tagging,
     LibraryService library,
     ICurrentUser currentUser)
@@ -26,7 +27,7 @@ public sealed class SearchService(
         if (term.Length == 0) return new([], page, pageSize, 0);
 
         var kinds = string.IsNullOrWhiteSpace(types)
-            ? ["notes", "memories", "audio"]
+            ? ["notes", "memories", "audio", "images"]
             : types.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Select(t => t.ToLowerInvariant()).ToHashSet();
         var userId = currentUser.UserId;
         var results = new List<SearchResultDto>();
@@ -64,13 +65,28 @@ public sealed class SearchService(
             var found = await audio.ListAsync(a => a.UserId == userId && a.SearchText!.Contains(term), a => a.CreatedAt, true, MaxPerKind, ct);
             var titles = await library.OwnerTitlesAsync(found.Select(a => (a.OwnerType, a.OwnerId)), ct);
             // Clips that belong to trashed notes/memories are hidden, like their owners.
-            var liveOwners = await LiveOwnerIdsAsync(found, ct);
+            var liveOwners = await LiveOwnerIdsAsync(found.Select(a => (a.OwnerType, a.OwnerId)), ct);
             foreach (var a in found.Where(a => a.OwnerType == OwnerType.Studio || liveOwners.Contains(a.OwnerId)))
             {
                 var (_, snippet) = Match(term, ("transcript", a.Transcript ?? ""), ("transcript", a.Text ?? ""));
                 var ownerKind = a.OwnerType switch { OwnerType.Note => "note", OwnerType.Memory => "memory", _ => "studio" };
                 var title = titles.GetValueOrDefault(a.OwnerId) ?? (a.Source == AudioSource.Tts ? "VibeVoice" : "Audio");
                 results.Add(new("audio", a.Id, a.OwnerId, ownerKind, title, snippet, "transcript", a.CreatedAt));
+            }
+        }
+
+        if (kinds.Contains("images"))
+        {
+            var found = await images.ListAsync(i => i.UserId == userId && i.SearchText!.Contains(term), i => i.CreatedAt, true, MaxPerKind, ct);
+            var owners = found.Select(i => (i.OwnerType, i.OwnerId)).ToList();
+            var titles = await library.OwnerTitlesAsync(owners, ct);
+            var liveOwners = await LiveOwnerIdsAsync(owners, ct);
+            foreach (var i in found.Where(i => i.OwnerType == OwnerType.Library || liveOwners.Contains(i.OwnerId)))
+            {
+                var (_, snippet) = Match(term, ("imageText", i.OcrText ?? ""), ("imageText", i.Caption ?? ""));
+                var ownerKind = i.OwnerType switch { OwnerType.Note => "note", OwnerType.Memory => "memory", _ => "library" };
+                var title = titles.GetValueOrDefault(i.OwnerId) ?? i.Caption ?? "Image";
+                results.Add(new("image", i.Id, i.OwnerType == OwnerType.Library ? null : i.OwnerId, ownerKind, title, snippet, "imageText", i.CreatedAt));
             }
         }
 
@@ -81,10 +97,12 @@ public sealed class SearchService(
         return new(ordered.Skip((page - 1) * pageSize).Take(pageSize).ToList(), page, pageSize, ordered.Count);
     }
 
-    private async Task<HashSet<Guid>> LiveOwnerIdsAsync(List<AudioClip> clips, CancellationToken ct)
+    /// <summary>Note/memory ids among <paramref name="owners"/> that are not in the trash.</summary>
+    private async Task<HashSet<Guid>> LiveOwnerIdsAsync(IEnumerable<(OwnerType Type, Guid Id)> owners, CancellationToken ct)
     {
-        var noteIds = clips.Where(c => c.OwnerType == OwnerType.Note).Select(c => c.OwnerId).Distinct().ToList();
-        var memoryIds = clips.Where(c => c.OwnerType == OwnerType.Memory).Select(c => c.OwnerId).Distinct().ToList();
+        var list = owners.ToList();
+        var noteIds = list.Where(o => o.Type == OwnerType.Note).Select(o => o.Id).Distinct().ToList();
+        var memoryIds = list.Where(o => o.Type == OwnerType.Memory).Select(o => o.Id).Distinct().ToList();
         var live = new HashSet<Guid>();
         if (noteIds.Count > 0) live.UnionWith((await notes.ListAsync(n => noteIds.Contains(n.Id) && !n.IsDeleted, ct)).Select(n => n.Id));
         if (memoryIds.Count > 0) live.UnionWith((await memories.ListAsync(m => memoryIds.Contains(m.Id) && !m.IsDeleted, ct)).Select(m => m.Id));

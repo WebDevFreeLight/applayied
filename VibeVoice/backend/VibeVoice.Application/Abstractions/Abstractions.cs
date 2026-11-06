@@ -61,7 +61,9 @@ public interface IImageProcessor
     Task<ProcessedImage> ProcessAsync(Stream input, CancellationToken ct);
 }
 
-public sealed record VoiceHealth(string? TtsEngine, string? AsrEngine, string? Device, bool ModelLoaded, string? ArabicTtsEngine);
+public sealed record VoiceHealth(string? TtsEngine, string? AsrEngine, string? Device, bool ModelLoaded, string? ArabicTtsEngine, string? OcrEngine = null);
+
+public sealed record OcrResult(string Text, string? Language, IReadOnlyList<OcrLineDto> Lines);
 
 public sealed record TtsResult(byte[] Audio, string ContentType, string? Voice, string? Engine, string? Language, double? DurationSeconds);
 
@@ -75,6 +77,7 @@ public interface IVoiceServiceClient
     Task<IReadOnlyList<VoiceDto>> GetVoicesAsync(CancellationToken ct);
     Task<TtsResult> SynthesizeAsync(string text, string? voice, string? language, CancellationToken ct);
     Task<AsrResult> TranscribeAsync(Stream audio, string fileName, string contentType, string? language, CancellationToken ct);
+    Task<OcrResult> RecognizeTextAsync(Stream image, string fileName, string contentType, string? language, CancellationToken ct);
 }
 
 public interface ITokenService
