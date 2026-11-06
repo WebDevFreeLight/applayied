@@ -75,6 +75,7 @@ export function AudioRecorder({ onSave, onSaved, saveLabel, className }: AudioRe
     previewUrlRef.current = null
   }
 
+  // Release the microphone, analyser and preview URL on unmount.
   useEffect(
     () => () => {
       const rec = recorderRef.current
@@ -86,8 +87,12 @@ export function AudioRecorder({ onSave, onSaved, saveLabel, className }: AudioRe
           /* ignore */
         }
       }
-      releaseDevices()
-      revokePreview()
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+      streamRef.current?.getTracks().forEach((tr) => tr.stop())
+      const ctx = audioCtxRef.current
+      if (ctx && ctx.state !== 'closed') void ctx.close().catch(() => undefined)
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current)
     },
     [],
   )
