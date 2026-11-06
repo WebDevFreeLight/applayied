@@ -30,6 +30,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel, Field
 
+from app.engines.rapid_ocr import OCRDisabled, OCRManager
 from app.audio import VIDEO_EXTENSIONS, extract_audio_to_wav, find_ffmpeg
 from app.config import Settings, get_settings
 from app.logging_config import configure_logging
@@ -59,6 +60,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     configure_logging(settings.log_level, settings.log_format)
     tts = TTSManager(settings)
     asr = ASRManager(settings)
+    ocr = OCRManager(settings)
 
     @asynccontextmanager
     async def lifespan(_: FastAPI):
@@ -70,7 +72,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         yield
 
     app = FastAPI(title="VibeVoice voice service", version="1.0.0", lifespan=lifespan)
-    app.state.settings, app.state.tts, app.state.asr = settings, tts, asr
+    app.state.settings, app.state.tts, app.state.asr, app.state.ocr = settings, tts, asr, ocr
     origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
     app.add_middleware(CORSMiddleware, allow_origins=origins or ["*"], allow_methods=["*"], allow_headers=["*"],
                        expose_headers=["X-Voice", "X-Engine", "X-Language", "X-Duration-Seconds", "X-AI-Generated"])
@@ -92,6 +94,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "status": "ok",
             "tts_engine": eng.name,
             "asr_engine": asr.name,
+            "ocr_engine": ocr.name,
             "device": eng.device,
             "model_loaded": eng.model_loaded,
             "arabic_tts_engine": tts.active_arabic_engine.name,
@@ -181,6 +184,29 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "engine": asr.name,
             "duration": result.duration,
         }
+
+    @app.post("/ocr")
+    async def recognize(file: UploadFile = File(...), language: str | None = Form(None)) -> dict:
+        """Image -> text (Arabic, English, mixed). Accepts jpeg/png/webp/gif/bmp/tiff."""
+        if ocr.disabled_reason:
+            raise HTTPException(status_code=503, detail=ocr.disabled_reason)
+        limit = settings.ocr_max_upload_mb * 1024 * 1024
+        data = await file.read(limit + 1)
+        await file.close()
+        if not data:
+            raise HTTPException(status_code=400, detail="Uploaded image is empty.")
+        if len(data) > limit:
+            raise HTTPException(status_code=413, detail=f"Image exceeds {settings.ocr_max_upload_mb} MB.")
+        try:
+            result = await run_in_threadpool(ocr.recognize, data, language)
+        except OCRDisabled as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        except Exception as exc:  # noqa: BLE001 - undecodable image etc.
+            log.exception("OCR failed")
+            raise HTTPException(status_code=422, detail=f"Could not read text from the image: {exc}") from exc
+        log.info("ocr lang=%s lines=%d chars=%d", result.language, len(result.lines), len(result.text))
+        return {"text": result.text, "language": result.language,
+                "lines": [ln.to_dict() for ln in result.lines], "engine": ocr.name}
 
     return app
 

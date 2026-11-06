@@ -27,6 +27,10 @@ class Settings(BaseSettings):
     arabic_tts_engine: TTSEngineName = "edge"
     fallback_tts_engine: TTSEngineName = "edge"
     asr_engine: ASREngineName = "whisper"
+    # Image -> text. rapidocr = PaddleOCR PP-OCRv5 models on onnxruntime (Arabic + English).
+    ocr_engine: Literal["rapidocr", "none"] = "rapidocr"
+    ocr_min_confidence: float = 0.5
+    ocr_max_upload_mb: int = 15
 
     # --- VibeVoice realtime TTS ----------------------------------------
     vibevoice_model_path: str = "microsoft/VibeVoice-Realtime-0.5B"
@@ -67,7 +71,7 @@ class Settings(BaseSettings):
     ffmpeg_binary: str = "ffmpeg"
 
     @field_validator(
-        "tts_engine", "arabic_tts_engine", "fallback_tts_engine", "asr_engine", mode="before"
+        "tts_engine", "arabic_tts_engine", "fallback_tts_engine", "asr_engine", "ocr_engine", mode="before"
     )
     @classmethod
     def _lower(cls, v: object) -> object:
