@@ -71,12 +71,14 @@ function TextToSpeech() {
   const voice = useWatch({ control: form.control, name: 'voice' })
   const matching = language === 'auto' ? voices : voices.filter((v) => v.language === language)
   const shownVoices = matching.length ? matching : voices
+  // A voice picked for another language is dropped when the language filter changes.
+  const effectiveVoice = shownVoices.some((v) => v.id === voice) ? voice : ''
 
   const tts = useMutation({
     mutationFn: (v: Values) =>
       voiceApi.tts({
         text: v.text.trim(),
-        voice: v.voice || undefined,
+        voice: effectiveVoice || undefined,
         language: v.language === 'auto' ? undefined : v.language,
       }),
     onSuccess: (audio) => {
@@ -124,7 +126,7 @@ function TextToSpeech() {
                 </Select>
               )}
             </Field>
-            <Field label={t('studio.voice')} hint={shownVoices.find((v) => v.id === voice)?.language === 'ar' ? t('readAloud.fallbackExplain') : undefined}>
+            <Field label={t('studio.voice')} hint={shownVoices.find((v) => v.id === effectiveVoice)?.language === 'ar' ? t('readAloud.fallbackExplain') : undefined}>
               {(p) =>
                 voicesQuery.isLoading ? (
                   <Skeleton className="h-10" />
@@ -132,7 +134,7 @@ function TextToSpeech() {
                   <VoiceSelect
                     {...p}
                     voices={shownVoices}
-                    value={voice}
+                    value={effectiveVoice}
                     onChange={(v) => form.setValue('voice', v)}
                     emptyLabel={t('readAloud.defaultVoice')}
                   />

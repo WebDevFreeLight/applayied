@@ -18,7 +18,7 @@ export default defineConfig({
           if (id.includes('@tiptap') || id.includes('prosemirror')) return 'editor'
           if (id.includes('wavesurfer')) return 'wavesurfer'
           if (id.includes('date-fns')) return 'date'
-          if (/[\/]node_modules[\/](react|react-dom|scheduler|react-router)[\/]/.test(id)) return 'react'
+          if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router)[\\/]/.test(id)) return 'react'
           if (id.includes('i18next')) return 'i18n'
           if (id.includes('zod') || id.includes('react-hook-form') || id.includes('@hookform')) return 'forms'
           if (id.includes('@tanstack')) return 'query'
