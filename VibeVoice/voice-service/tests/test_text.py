@@ -79,3 +79,28 @@ def test_map_asr_segments_defensively():
     assert [(s.start, s.end, s.text, s.speaker) for s in segs] == [
         (0.5, 1.25, "hi", "0"), (2.0, 3.0, "there", None), (0.0, 0.0, "loose text", None)]
     assert map_segments(None) == []
+
+
+def test_extract_audio_to_wav_round_trips_a_file(tmp_path):
+    """Video uploads go through this helper; a WAV input must survive it with the same length."""
+    import wave
+
+    import numpy as np
+
+    from app.audio import extract_audio_to_wav, find_ffmpeg, pcm_to_wav_bytes
+
+    src = tmp_path / "in.wav"
+    src.write_bytes(pcm_to_wav_bytes(np.zeros(16_000, dtype=np.float32), 16_000))
+    dst = tmp_path / "out.wav"
+    assert extract_audio_to_wav(str(src), str(dst), 16_000, find_ffmpeg())
+    with wave.open(str(dst)) as w:
+        assert w.getframerate() == 16_000
+        assert abs(w.getnframes() - 16_000) < 200
+
+
+def test_extract_audio_to_wav_rejects_non_media(tmp_path):
+    from app.audio import extract_audio_to_wav, find_ffmpeg
+
+    src = tmp_path / "x.mp4"
+    src.write_bytes(b"definitely not a video")
+    assert not extract_audio_to_wav(str(src), str(tmp_path / "o.wav"), 16_000, find_ffmpeg())

@@ -14,7 +14,7 @@ from typing import Any
 
 import numpy as np
 
-from app.audio import decode_to_pcm, find_ffmpeg
+from app.audio import decode_file_to_pcm, find_ffmpeg
 from app.config import Settings
 from app.engines.base import INFERENCE_LOCK, ASREngine, EngineUnavailable, Segment, Transcription
 
@@ -99,8 +99,7 @@ class WhisperASREngine(ASREngine):
         model = self._load()
         # Decode ourselves (ffmpeg CLI, then PyAV) to 16 kHz mono float32. This avoids
         # faster-whisper's own decoder, which breaks with PyAV >= 19 ("metadata_errors").
-        with open(path, "rb") as fh:
-            pcm = decode_to_pcm(fh.read(), 16_000, find_ffmpeg(self.settings.ffmpeg_binary))
+        pcm = decode_file_to_pcm(path, 16_000, find_ffmpeg(self.settings.ffmpeg_binary))
         if pcm is None or pcm.size == 0:
             raise ValueError("could not decode the audio file (unsupported or corrupt format)")
         with INFERENCE_LOCK:

@@ -57,7 +57,7 @@ class Settings(BaseSettings):
     max_tts_chars: int = 5000
     max_chunk_chars: int = 400
     chunk_silence_ms: int = 150
-    max_upload_mb: int = 50
+    max_upload_mb: int = 512
 
     # --- misc -----------------------------------------------------------
     preload_models: bool = False

@@ -94,6 +94,55 @@ def pcm_to_mp3_bytes(pcm: np.ndarray, sample_rate: int, ffmpeg: str) -> bytes:
     return proc.stdout
 
 
+VIDEO_EXTENSIONS = {".mp4", ".m4v", ".mov", ".mkv", ".avi", ".3gp"}
+
+
+def decode_file_to_pcm(path: str, sample_rate: int, ffmpeg: str | None) -> np.ndarray | None:
+    """Decode the audio track of an audio *or video* file on disk to mono float32.
+
+    Reading from the path (not stdin) lets ffmpeg seek, which MP4/MOV files from phones need: their
+    index ("moov" atom) is often at the end of the file. ``-vn`` drops any video stream.
+    """
+    if ffmpeg:
+        proc = subprocess.run(
+            [ffmpeg, "-hide_banner", "-loglevel", "error", "-i", path, "-vn",
+             "-f", "s16le", "-acodec", "pcm_s16le", "-ac", "1", "-ar", str(sample_rate), "pipe:1"],
+            capture_output=True, check=False, timeout=1800,
+        )
+        if proc.returncode == 0 and proc.stdout:
+            return np.frombuffer(proc.stdout, dtype="<i2").astype(np.float32) / 32768.0
+        log.warning("ffmpeg decode failed: %s", proc.stderr.decode(errors="replace")[:300])
+    try:
+        import av  # type: ignore[import-not-found]
+    except ImportError:
+        return None
+    try:
+        with av.open(path) as container:
+            if not container.streams.audio:
+                return None
+            resampler = av.AudioResampler(format="s16", layout="mono", rate=sample_rate)
+            frames: list[np.ndarray] = []
+            for frame in container.decode(audio=0):
+                for out in resampler.resample(frame):
+                    frames.append(out.to_ndarray().reshape(-1))
+            for out in resampler.resample(None):  # flush
+                frames.append(out.to_ndarray().reshape(-1))
+        return np.concatenate(frames).astype(np.float32) / 32768.0 if frames else None
+    except Exception as exc:  # noqa: BLE001 - any decoder error -> caller reports "could not decode"
+        log.warning("PyAV decode failed: %s", exc)
+        return None
+
+
+def extract_audio_to_wav(src: str, dst: str, sample_rate: int, ffmpeg: str | None) -> bool:
+    """Write the audio track of ``src`` (e.g. a video) to ``dst`` as 16-bit mono WAV. False if it has no audio."""
+    pcm = decode_file_to_pcm(src, sample_rate, ffmpeg)
+    if pcm is None or pcm.size == 0:
+        return False
+    with open(dst, "wb") as fh:
+        fh.write(pcm_to_wav_bytes(pcm, sample_rate))
+    return True
+
+
 def decode_to_pcm(data: bytes, sample_rate: int, ffmpeg: str | None) -> np.ndarray | None:
     """Decode any compressed audio (mp3, ...) to mono float32 at ``sample_rate``.
 

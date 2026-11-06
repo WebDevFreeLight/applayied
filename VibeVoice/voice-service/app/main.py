@@ -30,18 +30,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel, Field
 
-from app.audio import find_ffmpeg
+from app.audio import VIDEO_EXTENSIONS, extract_audio_to_wav, find_ffmpeg
 from app.config import Settings, get_settings
 from app.logging_config import configure_logging
 from app.service import ASRDisabled, ASRManager, TTSFormatError, TTSInputError, TTSManager, TTSUnavailable
 
 log = logging.getLogger("voice_service")
 
-_ALLOWED_AUDIO_EXT = {".webm", ".ogg", ".oga", ".opus", ".wav", ".mp3", ".m4a", ".mp4", ".aac", ".flac"}
+_ALLOWED_AUDIO_EXT = {".webm", ".ogg", ".oga", ".opus", ".wav", ".mp3", ".m4a", ".mp4", ".aac", ".flac"} | VIDEO_EXTENSIONS
 _CT_EXT = {
     "audio/webm": ".webm", "audio/ogg": ".ogg", "audio/wav": ".wav", "audio/x-wav": ".wav",
     "audio/wave": ".wav", "audio/mpeg": ".mp3", "audio/mp3": ".mp3", "audio/mp4": ".m4a",
     "audio/x-m4a": ".m4a", "audio/aac": ".aac", "audio/flac": ".flac", "video/webm": ".webm",
+    "video/mp4": ".mp4", "video/quicktime": ".mov", "video/x-matroska": ".mkv", "video/x-msvideo": ".avi",
+    "video/3gpp": ".3gp",
 }
 
 
@@ -145,12 +147,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 while chunk := await file.read(1024 * 1024):
                     size += len(chunk)
                     if size > limit:
-                        raise HTTPException(status_code=413, detail=f"Audio file exceeds {settings.max_upload_mb} MB.")
+                        raise HTTPException(status_code=413, detail=f"Media file exceeds {settings.max_upload_mb} MB.")
                     fh.write(chunk)
             if size == 0:
                 raise HTTPException(status_code=400, detail="Uploaded audio file is empty.")
+            asr_input = path
+            if ext in VIDEO_EXTENSIONS:
+                # Engines expect audio; pull the soundtrack out of the video first.
+                wav_path = path + ".wav"
+                ok = await run_in_threadpool(extract_audio_to_wav, path, wav_path, 16_000,
+                                             find_ffmpeg(settings.ffmpeg_binary))
+                if not ok:
+                    raise HTTPException(status_code=422, detail="The video has no audio track that could be decoded.")
+                asr_input = wav_path
             try:
-                result = await run_in_threadpool(asr.transcribe, path, language)
+                result = await run_in_threadpool(asr.transcribe, asr_input, language)
             except ASRDisabled as exc:
                 raise HTTPException(status_code=503, detail=str(exc)) from exc
             except Exception as exc:  # noqa: BLE001 - decode errors etc.
@@ -158,10 +169,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 raise HTTPException(status_code=422, detail=f"Could not transcribe audio: {exc}") from exc
         finally:
             await file.close()
-            try:
-                os.remove(path)
-            except OSError:
-                pass
+            for leftover in (path, path + ".wav"):
+                try:
+                    os.remove(leftover)
+                except OSError:
+                    pass
         return {
             "text": result.text,
             "language": result.language,
