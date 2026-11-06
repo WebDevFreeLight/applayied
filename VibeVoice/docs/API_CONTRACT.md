@@ -186,7 +186,7 @@ OcrLine = { text: string; confidence: number }                        // top-to-
 - `POST /api/images/{id}/ocr` body `{ language?: string }` → `ImageDto` (any of the user's images, incl. library).
 - `POST /api/voice/ocr` multipart `file` (jpeg/png/webp/gif ≤ 10 MB), `language?`, `save?=true`
   → `OcrResultDto`; with `save=true` the picture is kept in the Images library and returned as `image`.
-- Search: `GET /api/search` gains kind `"image"` (`types=…,images`), `matchedIn: "imageText"`, `ownerId/ownerKind`
+- Search: `GET /api/search` gains kind `"image"` (`types=…,images`), `matchedIn: "imageText"`, `thumbnailPath`, `ownerId/ownerKind`
   of the note/memory the picture belongs to (`"library"` for library images).
 - `GET /api/voice/status` adds `ocrEngine: string | null`.
 - Voice service: `POST /ocr` multipart `file`, `language?` → `{ text, language, lines: [{ text, confidence, box }], engine }`;

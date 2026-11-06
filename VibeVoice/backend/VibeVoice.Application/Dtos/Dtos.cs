@@ -127,7 +127,8 @@ public sealed record TranscriptionDto(string Text, string? Language, IReadOnlyLi
 // ---------- Search & dashboard ----------
 
 public sealed record SearchResultDto(
-    string Kind, Guid Id, Guid? OwnerId, string? OwnerKind, string Title, string Snippet, string MatchedIn, DateTime Date);
+    string Kind, Guid Id, Guid? OwnerId, string? OwnerKind, string Title, string Snippet, string MatchedIn, DateTime Date,
+    string? ThumbnailPath = null);
 
 public sealed record DashboardStatsDto(
     int Notes, int Memories, int AudioClips, int Images, int AiVoiceClips, int Transcripts, int Pinned, int Trash);

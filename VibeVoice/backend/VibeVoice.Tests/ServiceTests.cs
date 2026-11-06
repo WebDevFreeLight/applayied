@@ -202,6 +202,7 @@ public sealed class ServiceTests : IDisposable
         var search = await _host.Get<SearchService>(scope).SearchAsync("قائمه", "images", 1, 20, Ct);
         var hit = Assert.Single(search.Items);
         Assert.Equal(("image", "imageText", note.Id), (hit.Kind, hit.MatchedIn, hit.OwnerId!.Value));
+        Assert.Equal(image.ThumbnailPath, hit.ThumbnailPath);
     }
 
     [Fact]

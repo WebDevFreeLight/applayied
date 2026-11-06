@@ -86,7 +86,8 @@ public sealed class SearchService(
                 var (_, snippet) = Match(term, ("imageText", i.OcrText ?? ""), ("imageText", i.Caption ?? ""));
                 var ownerKind = i.OwnerType switch { OwnerType.Note => "note", OwnerType.Memory => "memory", _ => "library" };
                 var title = titles.GetValueOrDefault(i.OwnerId) ?? i.Caption ?? "Image";
-                results.Add(new("image", i.Id, i.OwnerType == OwnerType.Library ? null : i.OwnerId, ownerKind, title, snippet, "imageText", i.CreatedAt));
+                results.Add(new("image", i.Id, i.OwnerType == OwnerType.Library ? null : i.OwnerId, ownerKind, title, snippet, "imageText", i.CreatedAt,
+                    i.ThumbnailPath));
             }
         }
 
