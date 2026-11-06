@@ -37,8 +37,8 @@ builder.Services.ConfigureHttpJsonOptions(o =>
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<AppExceptionHandler>();
 
-// ---- Upload limits (audio can be large) ----
-var maxBody = builder.Configuration.GetValue<long?>("Uploads:MaxRequestBytes") ?? 120L * 1024 * 1024;
+// ---- Upload limits (videos can be large) ----
+var maxBody = builder.Configuration.GetValue<long?>("Uploads:MaxRequestBytes") ?? 520L * 1024 * 1024;
 builder.WebHost.ConfigureKestrel(k => k.Limits.MaxRequestBodySize = maxBody);
 builder.Services.Configure<FormOptions>(o => o.MultipartBodyLengthLimit = maxBody);
 
@@ -59,7 +59,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         OnMessageReceived = ctx =>
         {
-            if (ctx.Request.Path.StartsWithSegments("/api/files") && ctx.Request.Query.TryGetValue("access_token", out var token))
+            // Only media/transcript downloads (used by <img>, <audio>, <video>, <a download>) accept a query token.
+            var path = ctx.Request.Path;
+            var allowQueryToken = path.StartsWithSegments("/api/files")
+                || (path.StartsWithSegments("/api/audio") && path.Value!.EndsWith("/transcript", StringComparison.Ordinal));
+            if (allowQueryToken && ctx.Request.Query.TryGetValue("access_token", out var token))
                 ctx.Token = token;
             return Task.CompletedTask;
         },
@@ -84,7 +88,7 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(p => p
     .WithOrigins(origins)
     .AllowAnyHeader()
     .AllowAnyMethod()
-    .WithExposedHeaders("X-Voice-Service", "Content-Disposition")));
+    .WithExposedHeaders("X-Voice-Service", "X-Transcription-Error", "Content-Disposition")));
 
 // ---- OpenAPI / Swagger ----
 builder.Services.AddEndpointsApiExplorer();
@@ -110,9 +114,10 @@ using (var scope = app.Services.CreateScope())
     scope.ServiceProvider.GetRequiredService<DatabaseInitializer>().Initialize();
 }
 
+// Request logging runs outside the exception handler so it records the final status (e.g. 499 for client aborts).
+app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
 app.UseStatusCodePages();
-app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {

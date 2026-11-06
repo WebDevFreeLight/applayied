@@ -18,8 +18,8 @@ public sealed class VoiceServiceOptions
 
     public string BaseUrl { get; set; } = "http://localhost:8001";
 
-    /// <summary>TTS on CPU can be slow; this bounds a single attempt.</summary>
-    public int RequestTimeoutSeconds { get; set; } = 300;
+    /// <summary>TTS and long-video transcription on CPU can be slow; this bounds a single attempt.</summary>
+    public int RequestTimeoutSeconds { get; set; } = 900;
 
     public int HealthTimeoutSeconds { get; set; } = 3;
 }
@@ -74,16 +74,22 @@ public sealed class VoiceServiceClient(HttpClient http, VoiceServiceOptions opti
 
     public async Task<AsrResult> TranscribeAsync(Stream audio, string fileName, string contentType, string? language, CancellationToken ct)
     {
-        // Buffer once so a retry can resend the same bytes.
-        using var buffer = new MemoryStream();
-        await audio.CopyToAsync(buffer, ct);
-        var bytes = buffer.ToArray();
+        // Videos can be hundreds of MB, so stream instead of copying into memory. StreamContent rewinds a
+        // seekable stream when the resilience handler retries; non-seekable input is buffered as a fallback.
+        var source = audio;
+        if (!audio.CanSeek)
+        {
+            var copy = new MemoryStream();
+            await audio.CopyToAsync(copy, ct);
+            copy.Position = 0;
+            source = copy;
+        }
 
         return await SendAsync(
             c =>
             {
                 var form = new MultipartFormDataContent();
-                var file = new ByteArrayContent(bytes);
+                var file = new StreamContent(source);
                 file.Headers.ContentType = MediaTypeHeaderValue.Parse(string.IsNullOrEmpty(contentType) ? "application/octet-stream" : contentType);
                 form.Add(file, "file", fileName);
                 if (!string.IsNullOrWhiteSpace(language)) form.Add(new StringContent(language), "language");

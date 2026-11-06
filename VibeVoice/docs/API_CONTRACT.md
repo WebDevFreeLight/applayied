@@ -147,6 +147,27 @@ Segment = { start: number; end: number; text: string; speaker: string|null }
 - `GET /api/health` (anonymous) → `{ status: "Healthy"|"Degraded"; database: "up"|"down"; voiceService: "up"|"down" }`
 - `GET /api/files/{**path}` → file stream (owner-checked, range enabled).
 
+## Video + transcripts (v2)
+
+Audio clips are now **media clips**: the same `AudioDto` / endpoints carry audio **and video**.
+
+```ts
+AudioDto += {
+  mediaKind: "Audio" | "Video";          // render <video> for Video, waveform/audio player for Audio
+  segments: Segment[];                   // timestamped transcript ([] until transcribed)
+}
+```
+
+- `POST /api/{notes|memories}/{id}/audio` and `POST /api/voice/transcribe` accept **video** files
+  (mp4, mov, webm, mkv, avi) as well as audio. Extra optional form fields on the notes/memories upload:
+  `transcribe=true` (transcribe right after upload) and `language` (`en`, `ar`, …; omit = auto-detect).
+  If auto-transcription fails the clip is still saved and returned (200) with header
+  `X-Transcription-Error: <message>` — show it as a warning toast.
+- `GET /api/audio` adds query `kind=Audio|Video`.
+- `GET /api/audio/{id}/transcript?format=txt|srt|vtt` → downloadable transcript file
+  (`Content-Disposition: attachment`). 404 if not transcribed yet. Accepts `?access_token=` like `/api/files`.
+- Limits: audio ≤ 50 MB, **video ≤ 500 MB** (configurable `Uploads:MaxVideoBytes`).
+
 ## Upload limits (configurable)
 
 Images: jpeg/png/webp/gif, ≤ 10 MB each. Audio: webm/ogg/wav/mp3/m4a(mp4), ≤ 50 MB.

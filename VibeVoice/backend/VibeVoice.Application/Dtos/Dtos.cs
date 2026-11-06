@@ -41,13 +41,13 @@ public sealed record ImageWithOwnerDto(
     int Width, int Height, long SizeBytes, string? Caption, int SortOrder, DateTime CreatedAt, string? OwnerTitle);
 
 public sealed record AudioDto(
-    Guid Id, OwnerType OwnerType, Guid OwnerId, AudioSource Source, string FilePath, string MimeType,
-    double? DurationSeconds, long SizeBytes, string? Transcript, string? TranscriptLanguage,
+    Guid Id, OwnerType OwnerType, Guid OwnerId, AudioSource Source, MediaKind MediaKind, string FilePath, string MimeType,
+    double? DurationSeconds, long SizeBytes, string? Transcript, string? TranscriptLanguage, IReadOnlyList<SegmentDto> Segments,
     string? VoiceName, string? TtsEngine, string? Text, bool IsAiGenerated, DateTime CreatedAt);
 
 public sealed record AudioWithOwnerDto(
-    Guid Id, OwnerType OwnerType, Guid OwnerId, AudioSource Source, string FilePath, string MimeType,
-    double? DurationSeconds, long SizeBytes, string? Transcript, string? TranscriptLanguage,
+    Guid Id, OwnerType OwnerType, Guid OwnerId, AudioSource Source, MediaKind MediaKind, string FilePath, string MimeType,
+    double? DurationSeconds, long SizeBytes, string? Transcript, string? TranscriptLanguage, IReadOnlyList<SegmentDto> Segments,
     string? VoiceName, string? TtsEngine, string? Text, bool IsAiGenerated, DateTime CreatedAt, string? OwnerTitle);
 
 public sealed record UpdateCaptionRequest(string? Caption);

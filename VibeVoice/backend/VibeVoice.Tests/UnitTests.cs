@@ -92,3 +92,70 @@ public class DbProviderFactoryTests
     public void Rejects_unknown_provider() =>
         Assert.Throws<InvalidOperationException>(() => DbProviderFactory.ToDbType("Access"));
 }
+
+public class MediaDetectionTests
+{
+    private static byte[] Ftyp(string brand) => [0, 0, 0, 0x20, .. "ftyp"u8, .. System.Text.Encoding.ASCII.GetBytes(brand), 0, 0, 2, 0];
+
+    [Theory]
+    [InlineData("isom", "clip.mp4", "video/mp4", "video/mp4", VibeVoice.Domain.MediaKind.Video)]
+    [InlineData("qt  ", "IMG_0001.MOV", "video/quicktime", "video/quicktime", VibeVoice.Domain.MediaKind.Video)]
+    [InlineData("M4A ", "song.m4a", "audio/x-m4a", "audio/mp4", VibeVoice.Domain.MediaKind.Audio)]
+    [InlineData("iso5", "recording", "audio/mp4", "audio/mp4", VibeVoice.Domain.MediaKind.Audio)] // Safari MediaRecorder
+    public void Mp4_brand_and_hints_pick_audio_or_video(string brand, string name, string declared, string mime, VibeVoice.Domain.MediaKind kind)
+    {
+        var media = FileSignatures.DetectMedia(Ftyp(brand), name, declared);
+        Assert.NotNull(media);
+        Assert.Equal(mime, media.File.MimeType);
+        Assert.Equal(kind, media.Kind);
+    }
+
+    [Fact]
+    public void Webm_follows_the_declared_type_and_matroska_is_video()
+    {
+        byte[] webm = [0x1A, 0x45, 0xDF, 0xA3, .. "B\u0082\u0084webm"u8];
+        byte[] mkv = [0x1A, 0x45, 0xDF, 0xA3, .. "B\u0082\u0088matroska"u8];
+        Assert.Equal(VibeVoice.Domain.MediaKind.Audio, FileSignatures.DetectMedia(webm, "rec.webm", "audio/webm;codecs=opus")!.Kind);
+        Assert.Equal(VibeVoice.Domain.MediaKind.Video, FileSignatures.DetectMedia(webm, "screen.webm", "video/webm")!.Kind);
+        Assert.Equal("video/x-matroska", FileSignatures.DetectMedia(mkv, "movie.mkv", null)!.File.MimeType);
+    }
+
+    [Fact]
+    public void Renaming_a_non_media_file_to_mp4_is_rejected() =>
+        Assert.Null(FileSignatures.DetectMedia("MZ\u0090\0 this is an exe"u8, "movie.mp4", "video/mp4"));
+}
+
+public class TranscriptFormatTests
+{
+    private static readonly VibeVoice.Application.Dtos.SegmentDto[] Segments =
+    [
+        new(0, 2.5, "Hello there", null),
+        new(2.5, 3661.042, "مرحبا", "S1"),
+    ];
+
+    [Fact]
+    public void Srt_has_numbered_cues_with_comma_millis()
+    {
+        var (srt, mime, ext) = TranscriptFormats.Render("srt", "Hello there مرحبا", Segments, null);
+        Assert.Equal(("application/x-subrip", "srt"), (mime, ext));
+        Assert.Equal("1\n00:00:00,000 --> 00:00:02,500\nHello there\n\n2\n00:00:02,500 --> 01:01:01,042\n[S1] مرحبا\n\n", srt);
+    }
+
+    [Fact]
+    public void Vtt_starts_with_header_and_uses_dot_millis()
+    {
+        var (vtt, _, _) = TranscriptFormats.Render("vtt", "x", Segments, null);
+        Assert.StartsWith("WEBVTT\n\n00:00:00.000 --> 00:00:02.500\nHello there", vtt);
+    }
+
+    [Fact]
+    public void Missing_timings_produce_one_cue_spanning_the_clip()
+    {
+        var (srt, _, _) = TranscriptFormats.Render("srt", "Just text", [], 4.2);
+        Assert.Equal("1\n00:00:00,000 --> 00:00:04,200\nJust text\n\n", srt);
+    }
+
+    [Fact]
+    public void Segments_round_trip_through_json() =>
+        Assert.Equal(Segments, TranscriptFormats.Deserialize(TranscriptFormats.Serialize(Segments)));
+}

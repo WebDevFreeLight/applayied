@@ -258,32 +258,43 @@ public sealed class AttachmentService(
         OwnerType type, Guid ownerId, UploadFile file, AudioSource source, double? durationSeconds, CancellationToken ct)
     {
         if (source == AudioSource.Tts) throw new BadRequestException("Use the TTS endpoint to create AI voice clips.");
-        if (file.Length == 0) throw new BadRequestException("The audio file is empty.");
-        if (file.Length > _limits.MaxAudioBytes)
-            throw new PayloadTooLargeException($"Audio files must be smaller than {_limits.MaxAudioBytes / 1024 / 1024} MB.");
+        if (file.Length == 0) throw new BadRequestException("The file is empty.");
 
-        await using var buffer = await BufferAsync(file, ct);
-        var header = await FileSignatures.ReadHeaderAsync(buffer, ct);
-        var detected = FileSignatures.DetectAudio(header)
-            ?? throw new BadRequestException($"'{file.FileName}' is not a supported audio file (webm, ogg, wav, mp3, m4a).");
-        buffer.Position = 0;
+        byte[] header;
+        await using (var probe = file.OpenRead()) header = await FileSignatures.ReadHeaderAsync(probe, ct);
+        var media = FileSignatures.DetectMedia(header, file.FileName, file.ContentType)
+            ?? throw new BadRequestException(
+                $"'{file.FileName}' is not a supported audio or video file (mp3, wav, m4a, ogg, webm, mp4, mov, mkv, avi).");
 
-        durationSeconds ??= detected.Extension == "wav" ? WavInfo.TryGetDuration(buffer) : null;
-        buffer.Position = 0;
+        var limit = media.Kind == MediaKind.Video ? _limits.MaxVideoBytes : _limits.MaxAudioBytes;
+        if (file.Length > limit)
+            throw new PayloadTooLargeException(
+                $"{(media.Kind == MediaKind.Video ? "Video" : "Audio")} files must be smaller than {limit / 1024 / 1024} MB.");
 
-        var path = await storage.SaveAsync(buffer, "audio", detected.Extension, ct);
+        // Stream straight to storage: videos can be hundreds of MB, so never buffer them in memory.
+        string path;
+        await using (var content = file.OpenRead())
+            path = await storage.SaveAsync(content, media.Kind == MediaKind.Video ? "video" : "audio", media.File.Extension, ct);
+
+        if (durationSeconds is null && media.File.Extension == "wav")
+        {
+            await using var stored = await storage.OpenReadAsync(path, ct);
+            if (stored is not null) durationSeconds = WavInfo.TryGetDuration(stored);
+        }
+
         var clip = new AudioClip
         {
             UserId = UserId,
             OwnerType = type,
             OwnerId = ownerId,
             Source = source,
+            MediaKind = media.Kind,
             FilePath = path,
-            MimeType = detected.MimeType,
+            MimeType = media.File.MimeType,
             DurationSeconds = durationSeconds is > 0 and < 60 * 60 * 24 ? Math.Round(durationSeconds.Value, 2) : null,
-            SizeBytes = buffer.Length,
+            SizeBytes = file.Length,
         };
-        return (clip, detected);
+        return (clip, media.File);
     }
 
     private async Task<AudioClip> GetClipAsync(Guid audioId, CancellationToken ct) =>
@@ -365,9 +376,7 @@ public sealed class AttachmentService(
             ?? throw new NotFoundException("Audio file", clip.FilePath);
         var result = await voice.TranscribeAsync(stream, Path.GetFileName(clip.FilePath), clip.MimeType, request.Language, ct);
 
-        clip.Transcript = result.Text.Trim();
-        clip.TranscriptLanguage = result.Language ?? request.Language;
-        clip.SearchText = SearchIndex.ForAudio(clip);
+        ApplyTranscript(clip, result, request.Language);
 
         await uow.ExecuteInTransactionAsync(async () =>
         {
@@ -378,6 +387,24 @@ public sealed class AttachmentService(
                 await TouchOwnerAsync(owner, ct);
         }, ct);
         return clip.ToDto();
+    }
+
+    internal static void ApplyTranscript(AudioClip clip, AsrResult result, string? requestedLanguage)
+    {
+        clip.Transcript = result.Text.Trim();
+        clip.TranscriptLanguage = result.Language ?? requestedLanguage;
+        clip.SegmentsJson = TranscriptFormats.Serialize(result.Segments);
+        clip.SearchText = SearchIndex.ForAudio(clip);
+    }
+
+    /// <summary>The transcript of any of the user's clips as a downloadable txt/srt/vtt file.</summary>
+    public async Task<(string Content, string MimeType, string FileName)> ExportTranscriptAsync(Guid audioId, string? format, CancellationToken ct)
+    {
+        var clip = await GetClipAsync(audioId, ct);
+        if (string.IsNullOrWhiteSpace(clip.Transcript)) throw new NotFoundException("Transcript for clip", audioId);
+        var (content, mime, ext) = TranscriptFormats.Render(
+            format ?? "txt", clip.Transcript, TranscriptFormats.Deserialize(clip.SegmentsJson), clip.DurationSeconds);
+        return (content, mime, $"transcript-{clip.CreatedAt:yyyyMMdd-HHmm}.{ext}");
     }
 
     private async Task AppendTranscriptAsync(IOwnedContent owner, string transcript, CancellationToken ct)

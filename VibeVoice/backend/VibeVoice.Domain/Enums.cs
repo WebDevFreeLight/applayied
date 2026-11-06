@@ -18,6 +18,13 @@ public enum AudioSource
     Tts = 3,
 }
 
+/// <summary>Clips hold audio or video; both can be transcribed.</summary>
+public enum MediaKind
+{
+    Audio = 1,
+    Video = 2,
+}
+
 public enum Mood
 {
     Happy = 1,

@@ -19,6 +19,10 @@ public class AudioClip
 
     public AudioSource Source { get; set; }
 
+    /// <summary>Default value lets CodeFirst add the column to databases created before video support.</summary>
+    [SugarColumn(DefaultValue = "1")]
+    public MediaKind MediaKind { get; set; } = MediaKind.Audio;
+
     /// <summary>Path relative to the storage root, e.g. <c>audio/2026/11/{guid}.webm</c>.</summary>
     [SugarColumn(Length = 300)]
     public string FilePath { get; set; } = "";
@@ -36,6 +40,10 @@ public class AudioClip
 
     [SugarColumn(Length = 10, IsNullable = true)]
     public string? TranscriptLanguage { get; set; }
+
+    /// <summary>Timestamped transcript segments as JSON (<c>[{start,end,text,speaker}]</c>), used for SRT/VTT export.</summary>
+    [SugarColumn(ColumnDataType = StaticConfig.CodeFirst_BigString, IsNullable = true)]
+    public string? SegmentsJson { get; set; }
 
     /// <summary>Normalized transcript (or TTS text) used by search.</summary>
     [SugarColumn(ColumnDataType = StaticConfig.CodeFirst_BigString, IsNullable = true)]

@@ -1,3 +1,5 @@
+using VibeVoice.Domain;
+
 namespace VibeVoice.Application.Common;
 
 public sealed class UploadOptions
@@ -5,10 +7,13 @@ public sealed class UploadOptions
     public const string Section = "Uploads";
     public long MaxImageBytes { get; set; } = 10 * 1024 * 1024;
     public long MaxAudioBytes { get; set; } = 50 * 1024 * 1024;
+    public long MaxVideoBytes { get; set; } = 500 * 1024 * 1024;
     public int MaxFilesPerRequest { get; set; } = 20;
 }
 
 public sealed record DetectedFile(string MimeType, string Extension);
+
+public sealed record DetectedMedia(DetectedFile File, MediaKind Kind);
 
 /// <summary>
 /// Identifies uploads by their magic bytes. The client-supplied Content-Type and file name are
@@ -16,7 +21,8 @@ public sealed record DetectedFile(string MimeType, string Extension);
 /// </summary>
 public static class FileSignatures
 {
-    public const int HeaderLength = 16;
+    /// <summary>Enough bytes to see the EBML DocType ("webm"/"matroska") and the MP4 ftyp brand.</summary>
+    public const int HeaderLength = 64;
 
     public static DetectedFile? DetectImage(ReadOnlySpan<byte> h)
     {
@@ -27,17 +33,53 @@ public static class FileSignatures
         return null;
     }
 
-    public static DetectedFile? DetectAudio(ReadOnlySpan<byte> h)
+    public static DetectedFile? DetectAudio(ReadOnlySpan<byte> h) =>
+        DetectMedia(h, null, null) is { Kind: MediaKind.Audio } m ? m.File : null;
+
+    /// <summary>
+    /// Identifies audio and video uploads. MP4 and WebM/Matroska containers can hold either, so the
+    /// container brand decides when it can and the declared type / extension is only a tie-breaker —
+    /// the bytes still have to be a real media container.
+    /// </summary>
+    public static DetectedMedia? DetectMedia(ReadOnlySpan<byte> h, string? fileName, string? declaredType)
     {
-        if (h.Length >= 12 && Ascii(h, 0, "RIFF") && Ascii(h, 8, "WAVE")) return new("audio/wav", "wav");
-        if (h.Length >= 4 && Ascii(h, 0, "OggS")) return new("audio/ogg", "ogg");
-        if (h.Length >= 4 && h[0] == 0x1A && h[1] == 0x45 && h[2] == 0xDF && h[3] == 0xA3) return new("audio/webm", "webm");
-        if (h.Length >= 3 && Ascii(h, 0, "ID3")) return new("audio/mpeg", "mp3");
-        if (h.Length >= 2 && h[0] == 0xFF && (h[1] & 0xE0) == 0xE0) return new("audio/mpeg", "mp3"); // MPEG frame sync
-        // MP4 container: Safari's MediaRecorder output and uploaded .m4a files.
-        if (h.Length >= 8 && Ascii(h, 4, "ftyp")) return new("audio/mp4", "m4a");
+        var ext = Path.GetExtension(fileName ?? "").TrimStart('.').ToLowerInvariant();
+        var wantsVideo = declaredType?.StartsWith("video/", StringComparison.OrdinalIgnoreCase) == true
+                         || ext is "mp4" or "m4v" or "mov" or "mkv" or "avi" or "3gp";
+        var wantsAudio = declaredType?.StartsWith("audio/", StringComparison.OrdinalIgnoreCase) == true
+                         || ext is "m4a" or "aac" or "weba";
+
+        static DetectedMedia Audio(string mime, string ext) => new(new(mime, ext), MediaKind.Audio);
+        static DetectedMedia Video(string mime, string ext) => new(new(mime, ext), MediaKind.Video);
+
+        if (h.Length >= 12 && Ascii(h, 0, "RIFF") && Ascii(h, 8, "WAVE")) return Audio("audio/wav", "wav");
+        if (h.Length >= 12 && Ascii(h, 0, "RIFF") && Ascii(h, 8, "AVI ")) return Video("video/x-msvideo", "avi");
+        if (h.Length >= 4 && Ascii(h, 0, "OggS")) return Audio("audio/ogg", "ogg");
+        if (h.Length >= 3 && Ascii(h, 0, "ID3")) return Audio("audio/mpeg", "mp3");
+        if (h.Length >= 2 && h[0] == 0xFF && (h[1] & 0xE0) == 0xE0) return Audio("audio/mpeg", "mp3"); // MPEG frame sync
+
+        if (h.Length >= 4 && h[0] == 0x1A && h[1] == 0x45 && h[2] == 0xDF && h[3] == 0xA3)
+        {
+            // EBML header: the DocType says "webm" or "matroska" within the first bytes.
+            var matroska = Contains(h, "matroska");
+            if (matroska) return Video("video/x-matroska", "mkv");
+            return wantsVideo && !wantsAudio ? Video("video/webm", "webm") : Audio("audio/webm", "webm");
+        }
+
+        if (h.Length >= 12 && Ascii(h, 4, "ftyp"))
+        {
+            var brand = System.Text.Encoding.ASCII.GetString(h[8..12]);
+            if (brand is "M4A " or "M4B " or "M4P ") return Audio("audio/mp4", "m4a");
+            if (brand == "qt  ") return Video("video/quicktime", "mov");
+            if (brand.StartsWith("3g")) return Video("video/3gpp", "3gp");
+            // Generic brands (isom, mp42, iso5, avc1, …): Safari records audio-only MP4 with these too.
+            return wantsAudio && !wantsVideo ? Audio("audio/mp4", "m4a") : Video("video/mp4", "mp4");
+        }
         return null;
     }
+
+    private static bool Contains(ReadOnlySpan<byte> h, string text) =>
+        h.IndexOf(System.Text.Encoding.ASCII.GetBytes(text)) >= 0;
 
     private static bool Ascii(ReadOnlySpan<byte> h, int offset, string text)
     {

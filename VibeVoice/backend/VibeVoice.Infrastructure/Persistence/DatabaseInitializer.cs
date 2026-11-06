@@ -35,9 +35,23 @@ public sealed class DatabaseInitializer(
         }
 
         db.CodeFirst.InitTables(EntityTypes);
+        Backfill();
         logger.LogInformation("Database schema is up to date ({Provider})", db.CurrentConnectionConfig.DbType);
 
         if (options.Value.Seed && !db.Queryable<User>().Any()) Seed();
+    }
+
+    /// <summary>
+    /// Fixes rows written before a column existed. Column defaults aren't applied to existing rows by every
+    /// provider (SQLite leaves 0), so clips from before video support are marked as audio here.
+    /// </summary>
+    private void Backfill()
+    {
+        var fixedClips = db.Updateable<AudioClip>()
+            .SetColumns(a => a.MediaKind == MediaKind.Audio)
+            .Where(a => a.MediaKind != MediaKind.Audio && a.MediaKind != MediaKind.Video)
+            .ExecuteCommand();
+        if (fixedClips > 0) logger.LogInformation("Marked {Count} existing clip(s) as audio", fixedClips);
     }
 
     private void Seed()

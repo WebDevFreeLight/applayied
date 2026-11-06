@@ -18,12 +18,12 @@ public static class Mapping
         i.SizeBytes, i.Caption, i.SortOrder, i.CreatedAt, ownerTitle);
 
     public static AudioDto ToDto(this AudioClip a) => new(
-        a.Id, a.OwnerType, a.OwnerId, a.Source, a.FilePath, a.MimeType, a.DurationSeconds, a.SizeBytes,
-        a.Transcript, a.TranscriptLanguage, a.VoiceName, a.TtsEngine, a.Text, a.Source == AudioSource.Tts, a.CreatedAt);
+        a.Id, a.OwnerType, a.OwnerId, a.Source, a.MediaKind, a.FilePath, a.MimeType, a.DurationSeconds, a.SizeBytes,
+        a.Transcript, a.TranscriptLanguage, TranscriptFormats.Deserialize(a.SegmentsJson), a.VoiceName, a.TtsEngine, a.Text, a.Source == AudioSource.Tts, a.CreatedAt);
 
     public static AudioWithOwnerDto ToDto(this AudioClip a, string? ownerTitle) => new(
-        a.Id, a.OwnerType, a.OwnerId, a.Source, a.FilePath, a.MimeType, a.DurationSeconds, a.SizeBytes,
-        a.Transcript, a.TranscriptLanguage, a.VoiceName, a.TtsEngine, a.Text, a.Source == AudioSource.Tts, a.CreatedAt, ownerTitle);
+        a.Id, a.OwnerType, a.OwnerId, a.Source, a.MediaKind, a.FilePath, a.MimeType, a.DurationSeconds, a.SizeBytes,
+        a.Transcript, a.TranscriptLanguage, TranscriptFormats.Deserialize(a.SegmentsJson), a.VoiceName, a.TtsEngine, a.Text, a.Source == AudioSource.Tts, a.CreatedAt, ownerTitle);
 
     public static DateOnly ToDateOnly(this DateTime d) => DateOnly.FromDateTime(d);
 

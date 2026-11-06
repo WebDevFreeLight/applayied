@@ -158,4 +158,27 @@ public sealed class ServiceTests : IDisposable
         var people = await _host.Get<TaggingService>(scope).GetPeopleCountsAsync(_host.User.UserId, Ct);
         Assert.Contains(people, p => p.Name == "Sara" && p.Count == 1);
     }
+
+    [Fact]
+    public async Task Video_uploads_are_stored_as_video_and_transcripts_keep_segments()
+    {
+        await using var scope = _host.Scope();
+        var notes = _host.Get<NoteService>(scope);
+        var attachments = _host.Get<AttachmentService>(scope);
+        var note = await notes.CreateAsync(new SaveNoteRequest("Clip", "", null, null), Ct);
+        byte[] mp4 = [0, 0, 0, 0x20, .. "ftypisom"u8, 0, 0, 2, 0, .. new byte[200]];
+
+        var clip = await attachments.UploadAudioAsync(OwnerType.Note, note.Id,
+            TestFiles.Upload(mp4, "holiday.mp4", "video/mp4"), AudioSource.Uploaded, 12.5, Ct);
+        Assert.Equal(MediaKind.Video, clip.MediaKind);
+        Assert.StartsWith("video/", clip.FilePath);
+
+        var transcribed = await attachments.TranscribeAsync(OwnerType.Note, note.Id, clip.Id, new TranscribeRequest(false, null), Ct);
+        Assert.Single(transcribed.Segments);
+
+        var (srt, mime, fileName) = await attachments.ExportTranscriptAsync(clip.Id, "srt", Ct);
+        Assert.Equal("application/x-subrip", mime);
+        Assert.EndsWith(".srt", fileName);
+        Assert.Contains("00:00:00,000 --> 00:00:01,000", srt);
+    }
 }

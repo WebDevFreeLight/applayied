@@ -29,13 +29,14 @@ public sealed class LibraryService(
     }
 
     public async Task<PagedResult<AudioWithOwnerDto>> ListAudioAsync(
-        int page, int pageSize, AudioSource? source, OwnerType? ownerType, string? search, CancellationToken ct)
+        int page, int pageSize, AudioSource? source, OwnerType? ownerType, string? search, CancellationToken ct, MediaKind? kind = null)
     {
         (page, pageSize) = Clamp(page, pageSize);
         var userId = UserId;
         var term = TextNormalizer.Normalize(search);
         Expression<Func<AudioClip, bool>> where = a => a.UserId == userId;
         if (source is { } s) where = where.And(a => a.Source == s);
+        if (kind is { } k) where = where.And(a => a.MediaKind == k);
         if (ownerType is { } o) where = where.And(a => a.OwnerType == o);
         if (term.Length > 0) where = where.And(a => a.SearchText!.Contains(term));
         var (items, total) = await audio.PageAsync(where, a => a.CreatedAt, true, page, pageSize, ct);

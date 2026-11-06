@@ -47,9 +47,7 @@ public sealed class VoiceStudioService(
 
         if (clip is not null)
         {
-            clip.Transcript = result.Text.Trim();
-            clip.TranscriptLanguage = result.Language ?? language;
-            clip.SearchText = SearchIndex.ForAudio(clip);
+            AttachmentService.ApplyTranscript(clip, result, language);
             await audio.UpdateAsync(clip, ct);
         }
         return new TranscriptionDto(result.Text.Trim(), result.Language ?? language, result.Segments, clip?.ToDto());

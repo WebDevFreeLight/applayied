@@ -93,13 +93,30 @@ public static class ContentEndpoints
         g.MapPut("/{id:guid}/images/order", (Guid id, ReorderImagesRequest body, AttachmentService s, CancellationToken ct) =>
             s.ReorderImagesAsync(type, id, body.ImageIds, ct));
 
-        g.MapPost("/{id:guid}/audio", async (Guid id, HttpRequest request, AttachmentService s, CancellationToken ct) =>
+        // Audio or video. With transcribe=true the clip is transcribed right away; if that fails the upload
+        // still succeeds and the reason is returned in X-Transcription-Error.
+        g.MapPost("/{id:guid}/audio", async (Guid id, HttpRequest request, HttpResponse response, AttachmentService s,
+            ILoggerFactory logs, CancellationToken ct) =>
         {
             var form = await request.ReadMultipartAsync(ct);
-            var file = form.Files.GetFile("file") ?? throw new BadRequestException("Attach the audio as the 'file' field.");
+            var file = form.Files.GetFile("file") ?? throw new BadRequestException("Attach the audio or video as the 'file' field.");
             var source = Enum.TryParse<AudioSource>(form["source"], true, out var parsed) ? parsed : AudioSource.Uploaded;
             double? duration = double.TryParse(form["durationSeconds"], NumberStyles.Float, CultureInfo.InvariantCulture, out var d) ? d : null;
-            return await s.UploadAudioAsync(type, id, file.ToUpload(), source, duration, ct);
+            var clip = await s.UploadAudioAsync(type, id, file.ToUpload(), source, duration, ct);
+
+            if (!bool.TryParse(form["transcribe"], out var transcribe) || !transcribe) return clip;
+            string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
+            try
+            {
+                return await s.TranscribeAsync(type, id, clip.Id, new TranscribeRequest(false, language), ct);
+            }
+            catch (AppException ex)
+            {
+                logs.CreateLogger("Upload").LogWarning("Auto-transcription of {ClipId} failed: {Message}", clip.Id, ex.Message);
+                // Header values must be ASCII; keep it short and readable.
+                response.Headers["X-Transcription-Error"] = new string(ex.Message.Where(c => c is >= ' ' and <= '~').Take(300).ToArray());
+                return clip;
+            }
         }).Accepts<IFormFile>("multipart/form-data");
 
         g.MapDelete("/{id:guid}/audio/{audioId:guid}", async (Guid id, Guid audioId, AttachmentService s, CancellationToken ct) =>

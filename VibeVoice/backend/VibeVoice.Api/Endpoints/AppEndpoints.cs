@@ -54,8 +54,17 @@ public static class AppEndpoints
             return Results.NoContent();
         });
 
-        app.MapGet("/api/audio", (int? page, int? pageSize, AudioSource? source, OwnerType? ownerType, string? search, LibraryService s, CancellationToken ct) =>
-            s.ListAudioAsync(page ?? 1, pageSize ?? 30, source, ownerType, search, ct)).WithTags("Audio").RequireAuthorization();
+        app.MapGet("/api/audio", (int? page, int? pageSize, AudioSource? source, OwnerType? ownerType, MediaKind? kind, string? search,
+                LibraryService s, CancellationToken ct) =>
+            s.ListAudioAsync(page ?? 1, pageSize ?? 30, source, ownerType, search, ct, kind)).WithTags("Audio").RequireAuthorization();
+
+        app.MapGet("/api/audio/{id:guid}/transcript", async (Guid id, string? format, AttachmentService s, CancellationToken ct) =>
+        {
+            var (content, mime, fileName) = await s.ExportTranscriptAsync(id, format, ct);
+            // UTF-8 BOM so Windows players / Notepad show Arabic correctly.
+            var bytes = System.Text.Encoding.UTF8.GetPreamble().Concat(System.Text.Encoding.UTF8.GetBytes(content)).ToArray();
+            return Results.File(bytes, $"{mime}; charset=utf-8", fileName);
+        }).WithTags("Audio").RequireAuthorization();
 
         app.MapGet("/api/tags", (TaggingService s, ICurrentUser u, CancellationToken ct) => s.GetTagCountsAsync(u.UserId, ct))
             .WithTags("Tags").RequireAuthorization();
