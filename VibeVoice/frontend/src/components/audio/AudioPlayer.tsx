@@ -23,6 +23,7 @@ import { Button, IconButton } from '../ui/Button'
 import { Checkbox } from '../ui/Field'
 import { ConfirmDialog } from '../ui/Modal'
 import { SourceBadge } from './SourceBadge'
+import { TranscriptView } from './TranscriptView'
 
 export interface AudioPlayerProps {
   audio: AudioDto
@@ -33,6 +34,8 @@ export interface AudioPlayerProps {
   /** Show the "Append to text" option next to Transcribe. */
   canAppend?: boolean
   owner?: { to: string; title: string; kindLabel: string }
+  /** Expand the transcript initially (e.g. right after a Studio transcription). */
+  defaultShowTranscript?: boolean
   className?: string
 }
 
@@ -42,28 +45,56 @@ function cssVar(name: string, fallback: string): string {
   return v || fallback
 }
 
-export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, className }: AudioPlayerProps) {
+function safePlay(el: HTMLMediaElement) {
+  try {
+    const p = el.play() as Promise<void> | undefined
+    p?.catch?.(() => undefined)
+  } catch {
+    /* autoplay blocked / not supported */
+  }
+}
+
+/**
+ * Media clip card. Audio → wavesurfer waveform; Video → native <video>. Shows source/AI badges,
+ * Transcribe, and a clickable timestamped transcript that seeks the media.
+ */
+export function AudioPlayer({
+  audio,
+  onDelete,
+  onTranscribe,
+  canAppend,
+  owner,
+  defaultShowTranscript = false,
+  className,
+}: AudioPlayerProps) {
   const { t } = useTranslation()
   const dates = useDates()
   const resolvedTheme = useContext(ThemeContext)?.resolved
   const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const fallbackRef = useRef<HTMLAudioElement>(null)
   const wsRef = useRef<WaveSurfer | null>(null)
   const [ready, setReady] = useState(false)
   const [playing, setPlaying] = useState(false)
   const [duration, setDuration] = useState<number | null>(audio.durationSeconds)
   const [current, setCurrent] = useState(0)
   const [loadError, setLoadError] = useState(false)
-  const [transcript, setTranscript] = useState<string | null>(audio.transcript)
-  const [showTranscript, setShowTranscript] = useState(false)
+  const [transcribed, setTranscribed] = useState<AudioDto | null>(null)
+  const [showTranscript, setShowTranscript] = useState(defaultShowTranscript)
   const [transcribing, setTranscribing] = useState(false)
   const [append, setAppend] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const url = fileUrl(audio.filePath)
   const ai = audio.isAiGenerated || audio.source === 'Tts'
-  const shownTranscript = transcript ?? audio.transcript
+  const isVideo = audio.mediaKind === 'Video'
+  const latest = transcribed ?? audio
+  const transcriptText = latest.transcript ?? ''
+  const segments = latest.segments ?? []
+  const hasTranscript = !!transcriptText || segments.length > 0
 
   useEffect(() => {
+    if (isVideo) return
     const container = containerRef.current
     if (!container || !url) return
     const ws = WaveSurfer.create({
@@ -94,12 +125,37 @@ export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, c
       wsRef.current = null
       ws.destroy()
     }
-  }, [url, ai, resolvedTheme])
+  }, [url, ai, isVideo, resolvedTheme])
 
   const toggle = () => {
     const ws = wsRef.current
     if (!ws) return
     void ws.playPause()
+  }
+
+  /** Seeks the audio/video to `seconds` and plays. */
+  const seek = (seconds: number) => {
+    if (isVideo) {
+      const v = videoRef.current
+      if (!v) return
+      v.currentTime = seconds
+      setCurrent(seconds)
+      safePlay(v)
+      return
+    }
+    const ws = wsRef.current
+    if (ws && !loadError) {
+      ws.setTime(seconds)
+      setCurrent(seconds)
+      void ws.play()?.catch?.(() => undefined)
+      return
+    }
+    // Fallback <audio> element (when the waveform failed to load).
+    const el = fallbackRef.current
+    if (el) {
+      el.currentTime = seconds
+      safePlay(el)
+    }
   }
 
   const onWaveKey = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -128,7 +184,7 @@ export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, c
     setTranscribing(true)
     try {
       const updated = await onTranscribe(append)
-      setTranscript(updated.transcript)
+      setTranscribed(updated)
       setShowTranscript(true)
       toast.success(t('audio.transcribed'))
     } catch (err) {
@@ -152,7 +208,8 @@ export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, c
     }
   }
 
-  const filename = `${ai ? `vibevoice-${audio.voiceName ?? 'tts'}` : 'audio'}-${audio.id.slice(0, 8)}.${extensionForMime(audio.mimeType)}`
+  const ext = isVideo ? (audio.filePath.split('.').pop() ?? 'mp4') : extensionForMime(audio.mimeType)
+  const filename = `${ai ? `vibevoice-${audio.voiceName ?? 'tts'}` : isVideo ? 'video' : 'audio'}-${audio.id.slice(0, 8)}.${ext}`
 
   return (
     <article
@@ -161,57 +218,91 @@ export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, c
         ai ? 'border-ai/30' : 'border-border',
         className,
       )}
-      aria-label={ai ? `${t('audio.aiGenerated')} — ${audio.voiceName ?? ''}` : t(`audio.sources.${audio.source}`)}
+      aria-label={
+        ai
+          ? `${t('audio.aiGenerated')} — ${audio.voiceName ?? ''}`
+          : `${t(`audio.kinds.${isVideo ? 'Video' : 'Audio'}`)} · ${t(`audio.sources.${audio.source}`)}`
+      }
     >
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={toggle}
-          disabled={!ready && !loadError}
-          aria-label={playing ? t('audio.pause') : t('audio.play')}
-          title={playing ? t('audio.pause') : t('audio.play')}
-          className={cn(
-            'flex size-11 shrink-0 items-center justify-center rounded-full text-white shadow-sm transition-transform hover:scale-105 disabled:opacity-50',
-            ai ? 'bg-ai' : 'bg-accent',
-            loadError && 'hidden',
-          )}
-        >
-          {!ready && !loadError ? (
-            <Loader2 className="size-5 animate-spin" aria-hidden />
-          ) : playing ? (
-            <Pause className="size-5" aria-hidden />
-          ) : (
-            <Play className="size-5" aria-hidden />
-          )}
-        </button>
+      {isVideo ? (
+        <video
+          ref={videoRef}
+          src={url}
+          controls
+          preload="metadata"
+          playsInline
+          data-testid="clip-video"
+          className="aspect-video max-h-[60vh] w-full rounded-xl bg-black"
+          onLoadedMetadata={(e) => {
+            const d = e.currentTarget.duration
+            if (Number.isFinite(d) && d > 0) setDuration(d)
+          }}
+          onTimeUpdate={(e) => setCurrent(e.currentTarget.currentTime)}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          onEnded={() => setPlaying(false)}
+        />
+      ) : (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggle}
+            disabled={!ready && !loadError}
+            aria-label={playing ? t('audio.pause') : t('audio.play')}
+            title={playing ? t('audio.pause') : t('audio.play')}
+            className={cn(
+              'flex size-11 shrink-0 items-center justify-center rounded-full text-white shadow-sm transition-transform hover:scale-105 disabled:opacity-50',
+              ai ? 'bg-ai' : 'bg-accent',
+              loadError && 'hidden',
+            )}
+          >
+            {!ready && !loadError ? (
+              <Loader2 className="size-5 animate-spin" aria-hidden />
+            ) : playing ? (
+              <Pause className="size-5" aria-hidden />
+            ) : (
+              <Play className="size-5" aria-hidden />
+            )}
+          </button>
 
-        <div className="min-w-0 flex-1">
-          {loadError ? (
-            <audio controls src={url} preload="metadata" className="h-10 w-full" aria-label={t('audio.play')} />
-          ) : (
-            <div
-              ref={containerRef}
-              role="slider"
-              tabIndex={0}
-              aria-label={t('audio.seek')}
-              aria-valuemin={0}
-              aria-valuemax={Math.round(duration ?? 0)}
-              aria-valuenow={Math.round(current)}
-              aria-valuetext={`${formatDuration(current)} / ${formatDuration(duration)}`}
-              onKeyDown={onWaveKey}
-              dir="ltr"
-              className="h-11 w-full cursor-pointer rounded-lg"
-            />
-          )}
+          <div className="min-w-0 flex-1">
+            {loadError ? (
+              <audio
+                ref={fallbackRef}
+                controls
+                src={url}
+                preload="metadata"
+                className="h-10 w-full"
+                aria-label={t('audio.play')}
+                onTimeUpdate={(e) => setCurrent(e.currentTarget.currentTime)}
+                onPlay={() => setPlaying(true)}
+                onPause={() => setPlaying(false)}
+              />
+            ) : (
+              <div
+                ref={containerRef}
+                role="slider"
+                tabIndex={0}
+                aria-label={t('audio.seek')}
+                aria-valuemin={0}
+                aria-valuemax={Math.round(duration ?? 0)}
+                aria-valuenow={Math.round(current)}
+                aria-valuetext={`${formatDuration(current)} / ${formatDuration(duration)}`}
+                onKeyDown={onWaveKey}
+                dir="ltr"
+                className="h-11 w-full cursor-pointer rounded-lg"
+              />
+            )}
+          </div>
+
+          <span className="hidden shrink-0 font-mono text-xs tabular-nums text-muted sm:inline" dir="ltr">
+            {formatDuration(current)} / {formatDuration(duration)}
+          </span>
         </div>
-
-        <span className="hidden shrink-0 font-mono text-xs tabular-nums text-muted sm:inline" dir="ltr">
-          {formatDuration(current)} / {formatDuration(duration)}
-        </span>
-      </div>
+      )}
 
       <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-        <SourceBadge source={audio.source} isAiGenerated={audio.isAiGenerated} />
+        <SourceBadge source={audio.source} isAiGenerated={audio.isAiGenerated} mediaKind={audio.mediaKind} />
         {ai && audio.voiceName && (
           <span className="text-xs text-muted">
             {t('audio.voice')}: <bdi className="font-medium text-fg">{audio.voiceName}</bdi>
@@ -219,6 +310,7 @@ export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, c
           </span>
         )}
         <span className="text-xs text-subtle">
+          {isVideo && duration ? `${formatDuration(duration)} · ` : ''}
           {dates.relative(audio.createdAt)} · {formatBytes(audio.sizeBytes)}
         </span>
         {owner && (
@@ -254,11 +346,7 @@ export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, c
               </Button>
             </>
           )}
-          <IconButton
-            label={t('common.download')}
-            size="icon-sm"
-            onClick={() => void downloadUrl(url, filename)}
-          >
+          <IconButton label={t('common.download')} size="icon-sm" onClick={() => void downloadUrl(url, filename)}>
             <Download className="size-4" aria-hidden />
           </IconButton>
           {onDelete && (
@@ -281,7 +369,7 @@ export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, c
         </p>
       )}
 
-      {shownTranscript && (
+      {hasTranscript && (
         <div className="mt-3">
           <button
             type="button"
@@ -294,12 +382,16 @@ export function AudioPlayer({ audio, onDelete, onTranscribe, canAppend, owner, c
             <ChevronDown className={cn('size-3.5 transition-transform', showTranscript && 'rotate-180')} aria-hidden />
           </button>
           {showTranscript && (
-            <p
-              dir="auto"
-              className="mt-2 rounded-xl bg-surface-2 px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap text-fg"
-            >
-              {shownTranscript}
-            </p>
+            <div className="mt-2">
+              <TranscriptView
+                audioId={audio.id}
+                text={transcriptText}
+                segments={segments}
+                currentTime={current}
+                playing={playing}
+                onSeek={seek}
+              />
+            </div>
           )}
         </div>
       )}

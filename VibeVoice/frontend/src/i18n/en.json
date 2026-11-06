@@ -10,7 +10,7 @@
     "dashboard": "Dashboard",
     "memories": "Memories",
     "notes": "Notes",
-    "audio": "Audio notes",
+    "audio": "Audio & video",
     "studio": "VibeVoice Studio",
     "images": "Images",
     "search": "Search",
@@ -297,17 +297,17 @@
     "alignCenter": "Align center",
     "alignEnd": "Align end",
     "content": "Content",
-    "audioSection": "Audio",
+    "audioSection": "Audio & video",
     "imagesSection": "Images",
     "details": "Details"
   },
   "audio": {
-    "title": "Audio notes",
-    "subtitle": "Every recording, upload and AI voice clip in one place.",
+    "title": "Audio & video",
+    "subtitle": "Every recording, upload, video and AI voice clip in one place.",
     "newAudioNote": "New audio note",
     "audioNoteTitle": "Audio note — {{date}}",
     "empty": "No audio yet",
-    "emptyBody": "Record a voice note or generate speech in the Studio.",
+    "emptyBody": "Record a voice note, upload audio or video, or generate speech in the Studio.",
     "emptyFiltered": "No audio matches these filters",
     "source": "Source",
     "anySource": "All sources",
@@ -338,21 +338,38 @@
     "generatedFrom": "Generated from",
     "voice": "Voice",
     "engine": "Engine",
-    "uploadAudio": "Upload audio",
+    "uploadAudio": "Upload audio / video",
     "uploading": "Uploading… {{percent}}%",
     "uploaded": "Audio uploaded",
     "deleteTitle": "Delete this audio clip?",
     "deleteBody": "The audio file will be removed permanently.",
     "deleted": "Audio deleted",
-    "invalidType": "{{name}} isn't a supported audio file.",
-    "tooLarge": "{{name}} is larger than 50 MB.",
+    "invalidType": "{{name}} isn't a supported audio or video file (MP3, WAV, M4A, OGG, WebM, MP4, MOV, MKV, AVI).",
+    "tooLarge": "{{name}} is too large — {{kind}} files can be up to {{max}} MB.",
     "searchPlaceholder": "Search transcripts and titles…",
     "openOwner": "Open {{title}}",
     "loadError": "Couldn't load audio waveform",
     "duration": "Duration",
     "record": "Record",
     "hideRecorder": "Hide recorder",
-    "listLabel": "Audio clips"
+    "listLabel": "Audio clips",
+    "kind": "Type",
+    "anyKind": "All",
+    "kinds": {
+      "Audio": "Audio",
+      "Video": "Video"
+    },
+    "kindLower": {
+      "Audio": "audio",
+      "Video": "video"
+    },
+    "autoTranscribe": "Auto-transcribe",
+    "autoTranscribeHint": "Create a timestamped transcript right after uploading.",
+    "transcriptionLanguage": "Spoken language",
+    "chooseFile": "Choose file",
+    "uploadHint": "Audio up to 50 MB · video up to 500 MB",
+    "uploadedTranscribed": "Uploaded and transcribed",
+    "transcriptionFailed": "The clip was saved, but transcription failed: {{message}}"
   },
   "recorder": {
     "title": "Voice recorder",
@@ -418,9 +435,9 @@
     "deleteClip": "Delete clip",
     "record": "Record",
     "uploadFile": "Upload a file",
-    "chooseFile": "Choose audio file",
-    "dropAudio": "Drop an audio file here or choose one",
-    "saveClip": "Keep the uploaded audio",
+    "chooseFile": "Choose audio or video file",
+    "dropAudio": "Drop an audio or video file here or choose one",
+    "saveClip": "Keep the uploaded media",
     "transcribe": "Transcribe",
     "transcribing": "Transcribing… {{percent}}%",
     "transcript": "Transcript",
@@ -429,7 +446,7 @@
     "detectedLanguage": "Detected language: {{lang}}",
     "saveAsNote": "Save as note",
     "savedAsNote": "Saved as a new note",
-    "noTranscript": "Record or upload audio to see its transcript here.",
+    "noTranscript": "Record or upload audio or video to see its transcript here.",
     "responsibleUse": "Generated speech is labeled as AI-generated. Don't use AI voices to impersonate real people."
   },
   "images": {
@@ -568,5 +585,14 @@
   "languages": {
     "en": "English",
     "ar": "العربية"
+  },
+  "transcript": {
+    "label": "Transcript",
+    "segments": "Transcript segments",
+    "copy": "Copy transcript",
+    "download": "Download",
+    "downloadAs": "Download transcript as {{format}}",
+    "seekTo": "Play from {{time}}",
+    "notReady": "No transcript yet — use Transcribe."
   }
 }

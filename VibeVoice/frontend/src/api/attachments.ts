@@ -1,8 +1,24 @@
-import { http, upload } from './client'
+import { http, upload, uploadWithResponse } from './client'
 import type { AudioDto, ImageDto, TranscribeRequest, TtsRequest } from './types'
 
 /** Notes and memories share the same attachment endpoint shape. */
 export type OwnerKind = 'notes' | 'memories'
+
+export interface UploadMediaOptions {
+  source: 'Recorded' | 'Uploaded'
+  durationSeconds?: number | null
+  /** Transcribe right after upload (form field `transcribe=true`). */
+  transcribe?: boolean
+  /** e.g. "en" / "ar"; omit for auto-detect. */
+  language?: string
+  onProgress?: (fraction: number) => void
+}
+
+export interface UploadMediaResult {
+  audio: AudioDto
+  /** Set when auto-transcription failed (the clip itself was saved). */
+  transcriptionError: string | null
+}
 
 const base = (kind: OwnerKind, id: string) => `/api/${kind}/${id}`
 
@@ -24,21 +40,27 @@ export const attachmentsApi = {
   reorderImages: (kind: OwnerKind, id: string, imageIds: string[]) =>
     http.put<ImageDto[]>(`${base(kind, id)}/images/order`, { imageIds }),
 
-  uploadAudio: (
+  /**
+   * Uploads an audio or video clip. With `transcribe` the API transcribes it right away; if that
+   * fails the clip is still saved and `transcriptionError` carries the X-Transcription-Error header.
+   */
+  uploadAudio: async (
     kind: OwnerKind,
     id: string,
     file: File,
-    source: 'Recorded' | 'Uploaded',
-    durationSeconds?: number | null,
-    onProgress?: (fraction: number) => void,
-  ) => {
+    options: UploadMediaOptions,
+  ): Promise<UploadMediaResult> => {
+    const { source, durationSeconds, transcribe, language, onProgress } = options
     const form = new FormData()
     form.append('file', file, file.name)
     form.append('source', source)
     if (durationSeconds != null && Number.isFinite(durationSeconds)) {
       form.append('durationSeconds', String(Math.round(durationSeconds * 100) / 100))
     }
-    return upload<AudioDto>(`${base(kind, id)}/audio`, form, { onProgress })
+    if (transcribe) form.append('transcribe', 'true')
+    if (language) form.append('language', language)
+    const res = await uploadWithResponse<AudioDto>(`${base(kind, id)}/audio`, form, { onProgress })
+    return { audio: res.data, transcriptionError: res.header('X-Transcription-Error') }
   },
   deleteAudio: (kind: OwnerKind, id: string, audioId: string) =>
     http.del(`${base(kind, id)}/audio/${audioId}`),

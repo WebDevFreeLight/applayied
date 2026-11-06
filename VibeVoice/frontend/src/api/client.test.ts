@@ -1,5 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { API_URL, ApiError, buildQuery, errorMessage, fileUrl, http, onUnauthorized, setToken, upload } from './client'
+import {
+  API_URL,
+  ApiError,
+  buildQuery,
+  errorMessage,
+  fileUrl,
+  http,
+  onUnauthorized,
+  setToken,
+  transcriptUrl,
+  upload,
+  uploadWithResponse,
+} from './client'
 
 function fakeResponse(status: number, body: unknown, contentType = 'application/json') {
   const text = body === undefined ? '' : typeof body === 'string' ? body : JSON.stringify(body)
@@ -139,6 +151,7 @@ class FakeXHR {
   status = 0
   statusText = ''
   responseText = ''
+  responseHeaders: Record<string, string> = {}
   body: unknown
   upload: { onprogress: ((e: { lengthComputable: boolean; loaded: number; total: number }) => void) | null } = {
     onprogress: null,
@@ -162,7 +175,12 @@ class FakeXHR {
   abort() {
     this.onabort?.()
   }
-  respond(status: number, body: unknown) {
+  getResponseHeader(name: string) {
+    const key = Object.keys(this.responseHeaders).find((k) => k.toLowerCase() === name.toLowerCase())
+    return key ? this.responseHeaders[key] : null
+  }
+  respond(status: number, body: unknown, headers: Record<string, string> = {}) {
+    this.responseHeaders = headers
     this.status = status
     this.responseText = JSON.stringify(body)
     this.onload?.()
@@ -196,5 +214,20 @@ describe('upload (XHR multipart with progress)', () => {
     expect(err).toBeInstanceOf(ApiError)
     expect(err.status).toBe(400)
     expect(err.fieldErrors()).toEqual({ file: 'Unsupported audio format.' })
+  })
+
+  it('exposes response headers (e.g. X-Transcription-Error)', async () => {
+    vi.stubGlobal('XMLHttpRequest', FakeXHR)
+    const p = uploadWithResponse<{ id: string }>('/api/notes/1/audio', new FormData())
+    FakeXHR.last.respond(200, { id: 'a1' }, { 'X-Transcription-Error': 'ASR%20engine%20is%20disabled' })
+    const res = await p
+    expect(res.data).toEqual({ id: 'a1' })
+    expect(res.header('x-transcription-error')).toBe('ASR engine is disabled')
+    expect(res.header('X-Missing')).toBeNull()
+  })
+
+  it('transcriptUrl() builds the download URL with format and access_token', () => {
+    setToken('t2')
+    expect(transcriptUrl('a1', 'srt')).toBe('http://localhost:5080/api/audio/a1/transcript?format=srt&access_token=t2')
   })
 })

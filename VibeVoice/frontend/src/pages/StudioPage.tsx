@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/Button'
 import { Card, EmptyState, PageHeader, ProgressBar, Segmented, Skeleton } from '@/components/ui/Display'
 import { Checkbox, Field, Select, Textarea } from '@/components/ui/Field'
 import { copyText } from '@/hooks/misc'
-import { AUDIO_ACCEPT, AUDIO_MAX_BYTES, formatDuration, isAudioFile, textToHtml } from '@/lib/utils'
+import { formatDuration, MEDIA_ACCEPT, textToHtml, validateMediaFile } from '@/lib/utils'
 
 type Tab = 'tts' | 'stt'
 const LANGS = ['auto', 'en', 'ar'] as const
@@ -253,8 +253,15 @@ function SpeechToText() {
 
   const onFile = (file: File | undefined) => {
     if (!file) return
-    if (!isAudioFile(file)) return void toast.error(t('audio.invalidType', { name: file.name }))
-    if (file.size > AUDIO_MAX_BYTES) return void toast.error(t('audio.tooLarge', { name: file.name }))
+    const check = validateMediaFile(file)
+    if (!check.ok) {
+      toast.error(
+        check.reason === 'invalidType'
+          ? t('audio.invalidType', { name: file.name })
+          : t('audio.tooLarge', { name: file.name, kind: t(`audio.kindLower.${check.kind ?? 'Audio'}`), max: check.maxMb }),
+      )
+      return
+    }
     void transcribe(file).catch(() => undefined)
   }
 
@@ -321,7 +328,7 @@ function SpeechToText() {
             <input
               ref={inputRef}
               type="file"
-              accept={AUDIO_ACCEPT}
+              accept={MEDIA_ACCEPT}
               className="sr-only"
               tabIndex={-1}
               aria-hidden
@@ -371,32 +378,45 @@ function SpeechToText() {
             {result.language && (
               <p className="text-xs text-subtle">{t('studio.detectedLanguage', { lang: result.language })}</p>
             )}
-            <p dir="auto" className="rounded-xl bg-surface-2 p-4 text-sm leading-relaxed whitespace-pre-wrap text-fg">
-              {result.text}
-            </p>
-            {result.segments.length > 0 && (
-              <div>
-                <h3 className="mb-2 text-xs font-semibold tracking-wide text-subtle uppercase">{t('studio.segments')}</h3>
-                <ol className="flex max-h-80 flex-col gap-1.5 overflow-y-auto">
-                  {result.segments.map((s, i) => (
-                    <li key={i} className="flex gap-3 rounded-lg px-2 py-1.5 text-sm hover:bg-surface-2">
-                      <span className="shrink-0 font-mono text-xs text-subtle tabular-nums" dir="ltr">
-                        {formatDuration(s.start)}–{formatDuration(s.end)}
-                      </span>
-                      {s.speaker && (
-                        <span className="shrink-0 text-xs font-medium text-accent-text" title={t('studio.speaker')}>
-                          {s.speaker}
-                        </span>
-                      )}
-                      <span dir="auto" className="text-fg">
-                        {s.text}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
+            {!result.audio && (
+              <p dir="auto" className="rounded-xl bg-surface-2 p-4 text-sm leading-relaxed whitespace-pre-wrap text-fg">
+                {result.text}
+              </p>
             )}
-            {result.audio && <AudioPlayer key={result.audio.id} audio={result.audio} />}
+            {result.audio ? (
+              <AudioPlayer
+                key={result.audio.id}
+                audio={{
+                  ...result.audio,
+                  transcript: result.audio.transcript ?? result.text,
+                  segments: result.audio.segments?.length ? result.audio.segments : result.segments,
+                }}
+                defaultShowTranscript
+              />
+            ) : (
+              result.segments.length > 0 && (
+                <div>
+                  <h3 className="mb-2 text-xs font-semibold tracking-wide text-subtle uppercase">{t('studio.segments')}</h3>
+                  <ol className="flex max-h-80 flex-col gap-1.5 overflow-y-auto">
+                    {result.segments.map((s, i) => (
+                      <li key={i} className="flex gap-3 rounded-lg px-2 py-1.5 text-sm hover:bg-surface-2">
+                        <span className="shrink-0 font-mono text-xs text-subtle tabular-nums" dir="ltr">
+                          {formatDuration(s.start)}–{formatDuration(s.end)}
+                        </span>
+                        {s.speaker && (
+                          <span className="shrink-0 text-xs font-medium text-accent-text" title={t('studio.speaker')}>
+                            {s.speaker}
+                          </span>
+                        )}
+                        <span dir="auto" className="text-fg">
+                          {s.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )
+            )}
           </>
         )}
       </Card>

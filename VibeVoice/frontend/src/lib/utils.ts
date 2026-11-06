@@ -82,29 +82,44 @@ export const MOOD_EMOJI: Record<Mood, string> = {
 
 export const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const
 export const IMAGE_MAX_BYTES = 10 * 1024 * 1024
-export const AUDIO_TYPES = [
-  'audio/webm',
-  'audio/ogg',
-  'audio/wav',
-  'audio/x-wav',
-  'audio/wave',
-  'audio/mpeg',
-  'audio/mp3',
-  'audio/mp4',
-  'audio/x-m4a',
-  'audio/m4a',
-  'audio/aac',
-  'video/webm',
-] as const
-export const AUDIO_EXTENSIONS = ['webm', 'ogg', 'oga', 'opus', 'wav', 'mp3', 'm4a', 'mp4', 'aac']
+export const AUDIO_EXTENSIONS = ['webm', 'ogg', 'oga', 'opus', 'wav', 'mp3', 'm4a', 'aac', 'flac']
 export const AUDIO_MAX_BYTES = 50 * 1024 * 1024
-export const AUDIO_ACCEPT = 'audio/*,.webm,.ogg,.opus,.wav,.mp3,.m4a'
+export const VIDEO_EXTENSIONS = ['mp4', 'm4v', 'mov', 'webm', 'mkv', 'avi']
+export const VIDEO_MAX_BYTES = 500 * 1024 * 1024
+export const AUDIO_ACCEPT = 'audio/*,.webm,.ogg,.opus,.wav,.mp3,.m4a,.aac,.flac'
+/** Accept list for "Upload audio / video" pickers. */
+export const MEDIA_ACCEPT = `${AUDIO_ACCEPT},video/*,.mp4,.m4v,.mov,.mkv,.avi`
+
+const extOf = (name: string) => (name.includes('.') ? (name.split('.').pop() ?? '').toLowerCase() : '')
+
+/** Audio, video or neither — by MIME type first, then by extension. */
+export function mediaKindOf(file: File): 'Audio' | 'Video' | null {
+  const type = file.type.split(';')[0].toLowerCase()
+  if (type.startsWith('video/')) return 'Video'
+  if (type.startsWith('audio/')) return 'Audio'
+  if (type && type !== 'application/octet-stream') return null
+  const ext = extOf(file.name)
+  // .webm without a MIME type is ambiguous; treat it as video so the larger limit applies.
+  if (VIDEO_EXTENSIONS.includes(ext)) return 'Video'
+  if (AUDIO_EXTENSIONS.includes(ext)) return 'Audio'
+  return null
+}
 
 export function isAudioFile(file: File): boolean {
-  const type = file.type.split(';')[0].toLowerCase()
-  if ((AUDIO_TYPES as readonly string[]).includes(type)) return true
-  const ext = file.name.split('.').pop()?.toLowerCase() ?? ''
-  return (!type || type === 'application/octet-stream') && AUDIO_EXTENSIONS.includes(ext)
+  return mediaKindOf(file) === 'Audio'
+}
+
+export type MediaValidation =
+  | { ok: true; kind: 'Audio' | 'Video' }
+  | { ok: false; reason: 'invalidType' | 'tooLarge'; kind: 'Audio' | 'Video' | null; maxMb: number }
+
+/** Validates an audio/video upload (audio ≤ 50 MB, video ≤ 500 MB). */
+export function validateMediaFile(file: File): MediaValidation {
+  const kind = mediaKindOf(file)
+  if (!kind) return { ok: false, reason: 'invalidType', kind: null, maxMb: 0 }
+  const max = kind === 'Video' ? VIDEO_MAX_BYTES : AUDIO_MAX_BYTES
+  if (file.size > max) return { ok: false, reason: 'tooLarge', kind, maxMb: max / 1024 / 1024 }
+  return { ok: true, kind }
 }
 
 export function isImageFile(file: File): boolean {

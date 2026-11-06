@@ -57,6 +57,7 @@ afterEach(() => {
 })
 
 const fakeAudio = { id: 'a1' } as AudioDto
+const fakeResult = { audio: fakeAudio, transcriptionError: null }
 
 describe('AudioRecorder', () => {
   it('picks the preferred supported mime type', () => {
@@ -67,12 +68,12 @@ describe('AudioRecorder', () => {
   })
 
   it('records, previews and saves (upload with source=Recorded + durationSeconds)', async () => {
-    const uploadAudio = vi.spyOn(attachmentsApi, 'uploadAudio').mockResolvedValue(fakeAudio)
+    const uploadAudio = vi.spyOn(attachmentsApi, 'uploadAudio').mockResolvedValue(fakeResult)
     const onSaved = vi.fn()
     render(
       <AudioRecorder
         onSave={(file, durationSeconds, onProgress) =>
-          attachmentsApi.uploadAudio('notes', 'note-1', file, 'Recorded', durationSeconds, onProgress)
+          attachmentsApi.uploadAudio('notes', 'note-1', file, { source: 'Recorded', durationSeconds, onProgress })
         }
         onSaved={onSaved}
       />,
@@ -100,15 +101,15 @@ describe('AudioRecorder', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Save recording' }))
     await waitFor(() => expect(uploadAudio).toHaveBeenCalledTimes(1))
-    const [kind, id, file, source, duration, onProgress] = uploadAudio.mock.calls[0]
+    const [kind, id, file, opts] = uploadAudio.mock.calls[0]
     expect(kind).toBe('notes')
     expect(id).toBe('note-1')
     expect(file).toBeInstanceOf(File)
     expect((file as File).type).toBe('audio/webm')
     expect((file as File).name).toMatch(/^recording-.*\.webm$/)
-    expect(source).toBe('Recorded')
-    expect(typeof duration).toBe('number')
-    expect(typeof onProgress).toBe('function')
+    expect(opts.source).toBe('Recorded')
+    expect(typeof opts.durationSeconds).toBe('number')
+    expect(typeof opts.onProgress).toBe('function')
     await waitFor(() => expect(onSaved).toHaveBeenCalled())
     // Back to idle after a successful save.
     expect(await screen.findByRole('button', { name: 'Start recording' })).toBeInTheDocument()

@@ -6,7 +6,7 @@ import type { AudioDto } from '@/api/types'
 import { Button } from '../ui/Button'
 import { AudioPlayer } from './AudioPlayer'
 import { AudioRecorder } from './AudioRecorder'
-import { AudioUploadButton } from './AudioUploadButton'
+import { MediaUploadButton } from './MediaUploadButton'
 
 export interface AudioListProps {
   items: AudioDto[]
@@ -67,9 +67,14 @@ export function AudioList({
           >
             {recorderOpen ? t('audio.hideRecorder') : t('audio.record')}
           </Button>
-          <AudioUploadButton
-            upload={(file, onProgress) =>
-              attachmentsApi.uploadAudio(ownerKind, ownerId, file, 'Uploaded', null, onProgress)
+          <MediaUploadButton
+            upload={(file, opts, onProgress) =>
+              attachmentsApi.uploadAudio(ownerKind, ownerId, file, {
+                source: 'Uploaded',
+                transcribe: opts.transcribe,
+                language: opts.language,
+                onProgress,
+              })
             }
             onUploaded={onChanged}
           />
@@ -79,7 +84,7 @@ export function AudioList({
       {recorderOpen && (
         <AudioRecorder
           onSave={(file, durationSeconds, onProgress) =>
-            attachmentsApi.uploadAudio(ownerKind, ownerId, file, 'Recorded', durationSeconds, onProgress)
+            attachmentsApi.uploadAudio(ownerKind, ownerId, file, { source: 'Recorded', durationSeconds, onProgress })
           }
           onSaved={onChanged}
         />

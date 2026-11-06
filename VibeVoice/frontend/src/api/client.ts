@@ -201,10 +201,21 @@ export interface UploadOptions {
   method?: 'POST' | 'PUT'
 }
 
-/** Multipart upload via XHR so we get upload progress events. */
-export function upload<T>(path: string, form: FormData, options: UploadOptions = {}): Promise<T> {
+export interface UploadResponse<T> {
+  data: T
+  status: number
+  /** Reads a response header (only headers exposed via CORS are visible cross-origin). */
+  header: (name: string) => string | null
+}
+
+/** Multipart upload via XHR so we get upload progress events; also exposes response headers. */
+export function uploadWithResponse<T>(
+  path: string,
+  form: FormData,
+  options: UploadOptions = {},
+): Promise<UploadResponse<T>> {
   const { onProgress, signal, method = 'POST' } = options
-  return new Promise<T>((resolve, reject) => {
+  return new Promise<UploadResponse<T>>((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     xhr.open(method, apiUrl(path))
     xhr.setRequestHeader('Accept', 'application/json')
@@ -217,16 +228,34 @@ export function upload<T>(path: string, form: FormData, options: UploadOptions =
       }
     }
 
+    const header = (name: string): string | null => {
+      try {
+        const v = xhr.getResponseHeader(name)
+        if (v == null || v === '') return null
+        try {
+          return decodeURIComponent(v)
+        } catch {
+          return v
+        }
+      } catch {
+        return null
+      }
+    }
+
     xhr.onload = () => {
       const text = xhr.responseText
       if (xhr.status >= 200 && xhr.status < 300) {
         onProgress?.(1)
-        if (!text) return resolve(undefined as T)
-        try {
-          resolve(JSON.parse(text) as T)
-        } catch {
-          resolve(text as T)
+        let data: T
+        if (!text) data = undefined as T
+        else {
+          try {
+            data = JSON.parse(text) as T
+          } catch {
+            data = text as T
+          }
         }
+        resolve({ data, status: xhr.status, header })
         return
       }
       handleUnauthorized(xhr.status, !!t)
@@ -250,6 +279,19 @@ export function upload<T>(path: string, form: FormData, options: UploadOptions =
     }
     xhr.send(form)
   })
+}
+
+/** Multipart upload via XHR with progress; resolves with the parsed body. */
+export function upload<T>(path: string, form: FormData, options: UploadOptions = {}): Promise<T> {
+  return uploadWithResponse<T>(path, form, options).then((r) => r.data)
+}
+
+/** Download URL for a clip's transcript (`txt`, `srt` or `vtt`), usable in <a download>. */
+export function transcriptUrl(audioId: string, format: 'txt' | 'srt' | 'vtt'): string {
+  const t = getToken()
+  const q = new URLSearchParams({ format })
+  if (t) q.set('access_token', t)
+  return `${API_URL}/api/audio/${encodeURIComponent(audioId)}/transcript?${q.toString()}`
 }
 
 /** Extracts a user-facing message from any thrown value. */

@@ -57,6 +57,7 @@ export interface PagedResult<T> {
 export type ImageOwnerType = 'Note' | 'Memory' | 'Library'
 export type AudioOwnerType = 'Note' | 'Memory' | 'Studio'
 export type AudioSource = 'Recorded' | 'Uploaded' | 'Tts'
+export type MediaKind = 'Audio' | 'Video'
 
 export interface ImageDto {
   id: string
@@ -92,6 +93,10 @@ export interface AudioDto {
   text: string | null
   /** True when source == "Tts" → the UI must show an "AI-generated" label. */
   isAiGenerated: boolean
+  /** v2: render <video> for Video, waveform/audio player for Audio. */
+  mediaKind: MediaKind
+  /** v2: timestamped transcript ([] until transcribed). */
+  segments: Segment[]
   createdAt: string
 }
 
@@ -242,6 +247,8 @@ export interface TtsRequest {
   language?: string
 }
 
+export type TranscriptFormat = 'txt' | 'srt' | 'vtt'
+
 export interface TranscribeRequest {
   appendToBody?: boolean
   language?: string
@@ -258,6 +265,7 @@ export interface ImageListQuery {
 export interface AudioListQuery {
   page?: number
   pageSize?: number
+  kind?: MediaKind
   source?: AudioSource
   ownerType?: AudioOwnerType
   search?: string
