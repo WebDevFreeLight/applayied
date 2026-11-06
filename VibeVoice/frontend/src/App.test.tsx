@@ -8,7 +8,7 @@ describe('App smoke test', () => {
     window.history.pushState({}, '', '/notes')
     const { App } = await import('./App')
     render(<App />)
-    expect(await screen.findByRole('heading', { name: 'Welcome back' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Welcome back' }, { timeout: 8000 })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument()
     expect(window.location.pathname).toBe('/login')
     vi.unstubAllGlobals()

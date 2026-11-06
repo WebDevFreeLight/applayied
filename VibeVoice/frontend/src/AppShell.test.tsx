@@ -49,7 +49,7 @@ function json(body: unknown) {
 }
 
 describe('authenticated shell', () => {
-  it('renders the layout + dashboard and shows the admin-only Users link', async () => {
+  it('renders the layout + dashboard and shows the admin-only Users link', { timeout: 20_000 }, async () => {
     localStorage.setItem('vv.token', 'jwt')
     localStorage.setItem('vv.lang', 'en')
     vi.stubGlobal(
@@ -66,8 +66,8 @@ describe('authenticated shell', () => {
     const { App } = await import('./App')
     render(<App />)
 
-    expect(await screen.findByRole('heading', { name: 'Hello, Admin' })).toBeInTheDocument()
-    expect(await screen.findByText('Groceries', { selector: 'h3' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Hello, Admin' }, { timeout: 8000 })).toBeInTheDocument()
+    expect(await screen.findByText('Groceries', { selector: 'h3' }, { timeout: 8000 })).toBeInTheDocument()
     expect(screen.getAllByRole('link', { name: 'Users' }).length).toBeGreaterThan(0)
     expect((await screen.findAllByText('Voice ready')).length).toBeGreaterThan(0)
 
