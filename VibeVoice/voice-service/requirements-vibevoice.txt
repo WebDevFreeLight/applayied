@@ -1,0 +1,27 @@
+# Optional: Microsoft VibeVoice (realtime TTS + ASR). Large (torch ~2.5 GB+). NOT needed for edge/dev/whisper.
+#
+# The authoritative way to install is from the upstream repo (scripts/setup_vibevoice.ps1|.sh does this):
+#   git clone https://github.com/microsoft/VibeVoice.git third_party/VibeVoice
+#   pip install -e "third_party/VibeVoice[streamingtts]"
+#
+# For a CUDA build of torch install it FIRST from the PyTorch index, e.g.
+#   pip install torch --index-url https://download.pytorch.org/whl/cu124
+#
+# Upstream pyproject (checked 2026-11) depends on the packages below; the [streamingtts] extra pins
+# transformers==4.51.3. Listed here for reference / pre-caching only.
+torch
+transformers==4.51.3
+accelerate
+diffusers
+llvmlite>=0.40.0
+numba>=0.57.0
+scipy
+librosa
+ml-collections
+absl-py
+av
+pydub
+requests
+tqdm
+# optional, CUDA only (faster attention; the engine falls back to sdpa without it):
+# flash-attn
