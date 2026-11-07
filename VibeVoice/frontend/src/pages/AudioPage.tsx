@@ -8,6 +8,7 @@ import { qk } from '@/api/keys'
 import { audioApi } from '@/api/library'
 import type { AudioListQuery, AudioOwnerType, AudioSource, AudioWithOwnerDto, MediaKind } from '@/api/types'
 import { voiceApi } from '@/api/voice'
+import { useAuth } from '@/auth/context'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { Button } from '@/components/ui/Button'
 import { Chip, EmptyState, ErrorState, PageHeader, Skeleton } from '@/components/ui/Display'
@@ -26,6 +27,8 @@ export function AudioPage() {
   const qc = useQueryClient()
   const createNote = useCreateNote()
   const [params, setParams] = useSearchParams()
+  const { can } = useAuth()
+  const canCreate = can('notes') && can('audio.upload')
   const sourceParam = params.get('source') ?? ''
   const source = (SOURCES as string[]).includes(sourceParam) ? (sourceParam as AudioSource) : undefined
   const ownerParam = params.get('owner') ?? ''
@@ -78,9 +81,11 @@ export function AudioPage() {
         title={t('audio.title')}
         subtitle={t('audio.subtitle')}
         actions={
-          <Button variant="primary" onClick={newAudioNote} loading={createNote.isPending} icon={<Mic className="size-4" aria-hidden />}>
-            {t('audio.newAudioNote')}
-          </Button>
+          canCreate && (
+            <Button variant="primary" onClick={newAudioNote} loading={createNote.isPending} icon={<Mic className="size-4" aria-hidden />}>
+              {t('audio.newAudioNote')}
+            </Button>
+          )
         }
       />
 
@@ -145,9 +150,11 @@ export function AudioPage() {
             filtered ? (
               <Button onClick={() => setParams({}, { replace: true })}>{t('common.clearFilters')}</Button>
             ) : (
-              <Button variant="primary" onClick={newAudioNote} icon={<Mic className="size-4" aria-hidden />}>
-                {t('audio.newAudioNote')}
-              </Button>
+              canCreate && (
+                <Button variant="primary" onClick={newAudioNote} icon={<Mic className="size-4" aria-hidden />}>
+                  {t('audio.newAudioNote')}
+                </Button>
+              )
             )
           }
         />

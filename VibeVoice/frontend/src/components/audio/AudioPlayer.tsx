@@ -18,6 +18,7 @@ import { ApiError, errorMessage, fileUrl } from '@/api/client'
 import type { AudioDto } from '@/api/types'
 import { useDates } from '@/lib/dates'
 import { cn, downloadUrl, extensionForMime, formatBytes, formatDuration } from '@/lib/utils'
+import { useCan } from '@/auth/context'
 import { ThemeContext } from '@/theme/theme'
 import { Button, IconButton } from '../ui/Button'
 import { Checkbox } from '../ui/Field'
@@ -91,6 +92,7 @@ export function AudioPlayer({
   const url = fileUrl(audio.filePath)
   const ai = audio.isAiGenerated || audio.source === 'Tts'
   const isVideo = audio.mediaKind === 'Video'
+  const canTranscribe = useCan('voice.transcribe')
   const latest = transcribed ?? audio
   const transcriptText = latest.transcript ?? ''
   const segments = latest.segments ?? []
@@ -329,7 +331,7 @@ export function AudioPlayer({
         )}
 
         <div className="ms-auto flex flex-wrap items-center gap-1">
-          {onTranscribe && !ai && (
+          {onTranscribe && canTranscribe && !ai && (
             <>
               {canAppend && (
                 <Checkbox

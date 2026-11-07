@@ -22,7 +22,10 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "collapse": "Collapse sidebar",
-    "expand": "Expand sidebar"
+    "expand": "Expand sidebar",
+    "overview": "Overview",
+    "roles": "Roles",
+    "administration": "Administration"
   },
   "header": {
     "quickSearch": "Search…",
@@ -114,7 +117,8 @@
     "voiceUnavailable": "The voice service is unavailable right now.",
     "notFoundTitle": "Page not found",
     "notFoundBody": "The page you're looking for doesn't exist or was moved.",
-    "itemNotFound": "This item doesn't exist or was deleted."
+    "itemNotFound": "This item doesn't exist or was deleted.",
+    "forbidden": "You don't have permission to do that."
   },
   "auth": {
     "loginTitle": "Welcome back",
@@ -579,27 +583,76 @@
     "passwordChanged": "Password changed",
     "account": "Account",
     "role": "Role",
-    "memberSince": "Member since {{date}}"
+    "memberSince": "Member since {{date}}",
+    "yourRole": "Your role: {{role}}",
+    "yourPermissions": "What you can do",
+    "accessTitle": "Role & permissions"
   },
   "users": {
     "title": "Users",
-    "subtitle": "Manage accounts, roles and access.",
-    "name": "Name",
-    "email": "Email",
+    "subtitle": "Create accounts, assign roles and control access.",
+    "searchPlaceholder": "Search by name or email…",
     "role": "Role",
+    "anyRole": "All roles",
     "status": "Status",
-    "created": "Created",
+    "anyStatus": "Any status",
     "active": "Active",
     "inactive": "Inactive",
+    "name": "Name",
+    "email": "Email",
+    "lastLogin": "Last login",
+    "never": "Never",
+    "content": "Content",
+    "storage": "Storage",
+    "counts": "{{notes}} notes · {{memories}} memories · {{media}} media",
+    "actions": "Actions",
+    "create": "New user",
+    "createTitle": "Create user",
+    "edit": "Edit",
+    "editTitle": "Edit {{name}}",
+    "created": "User created",
+    "updated": "User updated",
     "activate": "Activate",
     "deactivate": "Deactivate",
+    "activated": "Account activated",
+    "deactivated": "Account deactivated",
+    "resetPassword": "Reset password",
+    "resetTitle": "Reset password for {{name}}",
+    "resetBody": "Share the new password with the user securely. They can change it in Settings.",
+    "resetDone": "Password changed",
+    "newPassword": "New password",
+    "password": "Password",
+    "generate": "Generate",
+    "copy": "Copy",
+    "copied": "Password copied",
+    "strength": {
+      "label": "Strength: {{level}}",
+      "weak": "weak",
+      "fair": "fair",
+      "strong": "strong"
+    },
+    "delete": "Delete user",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteBody": "This permanently deletes the account and ALL of its notes, memories, audio, video and images. This can't be undone.",
+    "deleteConfirmLabel": "Type {{email}} to confirm",
+    "deleteMismatch": "The email doesn't match",
+    "deleted": "User deleted",
+    "selfRole": "You can't change your own role",
+    "selfDeactivate": "You can't deactivate your own account",
+    "selfDelete": "You can't delete your own account",
+    "you": "you",
+    "empty": "No users",
+    "emptyFiltered": "No users match these filters",
+    "pageOf": "Page {{page}} of {{pages}}",
+    "total_one": "{{count}} user",
+    "total_other": "{{count}} users",
+    "language": "Language",
+    "activeLabel": "Account active",
+    "activeHint": "Inactive users cannot sign in.",
     "roles": {
       "Admin": "Admin",
       "User": "User"
-    },
-    "updated": "User updated",
-    "self": "That's you",
-    "empty": "No users"
+    }
   },
   "languages": {
     "en": "English",
@@ -660,5 +713,117 @@
       "ocean": "Calm blues with aqua and mint.",
       "neon": "Electric lime, cyan and pink — made for dark mode."
     }
+  },
+  "access": {
+    "title": "You don't have access",
+    "body": "Your role doesn't include this part of VibeVoice. Ask an administrator if you need it."
+  },
+  "permissions": {
+    "names": {
+      "notes": "Notes",
+      "memories": "Memories",
+      "audio": {
+        "upload": "Upload audio & video"
+      },
+      "images": {
+        "upload": "Upload images"
+      },
+      "voice": {
+        "tts": "AI voice (read aloud)",
+        "transcribe": "Transcription",
+        "ocr": "Text from images (OCR)"
+      },
+      "users": {
+        "view": "View users",
+        "manage": "Manage users"
+      },
+      "roles": {
+        "manage": "Manage roles"
+      }
+    },
+    "descriptions": {
+      "notes": "Create, edit and delete notes.",
+      "memories": "Create, edit and delete memories.",
+      "audio": {
+        "upload": "Record or upload audio and video clips."
+      },
+      "images": {
+        "upload": "Upload pictures to notes, memories and the library."
+      },
+      "voice": {
+        "tts": "Generate speech with VibeVoice AI voices.",
+        "transcribe": "Turn audio and video into timestamped text.",
+        "ocr": "Extract Arabic and English text from pictures."
+      },
+      "users": {
+        "view": "See the user list and the administration overview.",
+        "manage": "Create, edit, deactivate, reset passwords and delete users."
+      },
+      "roles": {
+        "manage": "Create roles and choose their permissions."
+      }
+    },
+    "groups": {
+      "content": "Content",
+      "media": "Media",
+      "ai": "AI",
+      "admin": "Administration"
+    },
+    "groupDescriptions": {
+      "content": "Notes and memories",
+      "media": "Uploading files",
+      "ai": "VibeVoice speech, transcripts and OCR",
+      "admin": "Users, roles and settings for everyone"
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "subtitle": "Everyone using VibeVoice at a glance.",
+    "stats": {
+      "users": "Users",
+      "activeUsers": "Active users",
+      "admins": "Admins",
+      "roles": "Roles",
+      "notes": "Notes",
+      "memories": "Memories",
+      "audioClips": "Audio & video",
+      "images": "Images",
+      "storage": "Storage used"
+    },
+    "voiceService": "Voice service",
+    "recentUsers": "Recently joined",
+    "manageUsers": "Manage users",
+    "manageRoles": "Manage roles",
+    "engines": "TTS: {{tts}} · ASR: {{asr}} · OCR: {{ocr}} · Device: {{device}}"
+  },
+  "roles": {
+    "title": "Roles",
+    "subtitle": "Decide what each group of people can do.",
+    "create": "New role",
+    "createTitle": "Create role",
+    "editTitle": "Edit role: {{name}}",
+    "viewTitle": "Role: {{name}}",
+    "name": "Role name",
+    "description": "Description",
+    "descriptionPlaceholder": "What is this role for?",
+    "builtIn": "Built-in",
+    "usersCount_one": "{{count}} user",
+    "usersCount_other": "{{count}} users",
+    "permissions": "Permissions",
+    "noPermissions": "No permissions",
+    "viewUsers": "View users with this role",
+    "adminReadOnly": "The Admin role always has every permission and can't be changed.",
+    "userNotRenamable": "The built-in User role can't be renamed or deleted, but you can change its permissions.",
+    "selectAll": "Select all",
+    "created": "Role created",
+    "saved": "Role saved",
+    "deleted": "Role deleted",
+    "deleteTitle": "Delete role {{name}}?",
+    "deleteBody": "The role will be removed. Users must be moved to another role first.",
+    "deleteInUse_one": "Can't delete: {{count}} user still has this role.",
+    "deleteInUse_other": "Can't delete: {{count}} users still have this role.",
+    "deleteBuiltIn": "Built-in roles can't be deleted.",
+    "nameRequired": "Enter a role name",
+    "empty": "No roles yet"
   }
 }

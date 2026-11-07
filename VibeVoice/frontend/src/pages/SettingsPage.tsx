@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { KeyRound, Palette, UserRound } from 'lucide-react'
+import { Check, KeyRound, Palette, UserRound } from 'lucide-react'
 import { useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -18,13 +18,14 @@ import { Badge, Card, PageHeader } from '@/components/ui/Display'
 import { Field, Input, Select } from '@/components/ui/Field'
 import { setLanguage } from '@/i18n'
 import { useDates } from '@/lib/dates'
+import { roleLabel } from '@/lib/admin'
 import { passwordSchema } from '@/lib/schemas'
 import { useTheme } from '@/theme/theme'
 import { toastError } from '@/lib/notify'
 
 export function SettingsPage() {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, permissions } = useAuth()
   const dates = useDates()
   if (!user) return null
   return (
@@ -42,7 +43,7 @@ export function SettingsPage() {
             <p className="truncate text-sm text-muted">{user.email}</p>
             <p className="text-xs text-subtle">{t('settings.memberSince', { date: dates.format(user.createdAt, 'PP') })}</p>
           </div>
-          <Badge tone={user.role === 'Admin' ? 'accent' : 'neutral'}>{t(`users.roles.${user.role}`)}</Badge>
+          <Badge tone={user.role === 'Admin' ? 'accent' : 'neutral'}>{roleLabel(t, user.role)}</Badge>
         </Card>
         <Card className="flex flex-col gap-4 p-4 sm:p-5" aria-labelledby="identity-heading">
           <div className="flex items-start gap-3">
@@ -55,6 +56,29 @@ export function SettingsPage() {
             </div>
           </div>
           <IdentityPicker />
+        </Card>
+        <Card className="flex flex-col gap-3 p-4 sm:p-5" aria-labelledby="access-heading">
+          <div className="flex items-start gap-3">
+            <ArtTile name="roles" size="sm" />
+            <div className="min-w-0">
+              <h2 id="access-heading" className="text-base font-semibold text-fg">
+                {t('settings.accessTitle')}
+              </h2>
+              <p className="text-sm text-muted">{t('settings.yourRole', { role: roleLabel(t, user.role) })}</p>
+            </div>
+          </div>
+          <h3 className="text-xs font-semibold tracking-wide text-subtle uppercase">{t('settings.yourPermissions')}</h3>
+          <ul className="grid gap-2 sm:grid-cols-2" aria-label={t('settings.yourPermissions')}>
+            {permissions.map((p) => (
+              <li key={p} className="flex items-start gap-2 rounded-xl bg-surface-2 px-3 py-2">
+                <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-fg">{t(`permissions.names.${p}`)}</span>
+                  <span className="block text-xs text-muted">{t(`permissions.descriptions.${p}`)}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
         </Card>
         <ProfileForm key={`${user.id}-${user.preferredLanguage}-${user.theme}-${user.preferredVoice}`} user={user} />
         <PasswordForm />

@@ -11,7 +11,7 @@ import { useCreateNote, useVoiceStatus, useVoices } from '@/api/hooks'
 import { qk } from '@/api/keys'
 import type { AudioDto, TranscriptionResult } from '@/api/types'
 import { voiceApi } from '@/api/voice'
-import { useAuth } from '@/auth/context'
+import { useAuth, useCan } from '@/auth/context'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { AudioRecorder } from '@/components/audio/AudioRecorder'
 import { VoiceSelect } from '@/components/audio/VoiceSelect'
@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/Button'
 import { Card, EmptyState, PageHeader, ProgressBar, Segmented, Skeleton } from '@/components/ui/Display'
 import { Checkbox, Field, Select, Textarea } from '@/components/ui/Field'
 import { copyText } from '@/hooks/misc'
+import { toastError } from '@/lib/notify'
 import { formatDuration, MEDIA_ACCEPT, textToHtml, validateMediaFile } from '@/lib/utils'
 
 type Tab = 'tts' | 'stt' | 'ocr'
@@ -28,23 +29,30 @@ const LANGS = ['auto', 'en', 'ar'] as const
 
 export function StudioPage() {
   const { t } = useTranslation()
-  const [tab, setTab] = useState<Tab>('tts')
+  const { can } = useAuth()
+  const tabs = (
+    [
+      { value: 'tts', label: t('studio.ttsTab'), art: 'tts', allowed: can('voice.tts') },
+      { value: 'stt', label: t('studio.sttTab'), art: 'stt', allowed: can('voice.transcribe') },
+      { value: 'ocr', label: t('studio.ocrTab'), art: 'ocr', allowed: can('voice.ocr') },
+    ] as const
+  ).filter((o) => o.allowed)
+  const [picked, setTab] = useState<Tab | null>(null)
+  const tab: Tab | undefined = tabs.some((o) => o.value === picked) ? (picked as Tab) : tabs[0]?.value
   return (
     <div>
       <PageHeader art="studio" title={t('studio.title')} subtitle={t('studio.subtitle')} actions={<VoiceStatusChip />} />
-      <Segmented
-        label={t('studio.title')}
-        value={tab}
-        onChange={setTab}
-        options={[
-          { value: 'tts', label: t('studio.ttsTab'), art: 'tts' },
-          { value: 'stt', label: t('studio.sttTab'), art: 'stt' },
-          { value: 'ocr', label: t('studio.ocrTab'), art: 'ocr' },
-        ]}
-        fullWidth
-        className="mb-6 text-xs sm:text-sm"
-      />
-      {tab === 'tts' ? <TextToSpeech /> : tab === 'stt' ? <SpeechToText /> : <ImageToText />}
+      {tabs.length > 1 && tab && (
+        <Segmented
+          label={t('studio.title')}
+          value={tab}
+          onChange={setTab}
+          options={tabs.map(({ value, label, art }) => ({ value, label, art }))}
+          fullWidth
+          className="mb-6 text-xs sm:text-sm"
+        />
+      )}
+      {tab === 'tts' ? <TextToSpeech /> : tab === 'stt' ? <SpeechToText /> : tab === 'ocr' ? <ImageToText /> : null}
     </div>
   )
 }
@@ -91,7 +99,7 @@ function TextToSpeech() {
       void qc.invalidateQueries({ queryKey: qk.dashboard })
     },
     onError: (err) =>
-      toast.error(err instanceof ApiError && err.status === 503 ? t('readAloud.unavailable') : errorMessage(err)),
+      err instanceof ApiError && err.status === 503 ? toast.error(t('readAloud.unavailable')) : toastError(err),
   })
 
   const history = useQuery({
@@ -268,6 +276,7 @@ function SpeechToText() {
     void transcribe(file).catch(() => undefined)
   }
 
+  const canNotes = useCan('notes')
   const saveAsNote = () => {
     if (!result?.text) return
     const title = result.text.replace(/\s+/g, ' ').trim().slice(0, 60)
@@ -368,9 +377,11 @@ function SpeechToText() {
               >
                 {t('common.copy')}
               </Button>
-              <Button size="sm" variant="primary" loading={createNote.isPending} onClick={saveAsNote} icon={<FilePlus2 className="size-4" aria-hidden />}>
-                {t('studio.saveAsNote')}
-              </Button>
+              {canNotes && (
+                <Button size="sm" variant="primary" loading={createNote.isPending} onClick={saveAsNote} icon={<FilePlus2 className="size-4" aria-hidden />}>
+                  {t('studio.saveAsNote')}
+                </Button>
+              )}
             </div>
           )}
         </div>

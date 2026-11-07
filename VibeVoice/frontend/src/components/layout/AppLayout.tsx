@@ -50,44 +50,64 @@ function BrandLink({ collapsed }: { collapsed?: boolean }) {
 }
 
 function useNavItems(): NavItem[] {
-  const { isAdmin } = useAuth()
-  return NAV_ITEMS.filter((i) => !i.adminOnly || isAdmin)
+  const { can } = useAuth()
+  return NAV_ITEMS.filter((i) => !i.permission || can(i.permission))
 }
 
 function NavLinks({ collapsed, onNavigate }: { collapsed?: boolean; onNavigate?: () => void }) {
   const { t } = useTranslation()
   const items = useNavItems()
+  const groups = [
+    { key: 'main', items: items.filter((i) => (i.group ?? 'main') === 'main') },
+    { key: 'admin', items: items.filter((i) => i.group === 'admin') },
+  ].filter((g) => g.items.length)
   return (
-    <ul className="flex flex-col gap-0.5">
-      {items.map(({ to, labelKey, art, end }) => (
-        <li key={to}>
-          <NavLink
-            to={to}
-            end={end}
-            onClick={onNavigate}
-            title={collapsed ? t(labelKey) : undefined}
-            className={({ isActive }) =>
-              cn(
-                'flex min-h-11 items-center gap-3 rounded-xl px-2 text-sm font-medium transition-colors',
-                collapsed && 'justify-center px-0',
-                isActive ? 'bg-accent-soft text-accent-text' : 'text-muted hover:bg-surface-2 hover:text-fg',
-              )
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <ArtTile name={art} size="xs" active={isActive} />
-                {collapsed ? (
-                  <span className="sr-only">{t(labelKey)}</span>
-                ) : (
-                  <span className="truncate">{t(labelKey)}</span>
-                )}
-              </>
-            )}
-          </NavLink>
-        </li>
+    <div className="flex flex-col gap-4">
+      {groups.map((g) => (
+        <div key={g.key} role={g.key === 'admin' ? 'group' : undefined} aria-labelledby={g.key === 'admin' ? 'nav-admin' : undefined}>
+          {g.key === 'admin' &&
+            (collapsed ? (
+              <span id="nav-admin" className="sr-only">
+                {t('nav.administration')}
+              </span>
+            ) : (
+              <p id="nav-admin" className="mb-1 px-2 text-[11px] font-semibold tracking-wider text-subtle uppercase">
+                {t('nav.administration')}
+              </p>
+            ))}
+          <ul className="flex flex-col gap-0.5">
+            {g.items.map(({ to, labelKey, art, end }) => (
+              <li key={to}>
+                <NavLink
+                  to={to}
+                  end={end}
+                  onClick={onNavigate}
+                  title={collapsed ? t(labelKey) : undefined}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex min-h-11 items-center gap-3 rounded-xl px-2 text-sm font-medium transition-colors',
+                      collapsed && 'justify-center px-0',
+                      isActive ? 'bg-accent-soft text-accent-text' : 'text-muted hover:bg-surface-2 hover:text-fg',
+                    )
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <ArtTile name={art} size="xs" active={isActive} />
+                      {collapsed ? (
+                        <span className="sr-only">{t(labelKey)}</span>
+                      ) : (
+                        <span className="truncate">{t(labelKey)}</span>
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </div>
   )
 }
 
@@ -295,7 +315,7 @@ export function AppLayout() {
         aria-label={t('nav.main')}
         className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 ps-[env(safe-area-inset-left)] pe-[env(safe-area-inset-right)] backdrop-blur md:hidden"
       >
-        <ul className="grid grid-cols-5">
+        <ul className="grid" style={{ gridTemplateColumns: `repeat(${primary.length + 1}, minmax(0, 1fr))` }}>
           {primary.map(({ to, labelKey, shortLabelKey, art, end }) => (
             <li key={to} className="min-w-0">
               <NavLink

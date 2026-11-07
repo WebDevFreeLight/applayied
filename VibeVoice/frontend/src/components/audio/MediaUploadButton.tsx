@@ -1,6 +1,7 @@
 import { Upload } from 'lucide-react'
 import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useCan } from '@/auth/context'
 import { toast } from 'sonner'
 import type { MediaKind } from '@/api/types'
 import { MEDIA_ACCEPT, validateMediaFile } from '@/lib/utils'
@@ -35,7 +36,7 @@ const LANGS = ['auto', 'en', 'ar'] as const
  * "Upload audio / video": options popover (auto-transcribe + language), type/size validation with a
  * visible reason for every rejected file, upload progress, and a warning when transcription failed.
  */
-export function MediaUploadButton({ upload, onUploaded, label, size = 'sm' }: MediaUploadButtonProps) {
+function MediaUploadButtonInner({ upload, onUploaded, label, size = 'sm' }: MediaUploadButtonProps) {
   const { t } = useTranslation()
   const inputRef = useRef<HTMLInputElement>(null)
   const [progress, setProgress] = useState<number | null>(null)
@@ -145,4 +146,11 @@ export function MediaUploadButton({ upload, onUploaded, label, size = 'sm' }: Me
       {busy && <ProgressBar value={progress ?? 0} label={t('audio.uploadAudio')} className="w-24 self-center" />}
     </>
   )
+}
+
+/** Hidden unless the user's role has `audio.upload`. */
+export function MediaUploadButton(props: MediaUploadButtonProps) {
+  const allowed = useCan('audio.upload')
+  if (!allowed) return null
+  return <MediaUploadButtonInner {...props} />
 }

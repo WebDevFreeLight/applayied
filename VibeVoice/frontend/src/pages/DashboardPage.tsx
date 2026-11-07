@@ -13,7 +13,7 @@ import { Link } from 'react-router'
 import { useCreateMemory, useCreateNote } from '@/api/hooks'
 import { qk } from '@/api/keys'
 import { dashboardApi } from '@/api/misc'
-import type { DashboardStats } from '@/api/types'
+import type { DashboardStats, Permission } from '@/api/types'
 import { useAuth } from '@/auth/context'
 import { ArtTile, type ArtName } from '@/components/art/ArtTile'
 import { CardSkeletonGrid, MemoryCard, NoteCard } from '@/components/Cards'
@@ -36,11 +36,11 @@ const STAT_META: { key: keyof DashboardStats; art: ArtName; to: string }[] = [
 ]
 
 /** Module shortcut cards (illustrated). */
-const SHORTCUTS: { to: string; art: ArtName; title: string; body: string }[] = [
-  { to: '/notes', art: 'notes', title: 'nav.notes', body: 'notes.subtitle' },
-  { to: '/memories', art: 'memories', title: 'nav.memories', body: 'memories.subtitle' },
+const SHORTCUTS: { to: string; art: ArtName; title: string; body: string; permission?: readonly Permission[] }[] = [
+  { to: '/notes', art: 'notes', title: 'nav.notes', body: 'notes.subtitle', permission: ['notes'] },
+  { to: '/memories', art: 'memories', title: 'nav.memories', body: 'memories.subtitle', permission: ['memories'] },
   { to: '/audio', art: 'audio', title: 'nav.audio', body: 'audio.subtitle' },
-  { to: '/studio', art: 'studio', title: 'nav.studio', body: 'studio.subtitle' },
+  { to: '/studio', art: 'studio', title: 'nav.studio', body: 'studio.subtitle', permission: ['voice.tts', 'voice.transcribe', 'voice.ocr'] },
   { to: '/images', art: 'ocr', title: 'nav.images', body: 'images.subtitle' },
   { to: '/search', art: 'search', title: 'nav.search', body: 'search.subtitle' },
 ]
@@ -67,7 +67,7 @@ function SectionTitle({ icon: Icon, children, to }: { icon: LucideIcon; children
 
 export function DashboardPage() {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, can } = useAuth()
   const dates = useDates()
   const createNote = useCreateNote()
   const createMemory = useCreateMemory()
@@ -85,6 +85,7 @@ export function DashboardPage() {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <VoiceStatusChip />
+          {can('memories') && (
           <Button
             onClick={() => createMemory.mutate()}
             loading={createMemory.isPending}
@@ -92,6 +93,8 @@ export function DashboardPage() {
           >
             {t('dashboard.newMemory')}
           </Button>
+          )}
+          {can('notes') && (
           <Button
             variant="primary"
             onClick={() => createNote.mutate(undefined)}
@@ -100,6 +103,7 @@ export function DashboardPage() {
           >
             {t('dashboard.newNote')}
           </Button>
+          )}
         </div>
       </div>
 
@@ -136,7 +140,7 @@ export function DashboardPage() {
               {t('dashboard.shortcuts')}
             </h2>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
-              {SHORTCUTS.map((s) => (
+              {SHORTCUTS.filter((s) => !s.permission || can(s.permission)).map((s) => (
                 <li key={s.to} className="min-w-0">
                   <Link
                     to={s.to}

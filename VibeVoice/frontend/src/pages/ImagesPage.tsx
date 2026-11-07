@@ -12,6 +12,7 @@ import { memoriesApi } from '@/api/memories'
 import { searchApi } from '@/api/misc'
 import { notesApi } from '@/api/notes'
 import type { ImageOwnerType, ImageWithOwnerDto } from '@/api/types'
+import { useCan } from '@/auth/context'
 import { ImageUploader } from '@/components/images/ImageUploader'
 import { Lightbox } from '@/components/images/Lightbox'
 import { OcrTextPanel } from '@/components/images/OcrTextPanel'
@@ -36,6 +37,7 @@ export function ImagesPage() {
   const [extracting, setExtracting] = useState<string | null>(null)
   const [openText, setOpenText] = useState<string | null>(null)
   const ocrAvailable = useOcrAvailable()
+  const canOcr = useCan('voice.ocr')
 
   const query = { pageSize: 48, ownerType }
   const list = useInfiniteQuery({
@@ -169,6 +171,7 @@ export function ImagesPage() {
                       </span>
                     )}
                   </div>
+                  {canOcr && (
                   <span title={ocrAvailable ? undefined : t('ocr.unavailable')} className="inline-flex">
                     <IconButton
                       label={t('ocr.extract')}
@@ -183,6 +186,7 @@ export function ImagesPage() {
                       )}
                     </IconButton>
                   </span>
+                  )}
                   <IconButton label={t('images.attach')} size="icon-sm" onClick={() => setAttaching(img)}>
                     <Link2 className="size-4" aria-hidden />
                   </IconButton>
@@ -229,7 +233,7 @@ export function ImagesPage() {
           index={openIndex}
           onIndexChange={setOpenIndex}
           onClose={() => setOpenIndex(null)}
-          onExtractText={extractText}
+          onExtractText={canOcr ? extractText : undefined}
           ocrAvailable={ocrAvailable}
         />
       )}

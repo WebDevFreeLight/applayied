@@ -13,6 +13,9 @@ const user: UserDto = {
   email: 'admin@vibevoice.local',
   displayName: 'Admin',
   role: 'Admin',
+  roleId: '00000000-0000-0000-0000-00000000a001',
+  permissions: ['notes', 'memories', 'audio.upload', 'images.upload', 'voice.tts', 'voice.transcribe', 'voice.ocr', 'users.view', 'users.manage', 'roles.manage'],
+  lastLoginAt: null,
   preferredLanguage: 'en',
   preferredVoice: 'en-Carter',
   theme: 'light',
@@ -23,7 +26,7 @@ const user: UserDto = {
 
 function wrap(ui: ReactNode, setUser = vi.fn()) {
   const qc = new QueryClient({ defaultOptions: { mutations: { retry: false } } })
-  const auth = { user, token: 't', isAdmin: true, setUser } as unknown as AuthContextValue
+  const auth = { user, token: 't', permissions: user.permissions, can: () => true, setUser } as unknown as AuthContextValue
   return render(
     <QueryClientProvider client={qc}>
       <ThemeProvider>

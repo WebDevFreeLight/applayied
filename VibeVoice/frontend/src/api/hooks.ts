@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
-import { toast } from 'sonner'
 import { todayIso } from '@/lib/utils'
-import { errorMessage } from './client'
+import { PERMISSION_CATALOG } from '@/lib/admin'
+import { permissionsApi, rolesApi } from './auth'
+import { toastError } from '@/lib/notify'
 import { qk } from './keys'
 import { memoriesApi } from './memories'
 import { tagsApi } from './misc'
@@ -37,6 +38,16 @@ export function useVoices() {
   })
 }
 
+export function useRoles(enabled = true) {
+  return useQuery({ queryKey: qk.roles, queryFn: rolesApi.list, staleTime: 30_000, enabled })
+}
+
+/** Permission catalogue (GET /api/permissions) with a built-in fallback. */
+export function usePermissionCatalog() {
+  const q = useQuery({ queryKey: qk.permissions, queryFn: permissionsApi.list, staleTime: 10 * 60_000 })
+  return q.data?.length ? q.data : PERMISSION_CATALOG
+}
+
 export function useTags() {
   return useQuery({ queryKey: qk.tags, queryFn: tagsApi.tags, staleTime: 60_000 })
 }
@@ -59,7 +70,7 @@ export function useCreateNote() {
       void qc.invalidateQueries({ queryKey: qk.dashboard })
       navigate(`/notes/${note.id}${opts?.search ?? ''}`)
     },
-    onError: (err) => toast.error(errorMessage(err)),
+    onError: (err) => toastError(err),
   })
 }
 
@@ -83,6 +94,6 @@ export function useCreateMemory() {
       void qc.invalidateQueries({ queryKey: qk.dashboard })
       navigate(`/memories/${memory.id}`)
     },
-    onError: (err) => toast.error(errorMessage(err)),
+    onError: (err) => toastError(err),
   })
 }

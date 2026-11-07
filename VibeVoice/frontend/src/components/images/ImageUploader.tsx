@@ -1,6 +1,7 @@
 import { AlertCircle, CheckCircle2, ImagePlus, X } from 'lucide-react'
 import { useEffect, useId, useRef, useState, type DragEvent } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useCan } from '@/auth/context'
 import { toast } from 'sonner'
 import { errorMessage } from '@/api/client'
 import { useLatest } from '@/hooks/misc'
@@ -44,7 +45,7 @@ export interface ImageUploaderProps {
 }
 
 /** Drag & drop / paste / file-picker multi-upload with per-file progress and validation. */
-export function ImageUploader({
+function ImageUploaderInner({
   upload,
   onUploaded,
   ocrAvailable,
@@ -62,7 +63,8 @@ export function ImageUploader({
   const ocrLangId = useId()
   const [ocrChecked, setOcrChecked] = useState(true)
   const [ocrLang, setOcrLang] = useState<(typeof OCR_LANGS)[number]>('auto')
-  const showOcr = ocrAvailable !== undefined
+  const canOcr = useCan('voice.ocr')
+  const showOcr = ocrAvailable !== undefined && canOcr
   const ocrOn = showOcr && !!ocrAvailable && ocrChecked
 
   const patch = (key: string, p: Partial<QueueItem>) =>
@@ -272,4 +274,11 @@ export function ImageUploader({
       )}
     </div>
   )
+}
+
+/** Hidden unless the user's role has `images.upload`. */
+export function ImageUploader(props: ImageUploaderProps) {
+  const allowed = useCan('images.upload')
+  if (!allowed) return null
+  return <ImageUploaderInner {...props} />
 }

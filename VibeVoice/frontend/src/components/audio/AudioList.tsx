@@ -3,6 +3,7 @@ import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { attachmentsApi, type OwnerKind } from '@/api/attachments'
 import type { AudioDto } from '@/api/types'
+import { useCan } from '@/auth/context'
 import { Button } from '../ui/Button'
 import { AudioPlayer } from './AudioPlayer'
 import { AudioRecorder } from './AudioRecorder'
@@ -32,6 +33,7 @@ export function AudioList({
   actions,
 }: AudioListProps) {
   const { t } = useTranslation()
+  const canUpload = useCan('audio.upload')
   const [recorderOpen, setRecorderOpen] = useState(defaultRecorderOpen)
   const sorted = [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 
@@ -58,6 +60,7 @@ export function AudioList({
         </h2>
         <div className="flex flex-wrap items-center gap-2">
           {actions}
+          {canUpload && (
           <Button
             size="sm"
             variant={recorderOpen ? 'ghost' : 'secondary'}
@@ -67,6 +70,7 @@ export function AudioList({
           >
             {recorderOpen ? t('audio.hideRecorder') : t('audio.record')}
           </Button>
+          )}
           <MediaUploadButton
             upload={(file, opts, onProgress) =>
               attachmentsApi.uploadAudio(ownerKind, ownerId, file, {
@@ -81,7 +85,7 @@ export function AudioList({
         </div>
       </div>
 
-      {recorderOpen && (
+      {recorderOpen && canUpload && (
         <AudioRecorder
           onSave={(file, durationSeconds, onProgress) =>
             attachmentsApi.uploadAudio(ownerKind, ownerId, file, { source: 'Recorded', durationSeconds, onProgress })

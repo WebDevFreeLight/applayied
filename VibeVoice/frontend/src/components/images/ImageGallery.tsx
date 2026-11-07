@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { fileUrl } from '@/api/client'
 import type { ImageDto } from '@/api/types'
+import { useCan } from '@/auth/context'
 import { cn } from '@/lib/utils'
 import { Badge } from '../ui/Display'
 import { ConfirmDialog } from '../ui/Modal'
@@ -51,6 +52,8 @@ export function ImageGallery({
   const [pendingDelete, setPendingDelete] = useState<ImageDto | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [extracting, setExtracting] = useState<string | null>(null)
+  const canOcr = useCan('voice.ocr')
+  const extractHandler = canOcr ? onExtractText : undefined
   const [openText, setOpenText] = useState<Set<string>>(() => new Set())
 
   const toggleText = (id: string, open?: boolean) =>
@@ -213,7 +216,7 @@ export function ImageGallery({
                   </>
                 )}
                 <span className="flex-1" />
-                {onExtractText && (
+                {extractHandler && (
                   <span title={ocrAvailable ? undefined : t('ocr.unavailable')} className="inline-flex">
                     <TileButton
                       label={t('ocr.extract')}
@@ -286,7 +289,7 @@ export function ImageGallery({
           index={Math.min(openIndex, list.length - 1)}
           onIndexChange={setOpenIndex}
           onClose={() => setOpenIndex(null)}
-          onExtractText={onExtractText}
+          onExtractText={extractHandler}
           ocrAvailable={ocrAvailable}
           onInsertText={onInsertText}
           insertLabel={insertLabel}

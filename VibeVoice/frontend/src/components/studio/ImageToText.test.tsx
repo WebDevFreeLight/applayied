@@ -16,7 +16,7 @@ vi.mock('wavesurfer.js', () => ({
 }))
 
 const user = { id: 'u1', displayName: 'Admin', role: 'Admin', preferredVoice: null } as UserDto
-const auth = { user, token: 't', isAdmin: true } as AuthContextValue
+const auth = { user, token: 't', permissions: [], can: () => true } as unknown as AuthContextValue
 
 const status = (ocrEngine: string | null): VoiceStatus => ({
   available: true,

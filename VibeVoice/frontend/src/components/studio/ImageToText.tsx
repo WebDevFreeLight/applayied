@@ -11,6 +11,7 @@ import { imagesApi } from '@/api/library'
 import { notesApi } from '@/api/notes'
 import type { AudioDto, OcrResultDto } from '@/api/types'
 import { voiceApi } from '@/api/voice'
+import { useCan } from '@/auth/context'
 import { useLatest } from '@/hooks/misc'
 import { cn, IMAGE_MAX_BYTES, IMAGE_TYPES, isImageFile, textToHtml } from '@/lib/utils'
 import { AudioPlayer } from '../audio/AudioPlayer'
@@ -34,6 +35,7 @@ export function ImageToText() {
   const qc = useQueryClient()
   const navigate = useNavigate()
   const ocrAvailable = useOcrAvailable()
+  const canNotes = useCan('notes')
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [language, setLanguage] = useState<Lang>('auto')
@@ -270,15 +272,17 @@ export function ImageToText() {
               <OcrTextPanel text={text} filename={(file?.name ?? 'picture').replace(/\.[^.]+$/, '') + '-text'} />
             </div>
             <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
-              <Button
-                variant="primary"
-                size="sm"
-                loading={saveAsNote.isPending}
-                onClick={() => saveAsNote.mutate()}
-                icon={<FilePlus2 className="size-4" aria-hidden />}
-              >
-                {t('studio.saveAsNote')}
-              </Button>
+              {canNotes && (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  loading={saveAsNote.isPending}
+                  onClick={() => saveAsNote.mutate()}
+                  icon={<FilePlus2 className="size-4" aria-hidden />}
+                >
+                  {t('studio.saveAsNote')}
+                </Button>
+              )}
               <ReadAloudButton
                 onGenerate={(voice) =>
                   voiceApi.tts({

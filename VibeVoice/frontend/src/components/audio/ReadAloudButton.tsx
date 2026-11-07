@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import { ApiError, errorMessage } from '@/api/client'
 import { useVoiceStatus, useVoices } from '@/api/hooks'
 import type { AudioDto } from '@/api/types'
-import { useAuth } from '@/auth/context'
+import { useAuth, useCan } from '@/auth/context'
 import { Button } from '../ui/Button'
 import { ProgressBar } from '../ui/Display'
 import { Popover } from '../ui/Popover'
@@ -22,7 +22,7 @@ export interface ReadAloudButtonProps {
 }
 
 /** "Read aloud with VibeVoice" — voice picker popover, progress state, adds the clip. */
-export function ReadAloudButton({ onGenerate, onBeforeGenerate, onGenerated, compact }: ReadAloudButtonProps) {
+function ReadAloudButtonInner({ onGenerate, onBeforeGenerate, onGenerated, compact }: ReadAloudButtonProps) {
   const { t } = useTranslation()
   const { user } = useAuth()
   const status = useVoiceStatus()
@@ -126,4 +126,11 @@ export function ReadAloudButton({ onGenerate, onBeforeGenerate, onGenerated, com
       )}
     </Popover>
   )
+}
+
+/** Hidden unless the user's role has `voice.tts`. */
+export function ReadAloudButton(props: ReadAloudButtonProps) {
+  const allowed = useCan('voice.tts')
+  if (!allowed) return null
+  return <ReadAloudButtonInner {...props} />
 }
