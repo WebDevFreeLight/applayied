@@ -11,20 +11,28 @@ using VibeVoice.Application.Dtos;
 
 namespace VibeVoice.Api.Infrastructure;
 
-/// <summary>Reads the signed-in user from the JWT claims.</summary>
+/// <summary>
+/// Reads the signed-in user from the JWT claims. A background job's scope calls <see cref="RunAs"/> so the
+/// same services run as the job's owner.
+/// </summary>
 public sealed class HttpCurrentUser(IHttpContextAccessor accessor) : ICurrentUser
 {
+    private (Guid Id, bool IsAdmin)? runAs;
+
+    public void RunAs(Guid userId, bool isAdmin) => runAs = (userId, isAdmin);
+
     public Guid UserId
     {
         get
         {
+            if (runAs is { } job) return job.Id;
             var user = accessor.HttpContext?.User;
             var sub = user?.FindFirstValue(ClaimTypes.NameIdentifier) ?? user?.FindFirstValue("sub");
             return Guid.TryParse(sub, out var id) ? id : throw new UnauthorizedAppException("Not signed in.");
         }
     }
 
-    public bool IsAdmin => accessor.HttpContext?.User.IsInRole("Admin") == true;
+    public bool IsAdmin => runAs?.IsAdmin ?? accessor.HttpContext?.User.IsInRole("Admin") == true;
 }
 
 /// <summary>Maps exceptions to RFC 7807 ProblemDetails responses.</summary>

@@ -29,6 +29,8 @@ public static class DependencyInjection
         services.AddScoped<UserAdminService>();
         services.AddScoped<LibraryService>();
         services.AddScoped<VoiceStudioService>();
+        services.AddScoped<JobService>();
+        services.AddScoped<JobRunner>();
         services.AddScoped<SearchService>();
         services.AddScoped<DashboardService>();
         return services;

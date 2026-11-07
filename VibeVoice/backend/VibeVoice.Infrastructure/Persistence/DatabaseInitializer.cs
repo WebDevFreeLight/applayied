@@ -22,7 +22,7 @@ public sealed class DatabaseInitializer(
     public static readonly Type[] EntityTypes =
     [
         typeof(User), typeof(Role), typeof(Note), typeof(Memory), typeof(Tag), typeof(NoteTag), typeof(MemoryTag),
-        typeof(Person), typeof(MemoryPerson), typeof(AudioClip), typeof(ImageAttachment),
+        typeof(Person), typeof(MemoryPerson), typeof(AudioClip), typeof(ImageAttachment), typeof(BackgroundJob),
         typeof(Storage.StoredFile), // only used when Storage:Provider = Database; harmless otherwise
     ];
 

@@ -24,7 +24,14 @@ builder.Host.UseSerilog((ctx, lc) => lc
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment.ContentRootPath);
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICurrentUser, HttpCurrentUser>();
+builder.Services.AddScoped<HttpCurrentUser>();
+builder.Services.AddScoped<ICurrentUser>(sp => sp.GetRequiredService<HttpCurrentUser>());
+
+// ---- Background jobs: OCR / transcription run outside the request when the client sends "Prefer: respond-async" ----
+builder.Services.Configure<JobOptions>(builder.Configuration.GetSection(JobOptions.Section));
+builder.Services.AddSingleton<JobQueue>();
+builder.Services.AddSingleton<VibeVoice.Application.Services.IJobQueue>(sp => sp.GetRequiredService<JobQueue>());
+builder.Services.AddHostedService<JobWorker>();
 
 // ---- JSON: camelCase, enums as strings, UTC timestamps ----
 builder.Services.ConfigureHttpJsonOptions(o =>
@@ -97,7 +104,7 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(p => p
                                   || (allowPrivateNetwork && LocalNetwork.IsPrivateOrigin(origin)))
     .AllowAnyHeader()
     .AllowAnyMethod()
-    .WithExposedHeaders("X-Voice-Service", "X-Transcription-Error", "X-Ocr-Error", "Content-Disposition")));
+    .WithExposedHeaders("X-Voice-Service", "X-Transcription-Error", "X-Ocr-Error", "Content-Disposition", "Location", "Preference-Applied")));
 
 // ---- OpenAPI / Swagger ----
 builder.Services.AddEndpointsApiExplorer();
@@ -147,6 +154,7 @@ app.MapNotes();
 app.MapMemories();
 app.MapLibrary();
 app.MapVoice();
+app.MapJobs();
 app.MapFilesAndHealth();
 
 app.Run();
