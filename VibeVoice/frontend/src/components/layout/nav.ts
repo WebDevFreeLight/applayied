@@ -16,6 +16,8 @@ import type { ArtName } from '../art/ArtTile'
 export interface NavItem {
   to: string
   labelKey: string
+  /** Shorter label for the phone bottom bar, where full names get truncated. */
+  shortLabelKey?: string
   icon: LucideIcon
   /** Illustrated tile used in the sidebar / bottom bar. */
   art: ArtName
@@ -30,7 +32,7 @@ export const NAV_ITEMS: NavItem[] = [
   { to: '/memories', art: 'memories', labelKey: 'nav.memories', icon: BookHeart, primary: true },
   { to: '/notes', art: 'notes', labelKey: 'nav.notes', icon: NotebookPen, primary: true },
   { to: '/audio', art: 'audio', labelKey: 'nav.audio', icon: AudioLines },
-  { to: '/studio', art: 'studio', labelKey: 'nav.studio', icon: Sparkles, primary: true },
+  { to: '/studio', art: 'studio', labelKey: 'nav.studio', shortLabelKey: 'nav.studioShort', icon: Sparkles, primary: true },
   { to: '/images', art: 'images', labelKey: 'nav.images', icon: Images },
   { to: '/search', art: 'search', labelKey: 'nav.search', icon: Search },
   { to: '/trash', art: 'trash', labelKey: 'nav.trash', icon: Trash2 },

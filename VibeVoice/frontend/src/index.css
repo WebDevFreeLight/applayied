@@ -206,8 +206,10 @@
     color: var(--text);
     -webkit-font-smoothing: antialiased;
     min-height: 100dvh;
-    /* Long Arabic/English words and URLs wrap instead of forcing horizontal scroll. */
-    overflow-wrap: anywhere;
+    /* Long Arabic/English words and URLs wrap instead of forcing horizontal scroll. break-word, not
+       'anywhere': 'anywhere' shrinks min-content widths, which let flex/grid items collapse to one
+       character and split numbers like 11 into 1/1. */
+    overflow-wrap: break-word;
     overflow-x: clip;
   }
   html {
@@ -278,7 +280,7 @@
 .rich-text {
   line-height: 1.7;
   font-size: 1rem;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 .rich-text:focus {
   outline: none;

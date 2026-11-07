@@ -216,7 +216,7 @@ export function AudioPlayer({
   return (
     <article
       className={cn(
-        'rounded-2xl border bg-surface p-3 shadow-card sm:p-4',
+        '@container rounded-2xl border bg-surface p-3 shadow-card sm:p-4',
         ai ? 'border-ai/30' : 'border-border',
         className,
       )}
@@ -297,7 +297,8 @@ export function AudioPlayer({
             )}
           </div>
 
-          <span className="hidden shrink-0 font-mono text-xs tabular-nums text-muted sm:inline" dir="ltr">
+          {/* Container query: show the time readout whenever the card itself is wide enough. */}
+          <span className="hidden shrink-0 font-mono text-xs tabular-nums text-muted @sm:inline" dir="ltr">
             {formatDuration(current)} / {formatDuration(duration)}
           </span>
         </div>

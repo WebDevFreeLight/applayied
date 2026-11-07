@@ -119,7 +119,7 @@ function HeaderControls() {
         onClick={switchLanguage}
         title={t('header.language')}
         aria-label={`${t('header.language')}: ${lang === 'ar' ? t('header.switchToEnglish') : t('header.switchToArabic')}`}
-        className="inline-flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg"
+        className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl px-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg pointer-coarse:h-11 pointer-coarse:min-w-11"
       >
         <Languages className="size-4" aria-hidden />
         <span className="hidden sm:inline">{lang === 'ar' ? 'EN' : 'ع'}</span>
@@ -136,7 +136,7 @@ function HeaderControls() {
             type="button"
             {...p}
             aria-label={t('header.account')}
-            className="ms-1 flex size-9 items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-fg uppercase shadow-sm"
+            className="ms-1 flex size-9 items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-fg uppercase shadow-sm pointer-coarse:size-11"
           >
             {(user?.displayName || user?.email || '?').trim().charAt(0)}
           </button>
@@ -296,7 +296,7 @@ export function AppLayout() {
         className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 ps-[env(safe-area-inset-left)] pe-[env(safe-area-inset-right)] backdrop-blur md:hidden"
       >
         <ul className="grid grid-cols-5">
-          {primary.map(({ to, labelKey, art, end }) => (
+          {primary.map(({ to, labelKey, shortLabelKey, art, end }) => (
             <li key={to} className="min-w-0">
               <NavLink
                 to={to}
@@ -311,7 +311,7 @@ export function AppLayout() {
                 {({ isActive }) => (
                   <>
                     <ArtTile name={art} size="xs" active={isActive} className={isActive ? undefined : 'opacity-80 saturate-[.85]'} />
-                    <span className="max-w-full truncate px-1">{t(labelKey)}</span>
+                    <span className="max-w-full truncate px-1">{t(shortLabelKey ?? labelKey)}</span>
                   </>
                 )}
               </NavLink>

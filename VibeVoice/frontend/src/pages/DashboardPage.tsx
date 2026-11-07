@@ -54,7 +54,10 @@ function SectionTitle({ icon: Icon, children, to }: { icon: LucideIcon; children
         {children}
       </h2>
       {to && (
-        <Link to={to} className="text-sm font-medium text-accent-text hover:underline">
+        <Link
+          to={to}
+          className="inline-flex items-center rounded-lg text-sm font-medium text-accent-text hover:underline pointer-coarse:min-h-11 pointer-coarse:px-2"
+        >
           {t('dashboard.viewAll')}
         </Link>
       )}
@@ -104,8 +107,9 @@ export function DashboardPage() {
         <ErrorState error={error} onRetry={() => void refetch()} />
       ) : (
         <>
-          <section aria-label={t('dashboard.title')}>
-            <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <section aria-label={t('dashboard.title')} className="@container">
+            {/* Columns follow the content width, not the screen: at 768px the sidebar leaves ~470px. */}
+            <ul className="grid grid-cols-2 gap-3 @2xl:grid-cols-4">
               {STAT_META.map(({ key, art, to }) => (
                 <li key={key} className="min-w-0">
                   <Link
@@ -117,9 +121,9 @@ export function DashboardPage() {
                       {isLoading || !data ? (
                         <Skeleton className="h-6 w-10" />
                       ) : (
-                        <span className="block text-xl font-semibold tabular-nums text-fg">{data.stats[key]}</span>
+                        <span className="block text-xl font-semibold whitespace-nowrap tabular-nums text-fg">{data.stats[key]}</span>
                       )}
-                      <span className="block truncate text-xs text-muted">{t(`dashboard.stats.${key}`)}</span>
+                      <span className="line-clamp-2 block text-xs leading-snug text-muted">{t(`dashboard.stats.${key}`)}</span>
                     </span>
                   </Link>
                 </li>

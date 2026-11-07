@@ -100,7 +100,7 @@ export function IdentityQuickSwitch() {
               )}
             >
               <span data-palette={p} className="flex size-7 items-center justify-center rounded-full bg-brand shadow-sm" aria-hidden>
-                {active && <Check className="size-3.5 text-white drop-shadow" />}
+                {active && <Check className="size-3.5 text-[color:var(--art-ink)]" />}
               </span>
             </button>
           )
