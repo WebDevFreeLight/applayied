@@ -84,8 +84,12 @@ builder.Services.AddRateLimiter(o =>
 
 // ---- CORS for the Vite dev server (and any configured origins) ----
 var origins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? ["http://localhost:5173"];
+// Development convenience: also allow any origin on this machine or the local network (phones/tablets on
+// the same Wi-Fi). Never enable outside development — see Cors:AllowPrivateNetwork in appsettings.
+var allowPrivateNetwork = builder.Configuration.GetValue<bool>("Cors:AllowPrivateNetwork");
 builder.Services.AddCors(o => o.AddDefaultPolicy(p => p
-    .WithOrigins(origins)
+    .SetIsOriginAllowed(origin => origins.Contains(origin, StringComparer.OrdinalIgnoreCase)
+                                  || (allowPrivateNetwork && LocalNetwork.IsPrivateOrigin(origin)))
     .AllowAnyHeader()
     .AllowAnyMethod()
     .WithExposedHeaders("X-Voice-Service", "X-Transcription-Error", "X-Ocr-Error", "Content-Disposition")));

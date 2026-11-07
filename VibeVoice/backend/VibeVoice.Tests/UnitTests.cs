@@ -159,3 +159,22 @@ public class TranscriptFormatTests
     public void Segments_round_trip_through_json() =>
         Assert.Equal(Segments, TranscriptFormats.Deserialize(TranscriptFormats.Serialize(Segments)));
 }
+
+public class LocalNetworkTests
+{
+    [Theory]
+    [InlineData("http://localhost:5173", true)]
+    [InlineData("http://127.0.0.1:5173", true)]
+    [InlineData("http://192.168.1.20:5173", true)]
+    [InlineData("http://10.0.0.5:8080", true)]
+    [InlineData("http://172.16.4.2:5173", true)]
+    [InlineData("http://172.31.255.1", true)]
+    [InlineData("http://172.32.0.1:5173", false)]   // just outside 172.16.0.0/12
+    [InlineData("http://8.8.8.8:5173", false)]
+    [InlineData("https://evil.example.com", false)]
+    [InlineData("http://192.168.1.20.evil.com", false)] // a hostname, not an IP
+    [InlineData("file:///C:/x.html", false)]
+    [InlineData("null", false)]
+    public void Only_loopback_and_private_ranges_are_local(string origin, bool expected) =>
+        Assert.Equal(expected, VibeVoice.Api.Infrastructure.LocalNetwork.IsPrivateOrigin(origin));
+}

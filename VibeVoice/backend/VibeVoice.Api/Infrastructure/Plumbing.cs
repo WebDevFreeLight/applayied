@@ -106,6 +106,22 @@ public sealed class UtcDateTimeConverter : JsonConverter<DateTime>
     }
 }
 
+/// <summary>Recognizes browser origins served from this machine or a private (RFC 1918) network.</summary>
+public static class LocalNetwork
+{
+    public static bool IsPrivateOrigin(string origin)
+    {
+        if (!Uri.TryCreate(origin, UriKind.Absolute, out var uri) || uri.Scheme is not ("http" or "https")) return false;
+        if (uri.IsLoopback) return true; // localhost, 127.0.0.0/8, ::1
+        if (!System.Net.IPAddress.TryParse(uri.Host, out var ip) || ip.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork)
+            return false;
+        var b = ip.GetAddressBytes();
+        return b[0] == 10                                   // 10.0.0.0/8
+               || (b[0] == 172 && b[1] is >= 16 and <= 31)  // 172.16.0.0/12
+               || (b[0] == 192 && b[1] == 168);             // 192.168.0.0/16
+    }
+}
+
 public static class FormFiles
 {
     public static UploadFile ToUpload(this IFormFile f) => new(f.FileName, f.ContentType, f.Length, f.OpenReadStream);

@@ -2,8 +2,14 @@ import type { ProblemDetails } from './types'
 
 const TOKEN_KEY = 'vv.token'
 
+/**
+ * API origin. With no VITE_API_URL, the Vite dev server proxies same-origin `/api` calls to the API
+ * (see vite.config.ts), so the app also works from a phone on the LAN (`npm run dev:lan`). Production
+ * builds and tests keep an explicit absolute URL.
+ */
 export const API_URL: string = (
-  (import.meta.env.VITE_API_URL as string | undefined) || 'http://localhost:5080'
+  (import.meta.env.VITE_API_URL as string | undefined) ||
+  (import.meta.env.MODE === 'development' ? '' : 'http://localhost:5080')
 ).replace(/\/+$/, '')
 
 /** Typed error raised for every non-2xx response (mapped from RFC 7807 ProblemDetails). */

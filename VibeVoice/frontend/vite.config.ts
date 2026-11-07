@@ -8,7 +8,15 @@ export default defineConfig({
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
-  server: { port: 5173, strictPort: true },
+  server: {
+    port: 5173,
+    strictPort: true,
+    // Same-origin /api in development: no CORS, and LAN devices reach the API through Vite while the
+    // API itself keeps listening on localhost only. Override the target with VITE_API_PROXY.
+    proxy: {
+      '/api': { target: process.env.VITE_API_PROXY ?? 'http://localhost:5080', changeOrigin: true },
+    },
+  },
   preview: { port: 5173 },
   build: {
     rollupOptions: {

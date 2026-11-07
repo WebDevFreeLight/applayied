@@ -32,7 +32,7 @@ if (-not (Test-Path (Join-Path $web "node_modules"))) {
     Push-Location $web; npm install; Pop-Location
 }
 Start-Process pwsh -WorkingDirectory $web -ArgumentList "-NoExit", "-Command",
-    "`$host.UI.RawUI.WindowTitle='frontend'; npm run dev"
+    "`$host.UI.RawUI.WindowTitle='frontend'; npm run dev:lan"
 
 Write-Host ""
 Write-Host "VibeVoice is starting:" -ForegroundColor Green
