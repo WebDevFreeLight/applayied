@@ -39,8 +39,7 @@ public static class DbProviderFactory
     public static string FromPostgresUrl(string value)
     {
         value = CleanPasted(value);
-        if (!value.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) &&
-            !value.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+        if (!IsPostgresUrl(value))
         {
             // A URL that is not at the start would be read as one huge "keyword" by Npgsql, whose error
             // message then prints the password into the logs. Fail with a message that names no secret.
@@ -80,6 +79,10 @@ public static class DbProviderFactory
     /// Dashboard pastes often carry extras: surrounding whitespace or newlines, quotes, or Neon's
     /// <c>psql 'postgresql://…'</c> command form. Strip them so only the connection string is left.
     /// </summary>
+    private static bool IsPostgresUrl(string value) =>
+        value.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
+        value.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase);
+
     private static string CleanPasted(string value)
     {
         var v = value.Trim();
@@ -94,6 +97,11 @@ public static class DbProviderFactory
     {
         var dbType = ToDbType(options.Provider);
         var connectionString = options.ConnectionString;
+
+        // A postgres:// URL can only mean PostgreSQL. If Database:Provider was left at its Sqlite default
+        // (easy to forget on a hand-made host), use PostgreSQL instead of crashing in the SQLite driver.
+        if (dbType == DbType.Sqlite && IsPostgresUrl(CleanPasted(connectionString)))
+            dbType = DbType.PostgreSQL;
 
         if (dbType == DbType.Sqlite)
         {

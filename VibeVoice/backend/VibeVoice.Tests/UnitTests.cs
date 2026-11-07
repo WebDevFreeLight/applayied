@@ -216,6 +216,16 @@ public class PostgresUrlTests
     }
 
     [Fact]
+    public void Postgres_url_with_default_sqlite_provider_uses_postgresql()
+    {
+        var config = DbProviderFactory.CreateConfig(
+            new DatabaseOptions { ConnectionString = " postgresql://u:pw@ep-x.neon.tech/neondb?sslmode=require" },
+            Path.GetTempPath());
+        Assert.Equal(SqlSugar.DbType.PostgreSQL, config.DbType);
+        Assert.StartsWith("Host=ep-x.neon.tech;", config.ConnectionString);
+    }
+
+    [Fact]
     public void Key_value_strings_pass_through() =>
         Assert.Equal("Host=db;Database=x", DbProviderFactory.FromPostgresUrl("Host=db;Database=x"));
 }
