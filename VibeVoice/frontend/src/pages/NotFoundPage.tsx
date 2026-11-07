@@ -1,4 +1,3 @@
-import { Compass } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { EmptyState } from '@/components/ui/Display'
@@ -7,7 +6,7 @@ export function NotFoundPage() {
   const { t } = useTranslation()
   return (
     <EmptyState
-      icon={Compass}
+      art="search"
       title={t('errors.notFoundTitle')}
       body={t('errors.notFoundBody')}
       className="mt-10"

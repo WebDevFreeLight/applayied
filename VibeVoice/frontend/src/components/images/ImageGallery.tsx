@@ -129,7 +129,7 @@ export function ImageGallery({
 
   return (
     <>
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
         {list.map((img, i) => {
           const isCover = coverImageId === img.id
           return (
@@ -197,7 +197,7 @@ export function ImageGallery({
                 )
               )}
 
-              <div className="flex items-center gap-0.5 border-t border-border px-1.5 py-1">
+              <div className="flex flex-wrap items-center gap-0.5 border-t border-border px-1.5 py-1">
                 {onReorder && (
                   <>
                     <span className="hidden cursor-grab p-1 text-subtle sm:inline" title={t('images.dragToReorder')} aria-hidden>
@@ -329,7 +329,7 @@ function TileButton({
       title={label}
       aria-pressed={pressed}
       className={cn(
-        'inline-flex size-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-2 disabled:opacity-30',
+        'inline-flex size-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-2 disabled:opacity-30 pointer-coarse:size-11',
         danger ? 'hover:text-danger' : 'hover:text-fg',
       )}
     >

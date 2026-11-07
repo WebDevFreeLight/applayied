@@ -14,38 +14,67 @@ import { Button } from '@/components/ui/Button'
 import { Field, Input, Select } from '@/components/ui/Field'
 import { normalizeLanguage, setLanguage } from '@/i18n'
 import { passwordSchema } from '@/lib/schemas'
+import { ArtTile, type ArtName } from '@/components/art/ArtTile'
+import { LogoMark } from '@/components/art/Logo'
+
+function AuthHero() {
+  const { t } = useTranslation()
+  const points: { art: ArtName; key: string }[] = [
+    { art: 'tts', key: 'voice' },
+    { art: 'stt', key: 'transcribe' },
+    { art: 'ocr', key: 'ocr' },
+  ]
+  return (
+    <div className="relative hidden flex-col justify-center gap-8 overflow-hidden rounded-[2rem] border border-border bg-brand-soft p-10 lg:flex">
+      <div aria-hidden className="pointer-events-none absolute -end-16 -top-16 size-72 rounded-full bg-brand opacity-25 blur-3xl" />
+      <div className="relative flex items-center gap-4">
+        <LogoMark className="size-20 drop-shadow-lg" />
+        <div className="flex flex-col gap-2" aria-hidden>
+          <ArtTile name="mic" size="sm" className="rotate-[-8deg]" />
+          <ArtTile name="images" size="sm" className="ms-6 rotate-[6deg]" />
+        </div>
+      </div>
+      <h2 className="relative max-w-md text-[clamp(1.5rem,1.2rem+1vw,2.25rem)] leading-tight font-bold text-fg">
+        {t('auth.heroTitle')}
+      </h2>
+      <ul className="relative flex flex-col gap-3">
+        {points.map((p) => (
+          <li key={p.key} className="flex items-center gap-3 text-sm font-medium text-fg">
+            <ArtTile name={p.art} size="sm" />
+            {t(`auth.heroPoints.${p.key}`)}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 function AuthShell({ title, subtitle, children, footer }: { title: string; subtitle: string; children: ReactNode; footer: ReactNode }) {
   const { t, i18n } = useTranslation()
   const lang = normalizeLanguage(i18n.language)
   return (
-    <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-bg px-4 py-10">
-      <div aria-hidden className="pointer-events-none absolute -top-40 start-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-accent/15 blur-3xl rtl:translate-x-1/2" />
+    <div className="pt-safe pb-safe px-safe relative flex min-h-dvh items-center justify-center overflow-hidden bg-bg py-10 sm:px-6">
+      <div aria-hidden className="pointer-events-none absolute -top-40 start-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-brand opacity-15 blur-3xl rtl:translate-x-1/2" />
       <button
         type="button"
         onClick={() => void setLanguage(lang === 'ar' ? 'en' : 'ar')}
-        className="absolute top-4 end-4 inline-flex h-9 items-center gap-1.5 rounded-xl px-3 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg"
+        className="absolute top-[max(1rem,env(safe-area-inset-top))] end-4 inline-flex h-10 items-center gap-1.5 rounded-xl px-3 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg pointer-coarse:h-11"
         aria-label={t('header.language')}
       >
         <Languages className="size-4" aria-hidden />
         {lang === 'ar' ? t('header.switchToEnglish') : t('header.switchToArabic')}
       </button>
-      <div className="relative w-full max-w-sm">
-        <div className="mb-8 flex flex-col items-center text-center">
-          <span className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8b7cff] to-[#4f46e5] shadow-lg">
-            <svg viewBox="0 0 24 24" className="size-6 fill-white" aria-hidden>
-              <rect x="3" y="9" width="2.4" height="6" rx="1.2" />
-              <rect x="7.2" y="5" width="2.4" height="14" rx="1.2" />
-              <rect x="11.4" y="7" width="2.4" height="10" rx="1.2" />
-              <rect x="15.6" y="3" width="2.4" height="18" rx="1.2" />
-              <rect x="19.6" y="9.5" width="2" height="5" rx="1" />
-            </svg>
-          </span>
-          <h1 className="text-2xl font-semibold tracking-tight text-fg">{title}</h1>
-          <p className="mt-1 text-sm text-muted">{subtitle}</p>
+      <div className="relative grid w-full max-w-5xl items-center gap-10 lg:grid-cols-2">
+        <AuthHero />
+        <div className="mx-auto w-full max-w-sm">
+          <div className="mb-8 flex flex-col items-center text-center">
+            <LogoMark className="mb-4 size-14 drop-shadow-md lg:hidden" title="VibeVoice" />
+            <h1 className="text-fluid-h1 font-semibold tracking-tight text-fg">{title}</h1>
+            <p className="mt-1 text-sm text-muted">{subtitle}</p>
+          </div>
+          <div className="rounded-2xl border border-border bg-surface p-5 shadow-card sm:p-6">{children}</div>
+          <p className="mt-6 text-center text-sm text-muted">{footer}</p>
         </div>
-        <div className="rounded-2xl border border-border bg-surface p-6 shadow-card">{children}</div>
-        <p className="mt-6 text-center text-sm text-muted">{footer}</p>
       </div>
     </div>
   )

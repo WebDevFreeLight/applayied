@@ -20,7 +20,7 @@ export function OcrTextPanel({ text, filename, onInsert, insertLabel, tone = 'de
   const { t } = useTranslation()
   const dark = tone === 'dark'
   const btn = cn(
-    'inline-flex h-7 items-center gap-1 rounded-lg border px-2 text-xs font-medium transition-colors',
+    'inline-flex h-7 pointer-coarse:h-10 items-center gap-1 rounded-lg border px-2 text-xs font-medium transition-colors',
     dark ? 'border-white/20 text-white/80 hover:bg-white/10 hover:text-white' : 'border-border text-muted hover:bg-surface-2 hover:text-fg',
   )
   return (

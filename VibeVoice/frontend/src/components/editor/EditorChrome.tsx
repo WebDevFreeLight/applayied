@@ -7,7 +7,16 @@ import { Button } from '../ui/Button'
 import { Modal } from '../ui/Modal'
 
 /** "Saved / Saving… / Unsaved changes" indicator (live region). */
-export function SaveIndicator({ status, className }: { status: AutosaveStatus; className?: string }) {
+export function SaveIndicator({
+  status,
+  className,
+  compact,
+}: {
+  status: AutosaveStatus
+  className?: string
+  /** Icon-only on very small phones (text stays available to screen readers). */
+  compact?: boolean
+}) {
   const { t } = useTranslation()
   const map = {
     saved: { icon: Check, text: t('save.saved'), cls: 'text-success' },
@@ -23,8 +32,8 @@ export function SaveIndicator({ status, className }: { status: AutosaveStatus; c
       title={t('save.shortcut')}
       className={cn('inline-flex items-center gap-1.5 text-xs font-medium whitespace-nowrap', cls, className)}
     >
-      <Icon className={cn('size-3.5', status === 'saving' && 'animate-spin')} aria-hidden />
-      {text}
+      <Icon className={cn('size-3.5 shrink-0', status === 'saving' && 'animate-spin')} aria-hidden />
+      <span className={cn('truncate', compact && 'sr-only min-[420px]:not-sr-only')}>{text}</span>
     </span>
   )
 }

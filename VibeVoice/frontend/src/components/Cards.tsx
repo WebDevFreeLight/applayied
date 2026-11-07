@@ -62,7 +62,7 @@ export function NoteCard({ note, layout = 'grid' }: { note: NoteListItemDto; lay
           <img src={fileUrl(note.thumbnailPath)} alt="" loading="lazy" className="size-full object-cover" />
         </div>
       )}
-      <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
+      <div className="flex min-w-0 flex-1 flex-col gap-2 p-3.5 sm:p-4">
         <div className="flex items-start gap-2">
           <h3 dir="auto" className="line-clamp-2 flex-1 font-semibold text-fg">
             {note.title || t('common.untitled')}
@@ -95,7 +95,16 @@ export function MemoryCard({ memory, compact }: { memory: MemoryListItemDto; com
       to={`/memories/${memory.id}`}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card transition hover:-translate-y-0.5 hover:border-border-strong hover:shadow-pop"
     >
-      <div className={cn('relative w-full overflow-hidden bg-gradient-to-br from-accent-soft to-surface-3', compact ? 'aspect-[2/1]' : 'aspect-[16/10]')}>
+      <div
+        className={cn('relative w-full overflow-hidden bg-brand-soft', compact ? 'aspect-[2/1]' : 'aspect-[16/10]')}
+        style={
+          memory.mood && !memory.coverThumbnailPath
+            ? {
+                backgroundImage: `linear-gradient(135deg, color-mix(in srgb, var(--mood-${memory.mood.toLowerCase()}) 35%, var(--surface)), var(--surface-3))`,
+              }
+            : undefined
+        }
+      >
         {memory.coverThumbnailPath ? (
           <img
             src={fileUrl(memory.coverThumbnailPath)}
@@ -120,7 +129,15 @@ export function MemoryCard({ memory, compact }: { memory: MemoryListItemDto; com
       </div>
       <div className="flex flex-1 flex-col gap-1.5 p-4">
         <h3 dir="auto" className="line-clamp-2 font-semibold text-fg">
-          {memory.mood && <span className="me-1.5" title={t(`memories.moods.${memory.mood}`)}>{MOOD_EMOJI[memory.mood]}</span>}
+          {memory.mood && (
+            <span
+              className="me-1.5 inline-block rounded-full px-1"
+              style={{ backgroundColor: `color-mix(in srgb, var(--mood-${memory.mood.toLowerCase()}) 22%, transparent)` }}
+              title={t(`memories.moods.${memory.mood}`)}
+            >
+              {MOOD_EMOJI[memory.mood]}
+            </span>
+          )}
           {memory.title || t('common.untitled')}
         </h3>
         {!compact && memory.excerpt && (

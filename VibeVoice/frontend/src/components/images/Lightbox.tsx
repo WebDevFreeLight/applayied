@@ -108,7 +108,7 @@ export function Lightbox({
       role="dialog"
       aria-modal="true"
       aria-label={t('images.lightbox')}
-      className="fixed inset-0 z-[60] flex animate-fade-in flex-col bg-black/90 text-white"
+      className="pt-safe pb-safe fixed inset-0 z-[60] flex animate-fade-in flex-col bg-black/90 text-white"
     >
       <div className="flex items-center justify-between gap-2 p-3">
         <span className="text-sm text-white/70 tabular-nums" aria-live="polite">

@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Archive, AudioLines, Image as ImageIcon, LayoutGrid, List, NotebookPen, Plus, Search, X } from 'lucide-react'
+import { Archive, AudioLines, Image as ImageIcon, LayoutGrid, List, Plus, Search, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 import { useCreateNote, useTags } from '@/api/hooks'
@@ -61,7 +61,7 @@ export function NotesPage() {
   const filtered = !!(debouncedSearch || tag || hasAudio || hasImages || archived)
 
   const renderList = (arr: typeof items) => (
-    <ul className={cn(view === 'grid' ? 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3' : 'flex flex-col gap-3')}>
+    <ul className={cn(view === 'grid' ? 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4' : 'flex flex-col gap-3')}>
       {arr.map((n) => (
         <li key={n.id}>
           <NoteCard note={n} layout={view} />
@@ -73,7 +73,7 @@ export function NotesPage() {
   return (
     <div>
       <PageHeader
-        icon={NotebookPen}
+        art="notes"
         title={t('notes.title')}
         subtitle={t('notes.subtitle')}
         actions={
@@ -151,7 +151,7 @@ export function NotesPage() {
         <ErrorState error={list.error} onRetry={() => void list.refetch()} />
       ) : items.length === 0 ? (
         <EmptyState
-          icon={NotebookPen}
+          art="notes"
           title={filtered ? t('notes.emptyFiltered') : t('notes.empty')}
           body={filtered ? undefined : t('notes.emptyBody')}
           action={

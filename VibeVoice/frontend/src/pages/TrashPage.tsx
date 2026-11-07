@@ -94,7 +94,7 @@ export function TrashPage() {
 
   return (
     <div>
-      <PageHeader icon={Trash2} title={t('trash.title')} subtitle={t('trash.subtitle')} />
+      <PageHeader art="trash" title={t('trash.title')} subtitle={t('trash.subtitle')} />
       {loading ? (
         <div className="flex flex-col gap-3">
           {Array.from({ length: 4 }, (_, i) => (
@@ -110,7 +110,7 @@ export function TrashPage() {
           }}
         />
       ) : empty ? (
-        <EmptyState icon={Trash2} title={t('trash.empty')} body={t('trash.emptyBody')} />
+        <EmptyState art="trash" title={t('trash.empty')} body={t('trash.emptyBody')} />
       ) : (
         <div className="flex flex-col gap-8">
           {sections

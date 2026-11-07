@@ -180,6 +180,7 @@ export function Segmented<T extends string>({
   options,
   label,
   className,
+  fullWidth,
 }: {
   value: T
   onChange: (v: T) => void

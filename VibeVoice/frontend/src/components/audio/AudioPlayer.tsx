@@ -69,7 +69,9 @@ export function AudioPlayer({
 }: AudioPlayerProps) {
   const { t } = useTranslation()
   const dates = useDates()
-  const resolvedTheme = useContext(ThemeContext)?.resolved
+  const themeCtx = useContext(ThemeContext)
+  const resolvedTheme = themeCtx?.resolved
+  const palette = themeCtx?.palette
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const fallbackRef = useRef<HTMLAudioElement>(null)
@@ -125,7 +127,7 @@ export function AudioPlayer({
       wsRef.current = null
       ws.destroy()
     }
-  }, [url, ai, isVideo, resolvedTheme])
+  }, [url, ai, isVideo, resolvedTheme, palette])
 
   const toggle = () => {
     const ws = wsRef.current

@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
-import { BookHeart, ChevronDown, ExternalLink, Images, Link2, Loader2, NotebookPen, ScanText, Search, Trash2 } from 'lucide-react'
+import { BookHeart, ChevronDown, ExternalLink, Link2, Loader2, NotebookPen, ScanText, Search, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
@@ -91,7 +91,7 @@ export function ImagesPage() {
 
   return (
     <div>
-      <PageHeader icon={Images} title={t('images.title')} subtitle={t('images.subtitle')} />
+      <PageHeader art="images" title={t('images.title')} subtitle={t('images.subtitle')} />
 
       <ImageUploader
         className="mb-6"
@@ -112,7 +112,7 @@ export function ImagesPage() {
       </div>
 
       {list.isLoading ? (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
           {Array.from({ length: 8 }, (_, i) => (
             <Skeleton key={i} className="aspect-square" />
           ))}
@@ -120,10 +120,10 @@ export function ImagesPage() {
       ) : list.error ? (
         <ErrorState error={list.error} onRetry={() => void list.refetch()} />
       ) : items.length === 0 ? (
-        <EmptyState icon={Images} title={ownerType ? t('images.emptyFiltered') : t('images.empty')} body={t('images.emptyBody')} />
+        <EmptyState art="images" title={ownerType ? t('images.emptyFiltered') : t('images.empty')} body={t('images.emptyBody')} />
       ) : (
         <>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
             {items.map((img, i) => (
               <li key={img.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card">
                 <button
@@ -152,7 +152,7 @@ export function ImagesPage() {
                     </Badge>
                   )}
                 </button>
-                <div className="flex items-center gap-1 px-2 py-1.5">
+                <div className="flex flex-wrap items-center gap-1 px-2 py-1.5">
                   <div className="min-w-0 flex-1">
                     {img.ownerType !== 'Library' ? (
                       <Link

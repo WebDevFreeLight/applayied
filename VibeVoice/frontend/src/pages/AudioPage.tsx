@@ -74,7 +74,7 @@ export function AudioPage() {
   return (
     <div>
       <PageHeader
-        icon={AudioLines}
+        art="audio"
         title={t('audio.title')}
         subtitle={t('audio.subtitle')}
         actions={
@@ -138,7 +138,7 @@ export function AudioPage() {
         <ErrorState error={list.error} onRetry={() => void list.refetch()} />
       ) : items.length === 0 ? (
         <EmptyState
-          icon={AudioLines}
+          art="audio"
           title={filtered ? t('audio.emptyFiltered') : t('audio.empty')}
           body={filtered ? undefined : t('audio.emptyBody')}
           action={

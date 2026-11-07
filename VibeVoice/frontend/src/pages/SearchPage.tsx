@@ -56,7 +56,7 @@ export function SearchPage() {
 
   return (
     <div>
-      <PageHeader icon={Search} title={t('search.title')} subtitle={t('search.subtitle')} />
+      <PageHeader art="search" title={t('search.title')} subtitle={t('search.subtitle')} />
       <div className="mb-6 flex flex-col gap-3">
         <div className="relative">
           <Search className="pointer-events-none absolute start-3.5 top-1/2 size-5 -translate-y-1/2 text-subtle" aria-hidden />
@@ -85,7 +85,7 @@ export function SearchPage() {
       </div>
 
       {!debounced ? (
-        <EmptyState icon={Search} title={t('search.start')} body={t('search.startBody')} />
+        <EmptyState art="search" title={t('search.start')} body={t('search.startBody')} />
       ) : results.isLoading ? (
         <div className="flex flex-col gap-3">
           {Array.from({ length: 5 }, (_, i) => (
@@ -95,7 +95,7 @@ export function SearchPage() {
       ) : results.error ? (
         <ErrorState error={results.error} onRetry={() => void results.refetch()} />
       ) : items.length === 0 ? (
-        <EmptyState icon={Search} title={t('search.noResults', { q: debounced })} />
+        <EmptyState art="search" title={t('search.noResults', { q: debounced })} />
       ) : (
         <div className="flex flex-col gap-8">
           {grouped.map((g) => (

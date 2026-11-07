@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { BookHeart, Plus, Search, X } from 'lucide-react'
+import { Plus, Search, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 import { useCreateMemory, usePeople, useTags } from '@/api/hooks'
@@ -76,7 +76,7 @@ export function MemoriesPage() {
   return (
     <div>
       <PageHeader
-        icon={BookHeart}
+        art="memories"
         title={t('memories.title')}
         subtitle={t('memories.subtitle')}
         actions={
@@ -156,7 +156,7 @@ export function MemoriesPage() {
         <ErrorState error={list.error} onRetry={() => void list.refetch()} />
       ) : items.length === 0 ? (
         <EmptyState
-          icon={BookHeart}
+          art="memories"
           title={filtered ? t('memories.emptyFiltered') : t('memories.empty')}
           body={filtered ? undefined : t('memories.emptyBody')}
           action={
@@ -174,14 +174,14 @@ export function MemoriesPage() {
           {groups.map((g) => (
             <section key={g.key || 'all'} aria-label={g.key ? dates.format(`${g.key}-01`, 'LLLL yyyy') : undefined} className="relative">
               {g.key && (
-                <div className="sticky top-16 z-10 -mx-1 mb-4 flex items-center gap-3 bg-bg/85 px-1 py-2 backdrop-blur">
+                <div className="sticky top-[var(--header-h)] z-10 -mx-1 mb-4 flex items-center gap-3 bg-bg/85 px-1 py-2 backdrop-blur">
                   <span className="size-2.5 rounded-full bg-accent ring-4 ring-accent-soft" aria-hidden />
                   <h2 className="text-sm font-semibold text-fg">{dates.format(`${g.key}-01`, 'LLLL yyyy')}</h2>
                   <span className="text-xs text-subtle">{t('common.items', { count: g.items.length })}</span>
                   <span className="h-px flex-1 bg-border" aria-hidden />
                 </div>
               )}
-              <ul className="grid gap-4 border-border sm:grid-cols-2 lg:grid-cols-3 sm:border-s sm:ps-6">
+              <ul className="grid gap-4 border-border sm:grid-cols-2 sm:border-s sm:ps-6 lg:grid-cols-3 2xl:grid-cols-4">
                 {g.items.map((m) => (
                   <li key={m.id}>
                     <MemoryCard memory={m} />

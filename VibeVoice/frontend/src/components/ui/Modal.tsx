@@ -95,7 +95,8 @@ export function Modal({
         aria-describedby={description ? descId : undefined}
         tabIndex={-1}
         className={cn(
-          'relative flex max-h-[92dvh] w-full animate-pop-in flex-col rounded-t-2xl border border-border bg-surface shadow-pop sm:rounded-2xl',
+          'pb-safe relative flex w-full animate-pop-in flex-col border border-border bg-surface shadow-pop sm:max-h-[92dvh] sm:rounded-2xl sm:pb-0',
+          size === 'sm' ? 'max-h-[92dvh] rounded-t-2xl' : 'pt-safe h-dvh max-h-dvh rounded-none border-0 sm:h-auto sm:border',
           size === 'sm' && 'sm:max-w-md',
           size === 'md' && 'sm:max-w-lg',
           size === 'lg' && 'sm:max-w-3xl',

@@ -46,7 +46,7 @@ export function TranscriptView({ audioId, text, segments, currentTime, playing, 
         <button
           type="button"
           onClick={() => void copyText(fullText).then((ok) => ok && toast.success(t('common.copied')))}
-          className="inline-flex h-7 items-center gap-1 rounded-lg border border-border px-2 text-xs font-medium text-muted hover:bg-surface-2 hover:text-fg"
+          className="inline-flex h-7 pointer-coarse:h-10 items-center gap-1 rounded-lg border border-border px-2 text-xs font-medium text-muted hover:bg-surface-2 hover:text-fg"
         >
           <Copy className="size-3.5" aria-hidden />
           {t('transcript.copy')}
@@ -61,7 +61,7 @@ export function TranscriptView({ audioId, text, segments, currentTime, playing, 
             href={transcriptUrl(audioId, f)}
             download
             aria-label={t('transcript.downloadAs', { format: f.toUpperCase() })}
-            className="inline-flex h-7 items-center rounded-lg border border-border px-2 font-mono text-[11px] font-semibold text-muted uppercase hover:bg-surface-2 hover:text-fg"
+            className="inline-flex h-7 pointer-coarse:h-10 items-center rounded-lg border border-border px-2 font-mono text-[11px] font-semibold text-muted uppercase hover:bg-surface-2 hover:text-fg"
           >
             {f}
           </a>
@@ -82,7 +82,7 @@ export function TranscriptView({ audioId, text, segments, currentTime, playing, 
                 aria-current={i === active ? 'true' : undefined}
                 aria-label={`${t('transcript.seekTo', { time: formatDuration(s.start) })}: ${s.text}`}
                 className={cn(
-                  'flex w-full items-start gap-3 rounded-lg px-2 py-1.5 text-start text-sm transition-colors',
+                  'flex w-full items-start gap-3 rounded-lg px-2 py-1.5 text-start text-sm transition-colors pointer-coarse:py-2.5',
                   i === active ? 'bg-accent-soft text-accent-text' : 'text-fg hover:bg-surface-3',
                 )}
               >

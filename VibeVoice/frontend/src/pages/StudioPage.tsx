@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Copy, FileAudio, FilePlus2, Mic, ScanText, ShieldCheck, Sparkles, Upload, Wand2 } from 'lucide-react'
+import { Copy, FileAudio, FilePlus2, Mic, ShieldCheck, Sparkles, Upload, Wand2 } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -31,17 +31,18 @@ export function StudioPage() {
   const [tab, setTab] = useState<Tab>('tts')
   return (
     <div>
-      <PageHeader icon={Sparkles} title={t('studio.title')} subtitle={t('studio.subtitle')} actions={<VoiceStatusChip />} />
+      <PageHeader art="studio" title={t('studio.title')} subtitle={t('studio.subtitle')} actions={<VoiceStatusChip />} />
       <Segmented
         label={t('studio.title')}
         value={tab}
         onChange={setTab}
         options={[
-          { value: 'tts', label: t('studio.ttsTab'), icon: Sparkles },
-          { value: 'stt', label: t('studio.sttTab'), icon: Mic },
-          { value: 'ocr', label: t('studio.ocrTab'), icon: ScanText },
+          { value: 'tts', label: t('studio.ttsTab'), art: 'tts' },
+          { value: 'stt', label: t('studio.sttTab'), art: 'stt' },
+          { value: 'ocr', label: t('studio.ocrTab'), art: 'ocr' },
         ]}
-        className="mb-6 max-w-full overflow-x-auto"
+        fullWidth
+        className="mb-6 text-xs sm:text-sm"
       />
       {tab === 'tts' ? <TextToSpeech /> : tab === 'stt' ? <SpeechToText /> : <ImageToText />}
     </div>
@@ -178,7 +179,7 @@ function TextToSpeech() {
         {history.isLoading ? (
           <Skeleton className="h-32" />
         ) : !history.data?.items.length ? (
-          <EmptyState icon={Sparkles} title={t('studio.historyEmpty')} className="py-10" />
+          <EmptyState art="studio" title={t('studio.historyEmpty')} className="py-10" />
         ) : (
           <>
             <ul className="flex flex-col gap-3">

@@ -137,7 +137,13 @@
     "sessionExpired": "Your session has expired. Please sign in again.",
     "devHint": "Dev seed user: admin@vibevoice.local / Admin123!",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "heroTitle": "Your notes and memories — in text, voice, video and pictures.",
+    "heroPoints": {
+      "voice": "AI voices that read aloud",
+      "transcribe": "Transcripts for audio & video",
+      "ocr": "Text from pictures, Arabic & English"
+    }
   },
   "validation": {
     "emailInvalid": "Enter a valid email address",
@@ -183,7 +189,8 @@
       "memory": "Memory",
       "audio": "Audio",
       "image": "Image"
-    }
+    },
+    "shortcuts": "Jump to"
   },
   "notes": {
     "title": "Notes",
@@ -633,5 +640,23 @@
     "lines": "Lines",
     "confidence": "{{value}}% confidence",
     "fullText": "Full text"
+  },
+  "identity": {
+    "title": "Visual identity",
+    "subtitle": "Pick the colours and mood of the whole app. Applies instantly on every device you sign in to.",
+    "active": "Active",
+    "applied": "{{name}} applied",
+    "names": {
+      "sunset": "Sunset Voice",
+      "oasis": "Desert Oasis",
+      "ocean": "Deep Ocean",
+      "neon": "Neon Pulse"
+    },
+    "descriptions": {
+      "sunset": "Warm coral, magenta and violet — the default.",
+      "oasis": "Teal, gold and terracotta on soft sand.",
+      "ocean": "Calm blues with aqua and mint.",
+      "neon": "Electric lime, cyan and pink — made for dark mode."
+    }
   }
 }

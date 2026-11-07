@@ -41,16 +41,19 @@ export function EditorTopBar({
 }) {
   const { t } = useTranslation()
   return (
-    <div className="sticky top-16 z-20 -mx-4 mb-6 flex flex-wrap items-center gap-2 border-b border-border bg-bg/85 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6">
+    <div className="sticky top-[var(--header-h)] z-20 -mx-4 mb-6 flex h-[var(--editor-bar-h)] items-center gap-1 border-b border-border bg-bg/85 px-2 backdrop-blur sm:-mx-6 sm:gap-2 sm:px-6">
       <Link
         to={backTo}
-        className="inline-flex h-9 items-center gap-1.5 rounded-xl px-2 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg"
+        aria-label={backLabel}
+        className="inline-flex h-10 min-w-10 shrink-0 items-center justify-center gap-1.5 rounded-xl px-2 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg pointer-coarse:h-11 pointer-coarse:min-w-11"
       >
         <ArrowLeft className="size-4 rtl:rotate-180" aria-hidden />
-        <span className="hidden sm:inline">{backLabel}</span>
+        <span className="hidden sm:inline" aria-hidden>
+          {backLabel}
+        </span>
       </Link>
-      <SaveIndicator status={status} className="ms-1" />
-      <div className="ms-auto flex items-center gap-1">
+      <SaveIndicator status={status} className="ms-1 min-w-0" compact />
+      <div className="ms-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
         <IconButton label={isPinned ? t('common.unpin') : t('common.pin')} aria-pressed={isPinned} onClick={onTogglePin}>
           {isPinned ? <PinOff className="size-4" aria-hidden /> : <Pin className="size-4" aria-hidden />}
         </IconButton>
@@ -69,8 +72,9 @@ export function EditorTopBar({
           icon={<Save className="size-4" aria-hidden />}
           title={t('save.shortcut')}
           className="ms-1"
+          aria-label={t('common.save')}
         >
-          {t('common.save')}
+          <span className="hidden min-[400px]:inline">{t('common.save')}</span>
         </Button>
       </div>
     </div>

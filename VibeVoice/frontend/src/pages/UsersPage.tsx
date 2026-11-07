@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { usersApi } from '@/api/auth'
@@ -36,7 +35,7 @@ export function UsersPage() {
 
   return (
     <div>
-      <PageHeader icon={Users} title={t('users.title')} subtitle={t('users.subtitle')} />
+      <PageHeader art="users" title={t('users.title')} subtitle={t('users.subtitle')} />
       {users.isLoading ? (
         <div className="flex flex-col gap-2">
           {Array.from({ length: 4 }, (_, i) => (
@@ -46,10 +45,59 @@ export function UsersPage() {
       ) : users.error ? (
         <ErrorState error={users.error} onRetry={() => void users.refetch()} />
       ) : !users.data?.length ? (
-        <EmptyState icon={Users} title={t('users.empty')} />
+        <EmptyState art="users" title={t('users.empty')} />
       ) : (
-        <Card className="overflow-x-auto">
-          <table className="w-full min-w-[640px] text-sm">
+        <>
+        {/* Phones / small tablets: one card per user */}
+        <ul className="flex flex-col gap-3 md:hidden" aria-label={t('users.title')}>
+          {users.data.map((u) => {
+            const self = u.id === me?.id
+            return (
+              <li key={u.id}>
+                <Card className="flex flex-col gap-3 p-4">
+                  <div className="flex items-center gap-3">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-soft text-sm font-semibold text-accent-text uppercase">
+                      {(u.displayName || u.email).charAt(0)}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-fg" dir="auto">
+                        {u.displayName} {self && <span className="text-xs font-normal text-subtle">({t('common.you')})</span>}
+                      </p>
+                      <p className="text-xs text-muted">{u.email}</p>
+                    </div>
+                    <Badge tone={u.isActive ? 'success' : 'danger'}>{u.isActive ? t('users.active') : t('users.inactive')}</Badge>
+                  </div>
+                  <p className="text-xs text-subtle">
+                    {t('users.created')}: {dates.format(u.createdAt, 'PP')}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Select
+                      value={u.role}
+                      disabled={self || setRole.isPending}
+                      title={self ? t('users.self') : undefined}
+                      aria-label={`${t('users.role')} — ${u.displayName}`}
+                      onChange={(e) => setRole.mutate({ id: u.id, role: e.target.value as Role })}
+                      className="w-auto min-w-32 flex-1"
+                    >
+                      <option value="Admin">{t('users.roles.Admin')}</option>
+                      <option value="User">{t('users.roles.User')}</option>
+                    </Select>
+                    <Button
+                      variant={u.isActive ? 'outline' : 'secondary'}
+                      disabled={self || setActive.isPending}
+                      title={self ? t('users.self') : undefined}
+                      onClick={() => setActive.mutate({ id: u.id, isActive: !u.isActive })}
+                    >
+                      {u.isActive ? t('users.deactivate') : t('users.activate')}
+                    </Button>
+                  </div>
+                </Card>
+              </li>
+            )
+          })}
+        </ul>
+        <Card className="hidden overflow-x-auto md:block">
+          <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-start text-xs tracking-wide text-subtle uppercase">
                 <th scope="col" className="px-4 py-3 text-start font-semibold">{t('users.name')}</th>
@@ -111,6 +159,7 @@ export function UsersPage() {
             </tbody>
           </table>
         </Card>
+        </>
       )}
     </div>
   )

@@ -10,6 +10,7 @@ const user: UserDto = {
   preferredLanguage: 'en',
   preferredVoice: null,
   theme: 'light',
+  palette: 'ocean',
   isActive: true,
   createdAt: '2026-01-01T00:00:00Z',
 }

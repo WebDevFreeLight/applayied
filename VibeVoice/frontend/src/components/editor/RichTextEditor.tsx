@@ -99,7 +99,7 @@ export function RichTextEditor({
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-2xl border border-border bg-surface transition-colors focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20',
+        'overflow-clip rounded-2xl border border-border bg-surface transition-colors focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20',
         className,
       )}
     >
@@ -190,7 +190,7 @@ function Toolbar({ editor }: { editor: Editor }) {
     <div
       role="toolbar"
       aria-label={t('editor.toolbar')}
-      className="scrollbar-thin flex items-center gap-1 overflow-x-auto border-b border-border bg-surface-2/60 px-2 py-1.5"
+      className="scrollbar-thin sticky top-[calc(var(--header-h)+var(--editor-bar-h))] z-10 flex items-center gap-1 overflow-x-auto overscroll-x-contain border-b border-border bg-surface-2/95 px-2 py-1.5 backdrop-blur"
     >
       {groups.map((group, gi) => (
         <div key={gi} className="flex items-center gap-0.5 border-border not-last:me-1 not-last:border-e not-last:pe-1">
@@ -205,7 +205,7 @@ function Toolbar({ editor }: { editor: Editor }) {
               onMouseDown={(e) => e.preventDefault()}
               onClick={run}
               className={cn(
-                'inline-flex size-8 shrink-0 items-center justify-center rounded-lg transition-colors disabled:opacity-35',
+                'inline-flex size-8 shrink-0 items-center justify-center rounded-lg transition-colors disabled:opacity-35 pointer-coarse:size-10',
                 active ? 'bg-accent-soft text-accent-text' : 'text-muted hover:bg-surface-3 hover:text-fg',
               )}
             >

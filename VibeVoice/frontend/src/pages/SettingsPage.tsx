@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { KeyRound, Palette, Settings, UserRound } from 'lucide-react'
+import { KeyRound, Palette, UserRound } from 'lucide-react'
 import { useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -10,7 +10,9 @@ import { ApiError, errorMessage } from '@/api/client'
 import { useVoices } from '@/api/hooks'
 import type { UserDto } from '@/api/types'
 import { useAuth } from '@/auth/context'
+import { ArtTile } from '@/components/art/ArtTile'
 import { VoiceSelect } from '@/components/audio/VoiceSelect'
+import { IdentityPicker } from '@/components/IdentityPicker'
 import { Button } from '@/components/ui/Button'
 import { Badge, Card, PageHeader } from '@/components/ui/Display'
 import { Field, Input, Select } from '@/components/ui/Field'
@@ -25,8 +27,8 @@ export function SettingsPage() {
   const dates = useDates()
   if (!user) return null
   return (
-    <div className="mx-auto max-w-2xl">
-      <PageHeader icon={Settings} title={t('settings.title')} subtitle={t('settings.subtitle')} />
+    <div className="mx-auto max-w-3xl">
+      <PageHeader art="settings" title={t('settings.title')} subtitle={t('settings.subtitle')} />
       <div className="flex flex-col gap-6">
         <Card className="flex flex-wrap items-center gap-4 p-5">
           <span className="flex size-12 items-center justify-center rounded-full bg-accent text-lg font-semibold text-accent-fg uppercase">
@@ -40,6 +42,18 @@ export function SettingsPage() {
             <p className="text-xs text-subtle">{t('settings.memberSince', { date: dates.format(user.createdAt, 'PP') })}</p>
           </div>
           <Badge tone={user.role === 'Admin' ? 'accent' : 'neutral'}>{t(`users.roles.${user.role}`)}</Badge>
+        </Card>
+        <Card className="flex flex-col gap-4 p-4 sm:p-5" aria-labelledby="identity-heading">
+          <div className="flex items-start gap-3">
+            <ArtTile name="palette" size="sm" />
+            <div className="min-w-0">
+              <h2 id="identity-heading" className="text-base font-semibold text-fg">
+                {t('identity.title')}
+              </h2>
+              <p className="text-sm text-muted">{t('identity.subtitle')}</p>
+            </div>
+          </div>
+          <IdentityPicker />
         </Card>
         <ProfileForm key={`${user.id}-${user.preferredLanguage}-${user.theme}-${user.preferredVoice}`} user={user} />
         <PasswordForm />

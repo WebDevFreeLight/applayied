@@ -1,17 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import {
   Archive,
-  AudioLines,
   BookHeart,
   CalendarHeart,
-  FileText,
   History,
-  Images,
   NotebookPen,
-  Pin,
   Plus,
-  Sparkles,
-  Trash2,
   type LucideIcon,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +15,7 @@ import { qk } from '@/api/keys'
 import { dashboardApi } from '@/api/misc'
 import type { DashboardStats } from '@/api/types'
 import { useAuth } from '@/auth/context'
+import { ArtTile, type ArtName } from '@/components/art/ArtTile'
 import { CardSkeletonGrid, MemoryCard, NoteCard } from '@/components/Cards'
 import { VoiceStatusChip } from '@/components/layout/VoiceStatusChip'
 import { Button } from '@/components/ui/Button'
@@ -29,15 +24,25 @@ import { useDates } from '@/lib/dates'
 import { activityLink, KIND_ICON } from '@/lib/links'
 import { parseDateOnly } from '@/lib/utils'
 
-const STAT_META: { key: keyof DashboardStats; icon: LucideIcon; to: string }[] = [
-  { key: 'notes', icon: NotebookPen, to: '/notes' },
-  { key: 'memories', icon: BookHeart, to: '/memories' },
-  { key: 'audioClips', icon: AudioLines, to: '/audio' },
-  { key: 'images', icon: Images, to: '/images' },
-  { key: 'aiVoiceClips', icon: Sparkles, to: '/studio' },
-  { key: 'transcripts', icon: FileText, to: '/audio' },
-  { key: 'pinned', icon: Pin, to: '/notes' },
-  { key: 'trash', icon: Trash2, to: '/trash' },
+const STAT_META: { key: keyof DashboardStats; art: ArtName; to: string }[] = [
+  { key: 'notes', art: 'notes', to: '/notes' },
+  { key: 'memories', art: 'memories', to: '/memories' },
+  { key: 'audioClips', art: 'audio', to: '/audio' },
+  { key: 'images', art: 'images', to: '/images' },
+  { key: 'aiVoiceClips', art: 'ai', to: '/studio' },
+  { key: 'transcripts', art: 'transcript', to: '/audio' },
+  { key: 'pinned', art: 'pin', to: '/notes' },
+  { key: 'trash', art: 'trash', to: '/trash' },
+]
+
+/** Module shortcut cards (illustrated). */
+const SHORTCUTS: { to: string; art: ArtName; title: string; body: string }[] = [
+  { to: '/notes', art: 'notes', title: 'nav.notes', body: 'notes.subtitle' },
+  { to: '/memories', art: 'memories', title: 'nav.memories', body: 'memories.subtitle' },
+  { to: '/audio', art: 'audio', title: 'nav.audio', body: 'audio.subtitle' },
+  { to: '/studio', art: 'studio', title: 'nav.studio', body: 'studio.subtitle' },
+  { to: '/images', art: 'ocr', title: 'nav.images', body: 'images.subtitle' },
+  { to: '/search', art: 'search', title: 'nav.search', body: 'search.subtitle' },
 ]
 
 function SectionTitle({ icon: Icon, children, to }: { icon: LucideIcon; children: string; to?: string }) {
@@ -68,9 +73,9 @@ export function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="relative flex flex-wrap items-end justify-between gap-4 overflow-hidden rounded-3xl border border-border bg-brand-soft p-5 sm:p-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl" dir="auto">
+          <h1 className="text-fluid-title font-semibold tracking-tight text-fg" dir="auto">
             {t('dashboard.greeting', { name: user?.displayName ?? '' })}
           </h1>
           <p className="mt-1 text-sm text-muted">{t('dashboard.subtitle')}</p>
@@ -100,24 +105,14 @@ export function DashboardPage() {
       ) : (
         <>
           <section aria-label={t('dashboard.title')}>
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {STAT_META.map(({ key, icon: Icon, to }) => (
-                <li key={key}>
+            <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              {STAT_META.map(({ key, art, to }) => (
+                <li key={key} className="min-w-0">
                   <Link
                     to={to}
-                    className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4 shadow-card transition hover:border-border-strong"
+                    className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 shadow-card transition hover:border-border-strong sm:p-4"
                   >
-                    <span
-                      className={
-                        key === 'aiVoiceClips'
-                          ? 'flex size-10 shrink-0 items-center justify-center rounded-xl bg-ai-soft text-ai'
-                          : key === 'trash'
-                            ? 'flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface-2 text-muted'
-                            : 'flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent-text'
-                      }
-                    >
-                      <Icon className="size-5" aria-hidden />
-                    </span>
+                    <ArtTile name={art} size="md" />
                     <span className="min-w-0">
                       {isLoading || !data ? (
                         <Skeleton className="h-6 w-10" />
@@ -125,6 +120,28 @@ export function DashboardPage() {
                         <span className="block text-xl font-semibold tabular-nums text-fg">{data.stats[key]}</span>
                       )}
                       <span className="block truncate text-xs text-muted">{t(`dashboard.stats.${key}`)}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section aria-labelledby="shortcuts-title">
+            <h2 id="shortcuts-title" className="mb-3 text-base font-semibold text-fg">
+              {t('dashboard.shortcuts')}
+            </h2>
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+              {SHORTCUTS.map((s) => (
+                <li key={s.to} className="min-w-0">
+                  <Link
+                    to={s.to}
+                    className="group flex h-full flex-col items-start gap-3 rounded-2xl border border-border bg-surface p-4 shadow-card transition hover:-translate-y-0.5 hover:border-border-strong hover:shadow-pop"
+                  >
+                    <ArtTile name={s.art} size="lg" />
+                    <span className="min-w-0">
+                      <span className="block text-sm font-semibold text-fg">{t(s.title)}</span>
+                      <span className="line-clamp-2 text-xs text-muted">{t(s.body)}</span>
                     </span>
                   </Link>
                 </li>
