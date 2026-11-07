@@ -63,9 +63,11 @@ export function PasswordField({ id, value, onChange, invalid, describedBy, autoC
             setShow(true)
           }}
           icon={<Wand2 className="size-4" aria-hidden />}
+          aria-label={t('users.generate')}
         >
-          <span className="hidden min-[420px]:inline">{t('users.generate')}</span>
-          <span className="sr-only min-[420px]:hidden">{t('users.generate')}</span>
+          <span className="hidden min-[420px]:inline" aria-hidden>
+            {t('users.generate')}
+          </span>
         </Button>
       </div>
       {strength && (

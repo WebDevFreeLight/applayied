@@ -73,6 +73,8 @@ describe('authenticated shell', () => {
     expect(await screen.findByRole('heading', { name: 'Hello, Admin' }, { timeout: 8000 })).toBeInTheDocument()
     expect(await screen.findByText('Groceries', { selector: 'h3' }, { timeout: 8000 })).toBeInTheDocument()
     expect(screen.getAllByRole('link', { name: 'Users' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('link', { name: 'Roles' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Administration').length).toBeGreaterThan(0)
     // The user's saved identity (palette: 'ocean') is applied after sign-in.
     expect(document.documentElement.dataset.palette).toBe('ocean')
     // Illustrated nav tiles are decorative.
