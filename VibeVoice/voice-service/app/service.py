@@ -236,6 +236,15 @@ class ASRManager:
     def name(self) -> str:
         return self.engine.name if self.engine else "none"
 
+    @property
+    def loaded(self) -> bool:
+        return bool(self.engine is not None and getattr(self.engine, "model_loaded", False))
+
+    def unload(self) -> None:
+        unload = getattr(self.engine, "unload", None)
+        if callable(unload):
+            unload()
+
     def transcribe(self, path: str, language: str | None) -> Transcription:
         if self.engine is None:
             raise ASRDisabled(self.disabled_reason or "ASR disabled")

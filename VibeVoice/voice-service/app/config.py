@@ -31,6 +31,15 @@ class Settings(BaseSettings):
     ocr_engine: Literal["rapidocr", "none"] = "rapidocr"
     ocr_min_confidence: float = 0.5
     ocr_max_upload_mb: int = 15
+    # The text detector scales the image so its LONGER side is at most this many pixels. RapidOCR's own
+    # default ("shorter side at least 736") blows a wide or phone-size photo up to 3000+ px and peaks near
+    # 600 MB; 960 reads phone photos of documents just as well at ~270 MB.
+    ocr_max_side: int = 960
+    ocr_threads: int = 1  # onnxruntime intra-op threads (0 = library default: all cores)
+
+    # Small hosts (Render free = 512 MB): keep only ONE heavy model in memory. Loading the OCR models
+    # first unloads Whisper and vice versa (a reload costs ~1-2 s, far cheaper than being OOM-killed).
+    low_memory: bool = False
 
     # --- VibeVoice realtime TTS ----------------------------------------
     vibevoice_model_path: str = "microsoft/VibeVoice-Realtime-0.5B"
@@ -56,6 +65,7 @@ class Settings(BaseSettings):
     whisper_compute_type: str = "auto"  # auto -> int8 on cpu, float16 on cuda
     whisper_beam_size: int = 5
     whisper_vad: bool = True
+    whisper_cpu_threads: int = 0  # 0 = faster-whisper default; 1-2 keeps memory flat on tiny hosts
 
     # --- limits / text handling ----------------------------------------
     max_tts_chars: int = 5000

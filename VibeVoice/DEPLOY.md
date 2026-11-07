@@ -16,7 +16,7 @@ One Render Blueprint (`VibeVoice/render.yaml`) creates the same services as `doc
   The static frontend never sleeps.
 - Render's disk is wiped on every restart, so notes **and** audio/video/photos are stored in Neon
   (`Storage__Provider=Database`) instead of the compose volumes.
-- Uploads are capped: photos 5 MB, audio 10 MB, video 25 MB. Transcription uses Whisper *tiny* (fits 512 MB RAM).
+- Uploads are capped: photos 5 MB, audio 10 MB, video 25 MB. Transcription uses Whisper *base*; the voice service keeps only one of Whisper / OCR in memory at a time to stay under 512 MB.
 - Render has **no GPUs**, so the Microsoft VibeVoice model can't run there. Speech uses the Edge neural voices
   fallback (Arabic + English), labelled "AI-generated" in the app as always.
 

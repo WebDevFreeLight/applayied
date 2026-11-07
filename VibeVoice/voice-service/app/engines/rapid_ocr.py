@@ -1,4 +1,7 @@
-"""Image → text (OCR) with RapidOCR (PaddleOCR PP-OCRv5 models on onnxruntime).
+"""Image → text (OCR) with RapidOCR (PaddleOCR PP-OCRv5/v6 models on onnxruntime).
+
+The Docker image downloads the models at build time (scripts/fetch_models.py): at runtime the service
+runs as a non-root user and cannot write into the rapidocr package folder.
 
 The PP-OCRv5 *Arabic* recognition model also covers Latin letters and digits, so it reads Arabic,
 English and mixed lines in one pass; it is the default for ``language`` auto/"ar". ``language="en"``
@@ -86,6 +89,30 @@ class OCRManager:
     def name(self) -> str:
         return "none" if self.disabled_reason else "rapidocr"
 
+    def base_params(self) -> dict[str, Any]:
+        """Memory-bounded detector settings shared by every recognition model."""
+        params: dict[str, Any] = {
+            # Cap the LONGER side; the library default ("min") upscales wide images to 3000+ px.
+            "Det.limit_type": "max",
+            "Det.limit_side_len": self.settings.ocr_max_side,
+            # Photos of notes/documents are upright; the 180-degree classifier only costs time + RAM.
+            "Global.use_cls": False,
+        }
+        if self.settings.ocr_threads > 0:
+            params["EngineConfig.onnxruntime.intra_op_num_threads"] = self.settings.ocr_threads
+        return params
+
+    @property
+    def loaded(self) -> bool:
+        return bool(self._engines)
+
+    def unload(self) -> None:
+        """Free the OCR models (low-memory mode, before Whisper loads)."""
+        with self._lock:
+            if self._engines:
+                log.info("Unloading RapidOCR models to free memory")
+                self._engines.clear()
+
     def _engine(self, model: str) -> Any:
         if model in self._engines:
             return self._engines[model]
@@ -93,11 +120,12 @@ class OCRManager:
             if model not in self._engines:
                 from rapidocr import LangRec, ModelType, OCRVersion, RapidOCR
 
+                params = self.base_params()
                 if model == "arabic":
-                    params = {"Rec.lang_type": LangRec.ARABIC, "Rec.ocr_version": OCRVersion.PPOCRV5,
-                              "Rec.model_type": ModelType.MOBILE}
+                    params |= {"Rec.lang_type": LangRec.ARABIC, "Rec.ocr_version": OCRVersion.PPOCRV5,
+                               "Rec.model_type": ModelType.MOBILE}
                 else:
-                    params = {"Rec.lang_type": LangRec.EN}
+                    params |= {"Rec.lang_type": LangRec.EN}
                 log.info("Loading RapidOCR recognition model '%s'", model)
                 try:
                     self._engines[model] = RapidOCR(params=params)

@@ -86,7 +86,17 @@ class WhisperASREngine(ASREngine):
             compute = "float16" if device == "cuda" else "int8"
         log.info("Loading faster-whisper model=%s device=%s compute_type=%s",
                  self.settings.whisper_model, device, compute)
-        return WhisperModel(self.settings.whisper_model, device=device, compute_type=compute)
+        kwargs: dict[str, Any] = {}
+        if self.settings.whisper_cpu_threads > 0:
+            kwargs["cpu_threads"] = self.settings.whisper_cpu_threads
+        return WhisperModel(self.settings.whisper_model, device=device, compute_type=compute, **kwargs)
+
+    def unload(self) -> None:
+        """Free the model (low-memory mode, before the OCR models load)."""
+        with self._load_lock:
+            if self._model is not None:
+                log.info("Unloading faster-whisper model to free memory")
+                self._model = None
 
     @staticmethod
     def _probe(model: Any) -> None:

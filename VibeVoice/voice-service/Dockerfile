@@ -12,6 +12,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     HF_HOME=/data/hf \
+    MALLOC_ARENA_MAX=2 \
     VIBEVOICE_VOICES_DIR=/app/voices/streaming_model
 
 RUN apt-get update \
@@ -31,6 +32,13 @@ RUN if [ "$INSTALL_VIBEVOICE" = "true" ]; then \
     else echo "Skipping VibeVoice install (INSTALL_VIBEVOICE=$INSTALL_VIBEVOICE)"; fi
 
 COPY app ./app
+COPY scripts/fetch_models.py ./scripts/fetch_models.py
+
+# Bake the OCR models (Arabic + English) and the Whisper model(s) into the image while we are still
+# root: the runtime user can't write into the rapidocr package folder, and a woken free-tier host
+# shouldn't spend its first request downloading. PREFETCH_WHISPER="" skips Whisper.
+ARG PREFETCH_WHISPER="base"
+RUN mkdir -p /data/hf && PYTHONPATH=/app python scripts/fetch_models.py ${PREFETCH_WHISPER}
 
 # Not "voice": Debian already ships a system group with that name, so useradd would fail.
 RUN useradd --create-home --uid 1000 vvoice && mkdir -p /data/hf && chown -R vvoice /app /data

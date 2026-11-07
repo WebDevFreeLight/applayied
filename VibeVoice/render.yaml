@@ -15,7 +15,7 @@
 #    listed here. Free services can't talk over Render's private network, so they use public https URLs.
 #  - Disks are wiped on every restart/sleep, so data AND uploaded files live in Postgres
 #    (Storage__Provider=Database) instead of the compose volumes.
-#  - 512 MB RAM and no GPU: Whisper "tiny" instead of "small", and speech uses the Edge neural voices
+#  - 512 MB RAM and no GPU: Whisper "base" instead of "small" (LOW_MEMORY swaps it with the OCR models), and speech uses the Edge neural voices
 #    (Arabic + English) instead of the VibeVoice model. Uploads are capped (5/10/25 MB).
 #  - Services sleep after ~15 min idle; the first request wakes them (~30-60 s). The static site never sleeps.
 #
@@ -103,10 +103,16 @@ services:
         value: dev
       - key: ASR_ENGINE
         value: whisper
+      # "base": tiny garbles Arabic; small is better but needs ~800 MB. Baked into the image at build.
       - key: WHISPER_MODEL
-        value: tiny
+        value: base
       - key: WHISPER_DEVICE
         value: cpu
+      - key: WHISPER_CPU_THREADS
+        value: "1"
+      # 512 MB: keep only one of Whisper / OCR in memory at a time (measured peak ~430 MB).
+      - key: LOW_MEMORY
+        value: "true"
       - key: OCR_ENGINE
         value: rapidocr
       - key: MAX_UPLOAD_MB

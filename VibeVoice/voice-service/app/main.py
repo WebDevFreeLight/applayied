@@ -15,6 +15,8 @@ Run:  uvicorn app.main:app --host 0.0.0.0 --port 8001
 
 from __future__ import annotations
 
+import ctypes
+import gc
 import hmac
 import logging
 import os
@@ -31,6 +33,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
 
+from app.engines.base import INFERENCE_LOCK
 from app.engines.rapid_ocr import OCRDisabled, OCRManager
 from app.audio import VIDEO_EXTENSIONS, extract_audio_to_wav, find_ffmpeg
 from app.config import Settings, get_settings
@@ -54,6 +57,17 @@ class TTSRequest(BaseModel):
     voice: str | None = None
     language: str | None = Field(None, description="ISO code (en, ar, ...). Omitted -> detected from script.")
     format: Literal["wav", "mp3"] = "wav"
+
+
+def _free(unload) -> None:
+    """Drop one model and hand its memory back before another one loads (LOW_MEMORY mode)."""
+    with INFERENCE_LOCK:  # never pull a model out from under a running inference
+        unload()
+    gc.collect()
+    try:  # glibc keeps freed arenas; give them back to the OS so the container's RSS really drops
+        ctypes.CDLL("libc.so.6").malloc_trim(0)
+    except (OSError, AttributeError):
+        pass
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -173,6 +187,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 if not ok:
                     raise HTTPException(status_code=422, detail="The video has no audio track that could be decoded.")
                 asr_input = wav_path
+            if settings.low_memory and ocr.loaded:
+                await run_in_threadpool(_free, ocr.unload)
             try:
                 result = await run_in_threadpool(asr.transcribe, asr_input, language)
             except ASRDisabled as exc:
@@ -207,6 +223,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             raise HTTPException(status_code=400, detail="Uploaded image is empty.")
         if len(data) > limit:
             raise HTTPException(status_code=413, detail=f"Image exceeds {settings.ocr_max_upload_mb} MB.")
+        if settings.low_memory and asr.loaded:
+            await run_in_threadpool(_free, asr.unload)
         try:
             result = await run_in_threadpool(ocr.recognize, data, language)
         except OCRDisabled as exc:
