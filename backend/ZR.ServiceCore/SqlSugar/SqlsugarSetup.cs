@@ -51,7 +51,14 @@ namespace ZR.ServiceCore.SqlSugar
                 Console.WriteLine();
                 Console.WriteLine($"   ConfigId: {item.ConfigId ?? "NULL"}");
                 Console.WriteLine($"   DbType: {item.DbType}");
-                Console.WriteLine($"   Connection: {item.Conn}");
+                if (string.IsNullOrWhiteSpace(item.Conn))
+                {
+                    throw new InvalidOperationException(
+                        $"DbConfigs ConfigId={item.ConfigId} has no connection string. Set env DATABASE_URL (Render/cloud) " +
+                        "or ConnectionStrings__PmoDb (self-hosted Production); secrets are not stored in appsettings.");
+                }
+                // Never echo the password into host logs (Render keeps them).
+                Console.WriteLine($"   Connection: {System.Text.RegularExpressions.Regex.Replace(item.Conn, @"(?i)(password|pwd)=[^;]*", "$1=***")}");
                 Console.WriteLine($"   AutoClose: {item.IsAutoCloseConnection}");
 
 

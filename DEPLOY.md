@@ -40,7 +40,7 @@ The API **creates all tables and seeds the synthetic PMO data on first boot** (S
    - `DATABASE_URL` = your Neon string *(skip if you kept Render's `pmo-db` — it's auto-wired)*
    - `corsUrls__0` = your frontend URL from step 3 (come back after it exists), e.g.
      `https://pmo-portal.netlify.app` — **exact origin, no trailing slash**.
-   - *(optional)* `AI__Providers__0__ApiKey`, `PowerBI__ClientSecret`, etc. to enable AI / Power BI.
+   - *(optional)* `AI__Keys__<Name>` (e.g. `AI__Keys__OpenRouter`), `PowerBI__ClientSecret`, etc. to enable AI / Power BI.
 3. Deploy. Your API is at `https://pmo-api.onrender.com` (note the exact name Render gives you).
    - First boot seeds the DB (can take a minute). Free web services **sleep after ~15 min idle** —
      the first request wakes it (~30–60s).
@@ -76,6 +76,21 @@ docker run --rm -p 8080:8080 \
   pmo-api
 # API on http://localhost:8080  (e.g. http://localhost:8080/pmo/powerbi/status)
 ```
+
+## Database secret — where it lives
+The DB password is **never** in a tracked file. `appsettings.Production.json` keeps empty `Conn`
+values; the API refuses to start with a clear error if no connection string is supplied.
+
+| Where the API runs | Env var to set | Notes |
+|---|---|---|
+| Render / any cloud host | `DATABASE_URL` = `postgresql://neondb_owner:<pw>@<host>/neondb?sslmode=require` | Switches to the `Cloud` environment (only base `appsettings.json` loads). The live service is **`applayied`**. |
+| Self-hosted, `ASPNETCORE_ENVIRONMENT=Production` | `ConnectionStrings__PmoDb` = `Host=…;Port=5432;Database=neondb;Username=neondb_owner;Password=<pw>;Ssl Mode=Require;Channel Binding=Require;Pooling=true;` | Keeps the Production appsettings layer (Kestrel/CORS); fills every `DbConfigs` + `CodeGenDbConfig` connection. |
+
+Precedence: `DB_CONN` > `DATABASE_URL` > `ConnectionStrings__PmoDb` > appsettings.
+
+**Rotating the Neon password:** Neon console ▸ project ▸ **Roles ▸ neondb_owner ▸ Reset password** →
+copy the new connection string → Render ▸ `applayied` ▸ **Environment** ▸ update `DATABASE_URL` ▸
+Save (Render redeploys). Update `ConnectionStrings__PmoDb` on any self-hosted box the same way.
 
 ## Notes & gotchas
 - **Cold starts:** Render free API sleeps when idle; the first call after a nap is slow. Fine for demos.
