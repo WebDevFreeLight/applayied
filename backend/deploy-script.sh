@@ -28,6 +28,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__PmoDb=${PMO_DB_CONN}
       - DOTNET_SYSTEM_NET_DISABLEIPV6=true
     ports:
       - "8080:8080"
@@ -101,6 +102,7 @@ docker run -d \
   -p 8080:8080 \
   -e ASPNETCORE_ENVIRONMENT=Production \
   -e ASPNETCORE_URLS=http://+:8080 \
+  -e "ConnectionStrings__PmoDb=${PMO_DB_CONN:?export PMO_DB_CONN (the Neon connection string) first}" \
   -e DOTNET_SYSTEM_NET_DISABLEIPV6=true \
   --network maham_network \
   --add-host db.ctlaeyiulnukpoxuztla.supabase.co:34.82.126.136 \

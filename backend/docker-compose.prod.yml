@@ -9,6 +9,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
+      # DB secret from the host .env (PMO_DB_CONN=Host=...;Password=...), never from appsettings
+      - ConnectionStrings__PmoDb=${PMO_DB_CONN}
       # Force IPv4 for Supabase connection
       - DOTNET_SYSTEM_NET_DISABLEIPV6=true
     ports:

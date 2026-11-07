@@ -74,6 +74,15 @@ var builder = new[] { "PORT", "RENDER", "DATABASE_URL", "DB_CONN" }
         }
         catch (Exception ex) { Console.WriteLine($"⚠️  Could not parse DATABASE_URL: {ex.Message}"); }
     }
+    // Self-hosted Production (ASPNETCORE_ENVIRONMENT=Production on your own server/Docker) keeps its
+    // appsettings.Production.json layer, whose Conn values are deliberately empty: the Npgsql string
+    // comes from ConnectionStrings__PmoDb instead, so no DB password is ever committed. Unlike
+    // DB_CONN/DATABASE_URL it does not switch to the "Cloud" environment.
+    if (string.IsNullOrWhiteSpace(dbConn))
+    {
+        var pmoDb = builder.Configuration.GetConnectionString("PmoDb");
+        if (!string.IsNullOrWhiteSpace(pmoDb)) dbConn = pmoDb;
+    }
     var overrides = new System.Collections.Generic.Dictionary<string, string?>();
     if (!string.IsNullOrWhiteSpace(dbConn))
     {
