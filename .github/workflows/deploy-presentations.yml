@@ -1,0 +1,132 @@
+# Deploys the four static presentation decks to their own Netlify sites.
+# A push to main redeploys only the decks whose folders changed; "Run workflow"
+# in the Actions tab can redeploy one deck or all of them.
+#
+# Needs one repository secret: NETLIFY_AUTH_TOKEN (a Netlify personal access token).
+# Site IDs are not secret, so they live in the "Stage" step below.
+name: Deploy presentations to Netlify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'PMO_Portal_Pitch/**'
+      - 'presentation/sales/**'
+      - 'assignment2/aerobridge/**'
+      - 'assignment2/metropulse/**'
+      - '.github/workflows/deploy-presentations.yml'
+  workflow_dispatch:
+    inputs:
+      site:
+        description: 'Deck to deploy'
+        type: choice
+        default: all
+        options: [all, pitch, showcase, aerobridge, metropulse]
+
+permissions:
+  contents: read
+
+# Never run two deploys of the same deck at once; queue them instead.
+concurrency:
+  group: netlify-presentations-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      sites: ${{ steps.pick.outputs.sites }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        if: github.event_name == 'push'
+        with:
+          filters: |
+            pitch: 'PMO_Portal_Pitch/**'
+            showcase: 'presentation/sales/**'
+            aerobridge: 'assignment2/aerobridge/**'
+            metropulse: 'assignment2/metropulse/**'
+            workflow: '.github/workflows/deploy-presentations.yml'
+      - id: pick
+        env:
+          EVENT: ${{ github.event_name }}
+          CHOSEN: ${{ inputs.site }}
+          CHANGED: ${{ steps.filter.outputs.changes }}
+        run: |
+          all='["pitch","showcase","aerobridge","metropulse"]'
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            if [ "$CHOSEN" = "all" ]; then sites="$all"; else sites="[\"$CHOSEN\"]"; fi
+          elif echo "$CHANGED" | grep -q '"workflow"'; then
+            sites="$all"   # the workflow itself changed: redeploy everything once
+          else
+            sites=$(echo "${CHANGED:-[]}" | jq -c 'map(select(. != "workflow"))')
+          fi
+          echo "Decks to deploy: $sites"
+          echo "sites=$sites" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: changes
+    if: needs.changes.outputs.sites != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        site: ${{ fromJSON(needs.changes.outputs.sites) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-python@v5
+        if: matrix.site == 'pitch'
+        with:
+          python-version: '3.12'
+
+      - name: Build pitch from src
+        if: matrix.site == 'pitch'
+        run: python PMO_Portal_Pitch/build.py
+
+      # Copy only what each deck needs into a folder outside the repo, so the
+      # root netlify.toml (which configures the PMO Portal frontend) is not applied.
+      - name: Stage ${{ matrix.site }}
+        id: stage
+        run: |
+          out="$RUNNER_TEMP/site"
+          mkdir -p "$out"
+          case "${{ matrix.site }}" in
+            pitch)
+              cp PMO_Portal_Pitch/index.html PMO_Portal_Pitch/PMO_Portal_Management_Presentation.pptx "$out/"
+              id=139a969d-907d-4e7f-8613-47112dbc0f0b ;;
+            showcase)
+              cp -r presentation/sales/. "$out/"
+              id=b21b77a0-09eb-4268-b269-1db0e6b61f23 ;;
+            aerobridge)
+              cp assignment2/aerobridge/index.html "$out/"
+              id=81e23490-f82c-41dd-bb24-707cb16fd197 ;;
+            metropulse)
+              cp assignment2/metropulse/index.html "$out/"
+              id=95a0bacf-2144-453a-857f-a5c09621deee ;;
+          esac
+          echo "dir=$out" >> "$GITHUB_OUTPUT"
+          echo "site_id=$id" >> "$GITHUB_OUTPUT"
+          ls -la "$out"
+
+      - name: Deploy ${{ matrix.site }} to Netlify
+        working-directory: ${{ steps.stage.outputs.dir }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ steps.stage.outputs.site_id }}
+          MESSAGE: ${{ github.sha }} ${{ github.event.head_commit.message || 'manual run' }}
+        run: |
+          if [ -z "$NETLIFY_AUTH_TOKEN" ]; then
+            echo "::error::Repository secret NETLIFY_AUTH_TOKEN is not set."
+            exit 1
+          fi
+          npx -y netlify-cli@27.14.2 deploy --prod --no-build --dir . \
+            --site "$NETLIFY_SITE_ID" --message "${MESSAGE:0:200}" --json > deploy.json
+          url=$(jq -r '.url' deploy.json)
+          echo "Deployed: $url"
+          echo "### ${{ matrix.site }}: $url" >> "$GITHUB_STEP_SUMMARY"
