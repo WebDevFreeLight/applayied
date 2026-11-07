@@ -38,9 +38,19 @@ public static class DbProviderFactory
     /// </summary>
     public static string FromPostgresUrl(string value)
     {
+        value = CleanPasted(value);
         if (!value.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) &&
             !value.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+        {
+            // A URL that is not at the start would be read as one huge "keyword" by Npgsql, whose error
+            // message then prints the password into the logs. Fail with a message that names no secret.
+            if (value.Contains("postgres://", StringComparison.OrdinalIgnoreCase) ||
+                value.Contains("postgresql://", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException(
+                    "Database:ConnectionString looks like a postgres URL but does not start with " +
+                    "'postgresql://'. Paste only the URL from Neon (no 'psql', quotes or extra text).");
             return value;
+        }
 
         var uri = new Uri(value);
         var userInfo = uri.UserInfo.Split(':', 2);
@@ -64,6 +74,20 @@ public static class DbProviderFactory
         parts.Add("Maximum Pool Size=10");
         parts.Add("Connection Idle Lifetime=60");
         return string.Join(';', parts);
+    }
+
+    /// <summary>
+    /// Dashboard pastes often carry extras: surrounding whitespace or newlines, quotes, or Neon's
+    /// <c>psql 'postgresql://…'</c> command form. Strip them so only the connection string is left.
+    /// </summary>
+    private static string CleanPasted(string value)
+    {
+        var v = value.Trim();
+        if (v.StartsWith("psql ", StringComparison.OrdinalIgnoreCase))
+            v = v[5..].Trim();
+        while (v.Length >= 2 && (v[0] is '\'' or '"') && v[^1] == v[0])
+            v = v[1..^1].Trim();
+        return v;
     }
 
     public static ConnectionConfig CreateConfig(DatabaseOptions options, string contentRoot)

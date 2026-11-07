@@ -194,6 +194,27 @@ public class PostgresUrlTests
         Assert.Contains("SSL Mode=Require", cs);
     }
 
+    [Theory]
+    [InlineData(" postgresql://u:pw@ep-x-pooler.c-8.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\n")]
+    [InlineData("'postgresql://u:pw@ep-x-pooler.c-8.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require'")]
+    [InlineData("\"postgresql://u:pw@ep-x-pooler.c-8.us-east-2.aws.neon.tech/neondb?sslmode=require\"")]
+    [InlineData("psql 'postgresql://u:pw@ep-x-pooler.c-8.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require'")]
+    public void Pasted_extras_around_the_url_are_ignored(string pasted)
+    {
+        var cs = DbProviderFactory.FromPostgresUrl(pasted);
+        Assert.StartsWith("Host=ep-x-pooler.c-8.us-east-2.aws.neon.tech;", cs);
+        Assert.Contains("Password=pw", cs);
+        Assert.Contains("SSL Mode=Require", cs);
+    }
+
+    [Fact]
+    public void Garbled_url_fails_without_echoing_the_password()
+    {
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            DbProviderFactory.FromPostgresUrl("DATABASE_URL=postgresql://u:secret-pw@host/db?sslmode=require"));
+        Assert.DoesNotContain("secret-pw", ex.Message);
+    }
+
     [Fact]
     public void Key_value_strings_pass_through() =>
         Assert.Equal("Host=db;Database=x", DbProviderFactory.FromPostgresUrl("Host=db;Database=x"));
