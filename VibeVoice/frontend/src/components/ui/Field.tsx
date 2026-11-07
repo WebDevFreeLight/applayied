@@ -11,7 +11,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export function Input({ className, dir = 'auto', ...rest }: InputProps) {
-  return <input dir={dir} className={cn(control, 'h-10', className)} {...rest} />
+  return <input dir={dir} className={cn(control, 'h-10 pointer-coarse:h-11', className)} {...rest} />
 }
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -28,7 +28,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 export function Select({ className, children, ...rest }: SelectProps) {
   return (
-    <select className={cn(control, 'h-10 pe-8', className)} {...rest}>
+    <select className={cn(control, 'h-10 pe-8 pointer-coarse:h-11', className)} {...rest}>
       {children}
     </select>
   )

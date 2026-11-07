@@ -3,6 +3,8 @@ import type { HTMLAttributes, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { errorMessage } from '@/api/client'
 import { cn } from '@/lib/utils'
+import { ArtTile, type ArtName } from '../art/ArtTile'
+import { EmptyArt, type EmptyArtName } from '../art/EmptyArt'
 import { Button } from './Button'
 
 export function Card({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
@@ -60,12 +62,15 @@ export function Spinner({ className, label }: { className?: string; label?: stri
 
 export function EmptyState({
   icon: Icon,
+  art,
   title,
   body,
   action,
   className,
 }: {
-  icon: LucideIcon
+  icon?: LucideIcon
+  /** Illustrated scene (preferred over `icon`). */
+  art?: EmptyArtName
   title: ReactNode
   body?: ReactNode
   action?: ReactNode
@@ -74,16 +79,25 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center rounded-2xl border border-dashed border-border-strong px-6 py-14 text-center',
+        'flex flex-col items-center justify-center rounded-2xl border border-dashed border-border-strong px-4 py-10 text-center sm:px-6 sm:py-14',
         className,
       )}
     >
-      <div className="relative mb-4">
-        <div className="absolute inset-0 -z-10 scale-150 rounded-full bg-accent/10 blur-2xl" aria-hidden />
-        <div className="flex size-16 items-center justify-center rounded-2xl bg-accent-soft text-accent-text shadow-sm">
-          <Icon className="size-8" aria-hidden />
+      {art ? (
+        <div className="relative mb-3">
+          <div className="absolute inset-4 -z-10 rounded-full bg-brand-soft blur-2xl" aria-hidden />
+          <EmptyArt name={art} className="w-36 sm:w-44" />
         </div>
-      </div>
+      ) : (
+        Icon && (
+          <div className="relative mb-4">
+            <div className="absolute inset-0 -z-10 scale-150 rounded-full bg-accent/10 blur-2xl" aria-hidden />
+            <div className="flex size-16 items-center justify-center rounded-2xl bg-accent-soft text-accent-text shadow-sm">
+              <Icon className="size-8" aria-hidden />
+            </div>
+          </div>
+        )
+      )}
       <h3 className="text-base font-semibold text-fg">{title}</h3>
       {body && <p className="mt-1 max-w-sm text-sm text-muted">{body}</p>}
       {action && <div className="mt-5">{action}</div>}
@@ -128,26 +142,33 @@ export function PageHeader({
   subtitle,
   actions,
   icon: Icon,
+  art,
 }: {
   title: ReactNode
   subtitle?: ReactNode
   actions?: ReactNode
   icon?: LucideIcon
+  /** Illustrated tile (preferred over `icon`). */
+  art?: ArtName
 }) {
   return (
     <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-      <div className="flex min-w-0 items-start gap-3">
-        {Icon && (
-          <div className="mt-0.5 hidden size-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent-text sm:flex">
-            <Icon className="size-5" aria-hidden />
-          </div>
+      <div className="flex min-w-0 items-center gap-3">
+        {art ? (
+          <ArtTile name={art} size="md" className="hidden min-[400px]:inline-flex" />
+        ) : (
+          Icon && (
+            <div className="mt-0.5 hidden size-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent-text sm:flex">
+              <Icon className="size-5" aria-hidden />
+            </div>
+          )
         )}
         <div className="min-w-0">
-          <h1 className="text-2xl font-semibold tracking-tight text-fg">{title}</h1>
+          <h1 className="text-fluid-h1 font-semibold tracking-tight text-fg">{title}</h1>
           {subtitle && <p className="mt-0.5 text-sm text-muted">{subtitle}</p>}
         </div>
       </div>
-      {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+      {actions && <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">{actions}</div>}
     </div>
   )
 }
@@ -162,15 +183,21 @@ export function Segmented<T extends string>({
 }: {
   value: T
   onChange: (v: T) => void
-  options: { value: T; label: ReactNode; icon?: LucideIcon; title?: string }[]
+  options: { value: T; label: ReactNode; icon?: LucideIcon; art?: ArtName; title?: string }[]
   label: string
   className?: string
+  /** Stretch to full width on phones (equal columns). */
+  fullWidth?: boolean
 }) {
   return (
     <div
       role="radiogroup"
       aria-label={label}
-      className={cn('inline-flex rounded-xl border border-border bg-surface-2 p-0.5', className)}
+      className={cn(
+        'rounded-xl border border-border bg-surface-2 p-0.5',
+        fullWidth ? 'grid w-full auto-cols-fr grid-flow-col sm:inline-grid sm:w-auto' : 'inline-flex',
+        className,
+      )}
     >
       {options.map((o) => {
         const active = o.value === value
@@ -185,12 +212,12 @@ export function Segmented<T extends string>({
             aria-label={o.title}
             onClick={() => onChange(o.value)}
             className={cn(
-              'inline-flex h-8 items-center gap-1.5 rounded-[10px] px-3 text-sm font-medium transition-colors',
+              'inline-flex min-h-8 min-w-0 items-center justify-center gap-1.5 rounded-[10px] px-2.5 py-1 text-sm font-medium transition-colors pointer-coarse:min-h-11 sm:px-3',
               active ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-fg',
             )}
           >
-            {Icon && <Icon className="size-4" aria-hidden />}
-            {o.label}
+            {o.art ? <ArtTile name={o.art} size="xs" active={active} className="size-6 rounded-[7px]" /> : Icon && <Icon className="size-4 shrink-0" aria-hidden />}
+            {o.label && <span className="truncate">{o.label}</span>}
           </button>
         )
       })}
@@ -216,7 +243,7 @@ export function Chip({
       aria-pressed={active}
       onClick={onClick}
       className={cn(
-        'inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-sm font-medium transition-colors',
+        'inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-sm font-medium transition-colors pointer-coarse:h-11 pointer-coarse:px-4',
         active
           ? 'border-accent bg-accent-soft text-accent-text'
           : 'border-border bg-surface text-muted hover:text-fg hover:border-border-strong',

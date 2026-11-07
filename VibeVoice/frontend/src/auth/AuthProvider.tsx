@@ -7,7 +7,7 @@ import { getToken, onUnauthorized, setToken } from '@/api/client'
 import { qk } from '@/api/keys'
 import type { AuthResponse, UserDto } from '@/api/types'
 import { setLanguage } from '@/i18n'
-import { useTheme } from '@/theme/theme'
+import { isPalette, useTheme } from '@/theme/theme'
 import { AuthContext, type AuthContextValue } from './context'
 
 const USER_KEY = 'vv.user'
@@ -33,7 +33,7 @@ function cacheUser(user: UserDto | null) {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
   const { t } = useTranslation()
-  const { setTheme } = useTheme()
+  const { setTheme, setPalette } = useTheme()
   const [token, setTokenState] = useState<string | null>(getToken)
   const [cachedUser] = useState<UserDto | null>(() => (getToken() ? readCachedUser() : null))
 
@@ -89,12 +89,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Apply the user's saved language + theme whenever they change on the server.
   const prefLang = user?.preferredLanguage
   const prefTheme = user?.theme
+  const prefPalette = user?.palette
   useEffect(() => {
     if (prefLang) void setLanguage(prefLang)
   }, [prefLang])
   useEffect(() => {
     if (prefTheme) setTheme(prefTheme)
   }, [prefTheme, setTheme])
+  useEffect(() => {
+    if (isPalette(prefPalette)) setPalette(prefPalette)
+  }, [prefPalette, setPalette])
 
   const value = useMemo<AuthContextValue>(
     () => ({

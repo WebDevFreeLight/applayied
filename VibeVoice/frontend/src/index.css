@@ -1,34 +1,25 @@
 @import 'tailwindcss';
+@import './theme/palettes.css';
 
 /* Class-based dark mode: <html class="dark"> */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Identity-independent tokens (status colours, moods, notes, shadows). Palette tokens: theme/palettes.css */
 :root {
-  --bg: #f7f7fb;
-  --surface: #ffffff;
-  --surface-2: #f1f1f7;
-  --surface-3: #e8e8f1;
-  --border: #e3e3ec;
-  --border-strong: #cfcfdc;
-  --text: #17171f;
-  --muted: #62627a;
-  --subtle: #8e8ea4;
-  --accent: #6552f0;
-  --accent-hover: #5641e6;
-  --accent-soft: #eeebff;
-  --accent-text: #4b38d6;
-  --accent-fg: #ffffff;
   --danger: #dc2626;
+  --danger-fg: #ffffff;
   --danger-soft: #fdecec;
-  --success: #15935a;
-  --success-soft: #e5f6ee;
-  --warning: #b7791f;
-  --warning-soft: #fdf3e1;
-  --ai: #c026d3;
-  --ai-soft: #fbe9fd;
-  --ring: #7c6cf6;
-  --shadow: 0 1px 2px rgb(20 20 40 / 0.04), 0 4px 16px -6px rgb(20 20 40 / 0.08);
-  --shadow-lg: 0 10px 40px -10px rgb(20 20 40 / 0.25);
+  --success: #15803d;
+  --success-soft: #e3f5ea;
+  --warning: #a16207;
+  --warning-soft: #fdf3dc;
+  --ai: #a21caf;
+  --ai-fg: #ffffff;
+  --ai-soft: #fae8fd;
+  --shadow: 0 1px 2px rgb(30 15 30 / 0.04), 0 4px 16px -6px rgb(30 15 30 / 0.09);
+  --shadow-lg: 0 10px 40px -10px rgb(30 15 30 / 0.28);
+  --header-h: calc(4rem + env(safe-area-inset-top, 0px));
+  --editor-bar-h: 3.5rem;
 
   --note-yellow: #fff6d6;
   --note-green: #e3f6e8;
@@ -37,33 +28,28 @@
   --note-pink: #fde7f0;
   --note-orange: #ffecdc;
   --note-gray: #eeeef2;
-  color-scheme: light;
+
+  --mood-happy: #f59e0b;
+  --mood-grateful: #16a34a;
+  --mood-calm: #0ea5e9;
+  --mood-excited: #ec4899;
+  --mood-nostalgic: #a855f7;
+  --mood-proud: #f97316;
+  --mood-sad: #64748b;
+  --mood-loved: #e11d48;
 }
 
 .dark {
-  --bg: #0e0e14;
-  --surface: #16161f;
-  --surface-2: #1d1d28;
-  --surface-3: #262633;
-  --border: #2a2a38;
-  --border-strong: #3a3a4c;
-  --text: #ececf3;
-  --muted: #a0a0b6;
-  --subtle: #737389;
-  --accent: #8b7cff;
-  --accent-hover: #9d90ff;
-  --accent-soft: #25214a;
-  --accent-text: #b3a9ff;
-  --accent-fg: #0e0e14;
   --danger: #f87171;
+  --danger-fg: #1a0b0b;
   --danger-soft: #3a1818;
   --success: #4ade80;
   --success-soft: #12301f;
   --warning: #fbbf24;
   --warning-soft: #33280f;
   --ai: #e879f9;
+  --ai-fg: #1a0b1c;
   --ai-soft: #3a1740;
-  --ring: #a399ff;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px -6px rgb(0 0 0 / 0.5);
   --shadow-lg: 0 10px 40px -10px rgb(0 0 0 / 0.7);
 
@@ -74,7 +60,15 @@
   --note-pink: #3d1a2b;
   --note-orange: #3d2614;
   --note-gray: #24242e;
-  color-scheme: dark;
+
+  --mood-happy: #fbbf24;
+  --mood-grateful: #4ade80;
+  --mood-calm: #38bdf8;
+  --mood-excited: #f472b6;
+  --mood-nostalgic: #c084fc;
+  --mood-proud: #fb923c;
+  --mood-sad: #94a3b8;
+  --mood-loved: #fb7185;
 }
 
 @theme inline {
@@ -101,6 +95,25 @@
   --color-ai: var(--ai);
   --color-ai-soft: var(--ai-soft);
   --color-ring: var(--ring);
+  --color-danger-fg: var(--danger-fg);
+  --color-ai-fg: var(--ai-fg);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-mood-happy: var(--mood-happy);
+  --color-mood-grateful: var(--mood-grateful);
+  --color-mood-calm: var(--mood-calm);
+  --color-mood-excited: var(--mood-excited);
+  --color-mood-nostalgic: var(--mood-nostalgic);
+  --color-mood-proud: var(--mood-proud);
+  --color-mood-sad: var(--mood-sad);
+  --color-mood-loved: var(--mood-loved);
   --shadow-card: var(--shadow);
   --shadow-pop: var(--shadow-lg);
 }
@@ -142,6 +155,44 @@
   }
 }
 
+/* Identity gradient (from → via → to). */
+@utility bg-brand {
+  background-image: linear-gradient(135deg, var(--grad-from), var(--grad-via), var(--grad-to));
+}
+@utility bg-brand-soft {
+  background-image: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--grad-from) 16%, transparent),
+    color-mix(in srgb, var(--grad-via) 12%, transparent),
+    color-mix(in srgb, var(--grad-to) 16%, transparent)
+  );
+}
+@utility text-brand {
+  background-image: linear-gradient(90deg, var(--grad-from), var(--grad-via), var(--grad-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Fluid headings */
+@utility text-fluid-h1 {
+  font-size: clamp(1.375rem, 1.05rem + 1.4vw, 2rem);
+  line-height: 1.2;
+}
+@utility text-fluid-title {
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.125rem);
+  line-height: 1.2;
+}
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@utility px-safe {
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
@@ -155,6 +206,12 @@
     color: var(--text);
     -webkit-font-smoothing: antialiased;
     min-height: 100dvh;
+    /* Long Arabic/English words and URLs wrap instead of forcing horizontal scroll. */
+    overflow-wrap: anywhere;
+    overflow-x: clip;
+  }
+  html {
+    overflow-x: clip;
   }
   :focus-visible {
     outline: 2px solid var(--ring);
@@ -175,6 +232,45 @@
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+/* Illustrated icon tiles (components/art/ArtTile.tsx). Colours come from the active identity. */
+.art-tile {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(145deg, var(--art-a), var(--art-b));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    inset 0 -3px 8px rgb(0 0 0 / 0.16),
+    0 3px 8px -3px color-mix(in srgb, var(--art-a) 60%, transparent);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+.art-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 52% 0;
+  background: linear-gradient(rgb(255 255 255 / 0.24), transparent);
+  pointer-events: none;
+}
+.art-tile[data-active='true'] {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    inset 0 -3px 8px rgb(0 0 0 / 0.16),
+    0 0 0 2px var(--surface),
+    0 0 0 4px color-mix(in srgb, var(--art-a) 55%, transparent),
+    0 6px 18px -4px var(--art-a);
+}
+@media (hover: hover) {
+  a:hover > .art-tile,
+  button:hover > .art-tile {
+    transform: translateY(-1px);
   }
 }
 

@@ -102,7 +102,7 @@ export function AudioPlayer({
       url,
       height: 44,
       waveColor: cssVar('--border-strong', '#cfcfdc'),
-      progressColor: cssVar(ai ? '--ai' : '--accent', '#6552f0'),
+      progressColor: cssVar(ai ? '--ai' : '--accent', '#c2338e'),
       cursorColor: cssVar('--text', '#17171f'),
       cursorWidth: 1,
       barWidth: 2,
@@ -251,8 +251,8 @@ export function AudioPlayer({
             aria-label={playing ? t('audio.pause') : t('audio.play')}
             title={playing ? t('audio.pause') : t('audio.play')}
             className={cn(
-              'flex size-11 shrink-0 items-center justify-center rounded-full text-white shadow-sm transition-transform hover:scale-105 disabled:opacity-50',
-              ai ? 'bg-ai' : 'bg-accent',
+              'flex size-11 shrink-0 items-center justify-center rounded-full shadow-sm transition-transform hover:scale-105 disabled:opacity-50',
+              ai ? 'bg-ai text-ai-fg' : 'bg-accent text-accent-fg',
               loadError && 'hidden',
             )}
           >

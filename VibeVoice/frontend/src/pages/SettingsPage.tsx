@@ -51,7 +51,7 @@ export function SettingsPage() {
 function ProfileForm({ user }: { user: UserDto }) {
   const { t } = useTranslation()
   const { setUser } = useAuth()
-  const { setTheme } = useTheme()
+  const { setTheme, palette } = useTheme()
   const voices = useVoices()
   const schema = z.object({
     displayName: z.string().trim().min(1, t('validation.nameRequired')).max(100, t('validation.nameTooLong')),
@@ -76,6 +76,7 @@ function ProfileForm({ user }: { user: UserDto }) {
         preferredLanguage: v.preferredLanguage,
         theme: v.theme,
         preferredVoice: v.preferredVoice || null,
+        palette: user.palette ?? palette,
       }),
     onSuccess: (u) => {
       setUser(u)

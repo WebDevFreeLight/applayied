@@ -4,6 +4,8 @@
 export type Role = 'Admin' | 'User'
 export type Language = 'en' | 'ar'
 export type ThemePreference = 'light' | 'dark' | 'system'
+/** Visual identity (v4). */
+export type Palette = 'sunset' | 'oasis' | 'ocean' | 'neon'
 
 export interface UserDto {
   id: string
@@ -13,6 +15,8 @@ export interface UserDto {
   preferredLanguage: Language
   preferredVoice: string | null
   theme: ThemePreference
+  /** v4 visual identity (may be missing from older API builds → default "sunset"). */
+  palette: Palette
   isActive: boolean
   createdAt: string
 }
@@ -40,6 +44,7 @@ export interface UpdateProfileRequest {
   preferredLanguage: Language
   preferredVoice?: string | null
   theme: ThemePreference
+  palette?: Palette
 }
 
 export interface ChangePasswordRequest {

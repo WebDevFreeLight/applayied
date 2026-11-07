@@ -13,15 +13,16 @@ const variants: Record<ButtonVariant, string> = {
   outline: 'border border-border text-fg hover:bg-surface-2',
   ghost: 'text-muted hover:text-fg hover:bg-surface-2',
   subtle: 'bg-accent-soft text-accent-text hover:brightness-95 dark:hover:brightness-125',
-  danger: 'bg-danger text-white hover:brightness-110 shadow-sm',
+  danger: 'bg-danger text-danger-fg hover:brightness-110 shadow-sm',
 }
 
+/* On touch screens (pointer: coarse) every control grows to the 44px minimum target. */
 const sizes: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3 text-sm gap-1.5 rounded-lg',
-  md: 'h-10 px-4 text-sm gap-2 rounded-xl',
+  sm: 'h-8 px-3 text-sm gap-1.5 rounded-lg pointer-coarse:h-11 pointer-coarse:px-3.5',
+  md: 'h-10 px-4 text-sm gap-2 rounded-xl pointer-coarse:h-11',
   lg: 'h-12 px-5 text-base gap-2 rounded-xl',
-  icon: 'h-10 w-10 rounded-xl',
-  'icon-sm': 'h-8 w-8 rounded-lg',
+  icon: 'h-10 w-10 rounded-xl pointer-coarse:h-11 pointer-coarse:w-11',
+  'icon-sm': 'h-8 w-8 rounded-lg pointer-coarse:h-11 pointer-coarse:w-11',
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
