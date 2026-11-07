@@ -32,8 +32,9 @@ RUN if [ "$INSTALL_VIBEVOICE" = "true" ]; then \
 
 COPY app ./app
 
-RUN useradd --create-home --uid 1000 voice && mkdir -p /data/hf && chown -R voice /app /data
-USER voice
+# Not "voice": Debian already ships a system group with that name, so useradd would fail.
+RUN useradd --create-home --uid 1000 vvoice && mkdir -p /data/hf && chown -R vvoice /app /data
+USER vvoice
 VOLUME ["/data"]
 EXPOSE 8001
 
