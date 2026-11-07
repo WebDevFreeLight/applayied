@@ -133,7 +133,7 @@ PMO.constellation = (function () {
       g.addColorStop(0, `rgba(${c},${0.45 * n.alpha})`); g.addColorStop(1, `rgba(${c},0)`);
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, n.r * 5 * pulse, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = `rgba(${c},${n.alpha})`; ctx.beginPath(); ctx.arc(x, y, n.r * 0.55, 0, Math.PI * 2); ctx.fill();
-      if (fluid && n.talpha < 0.5) return; // no code labels behind text on small screens
+      if (fluid && (n.talpha < 0.5 || W < 700)) return; // no code labels behind text on small screens
       ctx.font = '600 15px "JetBrains Mono", monospace';
       ctx.fillStyle = `rgba(220,232,250,${0.7 * n.alpha})`;
       ctx.fillText(n.id, x + n.r + 6, y - n.r - 4);
