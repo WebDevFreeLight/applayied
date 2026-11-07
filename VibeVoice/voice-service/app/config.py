@@ -68,6 +68,9 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     log_format: Literal["text", "json"] = "text"
     cors_origins: str = "*"
+    # When set, every endpoint except /health requires the header X-Api-Key with this value
+    # (set it whenever the service is reachable from the internet, e.g. on Render).
+    api_key: str | None = None
     ffmpeg_binary: str = "ffmpeg"
 
     @field_validator(

@@ -136,3 +136,17 @@ def test_vibevoice_asr_missing_falls_back_to_whisper():
         body = c.get("/health").json()
         assert body["asr_engine"] == "whisper"
         assert body["asr_model_loaded"] is False  # lazy: nothing loaded until /transcribe
+
+
+def test_api_key_protects_everything_except_health():
+    from fastapi.testclient import TestClient
+
+    from app.main import create_app
+    from tests.conftest import make_settings
+
+    with TestClient(create_app(make_settings(api_key="s3cret"))) as c:
+        assert c.get("/health").status_code == 200
+        assert c.get("/voices").status_code == 401
+        assert c.get("/voices", headers={"X-Api-Key": "wrong"}).status_code == 401
+        assert c.get("/voices", headers={"X-Api-Key": "s3cret"}).status_code == 200
+        assert c.post("/tts", json={"text": "hi"}).status_code == 401

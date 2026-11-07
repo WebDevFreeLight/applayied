@@ -222,4 +222,28 @@ public sealed class ServiceTests : IDisposable
         await Assert.ThrowsAsync<BadRequestException>(() =>
             studio.RecognizeAsync(TestFiles.Upload("not an image"u8.ToArray(), "x.png", "image/png"), null, false, Ct));
     }
+
+    [Fact]
+    public async Task Database_file_storage_round_trips_and_deletes()
+    {
+        await using var scope = _host.Scope();
+        var db = _host.Get<SqlSugar.ISqlSugarClient>(scope);
+        var storage = new VibeVoice.Infrastructure.Storage.DatabaseFileStorage(db, TimeProvider.System);
+        var bytes = TestFiles.Wav(0.2);
+
+        var path = await storage.SaveAsync(new MemoryStream(bytes), "audio", "wav", Ct);
+        Assert.Matches(@"^audio/\d{4}/\d{2}/[0-9a-f]{32}\.wav$", path);
+
+        await using (var read = await storage.OpenReadAsync(path, Ct))
+        {
+            Assert.NotNull(read);
+            Assert.True(read!.CanSeek); // range requests need a seekable stream
+            using var ms = new MemoryStream();
+            await read.CopyToAsync(ms, Ct);
+            Assert.Equal(bytes, ms.ToArray());
+        }
+
+        await storage.DeleteAsync(path, Ct);
+        Assert.Null(await storage.OpenReadAsync(path, Ct));
+    }
 }

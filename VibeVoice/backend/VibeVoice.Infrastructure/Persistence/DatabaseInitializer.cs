@@ -23,6 +23,7 @@ public sealed class DatabaseInitializer(
     [
         typeof(User), typeof(Note), typeof(Memory), typeof(Tag), typeof(NoteTag), typeof(MemoryTag),
         typeof(Person), typeof(MemoryPerson), typeof(AudioClip), typeof(ImageAttachment),
+        typeof(Storage.StoredFile), // only used when Storage:Provider = Database; harmless otherwise
     ];
 
     public void Initialize()

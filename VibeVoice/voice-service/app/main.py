@@ -15,6 +15,7 @@ Run:  uvicorn app.main:app --host 0.0.0.0 --port 8001
 
 from __future__ import annotations
 
+import hmac
 import logging
 import os
 import tempfile
@@ -27,7 +28,7 @@ from typing import Literal
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
+from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
 
 from app.engines.rapid_ocr import OCRDisabled, OCRManager
@@ -76,6 +77,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
     app.add_middleware(CORSMiddleware, allow_origins=origins or ["*"], allow_methods=["*"], allow_headers=["*"],
                        expose_headers=["X-Voice", "X-Engine", "X-Language", "X-Duration-Seconds", "X-AI-Generated"])
+
+    @app.middleware("http")
+    async def require_api_key(request: Request, call_next):
+        # /health stays open so platforms can probe it; everything else needs the shared secret.
+        if settings.api_key and request.url.path != "/health":
+            supplied = request.headers.get("x-api-key", "")
+            if not hmac.compare_digest(supplied.encode(), settings.api_key.encode()):
+                return JSONResponse({"detail": "Missing or invalid X-Api-Key"}, status_code=401)
+        return await call_next(request)
 
     @app.middleware("http")
     async def access_log(request: Request, call_next):

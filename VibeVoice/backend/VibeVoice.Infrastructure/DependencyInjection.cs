@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.Configure<DatabaseOptions>(config.GetSection(DatabaseOptions.Section));
         services.Configure<StorageOptions>(config.GetSection(StorageOptions.Section));
         services.Configure<UploadOptions>(config.GetSection(UploadOptions.Section));
+        services.Configure<AuthOptions>(config.GetSection(AuthOptions.Section));
 
         // ---- SqlSugar: one thread-safe SqlSugarScope for the app (AsyncLocal keeps transactions per request) ----
         services.AddSingleton<ISqlSugarClient>(sp =>
@@ -39,8 +40,12 @@ public static class DependencyInjection
         services.AddTransient<DatabaseInitializer>();
 
         // ---- Files & images ----
-        services.AddSingleton<IFileStorage>(sp =>
-            new LocalFileStorage(sp.GetRequiredService<IOptions<StorageOptions>>(), contentRoot, sp.GetRequiredService<TimeProvider>()));
+        var storageProvider = config.GetSection(StorageOptions.Section).Get<StorageOptions>()?.Provider ?? "Local";
+        if (storageProvider.Equals("Database", StringComparison.OrdinalIgnoreCase))
+            services.AddSingleton<IFileStorage, DatabaseFileStorage>();
+        else
+            services.AddSingleton<IFileStorage>(sp =>
+                new LocalFileStorage(sp.GetRequiredService<IOptions<StorageOptions>>(), contentRoot, sp.GetRequiredService<TimeProvider>()));
         services.AddSingleton<IImageProcessor, ImageSharpProcessor>();
 
         // ---- Auth ----
@@ -55,6 +60,7 @@ public static class DependencyInjection
             {
                 c.BaseAddress = new Uri(voice.BaseUrl.TrimEnd('/') + "/");
                 c.Timeout = Timeout.InfiniteTimeSpan; // the resilience pipeline owns timeouts
+                if (!string.IsNullOrWhiteSpace(voice.ApiKey)) c.DefaultRequestHeaders.Add("X-Api-Key", voice.ApiKey);
             })
             .AddStandardResilienceHandler(o =>
             {

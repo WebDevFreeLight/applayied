@@ -22,6 +22,9 @@ public sealed class VoiceServiceOptions
     public int RequestTimeoutSeconds { get; set; } = 900;
 
     public int HealthTimeoutSeconds { get; set; } = 3;
+
+    /// <summary>Shared secret sent as X-Api-Key when the voice service is reachable from the internet.</summary>
+    public string? ApiKey { get; set; }
 }
 
 /// <summary>Typed HttpClient for the Python voice service (snake_case JSON). Resilience is configured in DI.</summary>

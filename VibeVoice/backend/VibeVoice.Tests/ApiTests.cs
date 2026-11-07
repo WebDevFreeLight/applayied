@@ -12,6 +12,9 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
 {
     public string Folder { get; } = Path.Combine(Path.GetTempPath(), "vibevoice-api-tests", Guid.NewGuid().ToString("N"));
 
+    /// <summary>Extra configuration for a specific test.</summary>
+    public Dictionary<string, string> Settings { get; } = [];
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         Directory.CreateDirectory(Folder);
@@ -24,6 +27,7 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         builder.UseSetting("VoiceService:RequestTimeoutSeconds", "2");
         builder.UseSetting("VoiceService:HealthTimeoutSeconds", "1");
         builder.UseSetting("RateLimiting:AuthPermitsPerMinute", "1000");
+        foreach (var (key, value) in Settings) builder.UseSetting(key, value);
     }
 
     protected override void Dispose(bool disposing)
@@ -159,6 +163,19 @@ public sealed class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.True(res.Headers.Contains("X-Ocr-Error"));
         var images = await res.Content.ReadFromJsonAsync<JsonElement>(Json, Ct);
         Assert.Equal(JsonValueKind.Null, images[0].GetProperty("ocrText").ValueKind);
+    }
+
+    [Fact]
+    public async Task Bootstrap_admin_email_wins_over_first_registration()
+    {
+        await using var fresh = new ApiFactory { Settings = { ["Auth:BootstrapAdminEmail"] = "Owner@Example.com" } };
+        var stranger = await fresh.CreateClient().PostAsJsonAsync("/api/auth/register",
+            new { email = "stranger@x.test", password = "Password1", displayName = "S" }, Ct);
+        Assert.Equal("User", (await stranger.Content.ReadFromJsonAsync<JsonElement>(Json, Ct)).GetProperty("user").GetProperty("role").GetString());
+
+        var owner = await fresh.CreateClient().PostAsJsonAsync("/api/auth/register",
+            new { email = "owner@example.com", password = "Password1", displayName = "O" }, Ct);
+        Assert.Equal("Admin", (await owner.Content.ReadFromJsonAsync<JsonElement>(Json, Ct)).GetProperty("user").GetProperty("role").GetString());
     }
 
     [Fact]

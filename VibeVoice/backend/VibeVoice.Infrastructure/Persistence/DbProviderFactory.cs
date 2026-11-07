@@ -32,6 +32,40 @@ public static class DbProviderFactory
             $"Unsupported Database:Provider '{provider}'. Use Sqlite, PostgreSQL, SqlServer, MySql or Oracle."),
     };
 
+    /// <summary>
+    /// Hosts like Neon, Render and Heroku hand out <c>postgres://user:pass@host:port/db?sslmode=require</c>;
+    /// Npgsql wants key=value pairs. Anything that is not a URL is returned unchanged.
+    /// </summary>
+    public static string FromPostgresUrl(string value)
+    {
+        if (!value.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) &&
+            !value.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+            return value;
+
+        var uri = new Uri(value);
+        var userInfo = uri.UserInfo.Split(':', 2);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var sslMode = query["sslmode"] switch
+        {
+            null or "" => "Prefer",
+            var m => char.ToUpperInvariant(m[0]) + m[1..].Replace("-full", "Full").Replace("-ca", "CA"),
+        };
+
+        var parts = new List<string>
+        {
+            $"Host={uri.Host}",
+            $"Port={(uri.Port > 0 ? uri.Port : 5432)}",
+            $"Database={Uri.UnescapeDataString(uri.AbsolutePath.TrimStart('/'))}",
+            $"Username={Uri.UnescapeDataString(userInfo[0])}",
+        };
+        if (userInfo.Length > 1) parts.Add($"Password={Uri.UnescapeDataString(userInfo[1])}");
+        parts.Add($"SSL Mode={sslMode}");
+        // Serverless Postgres (Neon) closes idle connections; keep the pool small and recycle quickly.
+        parts.Add("Maximum Pool Size=10");
+        parts.Add("Connection Idle Lifetime=60");
+        return string.Join(';', parts);
+    }
+
     public static ConnectionConfig CreateConfig(DatabaseOptions options, string contentRoot)
     {
         var dbType = ToDbType(options.Provider);
@@ -48,6 +82,10 @@ public static class DbProviderFactory
                 builder["Data Source"] = full;
                 connectionString = builder.ConnectionString;
             }
+        }
+        else if (dbType == DbType.PostgreSQL)
+        {
+            connectionString = FromPostgresUrl(connectionString);
         }
 
         return new ConnectionConfig

@@ -7,6 +7,9 @@ public sealed class StorageOptions
 {
     public const string Section = "Storage";
 
+    /// <summary>Local (files on disk, default) or Database (bytes in the stored_files table).</summary>
+    public string Provider { get; set; } = "Local";
+
     /// <summary>Root folder for uploads; relative paths are resolved against the content root.</summary>
     public string RootPath { get; set; } = "storage";
 }

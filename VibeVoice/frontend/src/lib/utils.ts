@@ -81,11 +81,17 @@ export const MOOD_EMOJI: Record<Mood, string> = {
 }
 
 export const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const
-export const IMAGE_MAX_BYTES = 10 * 1024 * 1024
+/** Upload limits in MB; a deployment with smaller server limits (e.g. free hosting) sets VITE_MAX_*_MB to match. */
+function limitMb(value: string | undefined, fallback: number): number {
+  const n = Number(value)
+  return (Number.isFinite(n) && n > 0 ? n : fallback) * 1024 * 1024
+}
+
+export const IMAGE_MAX_BYTES = limitMb(import.meta.env.VITE_MAX_IMAGE_MB, 10)
 export const AUDIO_EXTENSIONS = ['webm', 'ogg', 'oga', 'opus', 'wav', 'mp3', 'm4a', 'aac', 'flac']
-export const AUDIO_MAX_BYTES = 50 * 1024 * 1024
+export const AUDIO_MAX_BYTES = limitMb(import.meta.env.VITE_MAX_AUDIO_MB, 50)
 export const VIDEO_EXTENSIONS = ['mp4', 'm4v', 'mov', 'webm', 'mkv', 'avi']
-export const VIDEO_MAX_BYTES = 500 * 1024 * 1024
+export const VIDEO_MAX_BYTES = limitMb(import.meta.env.VITE_MAX_VIDEO_MB, 500)
 export const AUDIO_ACCEPT = 'audio/*,.webm,.ogg,.opus,.wav,.mp3,.m4a,.aac,.flac'
 /** Accept list for "Upload audio / video" pickers. */
 export const MEDIA_ACCEPT = `${AUDIO_ACCEPT},video/*,.mp4,.m4v,.mov,.mkv,.avi`

@@ -37,6 +37,10 @@ builder.Services.ConfigureHttpJsonOptions(o =>
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<AppExceptionHandler>();
 
+// ---- Hosting: platforms like Render choose the port via $PORT ----
+if (Environment.GetEnvironmentVariable("PORT") is { Length: > 0 } port)
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // ---- Upload limits (videos can be large) ----
 var maxBody = builder.Configuration.GetValue<long?>("Uploads:MaxRequestBytes") ?? 520L * 1024 * 1024;
 builder.WebHost.ConfigureKestrel(k => k.Limits.MaxRequestBodySize = maxBody);

@@ -11,6 +11,18 @@ public sealed class UploadOptions
     public int MaxFilesPerRequest { get; set; } = 20;
 }
 
+/// <summary>Account rules for internet-facing installs.</summary>
+public sealed class AuthOptions
+{
+    public const string Section = "Auth";
+
+    /// <summary>
+    /// When set, only this email becomes Admin on registration (instead of "whoever registers first"),
+    /// so a stranger who finds a fresh public install can't claim it.
+    /// </summary>
+    public string? BootstrapAdminEmail { get; set; }
+}
+
 public sealed record DetectedFile(string MimeType, string Extension);
 
 public sealed record DetectedMedia(DetectedFile File, MediaKind Kind);

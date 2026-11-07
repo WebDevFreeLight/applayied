@@ -178,3 +178,23 @@ public class LocalNetworkTests
     public void Only_loopback_and_private_ranges_are_local(string origin, bool expected) =>
         Assert.Equal(expected, VibeVoice.Api.Infrastructure.LocalNetwork.IsPrivateOrigin(origin));
 }
+
+public class PostgresUrlTests
+{
+    [Fact]
+    public void Neon_style_url_becomes_an_npgsql_connection_string()
+    {
+        var cs = DbProviderFactory.FromPostgresUrl(
+            "postgresql://vv_owner:p%40ss%3Aword@ep-cool-sun-123.eu-central-1.aws.neon.tech/vibevoice?sslmode=require");
+        Assert.Contains("Host=ep-cool-sun-123.eu-central-1.aws.neon.tech", cs);
+        Assert.Contains("Port=5432", cs);
+        Assert.Contains("Database=vibevoice", cs);
+        Assert.Contains("Username=vv_owner", cs);
+        Assert.Contains("Password=p@ss:word", cs);   // URL-encoded characters decoded
+        Assert.Contains("SSL Mode=Require", cs);
+    }
+
+    [Fact]
+    public void Key_value_strings_pass_through() =>
+        Assert.Equal("Host=db;Database=x", DbProviderFactory.FromPostgresUrl("Host=db;Database=x"));
+}

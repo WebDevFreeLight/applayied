@@ -11,7 +11,8 @@ public sealed class AuthService(
     IRepository<User> users,
     IPasswordHasher<User> hasher,
     ITokenService tokens,
-    ICurrentUser currentUser)
+    ICurrentUser currentUser,
+    Microsoft.Extensions.Options.IOptions<AuthOptions> authOptions)
 {
     public static string NormalizeEmail(string email) => email.Trim().ToUpperInvariant();
 
@@ -27,13 +28,23 @@ public sealed class AuthService(
             NormalizedEmail = normalized,
             DisplayName = request.DisplayName.Trim(),
             PreferredLanguage = request.PreferredLanguage is "ar" ? "ar" : "en",
-            // The very first account administers the installation.
-            Role = await users.AnyAsync(u => true, ct) ? UserRole.User : UserRole.Admin,
+            Role = await IsAdminOnRegisterAsync(normalized, ct) ? UserRole.Admin : UserRole.User,
             LastLoginAt = DateTime.UtcNow,
         };
         user.PasswordHash = hasher.HashPassword(user, request.Password);
         await users.InsertAsync(user, ct);
         return Issue(user);
+    }
+
+    /// <summary>
+    /// With Auth:BootstrapAdminEmail set, only that address becomes Admin. Otherwise the very first account
+    /// administers the installation (fine on a private machine, risky on a public URL).
+    /// </summary>
+    private async Task<bool> IsAdminOnRegisterAsync(string normalizedEmail, CancellationToken ct)
+    {
+        var bootstrap = authOptions.Value.BootstrapAdminEmail;
+        if (!string.IsNullOrWhiteSpace(bootstrap)) return NormalizeEmail(bootstrap) == normalizedEmail;
+        return !await users.AnyAsync(u => true, ct);
     }
 
     public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct)
