@@ -146,6 +146,10 @@ public sealed class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>
         var health = await client.GetFromJsonAsync<JsonElement>("/api/health", Json, Ct);
         Assert.Equal("Degraded", health.GetProperty("status").GetString());
         Assert.Equal("up", health.GetProperty("database").GetString());
+
+        // Plain liveness stays OK even while the voice service is down.
+        var live = await client.GetAsync("/health", Ct);
+        Assert.Equal(HttpStatusCode.OK, live.StatusCode);
     }
 
     [Fact]

@@ -140,6 +140,8 @@ app.UseAuthorization();
 app.UseRateLimiter();
 
 app.MapGet("/", () => Results.Redirect(app.Environment.IsDevelopment() ? "/swagger" : "/api/health")).ExcludeFromDescription();
+// Liveness for load balancers (Render probes /health): answers without touching the database or voice service.
+app.MapGet("/health", () => Results.Ok(new { status = "ok" })).ExcludeFromDescription();
 app.MapAuth();
 app.MapNotes();
 app.MapMemories();
