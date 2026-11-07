@@ -6,8 +6,12 @@ namespace VibeVoice.Application.Common;
 
 public static class Mapping
 {
-    public static UserDto ToDto(this User u) => new(
-        u.Id, u.Email, u.DisplayName, u.Role, u.PreferredLanguage, u.PreferredVoice, u.Theme, u.Palette, u.IsActive, u.CreatedAt);
+    public static UserDto ToDto(this User u, Role role) => new(
+        u.Id, u.Email, u.DisplayName, role.Name, role.Id, role.GetPermissions(),
+        u.PreferredLanguage, u.PreferredVoice, u.Theme, u.Palette, u.IsActive, u.CreatedAt, u.LastLoginAt);
+
+    public static RoleDto ToDto(this Role r, int userCount) => new(
+        r.Id, r.Name, r.Description, r.GetPermissions(), r.IsSystem, userCount, r.CreatedAt, r.UpdatedAt);
 
     public static ImageDto ToDto(this ImageAttachment i) => new(
         i.Id, i.OwnerType, i.OwnerId, i.FilePath, i.ThumbnailPath, i.MimeType, i.Width, i.Height,

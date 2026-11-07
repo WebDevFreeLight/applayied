@@ -22,7 +22,11 @@ public static class DependencyInjection
         services.AddScoped<AttachmentService>();
         services.AddScoped<NoteService>();
         services.AddScoped<MemoryService>();
+        services.AddSingleton<AccessCache>();
+        services.AddScoped<AccessService>();
         services.AddScoped<AuthService>();
+        services.AddScoped<RoleService>();
+        services.AddScoped<UserAdminService>();
         services.AddScoped<LibraryService>();
         services.AddScoped<VoiceStudioService>();
         services.AddScoped<SearchService>();

@@ -16,9 +16,11 @@ public sealed record RegisterRequest(string Email, string Password, string Displ
 
 public sealed record LoginRequest(string Email, string Password);
 
+/// <summary>A user with their role name and effective permissions (what the UI may show).</summary>
 public sealed record UserDto(
-    Guid Id, string Email, string DisplayName, UserRole Role, string PreferredLanguage,
-    string? PreferredVoice, string Theme, string Palette, bool IsActive, DateTime CreatedAt);
+    Guid Id, string Email, string DisplayName, string Role, Guid RoleId, IReadOnlyList<string> Permissions,
+    string PreferredLanguage, string? PreferredVoice, string Theme, string Palette, bool IsActive,
+    DateTime CreatedAt, DateTime? LastLoginAt);
 
 public sealed record AuthResponse(string Token, DateTime ExpiresAt, UserDto User);
 
@@ -26,7 +28,33 @@ public sealed record UpdateProfileRequest(string DisplayName, string PreferredLa
 
 public sealed record ChangePasswordRequest(string CurrentPassword, string NewPassword);
 
-public sealed record ChangeRoleRequest(UserRole Role);
+public sealed record ChangeRoleRequest(Guid RoleId);
+
+// ---------- Administration: users & roles ----------
+
+public sealed record PermissionDto(string Key, string Group);
+
+public sealed record RoleDto(
+    Guid Id, string Name, string? Description, IReadOnlyList<string> Permissions, bool IsSystem,
+    int UserCount, DateTime CreatedAt, DateTime UpdatedAt);
+
+public sealed record SaveRoleRequest(string Name, string? Description, IReadOnlyList<string>? Permissions);
+
+public sealed record CreateUserRequest(
+    string Email, string DisplayName, string Password, Guid RoleId, string? PreferredLanguage, bool IsActive = true);
+
+public sealed record UpdateUserRequest(string Email, string DisplayName, Guid RoleId, string PreferredLanguage, bool IsActive);
+
+public sealed record ResetPasswordRequest(string NewPassword);
+
+public sealed record UserQuery(int Page = 1, int PageSize = 20, string? Search = null, Guid? RoleId = null, bool? Active = null);
+
+/// <summary>A row in the admin user list: the user plus what they store.</summary>
+public sealed record AdminUserDto(UserDto User, int Notes, int Memories, int MediaFiles, long StorageBytes);
+
+public sealed record AdminOverviewDto(
+    int Users, int ActiveUsers, int Admins, int Roles, int Notes, int Memories, int AudioClips, int Images,
+    long StorageBytes, VoiceStatusDto Voice, IReadOnlyList<UserDto> RecentUsers);
 
 public sealed record SetActiveRequest(bool IsActive);
 

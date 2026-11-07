@@ -82,7 +82,7 @@ public interface IVoiceServiceClient
 
 public interface ITokenService
 {
-    (string Token, DateTime ExpiresAt) CreateToken(User user);
+    (string Token, DateTime ExpiresAt) CreateToken(User user, string roleName);
 }
 
 public interface ICurrentUser

@@ -212,3 +212,45 @@ Validation checks magic bytes, not just extension.
 Engines: `TTS_ENGINE=vibevoice|edge|dev` (dev = synthetic tone, for tests/CI),
 `ARABIC_TTS_ENGINE=edge|dev|vibevoice` (VibeVoice-Realtime ships no Arabic preset),
 `ASR_ENGINE=none|whisper|vibevoice`. `language` omitted → auto-detected from the text script.
+
+## Users, roles & permissions (v5)
+
+Permissions are checked **server-side on every request** (30 s cache, cleared on any user/role change), so role edits
+and deactivation apply immediately — a deactivated user's existing token gets 403 everywhere.
+
+```ts
+UserDto = { id; email; displayName; role: string /* role name */; roleId: string; permissions: Permission[];
+  preferredLanguage; preferredVoice; theme; palette; isActive; createdAt; lastLoginAt: string|null }
+Permission = "notes"|"memories"|"audio.upload"|"images.upload"|"voice.tts"|"voice.transcribe"|"voice.ocr"
+           |"users.view"|"users.manage"|"roles.manage"
+PermissionDto = { key: Permission; group: "content"|"media"|"ai"|"admin" }
+RoleDto = { id; name; description: string|null; permissions: Permission[]; isSystem: boolean; userCount: number; createdAt; updatedAt }
+AdminUserDto = { user: UserDto; notes: number; memories: number; mediaFiles: number; storageBytes: number }
+AdminOverviewDto = { users; activeUsers; admins; roles; notes; memories; audioClips; images; storageBytes;
+  voice: VoiceStatus; recentUsers: UserDto[] }
+```
+
+Built-in roles: **Admin** `00000000-0000-0000-0000-00000000a001` (all permissions, cannot be edited/deleted) and
+**User** `…a002` (all non-admin permissions, editable, cannot be deleted/renamed). The UI should show/hide features from
+`user.permissions` (login, register and `/api/auth/me` all return it).
+
+| Method | Path | Permission | Notes |
+|---|---|---|---|
+| GET | `/api/users?page&pageSize&search&roleId&active` | users.view | `PagedResult<AdminUserDto>` |
+| GET | `/api/users/{id}` | users.view | `UserDto` |
+| POST | `/api/users` | users.manage | `{ email, displayName, password, roleId, preferredLanguage?, isActive? }` → 201 `UserDto` |
+| PUT | `/api/users/{id}` | users.manage | `{ email, displayName, roleId, preferredLanguage, isActive }` → `UserDto` |
+| PUT | `/api/users/{id}/role` | users.manage | `{ roleId }` → `UserDto` |
+| PUT | `/api/users/{id}/active` | users.manage | `{ isActive }` → `UserDto` |
+| PUT | `/api/users/{id}/password` | users.manage | `{ newPassword }` → 204 (admin reset) |
+| DELETE | `/api/users/{id}` | users.manage | 204; deletes the account **and all its data** |
+| GET | `/api/roles` | users.view | `RoleDto[]` |
+| POST | `/api/roles` | roles.manage | `{ name, description?, permissions }` → 201 `RoleDto` |
+| PUT | `/api/roles/{id}` | roles.manage | same body → `RoleDto` (400 for Admin; built-ins can't be renamed) |
+| DELETE | `/api/roles/{id}` | roles.manage | 204; 409 when users still have it; 400 for built-ins |
+| GET | `/api/permissions` | (signed in) | `PermissionDto[]` |
+| GET | `/api/admin/overview` | users.view | `AdminOverviewDto` |
+
+Guards (400): no self-delete, no self-deactivate, no removing your own Admin role, never zero active Admins.
+Feature endpoints now require: notes→`notes`, memories→`memories`, audio/video upload→`audio.upload`,
+image upload→`images.upload`, TTS→`voice.tts`, transcription→`voice.transcribe`, OCR→`voice.ocr` (else 403).

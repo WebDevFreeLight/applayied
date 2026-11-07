@@ -197,10 +197,115 @@ public sealed class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>
 
         Assert.Equal(HttpStatusCode.Forbidden, (await second.GetAsync("/api/users", Ct)).StatusCode);
         var users = await first.GetFromJsonAsync<JsonElement>("/api/users", Json, Ct);
-        Assert.Equal(2, users.GetArrayLength());
+        Assert.Equal(2, users.GetProperty("total").GetInt32());
 
         // The last admin cannot demote themselves.
-        var demote = await first.PutAsJsonAsync($"/api/users/{admin.GetProperty("user").GetProperty("id").GetString()}/role", new { role = "User" }, Ct);
+        var demote = await first.PutAsJsonAsync($"/api/users/{admin.GetProperty("user").GetProperty("id").GetString()}/role", new { roleId = "00000000-0000-0000-0000-00000000a002" }, Ct);
         Assert.Equal(HttpStatusCode.BadRequest, demote.StatusCode);
+    }
+}
+
+public sealed class RoleAndUserAdminTests
+{
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+    private const string UserRoleId = "00000000-0000-0000-0000-00000000a002";
+    private CancellationToken Ct => CancellationToken.None;
+
+    private static async Task<(HttpClient Client, JsonElement User)> RegisterAsync(ApiFactory f, string email)
+    {
+        var c = f.CreateClient();
+        var res = await c.PostAsJsonAsync("/api/auth/register", new { email, password = "Password1", displayName = email }, CancellationToken.None);
+        var body = await res.Content.ReadFromJsonAsync<JsonElement>(Json, CancellationToken.None);
+        c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", body.GetProperty("token").GetString());
+        return (c, body.GetProperty("user"));
+    }
+
+    [Fact]
+    public async Task Me_includes_role_and_permissions()
+    {
+        await using var f = new ApiFactory();
+        var (admin, adminUser) = await RegisterAsync(f, "admin@x.test");
+        Assert.Equal("Admin", adminUser.GetProperty("role").GetString());
+        Assert.Contains("roles.manage", adminUser.GetProperty("permissions").EnumerateArray().Select(p => p.GetString()));
+
+        var (_, member) = await RegisterAsync(f, "member@x.test");
+        var perms = member.GetProperty("permissions").EnumerateArray().Select(p => p.GetString()).ToList();
+        Assert.Contains("notes", perms);
+        Assert.DoesNotContain("users.manage", perms);
+    }
+
+    [Fact]
+    public async Task Custom_role_permissions_are_enforced_on_the_server_immediately()
+    {
+        await using var f = new ApiFactory();
+        var (admin, _) = await RegisterAsync(f, "admin@x.test");
+        var (member, memberUser) = await RegisterAsync(f, "member@x.test");
+        Assert.Equal(HttpStatusCode.OK, (await member.GetAsync("/api/notes", Ct)).StatusCode);
+
+        // A "Memories only" role: no notes, no AI.
+        var roleRes = await admin.PostAsJsonAsync("/api/roles", new { name = "Memories only", permissions = new[] { "memories" } }, Ct);
+        Assert.Equal(HttpStatusCode.Created, roleRes.StatusCode);
+        var roleId = (await roleRes.Content.ReadFromJsonAsync<JsonElement>(Json, Ct)).GetProperty("id").GetString();
+        var assign = await admin.PutAsJsonAsync($"/api/users/{memberUser.GetProperty("id").GetString()}/role", new { roleId }, Ct);
+        Assert.Equal(HttpStatusCode.OK, assign.StatusCode);
+
+        // Same token, new rights — no re-login needed.
+        Assert.Equal(HttpStatusCode.Forbidden, (await member.GetAsync("/api/notes", Ct)).StatusCode);
+        Assert.Equal(HttpStatusCode.OK, (await member.GetAsync("/api/memories", Ct)).StatusCode);
+        Assert.Equal(HttpStatusCode.Forbidden, (await member.PostAsJsonAsync("/api/voice/tts", new { text = "hi" }, Ct)).StatusCode);
+        Assert.Equal(HttpStatusCode.Forbidden, (await member.GetAsync("/api/users", Ct)).StatusCode);
+
+        // A role in use can't be deleted; built-in Admin can't be edited.
+        Assert.Equal(HttpStatusCode.Conflict, (await admin.DeleteAsync($"/api/roles/{roleId}", Ct)).StatusCode);
+        var editAdmin = await admin.PutAsJsonAsync("/api/roles/00000000-0000-0000-0000-00000000a001", new { name = "Admin", permissions = new[] { "notes" } }, Ct);
+        Assert.Equal(HttpStatusCode.BadRequest, editAdmin.StatusCode);
+    }
+
+    [Fact]
+    public async Task Deactivated_users_are_locked_out_with_their_existing_token()
+    {
+        await using var f = new ApiFactory();
+        var (admin, _) = await RegisterAsync(f, "admin@x.test");
+        var (member, memberUser) = await RegisterAsync(f, "member@x.test");
+        Assert.Equal(HttpStatusCode.OK, (await member.GetAsync("/api/auth/me", Ct)).StatusCode);
+
+        await admin.PutAsJsonAsync($"/api/users/{memberUser.GetProperty("id").GetString()}/active", new { isActive = false }, Ct);
+        Assert.Equal(HttpStatusCode.Forbidden, (await member.GetAsync("/api/auth/me", Ct)).StatusCode);
+        Assert.Equal(HttpStatusCode.Forbidden, (await member.GetAsync("/api/notes", Ct)).StatusCode);
+    }
+
+    [Fact]
+    public async Task Admin_creates_resets_and_deletes_users_with_their_data()
+    {
+        await using var f = new ApiFactory();
+        var (admin, adminUser) = await RegisterAsync(f, "admin@x.test");
+
+        var created = await admin.PostAsJsonAsync("/api/users",
+            new { email = "new@x.test", displayName = "New", password = "Password1", roleId = UserRoleId }, Ct);
+        Assert.Equal(HttpStatusCode.Created, created.StatusCode);
+        var id = (await created.Content.ReadFromJsonAsync<JsonElement>(Json, Ct)).GetProperty("id").GetString();
+
+        Assert.Equal(HttpStatusCode.NoContent,
+            (await admin.PutAsJsonAsync($"/api/users/{id}/password", new { newPassword = "Changed123" }, Ct)).StatusCode);
+        var login = await f.CreateClient().PostAsJsonAsync("/api/auth/login", new { email = "new@x.test", password = "Changed123" }, Ct);
+        Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+        var token = (await login.Content.ReadFromJsonAsync<JsonElement>(Json, Ct)).GetProperty("token").GetString();
+        var newUser = f.CreateClient();
+        newUser.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        await newUser.PostAsJsonAsync("/api/notes", new { title = "mine", body = "" }, Ct);
+
+        var list = await admin.GetFromJsonAsync<JsonElement>("/api/users?search=new@", Json, Ct);
+        var row = list.GetProperty("items")[0];
+        Assert.Equal(1, row.GetProperty("notes").GetInt32());
+
+        // Self-protection and last-admin protection.
+        Assert.Equal(HttpStatusCode.BadRequest, (await admin.DeleteAsync($"/api/users/{adminUser.GetProperty("id").GetString()}", Ct)).StatusCode);
+
+        Assert.Equal(HttpStatusCode.NoContent, (await admin.DeleteAsync($"/api/users/{id}", Ct)).StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized,
+            (await f.CreateClient().PostAsJsonAsync("/api/auth/login", new { email = "new@x.test", password = "Changed123" }, Ct)).StatusCode);
+        var overview = await admin.GetFromJsonAsync<JsonElement>("/api/admin/overview", Json, Ct);
+        Assert.Equal(1, overview.GetProperty("users").GetInt32());
+        Assert.Equal(0, overview.GetProperty("notes").GetInt32());
     }
 }

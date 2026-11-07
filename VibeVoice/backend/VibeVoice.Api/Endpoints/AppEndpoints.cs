@@ -29,10 +29,52 @@ public static class AppEndpoints
             return Results.NoContent();
         }).Validate<ChangePasswordRequest>();
 
-        var admin = users.MapGroup("").RequireAuthorization("Admin");
-        admin.MapGet("/", (AuthService s, CancellationToken ct) => s.ListUsersAsync(ct));
-        admin.MapPut("/{id:guid}/role", (Guid id, ChangeRoleRequest body, AuthService s, CancellationToken ct) => s.SetRoleAsync(id, body.Role, ct));
-        admin.MapPut("/{id:guid}/active", (Guid id, SetActiveRequest body, AuthService s, CancellationToken ct) => s.SetActiveAsync(id, body.IsActive, ct));
+        // ---- Administration: users (view vs manage) ----
+        users.MapGet("/", ([AsParameters] UserQuery query, UserAdminService s, CancellationToken ct) => s.ListAsync(query, ct))
+            .RequirePermission(Permissions.UsersView);
+        users.MapGet("/{id:guid}", (Guid id, UserAdminService s, CancellationToken ct) => s.GetAsync(id, ct))
+            .RequirePermission(Permissions.UsersView);
+        users.MapPost("/", async (CreateUserRequest body, UserAdminService s, CancellationToken ct) =>
+        {
+            var user = await s.CreateAsync(body, ct);
+            return Results.Created($"/api/users/{user.Id}", user);
+        }).Validate<CreateUserRequest>().RequirePermission(Permissions.UsersManage);
+        users.MapPut("/{id:guid}", (Guid id, UpdateUserRequest body, UserAdminService s, CancellationToken ct) => s.UpdateAsync(id, body, ct))
+            .Validate<UpdateUserRequest>().RequirePermission(Permissions.UsersManage);
+        users.MapPut("/{id:guid}/role", (Guid id, ChangeRoleRequest body, UserAdminService s, CancellationToken ct) => s.SetRoleAsync(id, body.RoleId, ct))
+            .RequirePermission(Permissions.UsersManage);
+        users.MapPut("/{id:guid}/active", (Guid id, SetActiveRequest body, UserAdminService s, CancellationToken ct) => s.SetActiveAsync(id, body.IsActive, ct))
+            .RequirePermission(Permissions.UsersManage);
+        users.MapPut("/{id:guid}/password", async (Guid id, ResetPasswordRequest body, UserAdminService s, CancellationToken ct) =>
+        {
+            await s.ResetPasswordAsync(id, body.NewPassword, ct);
+            return Results.NoContent();
+        }).Validate<ResetPasswordRequest>().RequirePermission(Permissions.UsersManage);
+        users.MapDelete("/{id:guid}", async (Guid id, UserAdminService s, CancellationToken ct) =>
+        {
+            await s.DeleteAsync(id, ct);
+            return Results.NoContent();
+        }).RequirePermission(Permissions.UsersManage);
+
+        // ---- Administration: roles & permissions ----
+        var roles = app.MapGroup("/api/roles").WithTags("Roles");
+        roles.MapGet("/", (RoleService s, CancellationToken ct) => s.ListAsync(ct)).RequirePermission(Permissions.UsersView);
+        roles.MapPost("/", async (SaveRoleRequest body, RoleService s, CancellationToken ct) =>
+        {
+            var role = await s.CreateAsync(body, ct);
+            return Results.Created($"/api/roles/{role.Id}", role);
+        }).Validate<SaveRoleRequest>().RequirePermission(Permissions.RolesManage);
+        roles.MapPut("/{id:guid}", (Guid id, SaveRoleRequest body, RoleService s, CancellationToken ct) => s.UpdateAsync(id, body, ct))
+            .Validate<SaveRoleRequest>().RequirePermission(Permissions.RolesManage);
+        roles.MapDelete("/{id:guid}", async (Guid id, RoleService s, CancellationToken ct) =>
+        {
+            await s.DeleteAsync(id, ct);
+            return Results.NoContent();
+        }).RequirePermission(Permissions.RolesManage);
+
+        app.MapGet("/api/permissions", () => RoleService.ListPermissions()).WithTags("Roles").RequireAuthorization();
+        app.MapGet("/api/admin/overview", (UserAdminService s, CancellationToken ct) => s.OverviewAsync(ct))
+            .WithTags("Admin").RequirePermission(Permissions.UsersView);
     }
 
     public static void MapLibrary(this IEndpointRouteBuilder app)
@@ -46,9 +88,9 @@ public static class AppEndpoints
             var files = form.Files.GetFiles("files").Concat(form.Files.GetFiles("file")).Select(f => f.ToUpload()).ToList();
             var uploaded = await s.UploadImagesAsync(OwnerType.Library, Guid.Empty, files, ct);
             return await ContentEndpoints.OcrAfterUploadAsync(uploaded, form, response, s, logs, ct);
-        }).Accepts<IFormFileCollection>("multipart/form-data");
+        }).Accepts<IFormFileCollection>("multipart/form-data").RequirePermission(Permissions.ImagesUpload);
         images.MapPost("/{id:guid}/ocr", (Guid id, OcrRequest? body, AttachmentService s, CancellationToken ct) =>
-            s.ExtractTextAsync(id, new OcrRequest(false, body?.Language), ct));
+            s.ExtractTextAsync(id, new OcrRequest(false, body?.Language), ct)).RequirePermission(Permissions.VoiceOcr);
         images.MapPost("/{id:guid}/attach", (Guid id, AttachImageRequest body, AttachmentService s, CancellationToken ct) =>
             s.AttachImageAsync(id, body.OwnerType, body.OwnerId, ct));
         images.MapDelete("/{id:guid}", async (Guid id, AttachmentService s, CancellationToken ct) =>
@@ -99,7 +141,7 @@ public static class AppEndpoints
         var voice = app.MapGroup("/api/voice").WithTags("Voice").RequireAuthorization();
         voice.MapGet("/status", (VoiceStudioService s, CancellationToken ct) => s.StatusAsync(ct));
         voice.MapPost("/tts", (TtsRequest body, VoiceStudioService s, CancellationToken ct) => s.SpeakAsync(body, ct))
-            .Validate<TtsRequest>();
+            .Validate<TtsRequest>().RequirePermission(Permissions.VoiceTts);
         voice.MapPost("/transcribe", async (HttpRequest request, VoiceStudioService s, CancellationToken ct) =>
         {
             var form = await request.ReadMultipartAsync(ct);
@@ -108,7 +150,7 @@ public static class AppEndpoints
             var source = Enum.TryParse<AudioSource>(form["source"], true, out var parsed) ? parsed : AudioSource.Uploaded;
             string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
             return await s.TranscribeAsync(file.ToUpload(), language, save, source, ct);
-        }).Accepts<IFormFile>("multipart/form-data");
+        }).Accepts<IFormFile>("multipart/form-data").RequirePermission(Permissions.VoiceTranscribe);
         voice.MapPost("/ocr", async (HttpRequest request, VoiceStudioService s, CancellationToken ct) =>
         {
             var form = await request.ReadMultipartAsync(ct);
@@ -116,7 +158,7 @@ public static class AppEndpoints
             var save = !bool.TryParse(form["save"], out var saveFlag) || saveFlag;
             string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
             return await s.RecognizeAsync(file.ToUpload(), language, save, ct);
-        }).Accepts<IFormFile>("multipart/form-data");
+        }).Accepts<IFormFile>("multipart/form-data").RequirePermission(Permissions.VoiceOcr);
         voice.MapGet("/history", (int? page, int? pageSize, LibraryService s, CancellationToken ct) =>
             s.StudioHistoryAsync(page ?? 1, pageSize ?? 20, ct));
         voice.MapDelete("/history/{id:guid}", async (Guid id, VoiceStudioService s, CancellationToken ct) =>

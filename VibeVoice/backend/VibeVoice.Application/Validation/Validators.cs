@@ -84,6 +84,43 @@ public sealed class TtsRequestValidator : AbstractValidator<TtsRequest>
     }
 }
 
+public sealed class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
+{
+    public CreateUserRequestValidator()
+    {
+        RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(256);
+        RuleFor(x => x.DisplayName).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.Password).Password();
+        RuleFor(x => x.RoleId).NotEmpty();
+        RuleFor(x => x.PreferredLanguage).Must(l => l is null or "en" or "ar").WithMessage("Language must be 'en' or 'ar'.");
+    }
+}
+
+public sealed class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
+{
+    public UpdateUserRequestValidator()
+    {
+        RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(256);
+        RuleFor(x => x.DisplayName).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.RoleId).NotEmpty();
+        RuleFor(x => x.PreferredLanguage).Must(l => l is "en" or "ar").WithMessage("Language must be 'en' or 'ar'.");
+    }
+}
+
+public sealed class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequest>
+{
+    public ResetPasswordRequestValidator() => RuleFor(x => x.NewPassword).Password();
+}
+
+public sealed class SaveRoleRequestValidator : AbstractValidator<SaveRoleRequest>
+{
+    public SaveRoleRequestValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
+        RuleFor(x => x.Description).MaximumLength(300);
+    }
+}
+
 internal static class RuleExtensions
 {
     public static IRuleBuilderOptions<T, string> Password<T>(this IRuleBuilder<T, string> rule) =>

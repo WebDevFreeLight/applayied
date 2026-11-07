@@ -21,7 +21,7 @@ public sealed class DatabaseInitializer(
 
     public static readonly Type[] EntityTypes =
     [
-        typeof(User), typeof(Note), typeof(Memory), typeof(Tag), typeof(NoteTag), typeof(MemoryTag),
+        typeof(User), typeof(Role), typeof(Note), typeof(Memory), typeof(Tag), typeof(NoteTag), typeof(MemoryTag),
         typeof(Person), typeof(MemoryPerson), typeof(AudioClip), typeof(ImageAttachment),
         typeof(Storage.StoredFile), // only used when Storage:Provider = Database; harmless otherwise
     ];
@@ -36,6 +36,7 @@ public sealed class DatabaseInitializer(
         }
 
         db.CodeFirst.InitTables(EntityTypes);
+        EnsureSystemRoles();
         Backfill();
         logger.LogInformation("Database schema is up to date ({Provider})", db.CurrentConnectionConfig.DbType);
 
@@ -55,6 +56,30 @@ public sealed class DatabaseInitializer(
         if (fixedClips > 0) logger.LogInformation("Marked {Count} existing clip(s) as audio", fixedClips);
 
         db.Updateable<User>().SetColumns(u => u.Palette == "sunset").Where(u => u.Palette == null || u.Palette == "").ExecuteCommand();
+
+        // Users from before custom roles: map the legacy enum onto the built-in roles.
+        db.Updateable<User>().SetColumns(u => u.RoleId == Role.AdminId).Where(u => u.RoleId == null && u.Role == UserRole.Admin).ExecuteCommand();
+        db.Updateable<User>().SetColumns(u => u.RoleId == Role.UserId).Where(u => u.RoleId == null).ExecuteCommand();
+    }
+
+    /// <summary>Creates the built-in Admin and User roles if they are missing (never overwrites edits to User).</summary>
+    private void EnsureSystemRoles()
+    {
+        var existing = db.Queryable<Role>().Where(r => r.Id == Role.AdminId || r.Id == Role.UserId).Select(r => r.Id).ToList();
+        if (!existing.Contains(Role.AdminId))
+        {
+            var admin = new Role { Id = Role.AdminId, Name = "Admin", NormalizedName = "admin", IsSystem = true,
+                Description = "Full access, including users and roles." };
+            admin.SetPermissions(Permissions.All.Select(p => p.Key));
+            db.Insertable(admin).ExecuteCommand();
+        }
+        if (!existing.Contains(Role.UserId))
+        {
+            var user = new Role { Id = Role.UserId, Name = "User", NormalizedName = "user", IsSystem = true,
+                Description = "All app features, no administration." };
+            user.SetPermissions(Permissions.Member);
+            db.Insertable(user).ExecuteCommand();
+        }
     }
 
     private void Seed()
@@ -65,6 +90,7 @@ public sealed class DatabaseInitializer(
             NormalizedEmail = AuthService.NormalizeEmail(DemoEmail),
             DisplayName = "Demo Admin",
             Role = UserRole.Admin,
+            RoleId = Role.AdminId,
         };
         user.PasswordHash = hasher.HashPassword(user, DemoPassword);
 

@@ -29,7 +29,8 @@ public sealed class JwtOptions
 
 public sealed class JwtTokenService(JwtOptions options, TimeProvider clock) : ITokenService
 {
-    public (string Token, DateTime ExpiresAt) CreateToken(User user)
+    /// <summary>The role claim is informational; permissions are checked against the database on every request.</summary>
+    public (string Token, DateTime ExpiresAt) CreateToken(User user, string roleName)
     {
         var now = clock.GetUtcNow().UtcDateTime;
         var expires = now.AddHours(options.ExpiryHours);
@@ -38,7 +39,7 @@ public sealed class JwtTokenService(JwtOptions options, TimeProvider clock) : IT
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Name, user.DisplayName),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
+            new Claim(ClaimTypes.Role, roleName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
         };
         var token = new JwtSecurityToken(

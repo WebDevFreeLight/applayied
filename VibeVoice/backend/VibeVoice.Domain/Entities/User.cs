@@ -21,7 +21,12 @@ public class User
     [SugarColumn(Length = 500)]
     public string PasswordHash { get; set; } = "";
 
+    /// <summary>Legacy column from before custom roles; kept for existing databases, use <see cref="RoleId"/>.</summary>
     public UserRole Role { get; set; } = UserRole.User;
+
+    /// <summary>The user's <see cref="Entities.Role"/>. Null only on rows created before roles existed (backfilled at startup).</summary>
+    [SugarColumn(IsNullable = true)]
+    public Guid? RoleId { get; set; }
 
     [SugarColumn(Length = 5)]
     public string PreferredLanguage { get; set; } = "en";

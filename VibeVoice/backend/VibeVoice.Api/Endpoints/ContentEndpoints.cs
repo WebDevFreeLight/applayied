@@ -11,7 +11,7 @@ public static class ContentEndpoints
 {
     public static void MapNotes(this IEndpointRouteBuilder app)
     {
-        var g = app.MapGroup("/api/notes").WithTags("Notes").RequireAuthorization();
+        var g = app.MapGroup("/api/notes").WithTags("Notes").RequirePermission(Permissions.Notes);
 
         g.MapGet("/", ([AsParameters] NoteQuery query, NoteService s, CancellationToken ct) => s.ListAsync(query, ct));
         g.MapGet("/{id:guid}", (Guid id, NoteService s, CancellationToken ct) => s.GetAsync(id, ct));
@@ -41,7 +41,7 @@ public static class ContentEndpoints
 
     public static void MapMemories(this IEndpointRouteBuilder app)
     {
-        var g = app.MapGroup("/api/memories").WithTags("Memories").RequireAuthorization();
+        var g = app.MapGroup("/api/memories").WithTags("Memories").RequirePermission(Permissions.Memories);
 
         g.MapGet("/", ([AsParameters] MemoryQuery query, MemoryService s, CancellationToken ct) => s.ListAsync(query, ct));
         g.MapGet("/{id:guid}", (Guid id, MemoryService s, CancellationToken ct) => s.GetAsync(id, ct));
@@ -80,13 +80,13 @@ public static class ContentEndpoints
             var files = form.Files.GetFiles("files").Concat(form.Files.GetFiles("file")).Select(f => f.ToUpload()).ToList();
             var uploaded = await s.UploadImagesAsync(type, id, files, ct);
             return await OcrAfterUploadAsync(uploaded, form, response, s, logs, ct);
-        }).Accepts<IFormFileCollection>("multipart/form-data");
+        }).Accepts<IFormFileCollection>("multipart/form-data").RequirePermission(Permissions.ImagesUpload);
 
         g.MapPost("/{id:guid}/images/{imageId:guid}/ocr", async (Guid id, Guid imageId, OcrRequest? body, AttachmentService s, CancellationToken ct) =>
         {
             await s.GetOwnerAsync(type, id, ct);
             return await s.ExtractTextAsync(imageId, body ?? new OcrRequest(false, null), ct, type, id);
-        });
+        }).RequirePermission(Permissions.VoiceOcr);
 
         g.MapPatch("/{id:guid}/images/{imageId:guid}", (Guid id, Guid imageId, UpdateCaptionRequest body, AttachmentService s, CancellationToken ct) =>
             s.UpdateCaptionAsync(type, id, imageId, body.Caption, ct));
@@ -125,7 +125,7 @@ public static class ContentEndpoints
                 response.Headers["X-Transcription-Error"] = new string(ex.Message.Where(c => c is >= ' ' and <= '~').Take(300).ToArray());
                 return clip;
             }
-        }).Accepts<IFormFile>("multipart/form-data");
+        }).Accepts<IFormFile>("multipart/form-data").RequirePermission(Permissions.AudioUpload);
 
         g.MapDelete("/{id:guid}/audio/{audioId:guid}", async (Guid id, Guid audioId, AttachmentService s, CancellationToken ct) =>
         {
@@ -135,11 +135,12 @@ public static class ContentEndpoints
         });
 
         g.MapPost("/{id:guid}/tts", (Guid id, TtsRequest body, AttachmentService s, CancellationToken ct) =>
-            s.GenerateTtsAsync(type, id, body, ct)).Validate<TtsRequest>();
+            s.GenerateTtsAsync(type, id, body, ct)).Validate<TtsRequest>().RequirePermission(Permissions.VoiceTts);
 
         g.MapPost("/{id:guid}/audio/{audioId:guid}/transcribe",
             (Guid id, Guid audioId, TranscribeRequest? body, AttachmentService s, CancellationToken ct) =>
-                s.TranscribeAsync(type, id, audioId, body ?? new TranscribeRequest(false, null), ct));
+                s.TranscribeAsync(type, id, audioId, body ?? new TranscribeRequest(false, null), ct))
+            .RequirePermission(Permissions.VoiceTranscribe);
     }
 
     /// <summary>

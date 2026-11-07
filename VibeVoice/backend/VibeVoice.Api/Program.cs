@@ -73,8 +73,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         },
     };
 });
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("Admin", p => p.RequireRole("Admin"));
+// Every signed-in request must come from an active account; endpoints add per-feature permissions.
+builder.Services.AddScoped<Microsoft.AspNetCore.Authorization.IAuthorizationHandler, AccessAuthorizationHandler>();
+builder.Services.AddAuthorizationBuilder().AddPermissionPolicies();
 
 // Slows down password guessing on the anonymous auth endpoints.
 var authPermits = builder.Configuration.GetValue<int?>("RateLimiting:AuthPermitsPerMinute") ?? 20;
