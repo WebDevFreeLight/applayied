@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { errorMessage, fileUrl } from '@/api/client'
+import { fileUrl } from '@/api/client'
 import { useLatest } from '@/hooks/misc'
 import { downloadUrl } from '@/lib/utils'
 import { OcrTextPanel } from './OcrTextPanel'
+import { toastError } from '@/lib/notify'
 
 export interface LightboxImage {
   id: string
@@ -93,7 +94,7 @@ export function Lightbox({
       await onExtractText(img.id)
       toast.success(t('ocr.extracted'))
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setExtracting(null)
     }

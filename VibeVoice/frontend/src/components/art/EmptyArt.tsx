@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { useSvgId } from './svgId'
 
-export type EmptyArtName = 'notes' | 'memories' | 'audio' | 'search' | 'images' | 'trash' | 'studio' | 'users' | 'generic'
+export type EmptyArtName = 'notes' | 'memories' | 'audio' | 'search' | 'images' | 'trash' | 'studio' | 'users' | 'lock' | 'generic'
 
 /** Larger empty-state illustrations (160×120), coloured by the active identity. Decorative. */
 export function EmptyArt({ name, className }: { name: EmptyArtName; className?: string }) {
@@ -113,6 +113,16 @@ export function EmptyArt({ name, className }: { name: EmptyArtName; className?: 
         <path className="stroke-border-strong" d="M74 98c0-14 10.5-24 24-24s24 10 24 24z" fill={soft} strokeWidth="2" />
         <circle cx="66" cy="44" r="17" fill={g} />
         <path d="M36 100c0-17 13-29 30-29s30 12 30 29z" fill={g} />
+      </>
+    ),
+    // Padlock with a shield — "no access"
+    lock: (
+      <>
+        <path d="M58 52V40a22 22 0 0 1 44 0v12" fill="none" strokeWidth="9" className="stroke-border-strong" />
+        <rect x="46" y="50" width="68" height="52" rx="12" fill={g} />
+        <circle cx="80" cy="72" r="7" fill="#fff" fillOpacity="0.9" />
+        <rect x="77" y="74" width="6" height="14" rx="3" fill="#fff" fillOpacity="0.9" />
+        <path d="M128 30l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5z" fill={g} />
       </>
     ),
     generic: (

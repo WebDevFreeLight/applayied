@@ -2,7 +2,6 @@ import { Mic, MicOff, Pause, Play, Save, Square, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { errorMessage } from '@/api/client'
 import { cn, extensionForMime, formatDuration } from '@/lib/utils'
 import { Button } from '../ui/Button'
 import { ProgressBar } from '../ui/Display'
@@ -13,6 +12,7 @@ import {
   pickRecorderMimeType,
   type RecorderErrorKind,
 } from './recording'
+import { toastError } from '@/lib/notify'
 
 type Phase = 'idle' | 'requesting' | 'recording' | 'paused' | 'stopped' | 'saving' | 'error'
 
@@ -255,7 +255,7 @@ export function AudioRecorder({ onSave, onSaved, saveLabel, className }: AudioRe
       discard()
       onSaved?.()
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
       setPhase('stopped')
     }
   }

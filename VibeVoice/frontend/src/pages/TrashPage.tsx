@@ -3,7 +3,6 @@ import { BookHeart, NotebookPen, RotateCcw, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { errorMessage } from '@/api/client'
 import { qk } from '@/api/keys'
 import { memoriesApi } from '@/api/memories'
 import { notesApi } from '@/api/notes'
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/Button'
 import { Card, EmptyState, ErrorState, PageHeader, Skeleton } from '@/components/ui/Display'
 import { ConfirmDialog } from '@/components/ui/Modal'
 import { useDates } from '@/lib/dates'
+import { toastError } from '@/lib/notify'
 
 interface TrashItem {
   kind: 'note' | 'memory'
@@ -50,7 +50,7 @@ export function TrashPage() {
       toast.success(t('trash.restored'))
       refresh()
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setBusy(null)
     }
@@ -68,7 +68,7 @@ export function TrashPage() {
       void qc.invalidateQueries({ queryKey: qk.audio.all })
       void qc.invalidateQueries({ queryKey: qk.images.all })
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setBusy(null)
     }

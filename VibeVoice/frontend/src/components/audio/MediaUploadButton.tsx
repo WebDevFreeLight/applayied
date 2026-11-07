@@ -2,13 +2,13 @@ import { Upload } from 'lucide-react'
 import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { errorMessage } from '@/api/client'
 import type { MediaKind } from '@/api/types'
 import { MEDIA_ACCEPT, validateMediaFile } from '@/lib/utils'
 import { Button } from '../ui/Button'
 import { ProgressBar } from '../ui/Display'
 import { Checkbox, Select } from '../ui/Field'
 import { Popover } from '../ui/Popover'
+import { toastError } from '@/lib/notify'
 
 export interface MediaUploadOptions {
   kind: MediaKind
@@ -69,7 +69,7 @@ export function MediaUploadButton({ upload, onUploaded, label, size = 'sm' }: Me
       }
       onUploaded?.()
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setProgress(null)
     }

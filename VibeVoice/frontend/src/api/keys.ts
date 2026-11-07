@@ -4,12 +4,19 @@ import type {
   MemoryListQuery,
   NoteListQuery,
   SearchQuery,
+  UserListQuery,
 } from './types'
 
 /** Query-key factory: one place for every TanStack Query key. */
 export const qk = {
   me: ['me'] as const,
-  users: ['users'] as const,
+  users: {
+    all: ['users'] as const,
+    list: (q: UserListQuery) => ['users', 'list', q] as const,
+  },
+  roles: ['roles'] as const,
+  permissions: ['permissions'] as const,
+  adminOverview: ['admin', 'overview'] as const,
   dashboard: ['dashboard'] as const,
   health: ['health'] as const,
   tags: ['tags'] as const,

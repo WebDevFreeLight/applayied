@@ -2,13 +2,14 @@ import { ChevronDown, ChevronLeft, ChevronRight, GripVertical, Loader2, ScanText
 import { useState, type DragEvent, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { errorMessage, fileUrl } from '@/api/client'
+import { fileUrl } from '@/api/client'
 import type { ImageDto } from '@/api/types'
 import { cn } from '@/lib/utils'
 import { Badge } from '../ui/Display'
 import { ConfirmDialog } from '../ui/Modal'
 import { Lightbox } from './Lightbox'
 import { OcrTextPanel } from './OcrTextPanel'
+import { toastError } from '@/lib/notify'
 
 export interface ImageGalleryProps {
   images: ImageDto[]
@@ -68,7 +69,7 @@ export function ImageGallery({
       toast.success(t('ocr.extracted'))
       toggleText(id, true)
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setExtracting(null)
     }
@@ -86,7 +87,7 @@ export function ImageGallery({
     try {
       await onReorder(ids)
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setOrder(null)
     }
@@ -119,7 +120,7 @@ export function ImageGallery({
       toast.success(t('images.deleted'))
       setPendingDelete(null)
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setDeleting(false)
     }
@@ -234,7 +235,7 @@ export function ImageGallery({
                     onClick={() =>
                       void onSetCover(isCover ? null : img.id).then(
                         () => toast.success(t('memories.coverSet')),
-                        (err: unknown) => toast.error(errorMessage(err)),
+                        (err: unknown) => toastError(err),
                       )
                     }
                   >
@@ -348,7 +349,7 @@ function CaptionInput({ initial, onSave }: { initial: string; onSave: (c: string
       await onSave(next || null)
       toast.success(t('images.captionSaved'))
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     }
   }
   return (

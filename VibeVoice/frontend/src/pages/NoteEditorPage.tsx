@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { errorMessage } from '@/api/client'
 import { useTags } from '@/api/hooks'
 import { qk } from '@/api/keys'
 import { notesApi } from '@/api/notes'
@@ -18,6 +17,7 @@ import { useHotkey } from '@/hooks/misc'
 import { useAutosave } from '@/hooks/useAutosave'
 import { useUnsavedGuard } from '@/hooks/useUnsavedGuard'
 import { cn, NOTE_COLORS, noteColorVar } from '@/lib/utils'
+import { toastError } from '@/lib/notify'
 
 export function NoteEditorPage() {
   const { id = '' } = useParams()
@@ -79,7 +79,7 @@ function NoteEditor({ note }: { note: NoteDto }) {
   const autosave = useAutosave(draft, save, { delay: 1500 })
   const { blocker, bypass } = useUnsavedGuard(autosave.isDirty)
   const flush = autosave.flush
-  const saveNow = () => flush().catch((err: unknown) => toast.error(errorMessage(err)))
+  const saveNow = () => flush().catch((err: unknown) => toastError(err))
   useHotkey('s', () => void saveNow(), { mod: true })
 
   const update = async (fn: () => Promise<NoteDto>) => {
@@ -88,7 +88,7 @@ function NoteEditor({ note }: { note: NoteDto }) {
       qc.setQueryData(detailKey, res)
       void qc.invalidateQueries({ queryKey: qk.notes.lists() })
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     }
   }
 
@@ -112,7 +112,7 @@ function NoteEditor({ note }: { note: NoteDto }) {
       bypass()
       navigate('/notes')
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     }
   }
 

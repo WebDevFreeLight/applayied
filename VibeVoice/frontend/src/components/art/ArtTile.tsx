@@ -22,6 +22,10 @@ export type ArtName =
   | 'pin'
   | 'transcript'
   | 'palette'
+  | 'overview'
+  | 'roles'
+  | 'lock'
+  | 'storage'
 
 const INK = 'var(--art-ink)'
 const SOFT = 0.55
@@ -192,6 +196,37 @@ const GLYPHS: Record<ArtName, ReactNode> = {
       <circle cx="29" cy="15.5" r="2.8" style={{ fill: 'var(--art-a)' }} />
     </>
   ),
+  overview: (
+    <>
+      <rect x="10" y="10" width="28" height="28" rx="6" fillOpacity={0.3} style={{ fill: INK }} />
+      <rect x="15" y="25" width="4.5" height="8" rx="2.25" style={{ fill: INK }} />
+      <rect x="21.75" y="18" width="4.5" height="15" rx="2.25" style={{ fill: INK }} />
+      <rect x="28.5" y="21.5" width="4.5" height="11.5" rx="2.25" style={{ fill: INK }} />
+      <circle cx="35" cy="14" r="3.2" style={{ fill: 'var(--art-b)' }} />
+    </>
+  ),
+  roles: (
+    <>
+      <path d="M24 8l13 5v9.5c0 8-5.6 14.6-13 17.5-7.4-2.9-13-9.5-13-17.5V13z" style={{ fill: INK }} />
+      <path d="M18.5 24l4 4 7.5-8" fill="none" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: 'var(--art-a)' }} />
+    </>
+  ),
+  lock: (
+    <>
+      <path d="M17 21v-4a7 7 0 0 1 14 0v4" fill="none" strokeWidth="3.6" strokeOpacity={SOFT} style={{ stroke: INK }} />
+      <rect x="12" y="20" width="24" height="19" rx="5" style={{ fill: INK }} />
+      <circle cx="24" cy="28" r="2.8" style={{ fill: 'var(--art-a)' }} />
+      <rect x="22.8" y="29" width="2.4" height="5.5" rx="1.2" style={{ fill: 'var(--art-a)' }} />
+    </>
+  ),
+  storage: (
+    <>
+      <ellipse cx="24" cy="14" rx="12" ry="4.5" style={{ fill: INK }} />
+      <path d="M12 14v8c0 2.5 5.4 4.5 12 4.5s12-2 12-4.5v-8c0 2.5-5.4 4.5-12 4.5S12 16.5 12 14z" fillOpacity={SOFT} style={{ fill: INK }} />
+      <path d="M12 24v9c0 2.5 5.4 4.5 12 4.5s12-2 12-4.5v-9c0 2.5-5.4 4.5-12 4.5S12 26.5 12 24z" style={{ fill: INK }} />
+      <circle cx="30.5" cy="32" r="1.6" style={{ fill: 'var(--art-a)' }} />
+    </>
+  ),
 }
 
 /** Tile colours: each module gets a pair of identity chart colours (recolours per identity). */
@@ -215,6 +250,10 @@ const TONES: Record<ArtName, [number, number]> = {
   pin: [4, 5],
   transcript: [6, 1],
   palette: [1, 3],
+  overview: [3, 1],
+  roles: [2, 4],
+  lock: [5, 3],
+  storage: [6, 2],
 }
 
 const SIZES = {

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { errorMessage } from '@/api/client'
 import { usePeople, useTags } from '@/api/hooks'
 import { qk } from '@/api/keys'
 import { memoriesApi } from '@/api/memories'
@@ -19,6 +18,7 @@ import { useHotkey } from '@/hooks/misc'
 import { useAutosave } from '@/hooks/useAutosave'
 import { useUnsavedGuard } from '@/hooks/useUnsavedGuard'
 import { MOOD_EMOJI, todayIso } from '@/lib/utils'
+import { toastError } from '@/lib/notify'
 
 export function MemoryEditorPage() {
   const { id = '' } = useParams()
@@ -98,7 +98,7 @@ function MemoryEditor({ memory }: { memory: MemoryDto }) {
   const autosave = useAutosave(draft, save, { delay: 1500, enabled: check.success })
   const { blocker, bypass } = useUnsavedGuard(autosave.isDirty)
   const flush = autosave.flush
-  const saveNow = () => flush().catch((err: unknown) => toast.error(errorMessage(err)))
+  const saveNow = () => flush().catch((err: unknown) => toastError(err))
   useHotkey('s', () => void saveNow(), { mod: true })
 
   const update = async (fn: () => Promise<MemoryDto>) => {
@@ -107,7 +107,7 @@ function MemoryEditor({ memory }: { memory: MemoryDto }) {
       qc.setQueryData(detailKey, res)
       void qc.invalidateQueries({ queryKey: qk.memories.lists() })
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     }
   }
 
@@ -131,7 +131,7 @@ function MemoryEditor({ memory }: { memory: MemoryDto }) {
       bypass()
       navigate('/memories')
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     }
   }
 

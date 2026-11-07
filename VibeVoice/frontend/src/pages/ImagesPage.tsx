@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { toast } from 'sonner'
-import { errorMessage, fileUrl } from '@/api/client'
+import { fileUrl } from '@/api/client'
 import { useOcrAvailable } from '@/api/hooks'
 import { qk } from '@/api/keys'
 import { imagesApi } from '@/api/library'
@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/Field'
 import { ConfirmDialog, Modal } from '@/components/ui/Modal'
 import { useDebouncedValue } from '@/hooks/misc'
 import { cn, formatBytes } from '@/lib/utils'
+import { toastError } from '@/lib/notify'
 
 const OWNER_TYPES: ImageOwnerType[] = ['Library', 'Note', 'Memory']
 
@@ -66,7 +67,7 @@ export function ImagesPage() {
       toast.success(t('ocr.extracted'))
       setOpenText(id)
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setExtracting(null)
     }
@@ -83,7 +84,7 @@ export function ImagesPage() {
       void qc.invalidateQueries({ queryKey: qk.notes.all })
       void qc.invalidateQueries({ queryKey: qk.memories.all })
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setBusyDelete(false)
     }
@@ -320,7 +321,7 @@ function AttachPicker({
       onAttached()
       onClose()
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setBusy(null)
     }

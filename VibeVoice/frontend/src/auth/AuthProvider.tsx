@@ -5,10 +5,10 @@ import { toast } from 'sonner'
 import { authApi } from '@/api/auth'
 import { getToken, onUnauthorized, setToken } from '@/api/client'
 import { qk } from '@/api/keys'
-import type { AuthResponse, UserDto } from '@/api/types'
+import type { AuthResponse, Permission, UserDto } from '@/api/types'
 import { setLanguage } from '@/i18n'
 import { isPalette, useTheme } from '@/theme/theme'
-import { AuthContext, type AuthContextValue } from './context'
+import { AuthContext, hasAny, permissionsOf, type AuthContextValue } from './context'
 
 const USER_KEY = 'vv.user'
 
@@ -41,11 +41,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: qk.me,
     queryFn: authApi.me,
     enabled: !!token,
-    staleTime: 5 * 60_000,
+    staleTime: 60_000,
     retry: false,
+    // Pick up role / permission changes made by an admin without a re-login.
+    refetchOnWindowFocus: 'always',
   })
 
   const user = token ? (me.data ?? cachedUser) : null
+  const permissions = useMemo(() => permissionsOf(user), [user])
 
   const signOut = useCallback(
     (reason?: 'expired') => {
@@ -105,14 +108,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       token,
       isLoading: !!token && !user && me.isPending,
-      isAdmin: user?.role === 'Admin',
+      permissions,
+      can: (p: Permission | readonly Permission[]) => hasAny(permissions, p),
       loadError: !user ? me.error : null,
       reload: () => void me.refetch(),
       signIn,
       signOut,
       setUser,
     }),
-    [user, token, me, signIn, signOut, setUser],
+    [user, token, me, permissions, signIn, signOut, setUser],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

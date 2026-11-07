@@ -19,6 +19,7 @@ import { OcrTextPanel } from '../images/OcrTextPanel'
 import { Button } from '../ui/Button'
 import { Card, ProgressBar } from '../ui/Display'
 import { Checkbox, Select } from '../ui/Field'
+import { toastError } from '@/lib/notify'
 
 const LANGS = ['auto', 'ar', 'en'] as const
 type Lang = (typeof LANGS)[number]
@@ -130,7 +131,7 @@ export function ImageToText() {
       toast.success(t('studio.savedAsNote'))
       navigate(`/notes/${note.id}`)
     },
-    onError: (err) => toast.error(errorMessage(err)),
+    onError: (err) => toastError(err),
   })
 
   const busy = progress !== null

@@ -24,6 +24,7 @@ import { Checkbox } from '../ui/Field'
 import { ConfirmDialog } from '../ui/Modal'
 import { SourceBadge } from './SourceBadge'
 import { TranscriptView } from './TranscriptView'
+import { toastError } from '@/lib/notify'
 
 export interface AudioPlayerProps {
   audio: AudioDto
@@ -204,7 +205,7 @@ export function AudioPlayer({
       toast.success(t('audio.deleted'))
       setConfirmDelete(false)
     } catch (err) {
-      toast.error(errorMessage(err))
+      toastError(err)
     } finally {
       setDeleting(false)
     }

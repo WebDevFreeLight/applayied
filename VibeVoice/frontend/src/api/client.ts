@@ -301,8 +301,20 @@ export function transcriptUrl(audioId: string, format: 'txt' | 'srt' | 'vtt'): s
   return `${API_URL}/api/audio/${encodeURIComponent(audioId)}/transcript?${q.toString()}`
 }
 
-/** Extracts a user-facing message from any thrown value. */
+let forbiddenMessage = (): string => "You don't have permission to do that."
+
+/** Lets the i18n layer provide the (translated) 403 message. */
+export function setForbiddenMessage(fn: () => string): void {
+  forbiddenMessage = fn
+}
+
+export function isForbidden(err: unknown): boolean {
+  return err instanceof ApiError && err.status === 403
+}
+
+/** Extracts a user-facing message from any thrown value. 403 → "You don't have permission". */
 export function errorMessage(err: unknown, fallback = 'Something went wrong'): string {
+  if (isForbidden(err)) return forbiddenMessage()
   if (err instanceof ApiError) return err.summary
   if (err instanceof Error && err.message) return err.message
   return fallback

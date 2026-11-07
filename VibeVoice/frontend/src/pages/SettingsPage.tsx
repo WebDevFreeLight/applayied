@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { authApi } from '@/api/auth'
-import { ApiError, errorMessage } from '@/api/client'
+import { ApiError } from '@/api/client'
 import { useVoices } from '@/api/hooks'
 import type { UserDto } from '@/api/types'
 import { useAuth } from '@/auth/context'
@@ -20,6 +20,7 @@ import { setLanguage } from '@/i18n'
 import { useDates } from '@/lib/dates'
 import { passwordSchema } from '@/lib/schemas'
 import { useTheme } from '@/theme/theme'
+import { toastError } from '@/lib/notify'
 
 export function SettingsPage() {
   const { t } = useTranslation()
@@ -98,7 +99,7 @@ function ProfileForm({ user }: { user: UserDto }) {
       setTheme(u.theme)
       toast.success(t('settings.profileSaved'))
     },
-    onError: (err) => toast.error(errorMessage(err)),
+    onError: (err) => toastError(err),
   })
   const { errors } = form.formState
   const serverErrors = save.error instanceof ApiError ? save.error.fieldErrors() : {}
@@ -179,7 +180,7 @@ function PasswordForm() {
       toast.success(t('settings.passwordChanged'))
       form.reset()
     },
-    onError: (err) => toast.error(errorMessage(err)),
+    onError: (err) => toastError(err),
   })
   const { errors } = form.formState
   const serverErrors = change.error instanceof ApiError ? change.error.fieldErrors() : {}

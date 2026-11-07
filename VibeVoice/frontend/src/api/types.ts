@@ -1,7 +1,48 @@
 // Mirrors docs/API_CONTRACT.md exactly. JSON is camelCase, enums are strings,
 // dates are ISO-8601 UTC strings and `memoryDate` is a date-only string (yyyy-MM-dd).
 
-export type Role = 'Admin' | 'User'
+/** v5: roles are named records (built-ins "Admin" and "User" plus custom roles). */
+export type Role = string
+
+export const PERMISSIONS = [
+  'notes',
+  'memories',
+  'audio.upload',
+  'images.upload',
+  'voice.tts',
+  'voice.transcribe',
+  'voice.ocr',
+  'users.view',
+  'users.manage',
+  'roles.manage',
+] as const
+export type Permission = (typeof PERMISSIONS)[number]
+export type PermissionGroup = 'content' | 'media' | 'ai' | 'admin'
+
+export interface PermissionDto {
+  key: Permission
+  group: PermissionGroup
+}
+
+export const ADMIN_ROLE_ID = '00000000-0000-0000-0000-00000000a001'
+export const USER_ROLE_ID = '00000000-0000-0000-0000-00000000a002'
+
+export interface RoleDto {
+  id: string
+  name: string
+  description: string | null
+  permissions: Permission[]
+  isSystem: boolean
+  userCount: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface SaveRoleRequest {
+  name: string
+  description?: string | null
+  permissions: Permission[]
+}
 export type Language = 'en' | 'ar'
 export type ThemePreference = 'light' | 'dark' | 'system'
 /** Visual identity (v4). */
@@ -11,7 +52,11 @@ export interface UserDto {
   id: string
   email: string
   displayName: string
+  /** Role name (v5). */
   role: Role
+  roleId: string
+  /** Effective permissions of the role — drives what the UI shows. */
+  permissions: Permission[]
   preferredLanguage: Language
   preferredVoice: string | null
   theme: ThemePreference
@@ -19,6 +64,40 @@ export interface UserDto {
   palette: Palette
   isActive: boolean
   createdAt: string
+  lastLoginAt: string | null
+}
+
+export interface AdminUserDto {
+  user: UserDto
+  notes: number
+  memories: number
+  mediaFiles: number
+  storageBytes: number
+}
+
+export interface UserListQuery {
+  page?: number
+  pageSize?: number
+  search?: string
+  roleId?: string
+  active?: boolean
+}
+
+export interface CreateUserRequest {
+  email: string
+  displayName: string
+  password: string
+  roleId: string
+  preferredLanguage?: Language
+  isActive?: boolean
+}
+
+export interface UpdateUserRequest {
+  email: string
+  displayName: string
+  roleId: string
+  preferredLanguage: Language
+  isActive: boolean
 }
 
 export interface AuthResponse {
@@ -398,6 +477,20 @@ export interface DashboardDto {
   /** same month/day, earlier years */
   onThisDay: MemoryListItemDto[]
   activity: ActivityItem[]
+}
+
+export interface AdminOverviewDto {
+  users: number
+  activeUsers: number
+  admins: number
+  roles: number
+  notes: number
+  memories: number
+  audioClips: number
+  images: number
+  storageBytes: number
+  voice: VoiceStatus
+  recentUsers: UserDto[]
 }
 
 export interface HealthDto {

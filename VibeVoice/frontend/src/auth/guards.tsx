@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router'
 import { Button } from '@/components/ui/Button'
+import type { Permission } from '@/api/types'
+import { NoAccess } from '@/components/NoAccess'
 import { ErrorState } from '@/components/ui/Display'
 import { useAuth } from './context'
 
@@ -36,9 +38,10 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   return <>{children}</>
 }
 
-export function RequireAdmin({ children }: { children: ReactNode }) {
-  const { isAdmin } = useAuth()
-  if (!isAdmin) return <Navigate to="/" replace />
+/** Route guard by permission (any of): shows a friendly "no access" page instead of the content. */
+export function RequirePermission({ any, children }: { any: readonly Permission[]; children: ReactNode }) {
+  const { can } = useAuth()
+  if (!can(any)) return <NoAccess />
   return <>{children}</>
 }
 
