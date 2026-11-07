@@ -70,6 +70,10 @@ describe('authenticated shell', () => {
     expect(await screen.findByRole('heading', { name: 'Hello, Admin' }, { timeout: 8000 })).toBeInTheDocument()
     expect(await screen.findByText('Groceries', { selector: 'h3' }, { timeout: 8000 })).toBeInTheDocument()
     expect(screen.getAllByRole('link', { name: 'Users' }).length).toBeGreaterThan(0)
+    // The user's saved identity (palette: 'ocean') is applied after sign-in.
+    expect(document.documentElement.dataset.palette).toBe('ocean')
+    // Illustrated nav tiles are decorative.
+    expect(document.querySelector('nav [data-art="notes"]')).toHaveAttribute('aria-hidden', 'true')
     expect((await screen.findAllByText('Voice ready')).length).toBeGreaterThan(0)
 
     // ⌘/Ctrl+K opens quick search.

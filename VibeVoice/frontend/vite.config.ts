@@ -30,7 +30,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
-    css: false,
+    // Only the palette sheet is processed (read as ?raw by the contrast test); other CSS is stubbed.
+    css: { include: [/palettes\.css$/] },
     restoreMocks: true,
   },
 })
