@@ -189,6 +189,45 @@ public sealed class JobApiTests
     }
 
     [Fact]
+    public async Task Upload_with_ocr_saves_the_pictures_now_and_reads_them_in_background_jobs()
+    {
+        using var factory = Factory(voiceUp: true);
+        var client = await SignUpAsync(factory);
+        var noteId = await CreateNoteAsync(client);
+
+        using var form = new MultipartFormDataContent();
+        foreach (var name in new[] { "a.png", "b.png" })
+        {
+            var png = new ByteArrayContent(TestFiles.Png());
+            png.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            form.Add(png, "files", name);
+        }
+        form.Add(new StringContent("true"), "ocr");
+        var res = await client.SendAsync(Async(HttpMethod.Post, $"/api/notes/{noteId}/images", form), Ct);
+
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+        var images = await res.Content.ReadFromJsonAsync<JsonElement>(Json, Ct);
+        Assert.Equal(2, images.GetArrayLength());
+        var jobIds = res.Headers.GetValues("X-Job-Ids").Single().Split(',');
+        Assert.Equal(2, jobIds.Length);
+
+        foreach (var id in jobIds)
+        {
+            JsonElement job = default;
+            for (var i = 0; i < 100; i++)
+            {
+                job = await client.GetFromJsonAsync<JsonElement>($"/api/jobs/{id}", Json, Ct);
+                if (job.GetProperty("status").GetString() is "Succeeded" or "Failed") break;
+                await Task.Delay(100, Ct);
+            }
+            Assert.Equal("Succeeded", job.GetProperty("status").GetString());
+        }
+        var note = await client.GetFromJsonAsync<JsonElement>($"/api/notes/{noteId}", Json, Ct);
+        Assert.All(note.GetProperty("images").EnumerateArray(),
+            img => Assert.Equal("قائمة التسوق\nCoffee and dates", img.GetProperty("ocrText").GetString()));
+    }
+
+    [Fact]
     public async Task Without_the_prefer_header_the_endpoints_stay_synchronous()
     {
         using var factory = Factory(voiceUp: true);

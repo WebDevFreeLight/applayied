@@ -118,6 +118,15 @@ public static class ContentEndpoints
 
             if (!bool.TryParse(form["transcribe"], out var transcribe) || !transcribe) return clip;
             string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
+            if (request.WantsAsync())
+            {
+                // Saved now; the transcript follows in the background (see X-Job-Ids).
+                var job = await request.HttpContext.RequestServices.GetRequiredService<JobService>()
+                    .EnqueueTranscribeAsync(type, id, clip.Id, new TranscribeRequest(false, language), ct);
+                response.Headers["X-Job-Ids"] = job.Id.ToString();
+                response.Headers["Preference-Applied"] = "respond-async";
+                return clip;
+            }
             try
             {
                 return await s.TranscribeAsync(type, id, clip.Id, new TranscribeRequest(false, language), ct);
@@ -163,6 +172,17 @@ public static class ContentEndpoints
     {
         if (!bool.TryParse(form["ocr"], out var ocr) || !ocr) return uploaded;
         string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
+        if (response.HttpContext.Request.WantsAsync())
+        {
+            // The pictures are saved now; their text follows in the background, one job per picture (X-Job-Ids).
+            var jobs = response.HttpContext.RequestServices.GetRequiredService<JobService>();
+            var ids = new List<string>(uploaded.Count);
+            foreach (var image in uploaded)
+                ids.Add((await jobs.EnqueueImageOcrAsync(image.Id, null, null, new OcrRequest(false, language), ct)).Id.ToString());
+            if (ids.Count > 0) response.Headers["X-Job-Ids"] = string.Join(',', ids);
+            response.Headers["Preference-Applied"] = "respond-async";
+            return uploaded;
+        }
         var result = new List<ImageDto>(uploaded.Count);
         foreach (var image in uploaded)
         {

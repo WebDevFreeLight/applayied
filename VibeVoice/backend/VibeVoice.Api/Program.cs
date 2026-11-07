@@ -104,7 +104,7 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(p => p
                                   || (allowPrivateNetwork && LocalNetwork.IsPrivateOrigin(origin)))
     .AllowAnyHeader()
     .AllowAnyMethod()
-    .WithExposedHeaders("X-Voice-Service", "X-Transcription-Error", "X-Ocr-Error", "Content-Disposition", "Location", "Preference-Applied")));
+    .WithExposedHeaders("X-Voice-Service", "X-Transcription-Error", "X-Ocr-Error", "Content-Disposition", "Location", "Preference-Applied", "X-Job-Ids")));
 
 // ---- OpenAPI / Swagger ----
 builder.Services.AddEndpointsApiExplorer();
