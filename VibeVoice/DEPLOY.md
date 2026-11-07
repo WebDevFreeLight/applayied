@@ -21,10 +21,13 @@ Everything deploys from the branch **`feature/vibevoice-notes-memories`** (alrea
 ## 1. Neon — database (≈ 3 min)
 
 1. Sign up at **https://neon.tech** (GitHub login works) ▸ **Create project**.
-   Name `vibevoice`, Postgres 17, region **AWS Europe Central 1 (Frankfurt)** (same region as Render below).
+   Name `vibevoice`, Postgres 17, region **AWS US East 2 (Ohio)** — `render.yaml` puts both Render services
+   in `ohio` so every query stays in the same data centre area. (If you pick another Neon region, change
+   `region:` in `render.yaml` to the nearest Render region: `oregon`, `ohio`, `virginia`, `frankfurt`, `singapore`.)
 2. On the project dashboard ▸ **Connect** ▸ copy the connection string. It looks like
-   `postgresql://neondb_owner:xxxx@ep-xxx-123.eu-central-1.aws.neon.tech/neondb?sslmode=require`
-   Keep it private — it's the password to your data.
+   `postgresql://neondb_owner:xxxx@ep-xxx-123-pooler.c-8.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require`
+   Paste it into Render exactly as Neon shows it — the API converts the URL form itself.
+   Keep it private — it's the password to your data. **Never commit it to the repo.**
 
 ## 2. Render — API + voice service (≈ 10 min, mostly waiting for builds)
 

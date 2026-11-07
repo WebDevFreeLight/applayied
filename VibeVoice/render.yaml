@@ -16,7 +16,7 @@ services:
     name: vibevoice-api
     runtime: docker
     plan: free
-    region: frankfurt
+    region: ohio
     branch: feature/vibevoice-notes-memories
     dockerfilePath: ./VibeVoice/backend/Dockerfile
     dockerContext: ./VibeVoice/backend
@@ -31,7 +31,7 @@ services:
         value: "true"
       - key: Database__Provider
         value: PostgreSQL
-      # Neon connection string, e.g. postgresql://user:pass@ep-xxx.eu-central-1.aws.neon.tech/neondb?sslmode=require
+      # Neon connection string, e.g. postgresql://user:pass@ep-xxx-pooler.c-8.us-east-2.aws.neon.tech/neondb?sslmode=require
       - key: Database__ConnectionString
         sync: false
       # Never seed the demo account (known password) on a public URL.
@@ -72,7 +72,7 @@ services:
     name: vibevoice-voice
     runtime: docker
     plan: free
-    region: frankfurt
+    region: ohio
     branch: feature/vibevoice-notes-memories
     dockerfilePath: ./VibeVoice/voice-service/Dockerfile
     dockerContext: ./VibeVoice/voice-service
