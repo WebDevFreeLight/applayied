@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-palette="sunset">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>VibeVoice — Notes &amp; memories in your own voice</title>
+    <meta
+      name="description"
+      content="VibeVoice — bilingual (English / العربية) notes and memories with text, audio, video and pictures, AI voices, transcripts and text-from-images."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fff8f3" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="VibeVoice" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Apply theme, visual identity and direction before first paint (no flash of the wrong theme).
+      // Keep THEME_COLORS in sync with src/theme/theme.ts.
+      (function () {
+        var THEME_COLORS = {
+          sunset: ['#fff8f3', '#1a1220'],
+          oasis: ['#fbf7ef', '#0e1a1a'],
+          ocean: ['#f5f9ff', '#0b1224'],
+          neon: ['#f7f7f5', '#0a0a0b'],
+        };
+        var root = document.documentElement;
+        var t = 'system', p = 'sunset', l = null;
+        try {
+          t = localStorage.getItem('vv.theme') || 'system';
+          p = localStorage.getItem('vv.palette') || 'sunset';
+          l = localStorage.getItem('vv.lang');
+        } catch (e) {}
+        if (!THEME_COLORS[p]) p = 'sunset';
+        var dark = t === 'dark' || (t === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) root.classList.add('dark');
+        root.setAttribute('data-palette', p);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', THEME_COLORS[p][dark ? 1 : 0]);
+        if (l === 'ar') { root.lang = 'ar'; root.dir = 'rtl'; }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

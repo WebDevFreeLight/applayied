@@ -1,0 +1,293 @@
+/*
+ * Visual identities (palettes) × light/dark.
+ *
+ * Applied with <html data-palette="sunset|oasis|ocean|neon"> plus the `dark` class. The same selectors
+ * work on any element, so previews can render another identity with data-palette (+ data-mode="dark").
+ * Sunset is the default (no attribute).
+ *
+ * Every block defines the SAME set of palette tokens so later blocks fully override earlier ones.
+ * Text pairs are checked for WCAG AA (≥ 4.5:1) by src/theme/palettes.test.ts.
+ *
+ * Token roles:
+ *   --primary / --secondary / --tertiary  brand colours (decorative; not used for small text)
+ *   --accent        primary action background (buttons) — paired with --accent-fg
+ *   --accent-text   brand-coloured text/icons on surfaces
+ *   --accent-soft   tinted background (chips, active nav) — paired with --accent-text
+ *   --grad-*        identity gradient (from → via → to)
+ *   --chart-1..6    categorical colours (module tiles, charts)
+ */
+
+/* ---------------- Sunset Voice (default) ---------------- */
+:root,
+[data-palette='sunset'] {
+  --primary: #f2545b;
+  --secondary: #c2338e;
+  --tertiary: #6d4aff;
+  --grad-from: #f2545b;
+  --grad-via: #c2338e;
+  --grad-to: #6d4aff;
+  --bg: #fff8f3;
+  --surface: #ffffff;
+  --surface-2: #fcefe7;
+  --surface-3: #f6e2d7;
+  --border: #f1ded3;
+  --border-strong: #e3c6b8;
+  --text: #2b1622;
+  --muted: #6b5060;
+  --subtle: #86687a;
+  --accent: #c2338e;
+  --accent-hover: #a8237a;
+  --accent-fg: #ffffff;
+  --accent-text: #a8237a;
+  --accent-soft: #fce7f3;
+  --ring: #c2338e;
+  --chart-1: #f2545b;
+  --chart-2: #c2338e;
+  --chart-3: #6d4aff;
+  --chart-4: #ff9f43;
+  --chart-5: #e0437b;
+  --chart-6: #8e6bff;
+  --art-ink: #ffffff;
+  --theme-color: #fff8f3;
+  color-scheme: light;
+}
+
+.dark,
+.dark[data-palette='sunset'],
+[data-palette='sunset'][data-mode='dark'] {
+  --primary: #ff7a80;
+  --secondary: #e05aae;
+  --tertiary: #9a82ff;
+  --grad-from: #ff7a80;
+  --grad-via: #e05aae;
+  --grad-to: #8b6dff;
+  --bg: #1a1220;
+  --surface: #22172a;
+  --surface-2: #2b1e35;
+  --surface-3: #382942;
+  --border: #3a2a44;
+  --border-strong: #4d3858;
+  --text: #f8ecf2;
+  --muted: #cdb4c3;
+  --subtle: #a98ea0;
+  --accent: #ff7a80;
+  --accent-hover: #ff9297;
+  --accent-fg: #1a1220;
+  --accent-text: #ff9da2;
+  --accent-soft: #3f1f33;
+  --ring: #ff9da2;
+  --chart-1: #ff7a80;
+  --chart-2: #e05aae;
+  --chart-3: #9a82ff;
+  --chart-4: #ffb366;
+  --chart-5: #f06292;
+  --chart-6: #b39dff;
+  --art-ink: #ffffff;
+  --theme-color: #1a1220;
+  color-scheme: dark;
+}
+
+/* ---------------- Desert Oasis ---------------- */
+[data-palette='oasis'] {
+  --primary: #0f766e;
+  --secondary: #d4a24c;
+  --tertiary: #e07a5f;
+  --grad-from: #0f766e;
+  --grad-via: #d4a24c;
+  --grad-to: #e07a5f;
+  --bg: #fbf7ef;
+  --surface: #ffffff;
+  --surface-2: #f5efe2;
+  --surface-3: #ede4d2;
+  --border: #e9dfcc;
+  --border-strong: #d6c7aa;
+  --text: #132e2b;
+  --muted: #4d6461;
+  --subtle: #5a7072;
+  --accent: #0f766e;
+  --accent-hover: #0b5f58;
+  --accent-fg: #ffffff;
+  --accent-text: #0d6b64;
+  --accent-soft: #ddf2ee;
+  --ring: #0f766e;
+  --chart-1: #0f766e;
+  --chart-2: #d4a24c;
+  --chart-3: #e07a5f;
+  --chart-4: #2a9d8f;
+  --chart-5: #b5838d;
+  --chart-6: #8a6f3b;
+  --art-ink: #ffffff;
+  --theme-color: #fbf7ef;
+  color-scheme: light;
+}
+
+.dark[data-palette='oasis'],
+[data-palette='oasis'][data-mode='dark'] {
+  --primary: #2dd4bf;
+  --secondary: #e7b964;
+  --tertiary: #f09479;
+  --grad-from: #2dd4bf;
+  --grad-via: #e7b964;
+  --grad-to: #f09479;
+  --bg: #0e1a1a;
+  --surface: #132323;
+  --surface-2: #1a2e2e;
+  --surface-3: #243a3a;
+  --border: #253c3b;
+  --border-strong: #35504e;
+  --text: #eaf4f1;
+  --muted: #a9c2bd;
+  --subtle: #86a29c;
+  --accent: #2dd4bf;
+  --accent-hover: #5eead4;
+  --accent-fg: #0e1a1a;
+  --accent-text: #5eead4;
+  --accent-soft: #123a36;
+  --ring: #5eead4;
+  --chart-1: #2dd4bf;
+  --chart-2: #e7b964;
+  --chart-3: #f09479;
+  --chart-4: #4fc3b0;
+  --chart-5: #d6a2ab;
+  --chart-6: #c9a35a;
+  --art-ink: #0e1a1a;
+  --theme-color: #0e1a1a;
+  color-scheme: dark;
+}
+
+/* ---------------- Deep Ocean ---------------- */
+[data-palette='ocean'] {
+  --primary: #1e40af;
+  --secondary: #06b6d4;
+  --tertiary: #10b981;
+  --grad-from: #1e40af;
+  --grad-via: #06b6d4;
+  --grad-to: #10b981;
+  --bg: #f5f9ff;
+  --surface: #ffffff;
+  --surface-2: #eaf1fc;
+  --surface-3: #dde7f7;
+  --border: #dbe5f5;
+  --border-strong: #bfcfea;
+  --text: #0f1b33;
+  --muted: #4a5a78;
+  --subtle: #5f6f8c;
+  --accent: #1e40af;
+  --accent-hover: #1e3a8a;
+  --accent-fg: #ffffff;
+  --accent-text: #1e40af;
+  --accent-soft: #e0eaff;
+  --ring: #2563eb;
+  --chart-1: #1e40af;
+  --chart-2: #06b6d4;
+  --chart-3: #10b981;
+  --chart-4: #3b82f6;
+  --chart-5: #0e7490;
+  --chart-6: #6366f1;
+  --art-ink: #ffffff;
+  --theme-color: #f5f9ff;
+  color-scheme: light;
+}
+
+.dark[data-palette='ocean'],
+[data-palette='ocean'][data-mode='dark'] {
+  --primary: #60a5fa;
+  --secondary: #22d3ee;
+  --tertiary: #34d399;
+  --grad-from: #3b82f6;
+  --grad-via: #22d3ee;
+  --grad-to: #34d399;
+  --bg: #0b1224;
+  --surface: #111a33;
+  --surface-2: #17223f;
+  --surface-3: #212e50;
+  --border: #22305a;
+  --border-strong: #31427a;
+  --text: #eaf1ff;
+  --muted: #a8b6d6;
+  --subtle: #8494b8;
+  --accent: #60a5fa;
+  --accent-hover: #93c5fd;
+  --accent-fg: #0b1224;
+  --accent-text: #93c5fd;
+  --accent-soft: #16285a;
+  --ring: #93c5fd;
+  --chart-1: #60a5fa;
+  --chart-2: #22d3ee;
+  --chart-3: #34d399;
+  --chart-4: #818cf8;
+  --chart-5: #38bdf8;
+  --chart-6: #a78bfa;
+  --art-ink: #0b1224;
+  --theme-color: #0b1224;
+  color-scheme: dark;
+}
+
+/* ---------------- Neon Pulse (dark-first feel) ---------------- */
+[data-palette='neon'] {
+  --primary: #a3e635;
+  --secondary: #22d3ee;
+  --tertiary: #f472b6;
+  --grad-from: #a3e635;
+  --grad-via: #22d3ee;
+  --grad-to: #f472b6;
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --surface-2: #efefea;
+  --surface-3: #e4e4dd;
+  --border: #e2e2dc;
+  --border-strong: #c9c9c1;
+  --text: #0a0a0b;
+  --muted: #4d4d52;
+  --subtle: #636369;
+  /* Lime is too light for white text → dark text on lime buttons (≈ 14:1). */
+  --accent: #a3e635;
+  --accent-hover: #bef264;
+  --accent-fg: #0a0a0b;
+  --accent-text: #3f6212;
+  --accent-soft: #ecfccb;
+  --ring: #65a30d;
+  --chart-1: #84cc16;
+  --chart-2: #06b6d4;
+  --chart-3: #ec4899;
+  --chart-4: #8b5cf6;
+  --chart-5: #f59e0b;
+  --chart-6: #14b8a6;
+  --art-ink: #0a0a0b;
+  --theme-color: #f7f7f5;
+  color-scheme: light;
+}
+
+.dark[data-palette='neon'],
+[data-palette='neon'][data-mode='dark'] {
+  --primary: #a3e635;
+  --secondary: #22d3ee;
+  --tertiary: #f472b6;
+  --grad-from: #a3e635;
+  --grad-via: #22d3ee;
+  --grad-to: #f472b6;
+  --bg: #0a0a0b;
+  --surface: #141416;
+  --surface-2: #1c1c1f;
+  --surface-3: #26262a;
+  --border: #2a2a2f;
+  --border-strong: #3a3a41;
+  --text: #f5f5f4;
+  --muted: #b4b4ba;
+  --subtle: #8e8e96;
+  --accent: #a3e635;
+  --accent-hover: #bef264;
+  --accent-fg: #0a0a0b;
+  --accent-text: #bef264;
+  --accent-soft: #1f2a0e;
+  --ring: #bef264;
+  --chart-1: #a3e635;
+  --chart-2: #22d3ee;
+  --chart-3: #f472b6;
+  --chart-4: #a78bfa;
+  --chart-5: #fbbf24;
+  --chart-6: #2dd4bf;
+  --art-ink: #0a0a0b;
+  --theme-color: #0a0a0b;
+  color-scheme: dark;
+}

@@ -1,0 +1,16 @@
+# GPU override for the voice service (requires the NVIDIA Container Toolkit).
+#   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
+services:
+  voice-service:
+    build:
+      args:
+        INSTALL_VIBEVOICE: "true"
+    environment:
+      TTS_ENGINE: vibevoice
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

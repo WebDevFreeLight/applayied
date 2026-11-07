@@ -1,0 +1,103 @@
+# Render Blueprint — VibeVoice API + voice service on the FREE plan, data in a free Neon Postgres.
+# Render ▸ New ▸ Blueprint ▸ this repo ▸ Blueprint path: VibeVoice/render.yaml
+# Full walkthrough: VibeVoice/DEPLOY.md
+#
+# Free-plan facts this config is built around:
+#  - Disks are wiped on every restart/sleep, so data AND uploaded files live in Postgres
+#    (Storage__Provider=Database) — nothing important is kept on the container disk.
+#  - Services sleep after ~15 min idle; the first request wakes them (~30-60 s).
+#  - 512 MB RAM: Whisper "tiny" for transcription; uploads are capped (5/10/25 MB).
+#  - No GPU anywhere on Render: the VibeVoice model itself can't run here, so speech uses the
+#    Edge neural voices fallback (Arabic + English) — the same engine the app uses on a PC without VibeVoice.
+
+services:
+  # ---------------- .NET API ----------------
+  - type: web
+    name: vibevoice-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: feature/vibevoice-notes-memories
+    dockerfilePath: ./VibeVoice/backend/Dockerfile
+    dockerContext: ./VibeVoice/backend
+    healthCheckPath: /api/health
+    buildFilter:
+      paths: ["VibeVoice/backend/**"]
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      # Render's proxy sits in front: use X-Forwarded-For so rate limits see real client IPs.
+      - key: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+        value: "true"
+      - key: Database__Provider
+        value: PostgreSQL
+      # Neon connection string, e.g. postgresql://user:pass@ep-xxx.eu-central-1.aws.neon.tech/neondb?sslmode=require
+      - key: Database__ConnectionString
+        sync: false
+      # Never seed the demo account (known password) on a public URL.
+      - key: Database__Seed
+        value: "false"
+      - key: Storage__Provider
+        value: Database
+      - key: Uploads__MaxImageBytes
+        value: "5242880"      # 5 MB
+      - key: Uploads__MaxAudioBytes
+        value: "10485760"     # 10 MB
+      - key: Uploads__MaxVideoBytes
+        value: "26214400"     # 25 MB
+      - key: Uploads__MaxRequestBytes
+        value: "31457280"     # 30 MB
+      - key: Jwt__Key
+        generateValue: true
+      # YOUR email: only this address becomes Admin when it registers.
+      - key: Auth__BootstrapAdminEmail
+        sync: false
+      # The Vercel URL, exact origin without trailing slash, e.g. https://vibevoice.vercel.app
+      - key: Cors__Origins__0
+        sync: false
+      # The voice service's public URL, e.g. https://vibevoice-voice.onrender.com
+      - key: VoiceService__BaseUrl
+        sync: false
+      - key: VoiceService__ApiKey
+        fromService:
+          type: web
+          name: vibevoice-voice
+          envVarKey: API_KEY
+      # A sleeping voice service needs time to wake up.
+      - key: VoiceService__HealthTimeoutSeconds
+        value: "5"
+
+  # ---------------- Python voice service (TTS / transcription / OCR) ----------------
+  - type: web
+    name: vibevoice-voice
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: feature/vibevoice-notes-memories
+    dockerfilePath: ./VibeVoice/voice-service/Dockerfile
+    dockerContext: ./VibeVoice/voice-service
+    healthCheckPath: /health
+    buildFilter:
+      paths: ["VibeVoice/voice-service/**"]
+    envVars:
+      # Shared secret; the API reads it via fromService above. Everything except /health requires it.
+      - key: API_KEY
+        generateValue: true
+      - key: TTS_ENGINE
+        value: edge
+      - key: ARABIC_TTS_ENGINE
+        value: edge
+      - key: FALLBACK_TTS_ENGINE
+        value: dev
+      - key: ASR_ENGINE
+        value: whisper
+      - key: WHISPER_MODEL
+        value: tiny
+      - key: WHISPER_DEVICE
+        value: cpu
+      - key: OCR_ENGINE
+        value: rapidocr
+      - key: MAX_UPLOAD_MB
+        value: "30"
+      - key: LOG_FORMAT
+        value: json

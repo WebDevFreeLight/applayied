@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="VibeVoice.Api/VibeVoice.Api.csproj" />
+  <Project Path="VibeVoice.Application/VibeVoice.Application.csproj" />
+  <Project Path="VibeVoice.Domain/VibeVoice.Domain.csproj" />
+  <Project Path="VibeVoice.Infrastructure/VibeVoice.Infrastructure.csproj" />
+  <Project Path="VibeVoice.Tests/VibeVoice.Tests.csproj" />
+</Solution>

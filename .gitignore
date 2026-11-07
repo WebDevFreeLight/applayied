@@ -4,3 +4,5 @@
 .playwright-mcp/
 db-backups/
 submission/
+obj
+bin

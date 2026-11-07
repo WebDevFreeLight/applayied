@@ -1,0 +1,77 @@
+# VibeVoice — full stack.
+#   docker compose up --build                       → SQLite + local files (default)
+#   docker compose --profile postgres up --build    → also starts PostgreSQL (set DB_PROVIDER/DB_CONNECTION in .env)
+#   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build   → NVIDIA GPU for VibeVoice
+# Copy .env.example to .env first.
+
+services:
+  api:
+    build: ./backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      Jwt__Key: ${JWT_KEY:?Set JWT_KEY in .env (32+ random characters)}
+      Database__Provider: ${DB_PROVIDER:-Sqlite}
+      Database__ConnectionString: ${DB_CONNECTION:-Data Source=storage/vibevoice.db}
+      Database__Seed: ${SEED_DEMO:-true}
+      VoiceService__BaseUrl: http://voice-service:8001
+      Cors__Origins__0: http://localhost:${FRONTEND_PORT:-8080}
+    ports:
+      - "${API_PORT:-5080}:8080"
+    volumes:
+      - vv-storage:/app/storage
+    depends_on:
+      voice-service:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+        required: false # only when the "postgres" profile is active
+    restart: unless-stopped
+
+  voice-service:
+    build:
+      context: ./voice-service
+      args:
+        INSTALL_VIBEVOICE: ${INSTALL_VIBEVOICE:-false}
+    environment:
+      TTS_ENGINE: ${TTS_ENGINE:-vibevoice}
+      ARABIC_TTS_ENGINE: ${ARABIC_TTS_ENGINE:-edge}
+      ASR_ENGINE: ${ASR_ENGINE:-whisper}
+      WHISPER_MODEL: ${WHISPER_MODEL:-small}
+      VIBEVOICE_MODEL_PATH: ${VIBEVOICE_MODEL_PATH:-microsoft/VibeVoice-Realtime-0.5B}
+    ports:
+      - "8001:8001"
+    volumes:
+      - hf-cache:/root/.cache/huggingface
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:${API_PORT:-5080}
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_DB: vibevoice
+      POSTGRES_USER: vibevoice
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vibevoice}
+    ports:
+      - "5432:5432"
+    volumes:
+      - vv-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vibevoice"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  vv-storage:
+  vv-postgres:
+  hf-cache:

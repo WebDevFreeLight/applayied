@@ -1,0 +1,43 @@
+# ---- .NET ----
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+*.trx
+
+# ---- Node / React ----
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.vite/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Local data (never commit) ----
+/storage/
+backend/VibeVoice.Api/storage/
+*.db
+*.db-shm
+*.db-wal
+models/
+.env
+.env.local
+logs/
+*.log
+
+# ---- Model weights / voice presets / upstream checkouts ----
+*.pt
+*.safetensors
+*.bin
+voice-service/third_party/
+voice-service/voices/
