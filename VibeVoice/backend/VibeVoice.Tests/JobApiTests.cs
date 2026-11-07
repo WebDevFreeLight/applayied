@@ -185,7 +185,7 @@ public sealed class JobApiTests
 
         var other = await SignUpAsync(factory);
         Assert.Equal(HttpStatusCode.NotFound, (await other.GetAsync(location, Ct)).StatusCode);
-        Assert.Equal(0, (await other.GetFromJsonAsync<JsonElement>("/api/jobs", Json, Ct)).GetArrayLength());
+        Assert.Equal(0, (await other.GetFromJsonAsync<JsonElement>("/api/jobs", Json, Ct)).GetProperty("total").GetInt32());
     }
 
     [Fact]
@@ -242,5 +242,118 @@ public sealed class JobApiTests
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         Assert.Equal("قائمة التسوق\nCoffee and dates",
             (await res.Content.ReadFromJsonAsync<JsonElement>(Json, Ct)).GetProperty("text").GetString());
+    }
+
+    private static async Task<(HttpClient Client, string Email)> SignUpWithEmailAsync(ApiFactory factory)
+    {
+        var email = $"u{Guid.NewGuid():N}@test.local";
+        var client = factory.CreateClient();
+        var res = await client.PostAsJsonAsync("/api/auth/register",
+            new { email, password = "Password1", displayName = "Member", preferredLanguage = "en" }, Ct);
+        res.EnsureSuccessStatusCode();
+        var body = await res.Content.ReadFromJsonAsync<JsonElement>(Json, Ct);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", body.GetProperty("token").GetString());
+        return (client, email);
+    }
+
+    private static MultipartFormDataContent StudioPicture()
+    {
+        var form = new MultipartFormDataContent();
+        var png = new ByteArrayContent(TestFiles.Png());
+        png.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+        form.Add(png, "file", "receipt.png");
+        form.Add(new StringContent("false"), "save");
+        return form;
+    }
+
+    [Fact]
+    public async Task Failed_studio_job_keeps_its_upload_and_can_be_retried_then_deleted()
+    {
+        var voice = new FakeVoiceClient { Available = false };
+        using var factory = Factory(voiceUp: true, voice);
+        var client = await SignUpAsync(factory);
+
+        using var form = StudioPicture();
+        var failed = await AcceptedThenFinishedAsync(client, await client.SendAsync(Async(HttpMethod.Post, "/api/voice/ocr", form), Ct));
+        Assert.Equal("Failed", failed.GetProperty("status").GetString());
+        Assert.True(failed.GetProperty("canRetry").GetBoolean());
+        Assert.Equal("receipt.png", failed.GetProperty("payload").GetProperty("fileName").GetString());
+        Assert.Equal(JsonValueKind.Null, failed.GetProperty("errorDetail").ValueKind); // admins only
+        var id = failed.GetProperty("id").GetString();
+
+        // Running jobs can't be deleted; finished ones can't be "retried" unless they failed.
+        voice.Available = true;
+        var retry = await client.PostAsync($"/api/jobs/{id}/retry", null, Ct);
+        Assert.Equal(HttpStatusCode.OK, retry.StatusCode);
+        JsonElement job = default;
+        for (var i = 0; i < 100; i++)
+        {
+            job = await client.GetFromJsonAsync<JsonElement>($"/api/jobs/{id}", Json, Ct);
+            if (job.GetProperty("status").GetString() is "Succeeded" or "Failed") break;
+            await Task.Delay(100, Ct);
+        }
+        Assert.Equal("Succeeded", job.GetProperty("status").GetString());
+        Assert.Equal("قائمة التسوق\nCoffee and dates", job.GetProperty("result").GetProperty("text").GetString());
+        Assert.True(job.GetProperty("durationSeconds").GetDouble() >= 0);
+        Assert.Equal(HttpStatusCode.Conflict, (await client.PostAsync($"/api/jobs/{id}/retry", null, Ct)).StatusCode);
+
+        Assert.Equal(HttpStatusCode.NoContent, (await client.DeleteAsync($"/api/jobs/{id}", Ct)).StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync($"/api/jobs/{id}", Ct)).StatusCode);
+    }
+
+    [Fact]
+    public async Task Jobs_page_filters_by_status_and_kind_and_counts_per_status()
+    {
+        var voice = new FakeVoiceClient();
+        using var factory = Factory(voiceUp: true, voice);
+        var client = await SignUpAsync(factory);
+
+        using (var ok = StudioPicture())
+            await AcceptedThenFinishedAsync(client, await client.SendAsync(Async(HttpMethod.Post, "/api/voice/ocr", ok), Ct));
+        voice.Available = false;
+        using (var bad = StudioPicture())
+            await AcceptedThenFinishedAsync(client, await client.SendAsync(Async(HttpMethod.Post, "/api/voice/ocr", bad), Ct));
+
+        var summary = await client.GetFromJsonAsync<JsonElement>("/api/jobs/summary", Json, Ct);
+        Assert.Equal(1, summary.GetProperty("succeeded").GetInt32());
+        Assert.Equal(1, summary.GetProperty("failed").GetInt32());
+        Assert.Equal(2, summary.GetProperty("total").GetInt32());
+
+        var failed = await client.GetFromJsonAsync<JsonElement>("/api/jobs?status=failed", Json, Ct);
+        Assert.Equal(1, failed.GetProperty("total").GetInt32());
+        Assert.Equal(503, failed.GetProperty("items")[0].GetProperty("errorStatus").GetInt32());
+        Assert.Equal(2, (await client.GetFromJsonAsync<JsonElement>("/api/jobs?kind=StudioOcr", Json, Ct)).GetProperty("total").GetInt32());
+        Assert.Equal(0, (await client.GetFromJsonAsync<JsonElement>("/api/jobs?kind=AudioTranscribe", Json, Ct)).GetProperty("total").GetInt32());
+        Assert.Equal(0, (await client.GetFromJsonAsync<JsonElement>("/api/jobs?status=active", Json, Ct)).GetProperty("total").GetInt32());
+
+        var cleared = await client.DeleteAsync("/api/jobs/finished", Ct);
+        Assert.Equal(2, (await cleared.Content.ReadFromJsonAsync<JsonElement>(Json, Ct)).GetProperty("deleted").GetInt32());
+    }
+
+    [Fact]
+    public async Task Admins_see_every_users_jobs_with_the_technical_error_detail()
+    {
+        var voice = new FakeVoiceClient { Available = false };
+        using var factory = Factory(voiceUp: true, voice);
+        var (admin, _) = await SignUpWithEmailAsync(factory);   // first account becomes Admin
+        var (member, memberEmail) = await SignUpWithEmailAsync(factory);
+
+        using var form = StudioPicture();
+        var job = await AcceptedThenFinishedAsync(member, await member.SendAsync(Async(HttpMethod.Post, "/api/voice/ocr", form), Ct));
+        var id = job.GetProperty("id").GetString();
+
+        Assert.Equal(HttpStatusCode.Forbidden, (await member.GetAsync("/api/admin/jobs", Ct)).StatusCode);
+
+        var all = await admin.GetFromJsonAsync<JsonElement>("/api/admin/jobs?status=failed", Json, Ct);
+        var row = all.GetProperty("items").EnumerateArray().Single(j => j.GetProperty("id").GetString() == id);
+        Assert.Equal(memberEmail, row.GetProperty("userEmail").GetString());
+        Assert.Contains("VoiceServiceUnavailableException", row.GetProperty("errorDetail").GetString());
+        Assert.Equal(1, (await admin.GetFromJsonAsync<JsonElement>("/api/admin/jobs/summary", Json, Ct)).GetProperty("failed").GetInt32());
+
+        // The admin's own list stays personal.
+        Assert.Equal(0, (await admin.GetFromJsonAsync<JsonElement>("/api/jobs", Json, Ct)).GetProperty("total").GetInt32());
+
+        voice.Available = true;
+        Assert.Equal(HttpStatusCode.OK, (await admin.PostAsync($"/api/admin/jobs/{id}/retry", null, Ct)).StatusCode);
     }
 }

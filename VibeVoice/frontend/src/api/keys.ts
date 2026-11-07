@@ -50,6 +50,12 @@ export const qk = {
     histories: () => ['voice', 'history'] as const,
     history: (page: number) => ['voice', 'history', page] as const,
   },
+  jobs: {
+    all: ['jobs'] as const,
+    list: (scope: 'mine' | 'all', q: object) => ['jobs', 'list', scope, q] as const,
+    summary: (scope: 'mine' | 'all') => ['jobs', 'summary', scope] as const,
+    detail: (scope: 'mine' | 'all', id: string) => ['jobs', 'detail', scope, id] as const,
+  },
   search: {
     all: ['search'] as const,
     query: (q: SearchQuery) => ['search', q] as const,

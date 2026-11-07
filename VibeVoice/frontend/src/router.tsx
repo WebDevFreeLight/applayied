@@ -65,6 +65,7 @@ export const routes: RouteObject[] = [
       },
       { path: 'images', lazy: lazyPage(() => import('./pages/ImagesPage'), 'ImagesPage') },
       { path: 'search', lazy: lazyPage(() => import('./pages/SearchPage'), 'SearchPage') },
+      { path: 'jobs', lazy: lazyPage(() => import('./pages/JobsPage'), 'JobsPage') },
       { path: 'trash', lazy: lazyPage(() => import('./pages/TrashPage'), 'TrashPage', ['notes', 'memories']) },
       { path: 'settings', lazy: lazyPage(() => import('./pages/SettingsPage'), 'SettingsPage') },
       { path: 'admin', lazy: lazyPage(() => import('./pages/admin/OverviewPage'), 'OverviewPage', ['users.view']) },

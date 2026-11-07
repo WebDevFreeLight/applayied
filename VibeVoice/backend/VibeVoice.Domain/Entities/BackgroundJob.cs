@@ -61,7 +61,11 @@ public class BackgroundJob
     [SugarColumn(Length = 1000, IsNullable = true)]
     public string? Error { get; set; }
 
-    /// <summary>Studio uploads wait here until the job runs; deleted when it finishes.</summary>
+    /// <summary>Technical detail for administrators (exception type, upstream message); never shown to members.</summary>
+    [SugarColumn(Length = 2000, IsNullable = true)]
+    public string? ErrorDetail { get; set; }
+
+    /// <summary>Studio uploads wait here until the job succeeds (kept after a failure so it can be retried).</summary>
     [SugarColumn(Length = 300, IsNullable = true)]
     public string? TempFilePath { get; set; }
 

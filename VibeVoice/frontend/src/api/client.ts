@@ -200,11 +200,25 @@ async function send<T>(path: string, options: RequestOptions = {}): Promise<{ st
 // ---------- Background jobs (OCR / transcription) ----------
 
 export type JobStatus = 'Queued' | 'Running' | 'Succeeded' | 'Failed'
+export type JobKind = 'ImageOcr' | 'AudioTranscribe' | 'StudioOcr' | 'StudioTranscribe'
+
+/** What the job was asked to do (only the fields its kind uses are set). */
+export interface JobPayload {
+  targetId?: string | null
+  ownerType?: string | null
+  ownerId?: string | null
+  appendToBody?: boolean
+  language?: string | null
+  save?: boolean
+  source?: string | null
+  fileName?: string | null
+  contentType?: string | null
+}
 
 /** GET /api/jobs/{id}: an OCR / transcription request the API runs in the background. */
 export interface JobDto<T = unknown> {
   id: string
-  kind: string
+  kind: JobKind | string
   status: JobStatus
   createdAt: string
   startedAt?: string | null
@@ -216,6 +230,16 @@ export interface JobDto<T = unknown> {
   error?: string | null
   /** Exactly what the synchronous endpoint returns, once Succeeded. */
   result?: T | null
+  payload?: JobPayload | null
+  durationSeconds?: number | null
+  canRetry?: boolean
+  canDelete?: boolean
+  /** Administrators' view only. */
+  userId?: string | null
+  userEmail?: string | null
+  userName?: string | null
+  /** Administrators' view only: exception chain / upstream error. */
+  errorDetail?: string | null
 }
 
 /** RFC 7240: asks the API to queue the work and answer 202 + a job instead of waiting. */

@@ -25,9 +25,20 @@ public sealed record JobPayload(
     string? FileName = null,
     string? ContentType = null);
 
+/// <summary>
+/// A background job with everything the Jobs page shows. <see cref="UserEmail"/>, <see cref="UserName"/> and
+/// <see cref="ErrorDetail"/> are only filled in for the administrators' view.
+/// </summary>
 public sealed record JobDto(
     Guid Id, JobKind Kind, JobStatus Status, DateTime CreatedAt, DateTime? StartedAt, DateTime? FinishedAt,
-    int Attempts, int? ErrorStatus, string? ErrorTitle, string? Error, JsonElement? Result);
+    int Attempts, int? ErrorStatus, string? ErrorTitle, string? Error, JsonElement? Result,
+    JobPayload? Payload = null, double? DurationSeconds = null, bool CanRetry = false, bool CanDelete = false,
+    Guid? UserId = null, string? UserEmail = null, string? UserName = null, string? ErrorDetail = null);
+
+/// <summary>Filters for the Jobs page. <c>Status</c> also accepts "active" (queued + running).</summary>
+public sealed record JobQuery(string? Status = null, JobKind? Kind = null, Guid? UserId = null, int Page = 1, int PageSize = 20);
+
+public sealed record JobSummaryDto(int Queued, int Running, int Succeeded, int Failed, int Total);
 
 /// <summary>
 /// Queues OCR / transcription work instead of doing it inside the HTTP request. The caller gets a
@@ -38,6 +49,7 @@ public sealed class JobService(
     IRepository<BackgroundJob> jobs,
     IRepository<ImageAttachment> images,
     IRepository<AudioClip> audio,
+    IRepository<User> users,
     IFileStorage storage,
     IJobQueue queue,
     ICurrentUser currentUser)
@@ -89,23 +101,118 @@ public sealed class JobService(
         }
     }
 
-    public async Task<JobDto> GetAsync(Guid id, CancellationToken ct)
+    // ---------- Reading ----------
+
+    /// <summary>One job: the owner's own, or anyone's for the administrators' view (<paramref name="admin"/>).</summary>
+    public async Task<JobDto> GetAsync(Guid id, CancellationToken ct, bool admin = false)
     {
-        var userId = currentUser.UserId;
-        var job = await jobs.FirstOrDefaultAsync(j => j.Id == id && j.UserId == userId, ct)
-            ?? throw new NotFoundException("Job", id);
-        return ToDto(job);
+        var job = await FindAsync(id, admin, ct);
+        return admin ? (await WithUsersAsync([job], ct)).Single() : ToDto(job);
     }
 
-    /// <summary>The user's most recent jobs; <paramref name="activeOnly"/> keeps queued and running ones.</summary>
-    public async Task<List<JobDto>> ListAsync(bool activeOnly, CancellationToken ct)
+    /// <summary>Paged, newest first. Members see their own jobs; <paramref name="admin"/> sees everybody's.</summary>
+    public async Task<PagedResult<JobDto>> QueryAsync(JobQuery q, CancellationToken ct, bool admin = false)
+    {
+        var page = Math.Max(1, q.Page);
+        var size = Math.Clamp(q.PageSize, 1, 100);
+        var (items, total) = await jobs.PageAsync(Filter(q, admin), j => j.CreatedAt, true, page, size, ct);
+        var dtos = admin ? await WithUsersAsync(items, ct) : items.Select(j => ToDto(j)).ToList();
+        return new PagedResult<JobDto>(dtos, page, size, total);
+    }
+
+    /// <summary>Counts per status for the summary tiles (same scope as <see cref="QueryAsync"/>).</summary>
+    public async Task<JobSummaryDto> SummaryAsync(CancellationToken ct, bool admin = false, Guid? userId = null)
+    {
+        Guid? scope = admin ? userId : currentUser.UserId;
+        async Task<int> Count(JobStatus status) =>
+            await jobs.CountAsync(j => (scope == null || j.UserId == scope) && j.Status == status, ct);
+        var queued = await Count(JobStatus.Queued);
+        var running = await Count(JobStatus.Running);
+        var succeeded = await Count(JobStatus.Succeeded);
+        var failed = await Count(JobStatus.Failed);
+        return new JobSummaryDto(queued, running, succeeded, failed, queued + running + succeeded + failed);
+    }
+
+    /// <summary>Kept for clients that poll "my active jobs" (GET /api/jobs?active=true).</summary>
+    public async Task<List<JobDto>> ListAsync(bool activeOnly, CancellationToken ct) =>
+        (await QueryAsync(new JobQuery(activeOnly ? "active" : null, PageSize: 50), ct)).Items.ToList();
+
+    // ---------- Managing ----------
+
+    /// <summary>Runs a failed job again (as its owner). Studio uploads are kept after a failure for this.</summary>
+    public async Task<JobDto> RetryAsync(Guid id, CancellationToken ct, bool admin = false)
+    {
+        var job = await FindAsync(id, admin, ct);
+        if (job.Status != JobStatus.Failed)
+            throw new ConflictException("Only failed jobs can be retried.");
+        if (job.Kind is JobKind.StudioOcr or JobKind.StudioTranscribe && string.IsNullOrEmpty(job.TempFilePath))
+            throw new ConflictException("The uploaded file of this job is gone; upload it again.");
+
+        job.Status = JobStatus.Queued;
+        job.Attempts = 0;
+        job.ErrorStatus = null;
+        job.ErrorTitle = null;
+        job.Error = null;
+        job.ErrorDetail = null;
+        job.ResultJson = null;
+        job.StartedAt = null;
+        job.FinishedAt = null;
+        await jobs.UpdateAsync(job, ct);
+        queue.Enqueue(job.Id);
+        return admin ? (await WithUsersAsync([job], ct)).Single() : ToDto(job);
+    }
+
+    /// <summary>Removes a finished job (and a studio upload still waiting for a retry).</summary>
+    public async Task DeleteAsync(Guid id, CancellationToken ct, bool admin = false)
+    {
+        var job = await FindAsync(id, admin, ct);
+        if (job.Status is JobStatus.Queued or JobStatus.Running)
+            throw new ConflictException("A job that is still queued or running can't be deleted.");
+        await RemoveAsync(job, ct);
+    }
+
+    /// <summary>Deletes all of the user's finished jobs; returns how many.</summary>
+    public async Task<int> ClearFinishedAsync(CancellationToken ct)
     {
         var userId = currentUser.UserId;
-        var list = activeOnly
-            ? await jobs.ListAsync(j => j.UserId == userId && (j.Status == JobStatus.Queued || j.Status == JobStatus.Running),
-                j => j.CreatedAt, true, 50, ct)
-            : await jobs.ListAsync(j => j.UserId == userId, j => j.CreatedAt, true, 50, ct);
-        return list.Select(ToDto).ToList();
+        var done = await jobs.ListAsync(j => j.UserId == userId && (j.Status == JobStatus.Succeeded || j.Status == JobStatus.Failed), ct);
+        foreach (var job in done) await RemoveAsync(job, ct);
+        return done.Count;
+    }
+
+    private async Task RemoveAsync(BackgroundJob job, CancellationToken ct)
+    {
+        var id = job.Id;
+        await jobs.DeleteAsync(j => j.Id == id, ct);
+        if (!string.IsNullOrEmpty(job.TempFilePath))
+            await storage.DeleteAsync(job.TempFilePath, CancellationToken.None);
+    }
+
+    private async Task<BackgroundJob> FindAsync(Guid id, bool admin, CancellationToken ct)
+    {
+        Guid? userId = admin ? null : currentUser.UserId;
+        return await jobs.FirstOrDefaultAsync(j => j.Id == id && (userId == null || j.UserId == userId), ct)
+            ?? throw new NotFoundException("Job", id);
+    }
+
+    private System.Linq.Expressions.Expression<Func<BackgroundJob, bool>> Filter(JobQuery q, bool admin)
+    {
+        Guid? user = admin ? q.UserId : currentUser.UserId;
+        var kind = q.Kind;
+        var status = (q.Status ?? "").Trim();
+        var active = status.Equals("active", StringComparison.OrdinalIgnoreCase);
+        JobStatus? exact = !active && Enum.TryParse<JobStatus>(status, true, out var parsed) ? parsed : null;
+        return j => (user == null || j.UserId == user)
+                    && (kind == null || j.Kind == kind)
+                    && (!active || j.Status == JobStatus.Queued || j.Status == JobStatus.Running)
+                    && (exact == null || j.Status == exact);
+    }
+
+    private async Task<List<JobDto>> WithUsersAsync(IReadOnlyCollection<BackgroundJob> list, CancellationToken ct)
+    {
+        var ids = list.Select(j => j.UserId).Distinct().ToList();
+        var owners = (await users.ListAsync(u => ids.Contains(u.Id), ct)).ToDictionary(u => u.Id);
+        return list.Select(j => ToDto(j, owners.GetValueOrDefault(j.UserId), adminView: true)).ToList();
     }
 
     private async Task<JobDto> QueueAsync(JobKind kind, JobPayload payload, string? tempFile, CancellationToken ct)
@@ -123,7 +230,7 @@ public sealed class JobService(
         return ToDto(job);
     }
 
-    public static JobDto ToDto(BackgroundJob job)
+    public static JobDto ToDto(BackgroundJob job, User? owner = null, bool adminView = false)
     {
         JsonElement? result = null;
         if (!string.IsNullOrEmpty(job.ResultJson))
@@ -131,8 +238,27 @@ public sealed class JobService(
             using var doc = JsonDocument.Parse(job.ResultJson);
             result = doc.RootElement.Clone();
         }
+        JobPayload? payload = null;
+        try
+        {
+            if (!string.IsNullOrEmpty(job.PayloadJson)) payload = JsonSerializer.Deserialize<JobPayload>(job.PayloadJson, PayloadJson);
+        }
+        catch (JsonException)
+        {
+            // An unreadable payload shouldn't hide the job.
+        }
+
+        double? duration = job is { StartedAt: { } started, FinishedAt: { } finishedAt }
+            ? Math.Round((finishedAt - started).TotalSeconds, 2)
+            : null;
+        var finished = job.Status is JobStatus.Succeeded or JobStatus.Failed;
+        var canRetry = job.Status == JobStatus.Failed
+                       && (job.Kind is JobKind.ImageOcr or JobKind.AudioTranscribe || !string.IsNullOrEmpty(job.TempFilePath));
         return new JobDto(job.Id, job.Kind, job.Status, job.CreatedAt, job.StartedAt, job.FinishedAt,
-            job.Attempts, job.ErrorStatus, job.ErrorTitle, job.Error, result);
+            job.Attempts, job.ErrorStatus, job.ErrorTitle, job.Error, result,
+            payload, duration, canRetry, finished,
+            adminView ? job.UserId : null, adminView ? owner?.Email : null, adminView ? owner?.DisplayName : null,
+            adminView ? job.ErrorDetail : null);
     }
 }
 

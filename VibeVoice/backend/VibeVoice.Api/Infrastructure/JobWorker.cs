@@ -79,7 +79,15 @@ public sealed class JobWorker(
         await using var scope = scopes.CreateAsyncScope();
         var jobs = scope.ServiceProvider.GetRequiredService<IRepository<BackgroundJob>>();
         var cutoff = DateTime.UtcNow.AddDays(-options.Value.KeepDays);
-        var purged = await jobs.DeleteAsync(j => (j.Status == JobStatus.Succeeded || j.Status == JobStatus.Failed) && j.CreatedAt < cutoff, ct);
+        var expired = await jobs.ListAsync(j => (j.Status == JobStatus.Succeeded || j.Status == JobStatus.Failed) && j.CreatedAt < cutoff, ct);
+        var storage = scope.ServiceProvider.GetRequiredService<IFileStorage>();
+        foreach (var temp in expired.Select(j => j.TempFilePath).OfType<string>().Where(t => t.Length > 0))
+        {
+            try { await storage.DeleteAsync(temp, ct); }
+            catch (Exception ex) { logger.LogWarning(ex, "Could not delete the upload {Path} of an expired job", temp); }
+        }
+        var purged = expired.Count == 0 ? 0
+            : await jobs.DeleteAsync(j => (j.Status == JobStatus.Succeeded || j.Status == JobStatus.Failed) && j.CreatedAt < cutoff, ct);
 
         var pending = await jobs.ListAsync(j => j.Status == JobStatus.Queued || j.Status == JobStatus.Running,
             j => j.CreatedAt, false, 500, ct);
@@ -115,12 +123,14 @@ public sealed class JobWorker(
             job.ErrorStatus = null;
             job.ErrorTitle = null;
             job.Error = null;
+            job.ErrorDetail = null;
         }
         catch (VoiceServiceUnavailableException ex) when (job.Attempts < options.Value.MaxAttempts && !stoppingToken.IsCancellationRequested)
         {
             // A sleeping free-tier voice service answers once it has woken up: try again shortly.
             job.Status = JobStatus.Queued;
             job.Error = ex.Message;
+            job.ErrorDetail = Detail(ex);
             await jobs.UpdateAsync(job, CancellationToken.None);
             var delay = TimeSpan.FromSeconds(options.Value.RetryDelaySeconds * job.Attempts);
             logger.LogWarning("Background job {JobId}: voice service unavailable, retrying in {Delay}", job.Id, delay);
@@ -140,6 +150,7 @@ public sealed class JobWorker(
                     $"The job did not finish within {options.Value.TimeoutMinutes} minutes."),
                 _ => (500, "Unexpected error", "Something went wrong. Please try again."),
             };
+            job.ErrorDetail = Detail(ex);
             if (ex is not AppException) logger.LogError(ex, "Background job {JobId} ({Kind}) failed", job.Id, job.Kind);
             job.Status = JobStatus.Failed;
         }
@@ -148,7 +159,8 @@ public sealed class JobWorker(
         await jobs.UpdateAsync(job, CancellationToken.None);
         logger.LogInformation("Background job {JobId} ({Kind}) {Status}", job.Id, job.Kind, job.Status);
 
-        if (job.TempFilePath is { Length: > 0 } temp)
+        // A failed studio job keeps its upload so it can be retried from the Jobs page.
+        if (job.Status == JobStatus.Succeeded && job.TempFilePath is { Length: > 0 } temp)
         {
             try
             {
@@ -158,6 +170,18 @@ public sealed class JobWorker(
             {
                 logger.LogWarning(ex, "Could not delete the upload of job {JobId}", job.Id);
             }
+            job.TempFilePath = null;
+            await jobs.UpdateAsync(job, CancellationToken.None);
         }
+    }
+
+    /// <summary>Exception chain for administrators: type and message of each level (max 2000 chars).</summary>
+    private static string Detail(Exception ex)
+    {
+        var parts = new List<string>();
+        for (var e = ex; e is not null && parts.Count < 4; e = e.InnerException ?? (e as VoiceServiceUnavailableException)?.Upstream)
+            parts.Add($"{e.GetType().Name}: {e.Message}");
+        var text = string.Join(" --> ", parts);
+        return text.Length > 2000 ? text[..2000] : text;
     }
 }
