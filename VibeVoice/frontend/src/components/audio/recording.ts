@@ -16,7 +16,15 @@ export function pickRecorderMimeType(): string {
   return RECORDER_MIME_CANDIDATES.find((m) => MR.isTypeSupported(m)) ?? ''
 }
 
-export type RecorderErrorKind = 'denied' | 'unsupported' | 'noDevice' | 'failed'
+/**
+ * Browsers expose the microphone only to secure pages (https:// or http://localhost). Opened over the LAN
+ * as http://192.168.x.x, navigator.mediaDevices is undefined, which is not the browser's fault.
+ */
+export function isInsecureContext(): boolean {
+  return typeof window !== 'undefined' && window.isSecureContext === false
+}
+
+export type RecorderErrorKind = 'denied' | 'unsupported' | 'insecure' | 'noDevice' | 'failed'
 
 export function classifyMediaError(err: unknown): RecorderErrorKind {
   const name = err instanceof DOMException || err instanceof Error ? err.name : ''

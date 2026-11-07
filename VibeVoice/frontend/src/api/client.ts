@@ -9,7 +9,8 @@ const TOKEN_KEY = 'vv.token'
  */
 export const API_URL: string = (
   (import.meta.env.VITE_API_URL as string | undefined) ||
-  (import.meta.env.MODE === 'development' ? '' : 'http://localhost:5080')
+  // Any dev-server mode (development, lan) proxies /api; tests keep an absolute URL.
+  (import.meta.env.DEV && import.meta.env.MODE !== 'test' ? '' : 'http://localhost:5080')
 ).replace(/\/+$/, '')
 
 /** Typed error raised for every non-2xx response (mapped from RFC 7807 ProblemDetails). */

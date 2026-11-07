@@ -146,4 +146,15 @@ describe('AudioRecorder', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(/isn't supported in this browser/)
     expect(getUserMedia).not.toHaveBeenCalled()
   })
+
+  it('explains that an http:// LAN page needs https instead of blaming the browser', async () => {
+    vi.stubGlobal('isSecureContext', false)
+    render(<AudioRecorder onSave={vi.fn()} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
+    const alert = await screen.findByRole('alert')
+    expect(alert).toHaveTextContent(/only works on a secure page/)
+    expect(alert).not.toHaveTextContent(/isn't supported/)
+    expect(screen.queryByRole('button', { name: 'Try again' })).not.toBeInTheDocument()
+    expect(getUserMedia).not.toHaveBeenCalled()
+  })
 })

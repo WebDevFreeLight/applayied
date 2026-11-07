@@ -8,6 +8,7 @@ import { Button } from '../ui/Button'
 import { ProgressBar } from '../ui/Display'
 import {
   classifyMediaError,
+  isInsecureContext,
   isRecordingSupported,
   pickRecorderMimeType,
   type RecorderErrorKind,
@@ -142,6 +143,10 @@ export function AudioRecorder({ onSave, onSaved, saveLabel, className }: AudioRe
   }
 
   const start = async () => {
+    if (isInsecureContext()) {
+      fail('insecure')
+      return
+    }
     if (!isRecordingSupported()) {
       fail('unsupported')
       return
@@ -384,7 +389,7 @@ export function AudioRecorder({ onSave, onSaved, saveLabel, className }: AudioRe
         <div role="alert" className="flex flex-col gap-3 rounded-xl bg-danger-soft/60 p-3 text-sm text-danger sm:flex-row sm:items-center">
           <MicOff className="size-5 shrink-0" aria-hidden />
           <p className="flex-1">{t(`recorder.${errorKind}`)}</p>
-          {errorKind !== 'unsupported' && (
+          {errorKind !== 'unsupported' && errorKind !== 'insecure' && (
             <Button size="sm" onClick={start}>
               {t('recorder.tryAgain')}
             </Button>

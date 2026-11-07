@@ -1,10 +1,13 @@
 import { fileURLToPath, URL } from 'node:url'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
+export default defineConfig(({ mode }) => ({
+  // `npm run dev:lan` (mode "lan") serves HTTPS with a self-signed certificate: browsers only allow the
+  // microphone and clipboard on secure pages, and http://192.168.x.x is not one (localhost is).
+  plugins: [react(), tailwindcss(), mode === 'lan' && basicSsl({ name: 'vibevoice-dev' })],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
@@ -42,4 +45,4 @@ export default defineConfig({
     css: { include: [/palettes\.css/] },
     restoreMocks: true,
   },
-})
+}))

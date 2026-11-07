@@ -36,6 +36,8 @@ Start-Process pwsh -WorkingDirectory $web -ArgumentList "-NoExit", "-Command",
 
 Write-Host ""
 Write-Host "VibeVoice is starting:" -ForegroundColor Green
-Write-Host "  App      http://localhost:5173   (demo: admin@vibevoice.local / Admin123!)"
+Write-Host "  App      https://localhost:5173  (demo: admin@vibevoice.local / Admin123!)"
+Write-Host "  Phone    https://<this-PC-IP>:5173 on the same Wi-Fi - accept the certificate warning once"
+Write-Host "           (https is required for the microphone and copy buttons on another device)"
 Write-Host "  API      http://localhost:5080/swagger"
 if (-not $NoVoice) { Write-Host "  Voice    http://localhost:8001/docs" }

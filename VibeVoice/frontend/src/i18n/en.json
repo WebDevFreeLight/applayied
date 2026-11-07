@@ -396,6 +396,7 @@
     "level": "Input level",
     "denied": "Microphone access was denied. Allow microphone access in your browser settings and try again.",
     "unsupported": "Recording isn't supported in this browser. Try a recent Chrome, Edge, Firefox or Safari.",
+    "insecure": "The microphone only works on a secure page. Open this app with https:// (on a phone: https://<your-PC-IP>:5173) or on localhost.",
     "noDevice": "No microphone was found.",
     "failed": "Recording failed. Please try again.",
     "tryAgain": "Try again"
