@@ -1,26 +1,38 @@
-# Render Blueprint — VibeVoice API + voice service on the FREE plan, data in a free Neon Postgres.
-# Render ▸ New ▸ Blueprint ▸ this repo ▸ Blueprint path: VibeVoice/render.yaml
-# Full walkthrough: VibeVoice/DEPLOY.md
+# Render Blueprint — VibeVoice on the FREE plan, mirroring VibeVoice/docker-compose.yml:
 #
-# Free-plan facts this config is built around:
+#   docker-compose.yml        Render (this file)                       Built from
+#   ------------------        ------------------                       ----------
+#   api                   ->  vibevoice-api            (Docker)        VibeVoice/backend/Dockerfile
+#   voice-service         ->  vibevoice-voice-service  (Docker)        VibeVoice/voice-service/Dockerfile
+#   frontend              ->  vibevoice-frontend       (static site)   VibeVoice/frontend (npm run build)
+#   postgres (profile)    ->  Neon Postgres (outside Render, free)     paste its URL once
+#
+# Render ▸ New ▸ Blueprint ▸ this repo ▸ branch feature/vibevoice-notes-memories ▸
+#   Blueprint path: VibeVoice/render.yaml        Full walkthrough: VibeVoice/DEPLOY.md
+#
+# Why it differs from compose:
+#  - Render runs one container per service and can't read a compose file, so each compose service is
+#    listed here. Free services can't talk over Render's private network, so they use public https URLs.
 #  - Disks are wiped on every restart/sleep, so data AND uploaded files live in Postgres
-#    (Storage__Provider=Database) — nothing important is kept on the container disk.
-#  - Services sleep after ~15 min idle; the first request wakes them (~30-60 s).
-#  - 512 MB RAM: Whisper "tiny" for transcription; uploads are capped (5/10/25 MB).
-#  - No GPU anywhere on Render: the VibeVoice model itself can't run here, so speech uses the
-#    Edge neural voices fallback (Arabic + English) — the same engine the app uses on a PC without VibeVoice.
+#    (Storage__Provider=Database) instead of the compose volumes.
+#  - 512 MB RAM and no GPU: Whisper "tiny" instead of "small", and speech uses the Edge neural voices
+#    (Arabic + English) instead of the VibeVoice model. Uploads are capped (5/10/25 MB).
+#  - Services sleep after ~15 min idle; the first request wakes them (~30-60 s). The static site never sleeps.
+#
+# URLs below assume Render gives each service its plain name (https://<name>.onrender.com). If a name is
+# taken, Render adds a suffix: then fix Cors__Origins__0, VoiceService__BaseUrl and VITE_API_URL to the real URLs.
 
 services:
-  # ---------------- .NET API ----------------
+  # ---------------- api (.NET) ----------------
   - type: web
     name: vibevoice-api
     runtime: docker
     plan: free
-    region: ohio
+    region: ohio            # same AWS area as the Neon database (us-east-2)
     branch: feature/vibevoice-notes-memories
     dockerfilePath: ./VibeVoice/backend/Dockerfile
     dockerContext: ./VibeVoice/backend
-    healthCheckPath: /api/health
+    healthCheckPath: /health
     buildFilter:
       paths: ["VibeVoice/backend/**"]
     envVars:
@@ -31,7 +43,7 @@ services:
         value: "true"
       - key: Database__Provider
         value: PostgreSQL
-      # Neon connection string, e.g. postgresql://user:pass@ep-xxx-pooler.c-8.us-east-2.aws.neon.tech/neondb?sslmode=require
+      # Neon connection string, pasted exactly as Neon shows it (postgresql://...?sslmode=require...).
       - key: Database__ConnectionString
         sync: false
       # Never seed the demo account (known password) on a public URL.
@@ -52,24 +64,24 @@ services:
       # YOUR email: only this address becomes Admin when it registers.
       - key: Auth__BootstrapAdminEmail
         sync: false
-      # The Vercel URL, exact origin without trailing slash, e.g. https://vibevoice.vercel.app
+      # compose: Cors__Origins__0 = the frontend's address
       - key: Cors__Origins__0
-        sync: false
-      # The voice service's public URL, e.g. https://vibevoice-voice.onrender.com
+        value: https://vibevoice-frontend.onrender.com
+      # compose: VoiceService__BaseUrl = http://voice-service:8001
       - key: VoiceService__BaseUrl
-        sync: false
+        value: https://vibevoice-voice-service.onrender.com
       - key: VoiceService__ApiKey
         fromService:
           type: web
-          name: vibevoice-voice
+          name: vibevoice-voice-service
           envVarKey: API_KEY
       # A sleeping voice service needs time to wake up.
       - key: VoiceService__HealthTimeoutSeconds
         value: "5"
 
-  # ---------------- Python voice service (TTS / transcription / OCR) ----------------
+  # ---------------- voice-service (Python: TTS / transcription / OCR) ----------------
   - type: web
-    name: vibevoice-voice
+    name: vibevoice-voice-service
     runtime: docker
     plan: free
     region: ohio
@@ -101,3 +113,44 @@ services:
         value: "30"
       - key: LOG_FORMAT
         value: json
+
+  # ---------------- frontend (React, served as a static site instead of compose's nginx) ----------------
+  - type: web
+    name: vibevoice-frontend
+    runtime: static
+    branch: feature/vibevoice-notes-memories
+    rootDir: VibeVoice/frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    buildFilter:
+      paths: ["VibeVoice/frontend/**"]
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # compose: VITE_API_URL build arg. Baked in at build time — redeploy the site after changing it.
+      - key: VITE_API_URL
+        value: https://vibevoice-api.onrender.com
+      - key: VITE_MAX_IMAGE_MB
+        value: "5"
+      - key: VITE_MAX_AUDIO_MB
+        value: "10"
+      - key: VITE_MAX_VIDEO_MB
+        value: "25"
+    routes:
+      # Single-page app: every path that isn't a file goes to index.html (React Router handles it).
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: microphone=(self), camera=(), geolocation=()
