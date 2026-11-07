@@ -89,8 +89,14 @@ public static class AppEndpoints
             var uploaded = await s.UploadImagesAsync(OwnerType.Library, Guid.Empty, files, ct);
             return await ContentEndpoints.OcrAfterUploadAsync(uploaded, form, response, s, logs, ct);
         }).Accepts<IFormFileCollection>("multipart/form-data").RequirePermission(Permissions.ImagesUpload);
-        images.MapPost("/{id:guid}/ocr", (Guid id, OcrRequest? body, AttachmentService s, CancellationToken ct) =>
-            s.ExtractTextAsync(id, new OcrRequest(false, body?.Language), ct)).RequirePermission(Permissions.VoiceOcr);
+        images.MapPost("/{id:guid}/ocr", async (Guid id, OcrRequest? body, HttpContext http, AttachmentService s, JobService jobs,
+            CancellationToken ct) =>
+        {
+            var req = new OcrRequest(false, body?.Language);
+            if (http.Request.WantsAsync())
+                return JobEndpoints.Accepted(http, await jobs.EnqueueImageOcrAsync(id, null, null, req, ct));
+            return Results.Ok(await s.ExtractTextAsync(id, req, ct));
+        }).RequirePermission(Permissions.VoiceOcr);
         images.MapPost("/{id:guid}/attach", (Guid id, AttachImageRequest body, AttachmentService s, CancellationToken ct) =>
             s.AttachImageAsync(id, body.OwnerType, body.OwnerId, ct));
         images.MapDelete("/{id:guid}", async (Guid id, AttachmentService s, CancellationToken ct) =>
@@ -142,22 +148,28 @@ public static class AppEndpoints
         voice.MapGet("/status", (VoiceStudioService s, CancellationToken ct) => s.StatusAsync(ct));
         voice.MapPost("/tts", (TtsRequest body, VoiceStudioService s, CancellationToken ct) => s.SpeakAsync(body, ct))
             .Validate<TtsRequest>().RequirePermission(Permissions.VoiceTts);
-        voice.MapPost("/transcribe", async (HttpRequest request, VoiceStudioService s, CancellationToken ct) =>
+        voice.MapPost("/transcribe", async (HttpRequest request, VoiceStudioService s, JobService jobs, CancellationToken ct) =>
         {
             var form = await request.ReadMultipartAsync(ct);
             var file = form.Files.GetFile("file") ?? throw new BadRequestException("Attach the audio as the 'file' field.");
             var save = !bool.TryParse(form["save"], out var saveFlag) || saveFlag;
             var source = Enum.TryParse<AudioSource>(form["source"], true, out var parsed) ? parsed : AudioSource.Uploaded;
             string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
-            return await s.TranscribeAsync(file.ToUpload(), language, save, source, ct);
+            if (request.WantsAsync())
+                return JobEndpoints.Accepted(request.HttpContext,
+                    await jobs.EnqueueStudioAsync(JobKind.StudioTranscribe, file.ToUpload(), language, save, source, ct));
+            return Results.Ok(await s.TranscribeAsync(file.ToUpload(), language, save, source, ct));
         }).Accepts<IFormFile>("multipart/form-data").RequirePermission(Permissions.VoiceTranscribe);
-        voice.MapPost("/ocr", async (HttpRequest request, VoiceStudioService s, CancellationToken ct) =>
+        voice.MapPost("/ocr", async (HttpRequest request, VoiceStudioService s, JobService jobs, CancellationToken ct) =>
         {
             var form = await request.ReadMultipartAsync(ct);
             var file = form.Files.GetFile("file") ?? throw new BadRequestException("Attach the picture as the 'file' field.");
             var save = !bool.TryParse(form["save"], out var saveFlag) || saveFlag;
             string? language = string.IsNullOrWhiteSpace(form["language"]) ? null : form["language"].ToString();
-            return await s.RecognizeAsync(file.ToUpload(), language, save, ct);
+            if (request.WantsAsync())
+                return JobEndpoints.Accepted(request.HttpContext,
+                    await jobs.EnqueueStudioAsync(JobKind.StudioOcr, file.ToUpload(), language, save, AudioSource.Uploaded, ct));
+            return Results.Ok(await s.RecognizeAsync(file.ToUpload(), language, save, ct));
         }).Accepts<IFormFile>("multipart/form-data").RequirePermission(Permissions.VoiceOcr);
         voice.MapGet("/history", (int? page, int? pageSize, LibraryService s, CancellationToken ct) =>
             s.StudioHistoryAsync(page ?? 1, pageSize ?? 20, ct));

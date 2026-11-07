@@ -82,10 +82,14 @@ public static class ContentEndpoints
             return await OcrAfterUploadAsync(uploaded, form, response, s, logs, ct);
         }).Accepts<IFormFileCollection>("multipart/form-data").RequirePermission(Permissions.ImagesUpload);
 
-        g.MapPost("/{id:guid}/images/{imageId:guid}/ocr", async (Guid id, Guid imageId, OcrRequest? body, AttachmentService s, CancellationToken ct) =>
+        g.MapPost("/{id:guid}/images/{imageId:guid}/ocr", async (Guid id, Guid imageId, OcrRequest? body, HttpContext http,
+            AttachmentService s, JobService jobs, CancellationToken ct) =>
         {
             await s.GetOwnerAsync(type, id, ct);
-            return await s.ExtractTextAsync(imageId, body ?? new OcrRequest(false, null), ct, type, id);
+            var req = body ?? new OcrRequest(false, null);
+            if (http.Request.WantsAsync())
+                return JobEndpoints.Accepted(http, await jobs.EnqueueImageOcrAsync(imageId, type, id, req, ct));
+            return Results.Ok(await s.ExtractTextAsync(imageId, req, ct, type, id));
         }).RequirePermission(Permissions.VoiceOcr);
 
         g.MapPatch("/{id:guid}/images/{imageId:guid}", (Guid id, Guid imageId, UpdateCaptionRequest body, AttachmentService s, CancellationToken ct) =>
@@ -137,10 +141,17 @@ public static class ContentEndpoints
         g.MapPost("/{id:guid}/tts", (Guid id, TtsRequest body, AttachmentService s, CancellationToken ct) =>
             s.GenerateTtsAsync(type, id, body, ct)).Validate<TtsRequest>().RequirePermission(Permissions.VoiceTts);
 
-        g.MapPost("/{id:guid}/audio/{audioId:guid}/transcribe",
-            (Guid id, Guid audioId, TranscribeRequest? body, AttachmentService s, CancellationToken ct) =>
-                s.TranscribeAsync(type, id, audioId, body ?? new TranscribeRequest(false, null), ct))
-            .RequirePermission(Permissions.VoiceTranscribe);
+        g.MapPost("/{id:guid}/audio/{audioId:guid}/transcribe", async (Guid id, Guid audioId, TranscribeRequest? body, HttpContext http,
+            AttachmentService s, JobService jobs, CancellationToken ct) =>
+        {
+            var req = body ?? new TranscribeRequest(false, null);
+            if (http.Request.WantsAsync())
+            {
+                await s.GetOwnerAsync(type, id, ct);
+                return JobEndpoints.Accepted(http, await jobs.EnqueueTranscribeAsync(type, id, audioId, req, ct));
+            }
+            return Results.Ok(await s.TranscribeAsync(type, id, audioId, req, ct));
+        }).RequirePermission(Permissions.VoiceTranscribe);
     }
 
     /// <summary>

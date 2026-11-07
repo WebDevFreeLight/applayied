@@ -15,6 +15,9 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
     /// <summary>Extra configuration for a specific test.</summary>
     public Dictionary<string, string> Settings { get; } = [];
 
+    /// <summary>Service overrides for a specific test (e.g. a fake voice service).</summary>
+    public Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>? Services { get; set; }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         Directory.CreateDirectory(Folder);
@@ -28,6 +31,7 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         builder.UseSetting("VoiceService:HealthTimeoutSeconds", "1");
         builder.UseSetting("RateLimiting:AuthPermitsPerMinute", "1000");
         foreach (var (key, value) in Settings) builder.UseSetting(key, value);
+        if (Services is { } configure) builder.ConfigureServices(configure);
     }
 
     protected override void Dispose(bool disposing)
