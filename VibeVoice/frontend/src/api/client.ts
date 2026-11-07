@@ -160,6 +160,11 @@ export interface RequestOptions {
 
 /** Typed fetch wrapper: base URL, bearer token, JSON/FormData bodies, ProblemDetails → ApiError. */
 export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  return (await send<T>(path, options)).data
+}
+
+/** Same as {@link request} but also returns the HTTP status (e.g. 202 for a queued background job). */
+async function send<T>(path: string, options: RequestOptions = {}): Promise<{ status: number; data: T }> {
   const { method = 'GET', body, query, signal, headers = {} } = options
   const h: Record<string, string> = { Accept: 'application/json', ...headers }
   const t = getToken()
@@ -185,11 +190,137 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     handleUnauthorized(res.status, !!t)
     throw new ApiError(res.status, await parseProblem(res), res.statusText || undefined)
   }
-  if (res.status === 204 || res.status === 205) return undefined as T
+  if (res.status === 204 || res.status === 205) return { status: res.status, data: undefined as T }
   const text = await res.text()
-  if (!text) return undefined as T
+  if (!text) return { status: res.status, data: undefined as T }
   const ct = res.headers.get('content-type') ?? ''
-  return (ct.includes('json') ? JSON.parse(text) : text) as T
+  return { status: res.status, data: (ct.includes('json') ? JSON.parse(text) : text) as T }
+}
+
+// ---------- Background jobs (OCR / transcription) ----------
+
+export type JobStatus = 'Queued' | 'Running' | 'Succeeded' | 'Failed'
+
+/** GET /api/jobs/{id}: an OCR / transcription request the API runs in the background. */
+export interface JobDto<T = unknown> {
+  id: string
+  kind: string
+  status: JobStatus
+  createdAt: string
+  startedAt?: string | null
+  finishedAt?: string | null
+  attempts: number
+  /** HTTP status the synchronous call would have failed with (e.g. 503 voice service down). */
+  errorStatus?: number | null
+  errorTitle?: string | null
+  error?: string | null
+  /** Exactly what the synchronous endpoint returns, once Succeeded. */
+  result?: T | null
+}
+
+/** RFC 7240: asks the API to queue the work and answer 202 + a job instead of waiting. */
+export const PREFER_ASYNC: Record<string, string> = { Prefer: 'respond-async' }
+
+export interface WaitForJobOptions {
+  signal?: AbortSignal
+  /** Give up after this long (default 25 min: a free host may first have to wake the voice service). */
+  timeoutMs?: number
+  /** First poll delay in ms; grows to 4 s. */
+  intervalMs?: number
+}
+
+function sleep(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) return reject(new DOMException('Aborted', 'AbortError'))
+    const timer = setTimeout(resolve, ms)
+    signal?.addEventListener(
+      'abort',
+      () => {
+        clearTimeout(timer)
+        reject(new DOMException('Aborted', 'AbortError'))
+      },
+      { once: true },
+    )
+  })
+}
+
+/**
+ * Polls a background job until it finishes. Resolves with its result, or throws the same ApiError the
+ * synchronous endpoint would have thrown. Short outages while polling (the API waking up, a flaky
+ * phone connection) are retried; the job itself keeps running on the server either way.
+ */
+export async function waitForJob<T>(job: JobDto<T> | string, options: WaitForJobOptions = {}): Promise<T> {
+  const { signal, timeoutMs = 25 * 60_000, intervalMs = 700 } = options
+  const deadline = Date.now() + timeoutMs
+  let current: JobDto<T> | null = typeof job === 'string' ? null : job
+  const id = typeof job === 'string' ? job : job.id
+  let delay = intervalMs
+  let failures = 0
+
+  while (!current || current.status === 'Queued' || current.status === 'Running') {
+    if (Date.now() > deadline) {
+      throw new ApiError(504, { title: 'Timed out', detail: 'The job is still running; check again later.' })
+    }
+    if (current) {
+      await sleep(delay, signal)
+      delay = Math.min(Math.round(delay * 1.5), 4000)
+    }
+    try {
+      current = await request<JobDto<T>>(`/api/jobs/${id}`, { signal })
+      failures = 0
+    } catch (err) {
+      const transient = err instanceof ApiError && (err.status === 0 || err.status >= 500)
+      if (!transient || ++failures > 15) throw err
+      if (!current) await sleep(delay, signal)
+    }
+  }
+
+  if (current.status === 'Failed') {
+    const status = current.errorStatus ?? 500
+    throw new ApiError(status, {
+      title: current.errorTitle ?? 'Error',
+      detail: current.error ?? undefined,
+      status,
+    })
+  }
+  return current.result as T
+}
+
+/** POSTs JSON as a background job and waits for it; an older API that answers directly works too. */
+export async function runJob<T>(path: string, body?: unknown, options: WaitForJobOptions = {}): Promise<T> {
+  const res = await send<T | JobDto<T>>(path, { method: 'POST', body, headers: PREFER_ASYNC, signal: options.signal })
+  return res.status === 202 ? waitForJob<T>(res.data as JobDto<T>, options) : (res.data as T)
+}
+
+/** Uploads a file as a background job (with upload progress) and waits for its result. */
+export async function uploadJob<T>(path: string, form: FormData, options: UploadOptions = {}): Promise<T> {
+  const res = await uploadWithResponse<T | JobDto<T>>(path, form, {
+    ...options,
+    headers: { ...PREFER_ASYNC, ...options.headers },
+  })
+  return res.status === 202 ? waitForJob<T>(res.data as JobDto<T>, { signal: options.signal }) : (res.data as T)
+}
+
+/**
+ * Upload endpoints that save first and queue OCR / transcription jobs report them in X-Job-Ids.
+ * Waits for all of them; returns each finished result and the first error message, if any.
+ */
+export async function waitForJobIds<T>(
+  header: string | null,
+  options: WaitForJobOptions = {},
+): Promise<{ results: T[]; error: string | null }> {
+  const ids = (header ?? '').split(',').map((x) => x.trim()).filter(Boolean)
+  const results: T[] = []
+  let error: string | null = null
+  for (const id of ids) {
+    try {
+      results.push(await waitForJob<T>(id, options))
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') throw err
+      error ??= err instanceof Error ? err.message : String(err)
+    }
+  }
+  return { results, error }
 }
 
 export const http = {
@@ -206,6 +337,8 @@ export interface UploadOptions {
   onProgress?: (fraction: number) => void
   signal?: AbortSignal
   method?: 'POST' | 'PUT'
+  /** Extra request headers (e.g. Prefer: respond-async). */
+  headers?: Record<string, string>
 }
 
 export interface UploadResponse<T> {
@@ -221,13 +354,14 @@ export function uploadWithResponse<T>(
   form: FormData,
   options: UploadOptions = {},
 ): Promise<UploadResponse<T>> {
-  const { onProgress, signal, method = 'POST' } = options
+  const { onProgress, signal, method = 'POST', headers = {} } = options
   return new Promise<UploadResponse<T>>((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     xhr.open(method, apiUrl(path))
     xhr.setRequestHeader('Accept', 'application/json')
     const t = getToken()
     if (t) xhr.setRequestHeader('Authorization', `Bearer ${t}`)
+    for (const [name, value] of Object.entries(headers)) xhr.setRequestHeader(name, value)
 
     if (onProgress) {
       xhr.upload.onprogress = (e) => {

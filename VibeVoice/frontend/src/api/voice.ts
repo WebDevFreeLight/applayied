@@ -1,4 +1,4 @@
-import { http, upload } from './client'
+import { http, uploadJob } from './client'
 import type {
   AudioDto,
   OcrResultDto,
@@ -22,7 +22,8 @@ export const voiceApi = {
     form.append('file', file, file.name)
     if (opts.language) form.append('language', opts.language)
     form.append('save', String(opts.save ?? true))
-    return upload<TranscriptionResult>('/api/voice/transcribe', form, { onProgress })
+    // Background job on the API: the upload finishes fast, then we wait for the transcript.
+    return uploadJob<TranscriptionResult>('/api/voice/transcribe', form, { onProgress })
   },
   /** Picture → text. With `save` (default true) the picture is kept in the Images library. */
   ocr: (
@@ -34,7 +35,8 @@ export const voiceApi = {
     form.append('file', file, file.name)
     if (opts.language) form.append('language', opts.language)
     form.append('save', String(opts.save ?? true))
-    return upload<OcrResultDto>('/api/voice/ocr', form, { onProgress })
+    // Background job on the API: the upload finishes fast, then we wait for the text.
+    return uploadJob<OcrResultDto>('/api/voice/ocr', form, { onProgress })
   },
   history: (page = 1, pageSize = 20) =>
     http.get<PagedResult<AudioDto>>('/api/voice/history', { page, pageSize }),

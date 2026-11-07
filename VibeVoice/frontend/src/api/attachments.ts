@@ -1,4 +1,4 @@
-import { http, uploadWithResponse } from './client'
+import { http, PREFER_ASYNC, runJob, uploadWithResponse, waitForJobIds } from './client'
 import type { AudioDto, ImageDto, OcrRequest, TranscribeRequest, TtsRequest } from './types'
 
 /** Notes and memories share the same attachment endpoint shape. */
@@ -57,11 +57,13 @@ export const attachmentsApi = {
   ): Promise<UploadImagesResult> => {
     const res = await uploadWithResponse<ImageDto[]>(`${base(kind, id)}/images`, imagesForm(files, options), {
       onProgress: options.onProgress,
+      headers: options.ocr ? PREFER_ASYNC : undefined,
     })
-    return { images: res.data ?? [], ocrError: res.header('X-Ocr-Error') }
+    return withOcrJobs(res.data ?? [], res.header('X-Job-Ids'), res.header('X-Ocr-Error'))
   },
+  /** Runs as a background job on the API; resolves once the text is stored. */
   ocrImage: (kind: OwnerKind, id: string, imageId: string, body: OcrRequest = {}) =>
-    http.post<ImageDto>(`${base(kind, id)}/images/${imageId}/ocr`, body),
+    runJob<ImageDto>(`${base(kind, id)}/images/${imageId}/ocr`, body),
   updateCaption: (kind: OwnerKind, id: string, imageId: string, caption: string | null) =>
     http.patch<ImageDto>(`${base(kind, id)}/images/${imageId}`, { caption }),
   deleteImage: (kind: OwnerKind, id: string, imageId: string) =>
@@ -88,15 +90,38 @@ export const attachmentsApi = {
     }
     if (transcribe) form.append('transcribe', 'true')
     if (language) form.append('language', language)
-    const res = await uploadWithResponse<AudioDto>(`${base(kind, id)}/audio`, form, { onProgress })
-    return { audio: res.data, transcriptionError: res.header('X-Transcription-Error') }
+    const res = await uploadWithResponse<AudioDto>(`${base(kind, id)}/audio`, form, {
+      onProgress,
+      headers: transcribe ? PREFER_ASYNC : undefined,
+    })
+    // The clip is saved; with a queued transcription job, wait for the transcript in the background.
+    const jobs = await waitForJobIds<AudioDto>(res.header('X-Job-Ids'))
+    return {
+      audio: jobs.results[0] ?? res.data,
+      transcriptionError: jobs.error ?? res.header('X-Transcription-Error'),
+    }
   },
   deleteAudio: (kind: OwnerKind, id: string, audioId: string) =>
     http.del(`${base(kind, id)}/audio/${audioId}`),
   tts: (kind: OwnerKind, id: string, body: TtsRequest) =>
     http.post<AudioDto>(`${base(kind, id)}/tts`, body),
+  /** Runs as a background job on the API; resolves once the transcript is stored. */
   transcribe: (kind: OwnerKind, id: string, audioId: string, body: TranscribeRequest) =>
-    http.post<AudioDto>(`${base(kind, id)}/audio/${audioId}/transcribe`, body),
+    runJob<AudioDto>(`${base(kind, id)}/audio/${audioId}/transcribe`, body),
+}
+
+/**
+ * Image uploads with OCR save the pictures first and read them in background jobs (X-Job-Ids):
+ * waits for those jobs and swaps in the images with their text.
+ */
+export async function withOcrJobs(
+  images: ImageDto[],
+  jobIds: string | null,
+  ocrError: string | null,
+): Promise<UploadImagesResult> {
+  const jobs = await waitForJobIds<ImageDto>(jobIds)
+  const done = new Map(jobs.results.map((img) => [img.id, img]))
+  return { images: images.map((img) => done.get(img.id) ?? img), ocrError: jobs.error ?? ocrError }
 }
 
 export function ownerKindOf(ownerType: string): OwnerKind | null {
