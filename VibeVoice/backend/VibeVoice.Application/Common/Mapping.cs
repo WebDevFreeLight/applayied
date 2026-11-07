@@ -7,7 +7,7 @@ namespace VibeVoice.Application.Common;
 public static class Mapping
 {
     public static UserDto ToDto(this User u) => new(
-        u.Id, u.Email, u.DisplayName, u.Role, u.PreferredLanguage, u.PreferredVoice, u.Theme, u.IsActive, u.CreatedAt);
+        u.Id, u.Email, u.DisplayName, u.Role, u.PreferredLanguage, u.PreferredVoice, u.Theme, u.Palette, u.IsActive, u.CreatedAt);
 
     public static ImageDto ToDto(this ImageAttachment i) => new(
         i.Id, i.OwnerType, i.OwnerId, i.FilePath, i.ThumbnailPath, i.MimeType, i.Width, i.Height,

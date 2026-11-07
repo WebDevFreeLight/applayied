@@ -32,6 +32,10 @@ public class User
     [SugarColumn(Length = 10)]
     public string Theme { get; set; } = "system";
 
+    /// <summary>Visual identity: sunset | oasis | ocean | neon. Default lets CodeFirst add the column to existing rows.</summary>
+    [SugarColumn(Length = 20, DefaultValue = "sunset")]
+    public string Palette { get; set; } = "sunset";
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

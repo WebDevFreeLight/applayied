@@ -52,6 +52,8 @@ public sealed class DatabaseInitializer(
             .Where(a => a.MediaKind != MediaKind.Audio && a.MediaKind != MediaKind.Video)
             .ExecuteCommand();
         if (fixedClips > 0) logger.LogInformation("Marked {Count} existing clip(s) as audio", fixedClips);
+
+        db.Updateable<User>().SetColumns(u => u.Palette == "sunset").Where(u => u.Palette == null || u.Palette == "").ExecuteCommand();
     }
 
     private void Seed()

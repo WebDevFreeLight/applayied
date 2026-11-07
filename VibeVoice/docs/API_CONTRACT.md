@@ -32,6 +32,7 @@ Roles: `Admin`, `User`. The **first registered user becomes Admin**. Dev seed us
 AuthResponse = { token: string; expiresAt: string; user: UserDto }
 UserDto = { id: string; email: string; displayName: string; role: "Admin"|"User";
   preferredLanguage: "en"|"ar"; preferredVoice: string|null; theme: "light"|"dark"|"system";
+  palette: "sunset"|"oasis"|"ocean"|"neon";   // visual identity (v4); PUT /api/users/me accepts optional palette
   isActive: boolean; createdAt: string }
 ```
 

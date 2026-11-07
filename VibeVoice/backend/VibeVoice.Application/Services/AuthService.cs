@@ -59,6 +59,7 @@ public sealed class AuthService(
         user.PreferredLanguage = request.PreferredLanguage;
         user.PreferredVoice = string.IsNullOrWhiteSpace(request.PreferredVoice) ? null : request.PreferredVoice.Trim();
         user.Theme = request.Theme;
+        if (request.Palette is not null) user.Palette = request.Palette; // older clients omit it
         user.UpdatedAt = DateTime.UtcNow;
         await users.UpdateAsync(user, ct);
         return user.ToDto();

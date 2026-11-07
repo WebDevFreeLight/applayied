@@ -18,11 +18,11 @@ public sealed record LoginRequest(string Email, string Password);
 
 public sealed record UserDto(
     Guid Id, string Email, string DisplayName, UserRole Role, string PreferredLanguage,
-    string? PreferredVoice, string Theme, bool IsActive, DateTime CreatedAt);
+    string? PreferredVoice, string Theme, string Palette, bool IsActive, DateTime CreatedAt);
 
 public sealed record AuthResponse(string Token, DateTime ExpiresAt, UserDto User);
 
-public sealed record UpdateProfileRequest(string DisplayName, string PreferredLanguage, string? PreferredVoice, string Theme);
+public sealed record UpdateProfileRequest(string DisplayName, string PreferredLanguage, string? PreferredVoice, string Theme, string? Palette = null);
 
 public sealed record ChangePasswordRequest(string CurrentPassword, string NewPassword);
 

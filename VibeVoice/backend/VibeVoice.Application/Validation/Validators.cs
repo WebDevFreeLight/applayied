@@ -32,6 +32,8 @@ public sealed class UpdateProfileRequestValidator : AbstractValidator<UpdateProf
         RuleFor(x => x.PreferredLanguage).Must(l => l is "en" or "ar").WithMessage("Language must be 'en' or 'ar'.");
         RuleFor(x => x.Theme).Must(t => t is "light" or "dark" or "system").WithMessage("Theme must be light, dark or system.");
         RuleFor(x => x.PreferredVoice).MaximumLength(100);
+        RuleFor(x => x.Palette).Must(p => p is null or "sunset" or "oasis" or "ocean" or "neon")
+            .WithMessage("Palette must be sunset, oasis, ocean or neon.");
     }
 }
 
