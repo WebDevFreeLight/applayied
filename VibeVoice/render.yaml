@@ -116,9 +116,6 @@ services:
         value: cpu
       - key: WHISPER_CPU_THREADS
         value: "1"
-      # Greedy decoding: same text on clear speech, less memory (peak ~340 MB instead of ~430 MB).
-      - key: WHISPER_BEAM_SIZE
-        value: "1"
       # The model is baked into the image; don't ask Hugging Face for updates on every load.
       # Remove this if you change WHISPER_MODEL to a model that isn't in the image.
       - key: HF_HUB_OFFLINE
