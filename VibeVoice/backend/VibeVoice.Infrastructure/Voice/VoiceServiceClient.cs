@@ -18,7 +18,10 @@ public sealed class VoiceServiceOptions
 
     public string BaseUrl { get; set; } = "http://localhost:8001";
 
-    /// <summary>TTS and long-video transcription on CPU can be slow; this bounds a single attempt.</summary>
+    /// <summary>
+    /// TTS and long transcriptions on CPU can be slow; this bounds a single attempt. On a 0.1-CPU free host
+    /// Whisper runs at roughly 8x the clip length, so production raises it (VoiceService__RequestTimeoutSeconds).
+    /// </summary>
     public int RequestTimeoutSeconds { get; set; } = 900;
 
     public int HealthTimeoutSeconds { get; set; } = 3;
@@ -149,6 +152,12 @@ public sealed class VoiceServiceClient(HttpClient http, VoiceServiceOptions opti
         catch (Exception ex) when (IsUnavailable(ex, ct))
         {
             logger.LogWarning(ex, "Voice service request failed");
+            // "Too slow" only when the window was long enough for real work; a short window that expires
+            // means the service never answered (e.g. still starting), which is worth retrying.
+            if (ex is Polly.Timeout.TimeoutRejectedException && options.RequestTimeoutSeconds >= 60)
+                throw new VoiceServiceUnavailableException(
+                    $"The voice service did not finish within {options.RequestTimeoutSeconds / 60} minutes. Try a shorter recording.",
+                    ex, timedOut: true);
             throw new VoiceServiceUnavailableException("The voice service is not reachable. Start it with `uvicorn app.main:app --port 8001` in voice-service/.", ex);
         }
 

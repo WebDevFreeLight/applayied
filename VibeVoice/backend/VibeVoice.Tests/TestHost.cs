@@ -87,8 +87,15 @@ public sealed class FakeVoiceClient : IVoiceServiceClient
         return Task.FromResult(new OcrResult(OcrText, "ar", lines));
     }
 
+    /// <summary>Thrown by the next transcriptions, one per call, before falling back to normal behaviour.</summary>
+    public Queue<Exception> TranscribeFailures { get; } = new();
+
+    public int TranscribeCalls { get; private set; }
+
     public Task<AsrResult> TranscribeAsync(Stream audio, string fileName, string contentType, string? language, CancellationToken ct)
     {
+        TranscribeCalls++;
+        if (TranscribeFailures.TryDequeue(out var failure)) throw failure;
         if (!Available) throw new VoiceServiceUnavailableException("down");
         return Task.FromResult(new AsrResult(Transcript, "ar", [new SegmentDto(0, 1, Transcript, null)], "fake"));
     }

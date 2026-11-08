@@ -356,4 +356,49 @@ public sealed class JobApiTests
         voice.Available = true;
         Assert.Equal(HttpStatusCode.OK, (await admin.PostAsync($"/api/admin/jobs/{id}/retry", null, Ct)).StatusCode);
     }
+
+    private static async Task<JsonElement> TranscribeStudioClipAsync(HttpClient client)
+    {
+        using var form = new MultipartFormDataContent();
+        var wav = new ByteArrayContent(TestFiles.Wav(1));
+        wav.Headers.ContentType = new MediaTypeHeaderValue("audio/webm");
+        form.Add(wav, "file", "recording-20261108.webm");
+        form.Add(new StringContent("false"), "save");
+        form.Add(new StringContent("Recorded"), "source");
+        return await AcceptedThenFinishedAsync(client, await client.SendAsync(Async(HttpMethod.Post, "/api/voice/transcribe", form), Ct));
+    }
+
+    [Fact]
+    public async Task A_recording_that_times_out_is_not_run_again_from_the_start()
+    {
+        var voice = new FakeVoiceClient();
+        voice.TranscribeFailures.Enqueue(new VibeVoice.Application.Common.VoiceServiceUnavailableException("too slow", timedOut: true));
+        using var factory = Factory(voiceUp: true, voice);
+        factory.Settings["Jobs:MaxAttempts"] = "4";
+        var client = await SignUpAsync(factory);
+
+        var job = await TranscribeStudioClipAsync(client);
+
+        Assert.Equal("Failed", job.GetProperty("status").GetString());
+        Assert.Equal(504, job.GetProperty("errorStatus").GetInt32());
+        Assert.Equal("Voice service timed out", job.GetProperty("errorTitle").GetString());
+        Assert.Equal(1, job.GetProperty("attempts").GetInt32());
+        Assert.Equal(1, voice.TranscribeCalls);
+    }
+
+    [Fact]
+    public async Task A_recording_sent_while_the_voice_service_wakes_up_is_retried_and_transcribed()
+    {
+        var voice = new FakeVoiceClient { Transcript = "تسجيل من الهاتف" };
+        voice.TranscribeFailures.Enqueue(new VibeVoice.Application.Common.VoiceServiceUnavailableException("asleep"));
+        using var factory = Factory(voiceUp: true, voice);
+        factory.Settings["Jobs:MaxAttempts"] = "3";
+        var client = await SignUpAsync(factory);
+
+        var job = await TranscribeStudioClipAsync(client);
+
+        Assert.Equal("Succeeded", job.GetProperty("status").GetString());
+        Assert.Equal(2, job.GetProperty("attempts").GetInt32());
+        Assert.Equal("تسجيل من الهاتف", job.GetProperty("result").GetProperty("text").GetString());
+    }
 }

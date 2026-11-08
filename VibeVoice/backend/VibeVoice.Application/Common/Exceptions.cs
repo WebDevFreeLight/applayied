@@ -36,11 +36,18 @@ public sealed class ForbiddenException(string message) : AppException("Forbidden
 }
 
 /// <summary>The Python voice service is down or returned an error; the rest of the API keeps working.</summary>
-public sealed class VoiceServiceUnavailableException(string message, Exception? inner = null)
-    : AppException("Voice service unavailable", message)
+public sealed class VoiceServiceUnavailableException(string message, Exception? inner = null, bool timedOut = false)
+    : AppException(timedOut ? "Voice service timed out" : "Voice service unavailable", message)
 {
     public Exception? Upstream { get; } = inner;
-    public override int StatusCode => 503;
+
+    /// <summary>
+    /// The service was reachable but did not finish in time (a long recording on a slow CPU). Unlike "not
+    /// reachable" (asleep / restarting), running it again from the start would only take as long again.
+    /// </summary>
+    public bool TimedOut { get; } = timedOut;
+
+    public override int StatusCode => timedOut ? 504 : 503;
 }
 
 public sealed class PayloadTooLargeException(string message) : AppException("Payload too large", message)

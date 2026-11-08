@@ -22,8 +22,11 @@ public sealed class JobOptions
 {
     public const string Section = "Jobs";
 
-    /// <summary>Longest a single OCR / transcription may run before it is failed.</summary>
-    public int TimeoutMinutes { get; set; } = 20;
+    /// <summary>
+    /// Longest a single OCR / transcription may run before it is failed. Long recordings on a slow CPU take
+    /// several times their length; keep this above VoiceService:RequestTimeoutSeconds.
+    /// </summary>
+    public int TimeoutMinutes { get; set; } = 60;
 
     /// <summary>Tries when the voice service is asleep or restarting (free hosts) before the job fails.</summary>
     public int MaxAttempts { get; set; } = 4;
@@ -125,7 +128,7 @@ public sealed class JobWorker(
             job.Error = null;
             job.ErrorDetail = null;
         }
-        catch (VoiceServiceUnavailableException ex) when (job.Attempts < options.Value.MaxAttempts && !stoppingToken.IsCancellationRequested)
+        catch (VoiceServiceUnavailableException ex) when (!ex.TimedOut && job.Attempts < options.Value.MaxAttempts && !stoppingToken.IsCancellationRequested)
         {
             // A sleeping free-tier voice service answers once it has woken up: try again shortly.
             job.Status = JobStatus.Queued;

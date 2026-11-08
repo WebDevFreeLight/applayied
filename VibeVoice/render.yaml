@@ -78,6 +78,12 @@ services:
       # A sleeping voice service needs time to wake up.
       - key: VoiceService__HealthTimeoutSeconds
         value: "5"
+      # Free plan = 0.1 CPU: Whisper takes ~8x the recording's length (a 5-min recording ~40 min).
+      # Let one call and one background job run that long instead of failing.
+      - key: VoiceService__RequestTimeoutSeconds
+        value: "5400"     # 90 min
+      - key: Jobs__TimeoutMinutes
+        value: "95"
 
   # ---------------- voice-service (Python: TTS / transcription / OCR) ----------------
   - type: web
@@ -109,6 +115,13 @@ services:
       - key: WHISPER_DEVICE
         value: cpu
       - key: WHISPER_CPU_THREADS
+        value: "1"
+      # Greedy decoding: same text on clear speech, less memory (peak ~340 MB instead of ~430 MB).
+      - key: WHISPER_BEAM_SIZE
+        value: "1"
+      # The model is baked into the image; don't ask Hugging Face for updates on every load.
+      # Remove this if you change WHISPER_MODEL to a model that isn't in the image.
+      - key: HF_HUB_OFFLINE
         value: "1"
       # 512 MB: keep only one of Whisper / OCR in memory at a time (measured peak ~430 MB).
       - key: LOW_MEMORY

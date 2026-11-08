@@ -15,6 +15,8 @@ Run:  uvicorn app.main:app --host 0.0.0.0 --port 8001
 
 from __future__ import annotations
 
+import asyncio
+import contextlib
 import ctypes
 import gc
 import hmac
@@ -76,6 +78,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     tts = TTSManager(settings)
     asr = ASRManager(settings)
     ocr = OCRManager(settings)
+    # LOW_MEMORY (512 MB hosts): one heavy request at a time, decoding included. Two recordings decoded and
+    # transcribed side by side pushed the container past 512 MB and got it OOM-killed mid-request.
+    heavy = asyncio.Lock() if settings.low_memory else contextlib.nullcontext()
 
     @asynccontextmanager
     async def lifespan(_: FastAPI):
@@ -178,24 +183,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     fh.write(chunk)
             if size == 0:
                 raise HTTPException(status_code=400, detail="Uploaded audio file is empty.")
-            asr_input = path
-            if ext in VIDEO_EXTENSIONS:
-                # Engines expect audio; pull the soundtrack out of the video first.
-                wav_path = path + ".wav"
-                ok = await run_in_threadpool(extract_audio_to_wav, path, wav_path, 16_000,
-                                             find_ffmpeg(settings.ffmpeg_binary))
-                if not ok:
-                    raise HTTPException(status_code=422, detail="The video has no audio track that could be decoded.")
-                asr_input = wav_path
-            if settings.low_memory and ocr.loaded:
-                await run_in_threadpool(_free, ocr.unload)
-            try:
-                result = await run_in_threadpool(asr.transcribe, asr_input, language)
-            except ASRDisabled as exc:
-                raise HTTPException(status_code=503, detail=str(exc)) from exc
-            except Exception as exc:  # noqa: BLE001 - decode errors etc.
-                log.exception("Transcription failed")
-                raise HTTPException(status_code=422, detail=f"Could not transcribe audio: {exc}") from exc
+            async with heavy:
+                result = await _transcribe_file(path, ext, language)
         finally:
             await file.close()
             for leftover in (path, path + ".wav"):
@@ -211,6 +200,27 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "duration": result.duration,
         }
 
+    async def _transcribe_file(path: str, ext: str, language: str | None):
+        """Decode (pulling the soundtrack out of a video) and transcribe one stored upload."""
+        asr_input = path
+        if ext in VIDEO_EXTENSIONS:
+            # Engines expect audio; pull the soundtrack out of the video first.
+            wav_path = path + ".wav"
+            ok = await run_in_threadpool(extract_audio_to_wav, path, wav_path, 16_000,
+                                         find_ffmpeg(settings.ffmpeg_binary))
+            if not ok:
+                raise HTTPException(status_code=422, detail="The video has no audio track that could be decoded.")
+            asr_input = wav_path
+        if settings.low_memory and ocr.loaded:
+            await run_in_threadpool(_free, ocr.unload)
+        try:
+            return await run_in_threadpool(asr.transcribe, asr_input, language)
+        except ASRDisabled as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        except Exception as exc:  # noqa: BLE001 - decode errors etc.
+            log.exception("Transcription failed")
+            raise HTTPException(status_code=422, detail=f"Could not transcribe audio: {exc}") from exc
+
     @app.post("/ocr")
     async def recognize(file: UploadFile = File(...), language: str | None = Form(None)) -> dict:
         """Image -> text (Arabic, English, mixed). Accepts jpeg/png/webp/gif/bmp/tiff."""
@@ -223,15 +233,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             raise HTTPException(status_code=400, detail="Uploaded image is empty.")
         if len(data) > limit:
             raise HTTPException(status_code=413, detail=f"Image exceeds {settings.ocr_max_upload_mb} MB.")
-        if settings.low_memory and asr.loaded:
-            await run_in_threadpool(_free, asr.unload)
-        try:
-            result = await run_in_threadpool(ocr.recognize, data, language)
-        except OCRDisabled as exc:
-            raise HTTPException(status_code=503, detail=str(exc)) from exc
-        except Exception as exc:  # noqa: BLE001 - undecodable image etc.
-            log.exception("OCR failed")
-            raise HTTPException(status_code=422, detail=f"Could not read text from the image: {exc}") from exc
+        async with heavy:
+            if settings.low_memory and asr.loaded:
+                await run_in_threadpool(_free, asr.unload)
+            try:
+                result = await run_in_threadpool(ocr.recognize, data, language)
+            except OCRDisabled as exc:
+                raise HTTPException(status_code=503, detail=str(exc)) from exc
+            except Exception as exc:  # noqa: BLE001 - undecodable image etc.
+                log.exception("OCR failed")
+                raise HTTPException(status_code=422, detail=f"Could not read text from the image: {exc}") from exc
         log.info("ocr lang=%s lines=%d chars=%d", result.language, len(result.lines), len(result.text))
         return {"text": result.text, "language": result.language,
                 "lines": [ln.to_dict() for ln in result.lines], "engine": ocr.name}

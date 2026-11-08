@@ -247,7 +247,7 @@ export const PREFER_ASYNC: Record<string, string> = { Prefer: 'respond-async' }
 
 export interface WaitForJobOptions {
   signal?: AbortSignal
-  /** Give up after this long (default 25 min: a free host may first have to wake the voice service). */
+  /** Give up after this long (default 95 min: long recordings on a free 0.1-CPU host take ~8x their length). */
   timeoutMs?: number
   /** First poll delay in ms; grows to 4 s. */
   intervalMs?: number
@@ -274,7 +274,7 @@ function sleep(ms: number, signal?: AbortSignal): Promise<void> {
  * phone connection) are retried; the job itself keeps running on the server either way.
  */
 export async function waitForJob<T>(job: JobDto<T> | string, options: WaitForJobOptions = {}): Promise<T> {
-  const { signal, timeoutMs = 25 * 60_000, intervalMs = 700 } = options
+  const { signal, timeoutMs = 95 * 60_000, intervalMs = 700 } = options
   const deadline = Date.now() + timeoutMs
   let current: JobDto<T> | null = typeof job === 'string' ? null : job
   const id = typeof job === 'string' ? job : job.id

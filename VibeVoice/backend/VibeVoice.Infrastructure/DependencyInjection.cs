@@ -69,6 +69,11 @@ public static class DependencyInjection
                 o.TotalRequestTimeout.Timeout = attempt * 2 + TimeSpan.FromSeconds(10);
                 o.Retry.MaxRetryAttempts = 1;
                 o.Retry.Delay = TimeSpan.FromMilliseconds(500);
+                // Retry a dropped connection or a 5xx, never a timeout: re-sending a transcription that just ran
+                // for the whole attempt window would only run as long again.
+                o.Retry.ShouldHandle = args => ValueTask.FromResult(
+                    args.Outcome.Exception is HttpRequestException
+                    || (args.Outcome.Result is { } r && ((int)r.StatusCode >= 500 || r.StatusCode == System.Net.HttpStatusCode.RequestTimeout)));
                 o.CircuitBreaker.SamplingDuration = attempt * 2;
                 o.CircuitBreaker.BreakDuration = TimeSpan.FromSeconds(15);
             });
